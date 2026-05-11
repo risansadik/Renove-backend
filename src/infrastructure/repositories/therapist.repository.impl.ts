@@ -1,8 +1,8 @@
-import type { ITherapistRepository } from "../../domain/repositories/therapist.repository.js";
-import type { TherapistEntity } from "../../domain/entities/Therapist.entity.js";
-import type { TherapistStatus } from "../../shared/constants/index.js";
-import { TherapistModel } from "../databases/schema/therapist.schema.js";
-import { TherapistMapper } from "../../application/mappers/therapist.mapper.js";
+import type { ITherapistRepository } from "../../domain/repositories/therapist.repository";
+import type { TherapistEntity } from "../../domain/entities/Therapist.entity";
+import type { TherapistStatus } from "../../shared/constants/index";
+import { TherapistModel } from "../databases/schema/therapist.schema";
+import { TherapistMapper } from "../../application/mappers/therapist.mapper";
 
 export class TherapistRepository implements ITherapistRepository {
   async findById(id: string): Promise<TherapistEntity | null> {

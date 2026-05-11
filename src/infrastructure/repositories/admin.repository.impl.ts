@@ -1,7 +1,7 @@
-import type { IAdminRepository } from "../../domain/repositories/admin.repository.js";
-import type { AdminEntity } from "../../domain/entities/Admin.entity.js";
-import { AdminModel } from "../databases/schema/admin.schema.js";
-import { AdminMapper } from "../../application/mappers/admin.mapper.js";
+import type { IAdminRepository } from "../../domain/repositories/admin.repository";
+import type { AdminEntity } from "../../domain/entities/Admin.entity";
+import { AdminModel } from "../databases/schema/admin.schema";
+import { AdminMapper } from "../../application/mappers/admin.mapper";
 
 export class AdminRepository implements IAdminRepository {
   async findById(id: string): Promise<AdminEntity | null> {

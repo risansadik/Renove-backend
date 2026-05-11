@@ -1,7 +1,7 @@
-import type { IUserRepository } from "../../domain/repositories/user.repository.js";
-import type { UserEntity } from "../../domain/entities/User.entity.js";
-import { UserModel } from "../databases/schema/user.schema.js";
-import { UserMapper } from "../../application/mappers/user.mapper.js";
+import type { IUserRepository } from "../../domain/repositories/user.repository";
+import type { UserEntity } from "../../domain/entities/User.entity";
+import { UserModel } from "../databases/schema/user.schema";
+import { UserMapper } from "../../application/mappers/user.mapper";
 
 export class UserRepository implements IUserRepository {
   async findById(id: string): Promise<UserEntity | null> {

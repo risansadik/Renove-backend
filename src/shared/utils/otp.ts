@@ -1,4 +1,4 @@
-import { OTP_LENGTH } from "../constants/index.js";
+import { OTP_LENGTH } from "../constants/index";
 
 export const generateOtp = (): string => {
   const digits = "0123456789";

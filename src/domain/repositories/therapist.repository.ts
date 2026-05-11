@@ -1,6 +1,6 @@
-import type { BaseRepository } from "./base.repository.js";
-import type { TherapistEntity } from "../entities/Therapist.entity.js";
-import type { TherapistStatus } from "../../shared/constants/index.js";
+import type { BaseRepository } from "./base.repository";
+import type { TherapistEntity } from "../entities/Therapist.entity";
+import type { TherapistStatus } from "../../shared/constants/index";
 
 export interface ITherapistRepository extends BaseRepository<TherapistEntity> {
     findByEmail(email: string): Promise<TherapistEntity | null>;

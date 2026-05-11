@@ -1,5 +1,5 @@
-import type { BaseRepository } from "./base.repository.js";
-import type { UserEntity } from "../entities/User.entity.js";
+import type { BaseRepository } from "./base.repository";
+import type { UserEntity } from "../entities/User.entity";
 
 export interface IUserRepository extends BaseRepository<UserEntity> {
   findByEmail(email: string): Promise<UserEntity | null>;
