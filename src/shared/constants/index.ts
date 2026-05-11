@@ -49,3 +49,13 @@ export const AUTH_CONFIG = {
     MAX_AGE: 7 * 24 * 60 * 60 * 1000,
   },
 } as const;
+
+export const MAIL_CONFIG = {
+  BRAND_NAME: "reNove",
+  BRAND_COLOR: "#6c47ff",
+  FROM: process.env.SMTP_FROM,
+  HOST: process.env.SMTP_HOST,
+  PORT: Number(process.env.SMTP_PORT) || 587,
+  USER: process.env.SMTP_USER,
+  PASS: process.env.SMTP_PASS,
+} as const;
