@@ -1,0 +1,18 @@
+import { OTP_LENGTH } from "../constants/index.js";
+
+export const generateOtp = (): string => {
+  const digits = "0123456789";
+  let otp = "";
+  for (let i = 0; i < OTP_LENGTH; i++) {
+    otp += digits[Math.floor(Math.random() * 10)];
+  }
+  return otp;
+};
+
+export const getOtpExpiry = (minutes = 10): Date => {
+  return new Date(Date.now() + minutes * 60 * 1000);
+};
+
+export const isOtpExpired = (expiryDate: Date): boolean => {
+  return new Date() > expiryDate;
+};
