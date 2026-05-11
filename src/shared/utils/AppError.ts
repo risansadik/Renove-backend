@@ -1,7 +1,9 @@
+import { HttpStatus } from "../constants";
+
 export class AppError extends Error {
   constructor(
     public readonly message: string,
-    public readonly statusCode: number = 400
+    public readonly statusCode: number = HttpStatus.BAD_REQUEST
   ) {
     super(message);
     this.name = "AppError";
@@ -11,24 +13,24 @@ export class AppError extends Error {
 
 export class NotFoundError extends AppError {
   constructor(resource = "Resource") {
-    super(`${resource} not found`, 404);
+    super(`${resource} not found`, HttpStatus.NOT_FOUND);
   }
 }
 
 export class UnauthorizedError extends AppError {
   constructor(message = "Unauthorized") {
-    super(message, 401);
+    super(message, HttpStatus.UNAUTHORIZED);
   }
 }
 
 export class ForbiddenError extends AppError {
   constructor(message = "Forbidden") {
-    super(message, 403);
+    super(message, HttpStatus.FORBIDDEN);
   }
 }
 
 export class ConflictError extends AppError {
   constructor(message = "Conflict") {
-    super(message, 409);
+    super(message, HttpStatus.CONFLICT);
   }
 }
