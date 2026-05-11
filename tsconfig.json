@@ -25,6 +25,6 @@
       "@shared/*": ["./shared/*"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/test-jwt.ts"],
   "exclude": ["node_modules", "dist"]
 }

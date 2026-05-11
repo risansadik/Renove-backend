@@ -35,3 +35,17 @@ export const HttpStatus = {
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
 } as const;
+
+
+export const AUTH_CONFIG = {
+  ACCESS_TOKEN: {
+    SECRET: process.env.JWT_ACCESS_SECRET || "default_access_secret",
+    EXPIRY: (process.env.JWT_ACCESS_EXPIRES_IN as string) || "15m",
+    MAX_AGE: 15 * 60 * 1000, 
+  },
+  REFRESH_TOKEN: {
+    SECRET: process.env.JWT_REFRESH_SECRET || "default_refresh_secret",
+    EXPIRY: (process.env.JWT_REFRESH_EXPIRES_IN as string) || "7d",
+    MAX_AGE: 7 * 24 * 60 * 60 * 1000,
+  },
+} as const;
