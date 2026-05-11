@@ -1,0 +1,49 @@
+import mongoose, { Schema, type Document } from "mongoose";
+import { THERAPIST_STATUS } from "../../../shared/constants/index.js";
+
+export interface ITherapistDocument extends Document {
+  name: string;
+  email: string;
+  password: string;
+  phone: string;
+  gender: "male" | "female" | "other";
+  qualification: string;
+  specialization: string[];
+  experience: number;
+  consultationFee: number;
+  bio: string;
+  certifications?: string[];
+  profileImage?: string;
+  status: "pending" | "approved" | "rejected";
+  isVerified: boolean;
+  otp?: string;
+  otpExpiry?: Date;
+}
+
+const TherapistSchema = new Schema<ITherapistDocument>(
+  {
+    name: { type: String, required: true, trim: true },
+    email: { type: String, required: true, unique: true, lowercase: true, trim: true },
+    password: { type: String, required: true },
+    phone: { type: String, required: true },
+    gender: { type: String, enum: ["male", "female", "other"], required: true },
+    qualification: { type: String, required: true },
+    specialization: [{ type: String }],
+    experience: { type: Number, required: true, min: 0 },
+    consultationFee: { type: Number, required: true, min: 0 },
+    bio: { type: String, required: true },
+    certifications: [{ type: String }],
+    profileImage: { type: String },
+    status: {
+      type: String,
+      enum: Object.values(THERAPIST_STATUS),
+      default: THERAPIST_STATUS.PENDING,
+    },
+    isVerified: { type: Boolean, default: false },
+    otp: { type: String },
+    otpExpiry: { type: Date },
+  },
+  { timestamps: true }
+);
+
+export const TherapistModel = mongoose.model<ITherapistDocument>("Therapist", TherapistSchema);
