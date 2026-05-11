@@ -5,17 +5,17 @@ import { UserMapper } from "../../application/mappers/user.mapper.js";
 
 export class UserRepository implements IUserRepository {
   async findById(id: string): Promise<UserEntity | null> {
-    const doc = await UserModel.findById(id).lean();
+    const doc = await UserModel.findById(id).lean().exec();
     return doc ? UserMapper.toEntity(doc) : null;
   }
 
   async findByEmail(email: string): Promise<UserEntity | null> {
-    const doc = await UserModel.findOne({ email }).lean();
+    const doc = await UserModel.findOne({ email }).lean().exec();
     return doc ? UserMapper.toEntity(doc) : null;
   }
 
   async findAll(): Promise<UserEntity[]> {
-    const docs = await UserModel.find().lean();
+    const docs = await UserModel.find().lean().exec();
     return docs.map(UserMapper.toEntity);
   }
 
@@ -25,7 +25,7 @@ export class UserRepository implements IUserRepository {
   }
 
   async update(id: string, data: Partial<UserEntity>): Promise<UserEntity | null> {
-    const doc = await UserModel.findByIdAndUpdate(id, data, { new: true }).lean();
+    const doc = await UserModel.findByIdAndUpdate(id, data, { new: true }).lean().exec();
     return doc ? UserMapper.toEntity(doc) : null;
   }
 

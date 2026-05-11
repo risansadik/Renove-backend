@@ -1,4 +1,4 @@
-import mongoose, { Schema, type Document } from "mongoose";
+import mongoose, { Schema, Types, type Document } from "mongoose";
 import { USER_STATUS } from "../../../shared/constants/index.js";
 
 export interface IUserDocument extends Document {
@@ -13,6 +13,8 @@ export interface IUserDocument extends Document {
   createdAt : Date;
   updatedAt : Date;
 }
+
+export type IUserRaw = Omit<IUserDocument, keyof mongoose.Document> & {_id : Types.ObjectId}
 
 const UserSchema = new Schema<IUserDocument>(
   {

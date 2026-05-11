@@ -1,9 +1,9 @@
 import type { TherapistEntity } from "../../domain/entities/Therapist.entity.js";
-import type { ITherapistDocument } from "../../infrastructure/databases/schema/therapist.schema.js";
+import type { ITherapistRaw } from "../../infrastructure/databases/schema/therapist.schema.js";
 
 export class TherapistMapper {
 
-  static toEntity(doc: ITherapistDocument): TherapistEntity {
+  static toEntity(doc: ITherapistRaw): TherapistEntity {
     return {
       id: doc._id.toString(),
       name: doc.name,
