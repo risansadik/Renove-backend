@@ -1,4 +1,4 @@
-import mongoose, { Schema, Types, type Document } from "mongoose";
+import mongoose, { Schema, type Types, type Document } from "mongoose";
 import { THERAPIST_STATUS } from "../../../shared/constants/index.js";
 
 export interface ITherapistDocument extends Document {

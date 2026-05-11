@@ -1,4 +1,4 @@
-import mongoose, { Schema, Types, type Document } from "mongoose";
+import mongoose, { Schema, type Types, type Document } from "mongoose";
 
 export interface IAdminDocument extends Document {
   email: string;
