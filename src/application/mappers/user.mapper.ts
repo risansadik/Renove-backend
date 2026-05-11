@@ -1,9 +1,9 @@
 import type { UserEntity } from "../../domain/entities/User.entity.js";
-import type { IUserDocument } from "../../infrastructure/databases/schema/user.schema.js";
+import type { IUserRaw } from "../../infrastructure/databases/schema/user.schema.js";
 
 
 export class UserMapper {
-  static toEntity(doc: IUserDocument): UserEntity {
+  static toEntity(doc: IUserRaw): UserEntity {
     return {
       id: doc._id.toString(),
       name: doc.name,
