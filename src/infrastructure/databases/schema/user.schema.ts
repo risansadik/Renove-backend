@@ -10,6 +10,8 @@ export interface IUserDocument extends Document {
   status: "active" | "blocked";
   otp?: string;
   otpExpiry?: Date;
+  createdAt : Date;
+  updatedAt : Date;
 }
 
 const UserSchema = new Schema<IUserDocument>(

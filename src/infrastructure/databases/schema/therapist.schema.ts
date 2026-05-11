@@ -18,6 +18,8 @@ export interface ITherapistDocument extends Document {
   isVerified: boolean;
   otp?: string;
   otpExpiry?: Date;
+  createdAt : Date;
+  updatedAt : Date;
 }
 
 const TherapistSchema = new Schema<ITherapistDocument>(
