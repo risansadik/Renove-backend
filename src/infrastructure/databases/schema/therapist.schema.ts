@@ -1,4 +1,4 @@
-import mongoose, { Schema, type Document } from "mongoose";
+import mongoose, { Schema, Types, type Document } from "mongoose";
 import { THERAPIST_STATUS } from "../../../shared/constants/index.js";
 
 export interface ITherapistDocument extends Document {
@@ -21,6 +21,8 @@ export interface ITherapistDocument extends Document {
   createdAt : Date;
   updatedAt : Date;
 }
+
+export type ITherapistRaw = Omit<ITherapistDocument, keyof mongoose.Document> & {_id : Types.ObjectId}
 
 const TherapistSchema = new Schema<ITherapistDocument>(
   {

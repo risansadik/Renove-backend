@@ -6,22 +6,22 @@ import { TherapistMapper } from "../../application/mappers/therapist.mapper.js";
 
 export class TherapistRepository implements ITherapistRepository {
   async findById(id: string): Promise<TherapistEntity | null> {
-    const doc = await TherapistModel.findById(id).lean();
+    const doc = await TherapistModel.findById(id).lean().exec();
     return doc ? TherapistMapper.toEntity(doc) : null;
   }
 
   async findByEmail(email: string): Promise<TherapistEntity | null> {
-    const doc = await TherapistModel.findOne({ email }).lean();
+    const doc = await TherapistModel.findOne({ email }).lean().exec();
     return doc ? TherapistMapper.toEntity(doc) : null;
   }
 
   async findAll(): Promise<TherapistEntity[]> {
-    const docs = await TherapistModel.find().lean();
+    const docs = await TherapistModel.find().lean().exec();
     return docs.map(TherapistMapper.toEntity);
   }
 
   async findByStatus(status: TherapistStatus): Promise<TherapistEntity[]> {
-    const docs = await TherapistModel.find({ status }).lean();
+    const docs = await TherapistModel.find({ status }).lean().exec();
     return docs.map(TherapistMapper.toEntity);
   }
 
@@ -31,7 +31,7 @@ export class TherapistRepository implements ITherapistRepository {
   }
 
   async update(id: string, data: Partial<TherapistEntity>): Promise<TherapistEntity | null> {
-    const doc = await TherapistModel.findByIdAndUpdate(id, data, { new: true }).lean();
+    const doc = await TherapistModel.findByIdAndUpdate(id, data, { new: true }).lean().exec();
     return doc ? TherapistMapper.toEntity(doc) : null;
   }
 

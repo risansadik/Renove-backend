@@ -1,4 +1,4 @@
-import mongoose, { Schema, type Document } from "mongoose";
+import mongoose, { Schema, Types, type Document } from "mongoose";
 
 export interface IAdminDocument extends Document {
   email: string;
@@ -6,6 +6,8 @@ export interface IAdminDocument extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type IAdminRaw = Omit<IAdminDocument, keyof mongoose.Document> & {_id : Types.ObjectId}
 
 const AdminSchema = new Schema<IAdminDocument>(
   {
