@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 // import userRoutes from "./presentation/routes/user.routes";
 // import therapistRoutes from "./presentation/routes/therapist.routes";
 // import adminRoutes from "./presentation/routes/admin.routes";
-// import { errorHandler, notFoundHandler } from "./presentation/middlewares/error.middleware";
+import { errorHandler, notFoundHandler } from "./presentation/middlewares/error.middleware";
 
 const app = express();
 
@@ -29,7 +29,7 @@ app.get("/health", (_req, res) => {
 // app.use("/api/admin", adminRoutes);
 
 
-// app.use(notFoundHandler);
-// app.use(errorHandler);
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 export default app;
