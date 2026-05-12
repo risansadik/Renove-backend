@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import userRoutes from "./presentation/routes/user.routes.js";
-// import therapistRoutes from "./presentation/routes/therapist.routes";
+import therapistRoutes from "./presentation/routes/therapist.routes.js";
 // import adminRoutes from "./presentation/routes/admin.routes";
 import { errorHandler, notFoundHandler } from "./presentation/middlewares/error.middleware.js";
 
@@ -25,7 +25,7 @@ app.get("/health", (_req, res) => {
 
 
 app.use("/api/user/auth", userRoutes);
-// app.use("/api/therapist/auth", therapistRoutes);
+app.use("/api/therapist/auth", therapistRoutes);
 // app.use("/api/admin", adminRoutes);
 
 
