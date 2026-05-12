@@ -64,3 +64,12 @@ export const sendTherapistApprovalEmail = async (email: string, name: string): P
   `;
   await sendMail(email, `${MAIL_CONFIG.BRAND_NAME} - Application Approved`, content);
 };
+
+export const sendTherapistRejectionEmail = async (email: string, name: string): Promise<void> => {
+  const content = `
+    <h3>Application Update</h3>
+    <p>Hi <strong>${name}</strong>,</p>
+    <p>Your therapist application was not approved at this time.</p>
+  `;
+  await sendMail(email, `${MAIL_CONFIG.BRAND_NAME} - Application Update`, content);
+};
