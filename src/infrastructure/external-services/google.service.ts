@@ -34,11 +34,10 @@ export const verifyGoogleToken = async (idToken: string): Promise<GoogleUserPayl
       picture: payload.picture,
       sub: payload.sub,
     };
-  } catch (error : any) {
+  } catch (error) {
 
     if (error instanceof AppError) throw error;
 
-     console.error("GOOGLE LIBRARY ERROR:", error.message); 
     throw new AppError("Failed to verify Google token", HttpStatus.UNAUTHORIZED);
   }
 };
