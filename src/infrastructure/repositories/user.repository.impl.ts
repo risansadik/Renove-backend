@@ -39,7 +39,10 @@ export class UserRepository implements IUserRepository {
   }
 
   async verifyUser(email: string): Promise<void> {
-    await UserModel.updateOne({ email }, { isVerified: true, otp: null, otpExpiry: null });
+    await UserModel.updateOne(
+      { email },
+      { $set: { isVerified: true }, $unset: { otp: "", otpExpiry: "" } }
+    );
   }
 
   async updateStatus(id: string, status: UserEntity["status"]): Promise<void> {
