@@ -1,4 +1,4 @@
-import { HttpStatus } from "../constants";
+import { HttpStatus } from "../constants/index.js";
 
 export class AppError extends Error {
   constructor(

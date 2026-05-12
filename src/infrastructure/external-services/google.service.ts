@@ -1,6 +1,6 @@
 import { OAuth2Client } from "google-auth-library";
-import { AppError } from "../../shared/utils/AppError";
-import { GOOGLE_CONFIG, HttpStatus } from "../../shared/constants/index";
+import { AppError } from "../../shared/utils/AppError.js";
+import { GOOGLE_CONFIG, HttpStatus } from "../../shared/constants/index.js";
 
 export interface GoogleUserPayload {
   email: string;
