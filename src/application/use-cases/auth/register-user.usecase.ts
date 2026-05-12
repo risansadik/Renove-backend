@@ -4,7 +4,7 @@ import type { RegisterUserDTO } from "../../dto/auth/user.dto.js";
 import { sendOtpEmail } from "../../../infrastructure/external-services/email.service.js";
 import { generateOtp, getOtpExpiry } from "../../../shared/utils/otp.js";
 import { ConflictError } from "../../../shared/utils/AppError.js";
-import { BCRYPT_ROUNDS } from "../../../shared/constants/index.js";
+import { BCRYPT_ROUNDS, USER_STATUS } from "../../../shared/constants/index.js";
 
 export class RegisterUserUseCase {
   constructor(private readonly userRepo: IUserRepository) {}
@@ -23,7 +23,7 @@ export class RegisterUserUseCase {
       password: hashedPassword,
       isGoogleAuth: false,
       isVerified: false,
-      status: "active",
+      status: USER_STATUS.ACTIVE,
       otp,
       otpExpiry,
     });
