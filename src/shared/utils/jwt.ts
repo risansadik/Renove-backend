@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { AUTH_CONFIG, type Role } from '../constants';
+import { AUTH_CONFIG, type Role } from '../constants/index.js';
 import type { Response ,CookieOptions} from 'express';
 
 interface TokenPayload {

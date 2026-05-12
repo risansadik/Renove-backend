@@ -1,5 +1,5 @@
-import type { TherapistEntity } from "../../domain/entities/Therapist.entity";
-import type { ITherapistRaw } from "../../infrastructure/databases/schema/therapist.schema";
+import type { TherapistEntity } from "../../domain/entities/Therapist.entity.js";
+import type { ITherapistRaw } from "../../infrastructure/databases/schema/therapist.schema.js";
 
 export class TherapistMapper {
 

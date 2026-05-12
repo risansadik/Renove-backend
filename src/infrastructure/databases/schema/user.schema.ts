@@ -1,5 +1,5 @@
 import mongoose, { Schema, type Types, type Document } from "mongoose";
-import { USER_STATUS, type UserStatus } from "../../../shared/constants/index";
+import { USER_STATUS, type UserStatus } from "../../../shared/constants/index.js";
 
 export interface IUserDocument extends Document {
   name: string;

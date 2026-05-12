@@ -1,5 +1,5 @@
-import type { UserEntity } from "../../domain/entities/User.entity";
-import type { IUserRaw } from "../../infrastructure/databases/schema/user.schema";
+import type { UserEntity } from "../../domain/entities/User.entity.js";
+import type { IUserRaw } from "../../infrastructure/databases/schema/user.schema.js";
 
 
 export class UserMapper {
