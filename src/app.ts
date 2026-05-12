@@ -3,7 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import userRoutes from "./presentation/routes/user.routes.js";
 import therapistRoutes from "./presentation/routes/therapist.routes.js";
-// import adminRoutes from "./presentation/routes/admin.routes";
+import adminRoutes from "./presentation/routes/admin.routes.js";
 import { errorHandler, notFoundHandler } from "./presentation/middlewares/error.middleware.js";
 
 const app = express();
@@ -26,7 +26,7 @@ app.get("/health", (_req, res) => {
 
 app.use("/api/user/auth", userRoutes);
 app.use("/api/therapist/auth", therapistRoutes);
-// app.use("/api/admin", adminRoutes);
+app.use("/api/admin", adminRoutes);
 
 
 app.use(notFoundHandler);
