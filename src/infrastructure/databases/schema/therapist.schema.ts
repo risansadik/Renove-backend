@@ -1,5 +1,5 @@
 import mongoose, { Schema, type Types, type Document } from "mongoose";
-import { THERAPIST_STATUS } from "../../../shared/constants/index";
+import { THERAPIST_STATUS, type TherapistStatus } from "../../../shared/constants/index";
 
 export interface ITherapistDocument extends Document {
   name: string;
@@ -14,7 +14,7 @@ export interface ITherapistDocument extends Document {
   bio: string;
   certifications?: string[];
   profileImage?: string;
-  status: "pending" | "approved" | "rejected";
+  status: TherapistStatus;
   isVerified: boolean;
   otp?: string;
   otpExpiry?: Date;

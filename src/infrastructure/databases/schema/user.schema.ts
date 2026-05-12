@@ -1,5 +1,5 @@
 import mongoose, { Schema, type Types, type Document } from "mongoose";
-import { USER_STATUS } from "../../../shared/constants/index";
+import { USER_STATUS, type UserStatus } from "../../../shared/constants/index";
 
 export interface IUserDocument extends Document {
   name: string;
@@ -7,7 +7,7 @@ export interface IUserDocument extends Document {
   password?: string;
   isGoogleAuth: boolean;
   isVerified: boolean;
-  status: "active" | "blocked";
+  status: UserStatus;
   otp?: string;
   otpExpiry?: Date;
   createdAt : Date;
