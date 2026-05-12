@@ -49,6 +49,6 @@ export class TherapistRepository implements ITherapistRepository {
   }
 
   async verifyTherapist(email: string): Promise<void> {
-    await TherapistModel.updateOne({ email }, { isVerified: true, otp: null, otpExpiry: null });
+    await TherapistModel.updateOne({ email },{$set : {isVerified : true},$unset : {otp : "",otpExpiry : ""}});
   }
 }
