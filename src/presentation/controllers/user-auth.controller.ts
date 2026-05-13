@@ -6,6 +6,7 @@ import { LoginUserUseCase } from "../../application/use-cases/auth/login-user.us
 import { GoogleAuthUseCase } from "../../application/use-cases/auth/google-auth.usecase.js";
 import { ForgotPasswordUseCase } from "../../application/use-cases/auth/forgot-password.usecase.js";
 import { ResetPasswordUseCase } from "../../application/use-cases/auth/reset-password.usecase.js";
+import { VerifyResetOtpUseCase } from "../../application/use-cases/auth/verify-reset-otp.usecase.js";
 import { UserRepository } from "../../infrastructure/repositories/user.repository.impl.js";
 import { TherapistRepository } from "../../infrastructure/repositories/therapist.repository.impl.js";
 import { ResponseModel } from "../../shared/utils/response-model.js";
@@ -23,6 +24,7 @@ const loginUC = new LoginUserUseCase(userRepo);
 const googleAuthUC = new GoogleAuthUseCase(userRepo);
 const forgotPasswordUC = new ForgotPasswordUseCase(userRepo);
 const resetPasswordUC = new ResetPasswordUseCase(userRepo);
+const verifyResetOtpUC = new VerifyResetOtpUseCase(userRepo);
 
 export const userAuthController = {
   register: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -73,6 +75,13 @@ export const userAuthController = {
     try {
       await resetPasswordUC.execute(req.body);
       res.json(ResponseModel.success("Password reset successful", null));
+    } catch (err) { next(err); }
+  },
+
+  verifyResetOtp: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      await verifyResetOtpUC.execute(req.body);
+      res.json(ResponseModel.success("OTP verified successfully", null));
     } catch (err) { next(err); }
   },
 

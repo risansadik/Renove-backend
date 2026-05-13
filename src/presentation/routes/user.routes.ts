@@ -23,6 +23,7 @@ router.post("/resend-otp", validate(ResendOtpSchema), userAuthController.resendO
 router.post("/login", validate(LoginUserSchema), userAuthController.login);
 router.post("/google", validate(GoogleAuthSchema), userAuthController.googleAuth);
 router.post("/forgot-password", validate(ForgotPasswordSchema), userAuthController.forgotPassword);
+router.post("/verify-reset-otp", validate(VerifyOtpSchema), userAuthController.verifyResetOtp);
 router.post("/reset-password", validate(ResetPasswordSchema), userAuthController.resetPassword);
 router.post("/logout", userAuthController.logout);
 
