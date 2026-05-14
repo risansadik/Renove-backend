@@ -10,14 +10,15 @@ export const RegisterTherapistSchema = z.object({
   name: z.string().min(2).max(50),
   email: z.string().email(),
   password: passwordSchema,
-  phone: z.string().min(10).max(15),
   gender: z.enum(["male", "female", "other"]),
   qualification: z.string().min(2),
-  specialization: z.array(z.string()).min(1, "At least one specialization required"),
+  specialization: z.array(z.string()).optional(),
   experience: z.coerce.number().min(0).max(60),
   consultationFee: z.coerce.number().min(0),
   bio: z.string().min(50, "Bio must be at least 50 characters").max(1000),
   certifications: z.array(z.string()).optional(),
+  profileImage: z.string().optional(),
+  certificationFiles: z.array(z.string()).optional(),
 });
 
 export const LoginTherapistSchema = z.object({

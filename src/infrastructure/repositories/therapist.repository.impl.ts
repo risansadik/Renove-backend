@@ -51,4 +51,11 @@ export class TherapistRepository implements ITherapistRepository {
   async verifyTherapist(email: string): Promise<void> {
     await TherapistModel.updateOne({ email },{$set : {isVerified : true},$unset : {otp : "",otpExpiry : ""}});
   }
+
+  async resetPassword(email: string, hashedPassword: string): Promise<void> {
+    await TherapistModel.updateOne(
+      { email },
+      { $set: { password: hashedPassword }, $unset: { otp: "", otpExpiry: "" } }
+    );
+  }
 }

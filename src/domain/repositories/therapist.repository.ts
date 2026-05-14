@@ -7,5 +7,6 @@ export interface ITherapistRepository extends BaseRepository<TherapistEntity> {
     updateStatus(id: string, status: TherapistStatus): Promise<void>;
     updateOtp(email: string, otp: string, otpExpiry: Date): Promise<void>;
     verifyTherapist(email: string): Promise<void>;
+    resetPassword(email: string, hashedPassword: string): Promise<void>;
     findByStatus(status: TherapistStatus): Promise<TherapistEntity[]>;
 }

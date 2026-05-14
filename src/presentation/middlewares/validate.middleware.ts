@@ -11,6 +11,7 @@ export const validate = (schema: ZodSchema) => {
         field: e.path.join("."),
         message: e.message,
       }));
+      console.log("VALIDATION FAILED:", { errors, body: req.body });
       res.status(HttpStatus.BAD_REQUEST).json({ ...ResponseModel.error("Validation failed"), errors });
       return;
     }
