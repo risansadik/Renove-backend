@@ -16,6 +16,7 @@ export const errorHandler = (
   }
 
   logger.error("Unhandled error:", err);
+  console.error("DEBUG ERROR:", err);
   res.status(500).json(ResponseModel.error("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR));
 };
 

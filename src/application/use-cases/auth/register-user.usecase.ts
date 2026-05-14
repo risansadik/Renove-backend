@@ -11,22 +11,33 @@ export class RegisterUserUseCase {
 
   async execute(dto: RegisterUserDTO): Promise<{ email: string }> {
     const existing = await this.userRepo.findByEmail(dto.email);
-    if (existing) throw new ConflictError("Email already registered");
+    if (existing && existing.isVerified) throw new ConflictError("Email already registered");
 
     const hashedPassword = await bcrypt.hash(dto.password, BCRYPT_ROUNDS);
     const otp = generateOtp();
     const otpExpiry = getOtpExpiry();
 
-    await this.userRepo.create({
-      name: dto.name,
-      email: dto.email,
-      password: hashedPassword,
-      isGoogleAuth: false,
-      isVerified: false,
-      status: USER_STATUS.ACTIVE,
-      otp,
-      otpExpiry,
-    });
+    if (existing) {
+      // Update existing unverified user
+      await this.userRepo.update(existing.id, {
+        name: dto.name,
+        password: hashedPassword,
+        otp,
+        otpExpiry,
+      });
+    } else {
+      // Create new user
+      await this.userRepo.create({
+        name: dto.name,
+        email: dto.email,
+        password: hashedPassword,
+        isGoogleAuth: false,
+        isVerified: false,
+        status: USER_STATUS.ACTIVE,
+        otp,
+        otpExpiry,
+      });
+    }
 
     await sendOtpEmail(dto.email, otp, dto.name);
     return { email: dto.email };

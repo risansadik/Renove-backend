@@ -11,20 +11,33 @@ export class RegisterTherapistUseCase {
 
   async execute(dto: RegisterTherapistDTO): Promise<{ email: string }> {
     const existing = await this.therapistRepo.findByEmail(dto.email);
-    if (existing) throw new ConflictError("Email already registered");
+    console.log("REGISTRATION DEBUG:", { email: dto.email, existingFound: !!existing, isVerified: existing?.isVerified });
+    if (existing && existing.isVerified) throw new ConflictError("Email already registered");
 
     const hashedPassword = await bcrypt.hash(dto.password, BCRYPT_ROUNDS);
     const otp = generateOtp();
     const otpExpiry = getOtpExpiry();
 
-    await this.therapistRepo.create({
-      ...dto,
-      password: hashedPassword,
-      isVerified: false,
-      status: THERAPIST_STATUS.PENDING,
-      otp,
-      otpExpiry,
-    });
+    if (existing) {
+      // Update existing unverified therapist
+      await this.therapistRepo.update(existing.id, {
+        ...dto,
+        password: hashedPassword,
+        otp,
+        otpExpiry,
+        status: THERAPIST_STATUS.PENDING,
+      });
+    } else {
+      // Create new therapist
+      await this.therapistRepo.create({
+        ...dto,
+        password: hashedPassword,
+        isVerified: false,
+        status: THERAPIST_STATUS.PENDING,
+        otp,
+        otpExpiry,
+      });
+    }
 
     await sendOtpEmail(dto.email, otp, dto.name);
     return { email: dto.email };

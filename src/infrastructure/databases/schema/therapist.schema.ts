@@ -5,7 +5,6 @@ export interface ITherapistDocument extends Document {
   name: string;
   email: string;
   password: string;
-  phone: string;
   gender: "male" | "female" | "other";
   qualification: string;
   specialization: string[];
@@ -13,6 +12,7 @@ export interface ITherapistDocument extends Document {
   consultationFee: number;
   bio: string;
   certifications?: string[];
+  certificationFiles?: string[];
   profileImage?: string;
   status: TherapistStatus;
   isVerified: boolean;
@@ -29,7 +29,6 @@ const TherapistSchema = new Schema<ITherapistDocument>(
     name: { type: String, required: true, trim: true },
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
     password: { type: String, required: true },
-    phone: { type: String, required: true },
     gender: { type: String, enum: ["male", "female", "other"], required: true },
     qualification: { type: String, required: true },
     specialization: [{ type: String }],
@@ -37,6 +36,7 @@ const TherapistSchema = new Schema<ITherapistDocument>(
     consultationFee: { type: Number, required: true, min: 0 },
     bio: { type: String, required: true },
     certifications: [{ type: String }],
+    certificationFiles: [{ type: String }],
     profileImage: { type: String },
     status: {
       type: String,

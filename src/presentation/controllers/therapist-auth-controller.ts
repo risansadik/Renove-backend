@@ -3,6 +3,9 @@ import { RegisterTherapistUseCase } from "../../application/use-cases/auth/regis
 import { VerifyTherapistOtpUseCase } from "../../application/use-cases/auth/verify-therapist-otp.usecase.js";
 import { ResendOtpUseCase } from "../../application/use-cases/auth/resend-otp.usecase.js";
 import { LoginTherapistUseCase } from "../../application/use-cases/auth/login-therapist.usecase.js";
+import { ForgotPasswordUseCase } from "../../application/use-cases/auth/forgot-password.usecase.js";
+import { VerifyResetOtpUseCase } from "../../application/use-cases/auth/verify-reset-otp.usecase.js";
+import { ResetPasswordUseCase } from "../../application/use-cases/auth/reset-password.usecase.js";
 import { TherapistRepository } from "../../infrastructure/repositories/therapist.repository.impl.js";
 import { UserRepository } from "../../infrastructure/repositories/user.repository.impl.js";
 import { ResponseModel } from "../../shared/utils/response-model.js";
@@ -16,13 +19,31 @@ const registerUC = new RegisterTherapistUseCase(therapistRepo);
 const verifyOtpUC = new VerifyTherapistOtpUseCase(therapistRepo);
 const resendOtpUC = new ResendOtpUseCase(userRepo, therapistRepo);
 const loginUC = new LoginTherapistUseCase(therapistRepo);
+const forgotPasswordUC = new ForgotPasswordUseCase(therapistRepo);
+const verifyResetOtpUC = new VerifyResetOtpUseCase(therapistRepo);
+const resetPasswordUC = new ResetPasswordUseCase(therapistRepo);
 
 export const therapistAuthController = {
   register: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const data = await registerUC.execute(req.body);
-      res.status(HttpStatus.CREATED).json(ResponseModel.created("Registration submitted. Please verify your email. Your profile will be reviewed by admin.", data));
-    } catch (err) { next(err); }
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      const profileImage = files?.profileImage?.[0]?.path;
+      const certificationFiles = files?.certificationFiles?.map(f => f.path) || [];
+
+      const payload = {
+        ...req.body,
+        profileImage,
+        certificationFiles,
+        certifications: req.body.certifications || []
+      };
+
+      console.log("THERAPIST REGISTRATION PAYLOAD:", payload);
+      const data = await registerUC.execute(payload);
+      res.status(HttpStatus.CREATED).json(ResponseModel.created("Registration submitted. Please verify your email.", data));
+    } catch (err) { 
+      console.error("THERAPIST REGISTRATION 500 ERROR:", err);
+      next(err); 
+    }
   },
 
   verifyOtp: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -50,5 +71,26 @@ export const therapistAuthController = {
   logout: (_req: Request, res: Response): void => {
     clearAuthCookies(res);
     res.json(ResponseModel.success("Logged out successfully", null));
+  },
+  
+  forgotPassword: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      await forgotPasswordUC.execute(req.body, "therapist");
+      res.json(ResponseModel.success("Reset OTP sent to your email", null));
+    } catch (err) { next(err); }
+  },
+
+  verifyResetOtp: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      await verifyResetOtpUC.execute(req.body, "therapist");
+      res.json(ResponseModel.success("OTP verified", null));
+    } catch (err) { next(err); }
+  },
+
+  resetPassword: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      await resetPasswordUC.execute(req.body, "therapist");
+      res.json(ResponseModel.success("Password reset successful", null));
+    } catch (err) { next(err); }
   },
 };
