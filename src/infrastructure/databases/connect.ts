@@ -11,6 +11,19 @@ export const connectDB = async (): Promise<void> => {
   try {
     await mongoose.connect(mongoUri);
     logger.info("MongoDB connected successfully");
+
+    // legacy index cleanup
+    try {
+      const collection = mongoose.connection.collection("bookings");
+      const indexes = await collection.listIndexes().toArray();
+      const legacyIndex = indexes.find(idx => idx.name === "therapistId_1_date_1_slot_1");
+      if (legacyIndex) {
+        await collection.dropIndex("therapistId_1_date_1_slot_1");
+        logger.info("Dropped legacy index: therapistId_1_date_1_slot_1");
+      }
+    } catch (err) {
+      logger.warn("Could not cleanup legacy indexes:", err);
+    }
   } catch (error) {
     logger.error("MongoDB connection failed:", error);
     process.exit(1);
