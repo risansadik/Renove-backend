@@ -3,13 +3,14 @@ import type { IUserRepository } from "../../../domain/repositories/user.reposito
 import type { LoginUserDTO } from "../../dto/auth/user.dto.js";
 import { generateTokens } from "../../../shared/utils/jwt.js";
 import { AppError, NotFoundError, UnauthorizedError } from "../../../shared/utils/AppError.js";
-import { UserMapper } from "../../mappers/user.mapper.js";
 import { ROLES, USER_STATUS } from "../../../shared/constants/index.js";
 
-export class LoginUserUseCase {
+import type { ILoginUserUseCase, ILoginResponse } from "../../interfaces/auth/IAuthUseCase.js";
+
+export class LoginUserUseCase implements ILoginUserUseCase {
   constructor(private readonly userRepo: IUserRepository) {}
 
-  async execute(dto: LoginUserDTO) {
+  async execute(dto: LoginUserDTO): Promise<ILoginResponse> {
     const user = await this.userRepo.findByEmail(dto.email);
     if (!user) throw new NotFoundError("User");
     if (!user.password) throw new AppError("Use Google sign-in for this account");
@@ -20,6 +21,6 @@ export class LoginUserUseCase {
     if (!isMatch) throw new UnauthorizedError("Invalid credentials");
 
     const tokens = generateTokens({ id: user.id, email: user.email, role: ROLES.USER });
-    return { tokens, user: UserMapper.toPublicDTO(user) };
+    return { tokens, user };
   }
 }

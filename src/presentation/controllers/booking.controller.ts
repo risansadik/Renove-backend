@@ -1,62 +1,65 @@
 import type { Request, Response } from "express";
-import { CreateBookingSchema, UpdateBookingStatusSchema } from "../../application/dto/booking/booking.dto.js";
 import type { CreateBookingUseCase } from "../../application/use-cases/booking/create-booking.usecase.js";
 import type { GetUserBookingsUseCase, GetTherapistBookingsUseCase, UpdateBookingStatusUseCase } from "../../application/use-cases/booking/get-bookings.usecase.js";
+import { BookingMapper } from "../../application/mappers/booking.mapper.js";
+import type { AuthenticatedRequest } from "../../shared/types/express.js";
 
 export class BookingController {
   constructor(
     private createBookingUseCase: CreateBookingUseCase,
     private getUserBookingsUseCase: GetUserBookingsUseCase,
     private getTherapistBookingsUseCase: GetTherapistBookingsUseCase,
-    private updateBookingStatusUseCase: UpdateBookingStatusUseCase
+    private updateStatusUseCase: UpdateBookingStatusUseCase
   ) {}
 
   async createBooking(req: Request, res: Response) {
     try {
-      const validatedData = CreateBookingSchema.parse(req.body);
-      const userId = (req as any).user.id;
-      const booking = await this.createBookingUseCase.execute(userId, validatedData);
-      res.status(201).json({ success: true, data: booking });
-    } catch (error: any) {
-      res.status(400).json({ success: false, message: error.message });
+      const userId = (req as AuthenticatedRequest).user.id;
+      const booking = await this.createBookingUseCase.execute({ userId, data: req.body });
+      res.status(201).json({ success: true, data: BookingMapper.toPublicDTO(booking) });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "An unexpected error occurred";
+      res.status(400).json({ success: false, message });
     }
   }
 
   async getUserBookings(req: Request, res: Response) {
     try {
-      const userId = (req as any).user.id;
+      const userId = (req as AuthenticatedRequest).user.id;
       const bookings = await this.getUserBookingsUseCase.execute(userId);
-      res.status(200).json({ success: true, data: bookings });
-    } catch (error: any) {
-      res.status(500).json({ success: false, message: error.message });
+      res.status(200).json({ success: true, data: BookingMapper.toPublicDTOList(bookings) });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "An unexpected error occurred";
+      res.status(500).json({ success: false, message });
     }
   }
 
   async getTherapistBookings(req: Request, res: Response) {
     try {
-      const therapistId = (req as any).user.id;
+      const therapistId = (req as AuthenticatedRequest).user.id;
       const bookings = await this.getTherapistBookingsUseCase.execute(therapistId);
-      res.status(200).json({ success: true, data: bookings });
-    } catch (error: any) {
-      res.status(500).json({ success: false, message: error.message });
+      res.status(200).json({ success: true, data: BookingMapper.toPublicDTOList(bookings) });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "An unexpected error occurred";
+      res.status(500).json({ success: false, message });
     }
   }
 
   async updateStatus(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const validatedData = UpdateBookingStatusSchema.parse(req.body);
-      const booking = await this.updateBookingStatusUseCase.execute(
-        id, 
-        validatedData.status, 
-        validatedData.rejectionReason
-      );
+      const { status, rejectionReason } = req.body;
+      const booking = await this.updateStatusUseCase.execute({ id, status, rejectionReason });
+      
       if (!booking) {
-        return res.status(404).json({ success: false, message: "Booking not found" });
+        res.status(404).json({ success: false, message: "Booking not found" });
+        return;
       }
-      res.status(200).json({ success: true, data: booking });
-    } catch (error: any) {
-      res.status(400).json({ success: false, message: error.message });
+
+      res.status(200).json({ success: true, data: BookingMapper.toPublicDTO(booking) });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "An unexpected error occurred";
+      res.status(400).json({ success: false, message });
     }
   }
 }

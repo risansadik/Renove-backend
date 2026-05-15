@@ -25,9 +25,9 @@ const updateTherapistStatusUC = new UpdateTherapistStatusUseCase(therapistRepo);
 export const adminController = {
   login: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { tokens, admin } = await adminLoginUC.execute(req.body);
+      const { tokens, user } = await adminLoginUC.execute(req.body);
       setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
-      res.json(ResponseModel.success("Admin login successful", { admin }));
+      res.json(ResponseModel.success("Admin login successful", { admin: user }));
     } catch (err) {
       next(err);
     }
@@ -49,7 +49,7 @@ export const adminController = {
 
   updateUserStatus: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const result = await updateUserStatusUC.execute(req.params.id, req.body);
+      const result = await updateUserStatusUC.execute({ id: req.params.id, dto: req.body });
       res.json(ResponseModel.success("User status updated", result));
     } catch (err) {
       next(err);
@@ -67,7 +67,7 @@ export const adminController = {
 
   updateTherapistStatus: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const result = await updateTherapistStatusUC.execute(req.params.id, req.body);
+      const result = await updateTherapistStatusUC.execute({ id: req.params.id, dto: req.body });
       res.json(ResponseModel.success("Therapist status updated", result));
     } catch (err) {
       next(err);

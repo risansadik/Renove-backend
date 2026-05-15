@@ -2,10 +2,12 @@ import type { IUserRepository } from "../../../domain/repositories/user.reposito
 import type { UpdateUserStatusDTO } from "../../dto/auth/admin.dto.js";
 import { NotFoundError } from "../../../shared/utils/AppError.js";
 
-export class UpdateUserStatusUseCase {
+import type { IUpdateUserStatusUseCase } from "../../interfaces/admin/IAdminUseCase.js";
+
+export class UpdateUserStatusUseCase implements IUpdateUserStatusUseCase {
   constructor(private readonly userRepo: IUserRepository) {}
 
-  async execute(id: string, dto: UpdateUserStatusDTO) {
+  async execute({ id, dto }: { id: string; dto: UpdateUserStatusDTO }): Promise<{ id: string; status: string }> {
     const user = await this.userRepo.findById(id);
     if (!user) throw new NotFoundError("User");
 

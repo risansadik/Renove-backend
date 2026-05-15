@@ -6,10 +6,12 @@ import { generateOtp, getOtpExpiry } from "../../../shared/utils/otp.js";
 import { ConflictError } from "../../../shared/utils/AppError.js";
 import { BCRYPT_ROUNDS, USER_STATUS } from "../../../shared/constants/index.js";
 
-export class RegisterUserUseCase {
+import type { IRegisterUserUseCase, IRegisterResponse } from "../../interfaces/auth/IAuthUseCase.js";
+
+export class RegisterUserUseCase implements IRegisterUserUseCase {
   constructor(private readonly userRepo: IUserRepository) {}
 
-  async execute(dto: RegisterUserDTO): Promise<{ email: string }> {
+  async execute(dto: RegisterUserDTO): Promise<IRegisterResponse> {
     const existing = await this.userRepo.findByEmail(dto.email);
     if (existing && existing.isVerified) throw new ConflictError("Email already registered");
 
@@ -40,6 +42,6 @@ export class RegisterUserUseCase {
     }
 
     await sendOtpEmail(dto.email, otp, dto.name);
-    return { email: dto.email };
+    return { message: "Registration successful. Please verify your email.", email: dto.email };
   }
 }

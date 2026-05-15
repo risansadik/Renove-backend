@@ -1,6 +1,6 @@
 import pkg from 'rrule';
-const { RRule, rrulestr } = pkg;
-import { addMinutes, startOfDay, endOfDay, isAfter, format } from "date-fns";
+const { rrulestr } = pkg;
+import { startOfDay, isAfter, format } from "date-fns";
 
 export class SlotGenerator {
   /**

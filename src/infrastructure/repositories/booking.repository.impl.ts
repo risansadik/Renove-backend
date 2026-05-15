@@ -1,20 +1,20 @@
 import type { IBookingRepository } from "../../domain/repositories/booking.repository.js";
 import type { BookingEntity } from "../../domain/entities/Booking.entity.js";
-import { BookingModel } from "../databases/schema/booking.schema.js";
+import { BookingModel, type IBookingRaw } from "../databases/schema/booking.schema.js";
 
 export class BookingRepositoryImpl implements IBookingRepository {
-  private toEntity(doc: any): BookingEntity {
+  private toEntity(doc: IBookingRaw): BookingEntity {
     return {
       id: doc._id.toString(),
-      userId: typeof doc.userId === 'object' && doc.userId._id 
-        ? { id: doc.userId._id.toString(), name: doc.userId.name, email: doc.userId.email }
-        : doc.userId.toString(),
-      therapistId: typeof doc.therapistId === 'object' && doc.therapistId._id
-        ? { id: doc.therapistId._id.toString(), name: doc.therapistId.name }
-        : doc.therapistId.toString(),
-      slotId: typeof doc.slotId === 'object' && doc.slotId._id
-        ? { id: doc.slotId._id.toString(), startTime: doc.slotId.startTime, endTime: doc.slotId.endTime }
-        : (doc.slotId ? doc.slotId.toString() : ""),
+      userId: typeof doc.userId === 'object' && doc.userId && "name" in doc.userId
+        ? { id: doc.userId._id.toString(), name: (doc.userId as { name: string }).name, email: (doc.userId as { email: string }).email }
+        : (doc.userId as { toString: () => string }).toString(),
+      therapistId: typeof doc.therapistId === 'object' && doc.therapistId && "name" in doc.therapistId
+        ? { id: doc.therapistId._id.toString(), name: (doc.therapistId as { name: string }).name }
+        : (doc.therapistId as { toString: () => string }).toString(),
+      slotId: typeof doc.slotId === 'object' && doc.slotId && "startTime" in doc.slotId
+        ? { id: doc.slotId._id.toString(), startTime: (doc.slotId as { startTime: Date }).startTime, endTime: (doc.slotId as { endTime: Date }).endTime }
+        : (doc.slotId ? (doc.slotId as { toString: () => string }).toString() : ""),
       type: doc.type,
       status: doc.status,
       note: doc.note,

@@ -3,8 +3,9 @@ import type { VerifyTherapistOtpDTO } from "../../dto/auth/therapist.dto.js";
 import { AppError, NotFoundError } from "../../../shared/utils/AppError.js";
 import { isOtpExpired } from "../../../shared/utils/otp.js";
 import { HttpStatus } from "../../../shared/constants/index.js";
+import type { IVerifyOtpUseCase } from "../../interfaces/auth/IAuthUseCase.js";
 
-export class VerifyTherapistOtpUseCase {
+export class VerifyTherapistOtpUseCase implements IVerifyOtpUseCase {
   constructor(private readonly therapistRepo: ITherapistRepository) {}
 
   async execute(dto: VerifyTherapistOtpDTO): Promise<void> {

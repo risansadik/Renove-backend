@@ -14,6 +14,8 @@ import { setAuthCookies, clearAuthCookies } from "../../shared/utils/jwt.js";
 import { HttpStatus } from "../../shared/constants/index.js";
 
 
+import { UserMapper } from "../../application/mappers/user.mapper.js";
+
 const userRepo = new UserRepository();
 const therapistRepo = new TherapistRepository();
 
@@ -23,8 +25,10 @@ const resendOtpUC = new ResendOtpUseCase(userRepo, therapistRepo);
 const loginUC = new LoginUserUseCase(userRepo);
 const googleAuthUC = new GoogleAuthUseCase(userRepo);
 const forgotPasswordUC = new ForgotPasswordUseCase(userRepo);
-const resetPasswordUC = new ResetPasswordUseCase(userRepo);
+const resetPasswordUC = new ResetPasswordUseCase(userRepo as any);
 const verifyResetOtpUC = new VerifyResetOtpUseCase(userRepo);
+
+import { UserEntity } from "../../domain/entities/User.entity.js";
 
 export const userAuthController = {
   register: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -43,7 +47,7 @@ export const userAuthController = {
 
   resendOtp: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      await resendOtpUC.execute(req.body, "user");
+      await resendOtpUC.execute({ dto: req.body, type: "user" });
       res.json(ResponseModel.success("OTP resent successfully", null));
     } catch (err) { next(err); }
   },
@@ -52,35 +56,35 @@ export const userAuthController = {
     try {
       const { tokens, user } = await loginUC.execute(req.body);
       setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
-      res.json(ResponseModel.success("Login successful", { user }));
+      res.json(ResponseModel.success("Login successful", { user: UserMapper.toPublicDTO(user as UserEntity) }));
     } catch (err) { next(err); }
   },
 
   googleAuth: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { tokens, user } = await googleAuthUC.execute(req.body.idToken);
+      const { tokens, user } = await googleAuthUC.execute({ idToken: req.body.idToken });
       setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
-      res.json(ResponseModel.success("Google authentication successful", { user }));
+      res.json(ResponseModel.success("Google authentication successful", { user: UserMapper.toPublicDTO(user as UserEntity) }));
     } catch (err) { next(err); }
   },
 
   forgotPassword: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      await forgotPasswordUC.execute(req.body);
+      await forgotPasswordUC.execute({ dto: req.body, type: "user" });
       res.json(ResponseModel.success("Password reset OTP sent to your email", null));
     } catch (err) { next(err); }
   },
 
   resetPassword: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      await resetPasswordUC.execute(req.body);
+      await resetPasswordUC.execute({ dto: req.body, type: "user" });
       res.json(ResponseModel.success("Password reset successful", null));
     } catch (err) { next(err); }
   },
 
   verifyResetOtp: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      await verifyResetOtpUC.execute(req.body);
+      await verifyResetOtpUC.execute({ dto: req.body, type: "user" });
       res.json(ResponseModel.success("OTP verified successfully", null));
     } catch (err) { next(err); }
   },

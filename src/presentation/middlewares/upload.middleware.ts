@@ -1,9 +1,9 @@
 import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
-import { AppError } from "../../shared/utils/AppError.js";
-import { HttpStatus } from "../../shared/constants/index.js";
 import dotenv from "dotenv";
+import type { Request } from "express";
+import type { FileFilterCallback } from "multer";
 
 dotenv.config();
 
@@ -17,7 +17,7 @@ cloudinary.config({
 // Configure Cloudinary Storage with extra safety
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params: async (req, file) => {
+  params: async (_req, file) => {
     const isImage = file.mimetype.startsWith('image/');
     const folder = file.fieldname === 'profileImage' ? 'renove/profiles' : 'renove/certifications';
     
@@ -32,7 +32,7 @@ const storage = new CloudinaryStorage({
   },
 });
 
-const fileFilter = (_req: any, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
+const fileFilter = (_req: Request, file: Express.Multer.File, cb: FileFilterCallback) => {
   const allowedTypes = [
     "application/pdf",
     "image/jpeg",
@@ -43,7 +43,7 @@ const fileFilter = (_req: any, file: Express.Multer.File, cb: multer.FileFilterC
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new AppError("Invalid file type. Only PDF and images are allowed.", HttpStatus.BAD_REQUEST) as any, false);
+    cb(new Error("Invalid file type. Only PDF and images are allowed."));
   }
 };
 
