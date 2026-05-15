@@ -26,6 +26,7 @@ router.post("/forgot-password", validate(ForgotPasswordSchema), userAuthControll
 router.post("/verify-reset-otp", validate(VerifyOtpSchema), userAuthController.verifyResetOtp);
 router.post("/reset-password", validate(ResetPasswordSchema), userAuthController.resetPassword);
 router.post("/logout", userAuthController.logout);
+router.post("/refresh-token", userAuthController.refreshToken);
 
 // ── Dashboard (protected) ────────────────────────────────
 router.get("/dashboard", authenticate, authorize(ROLES.USER), userDashboardController.getDashboard);
