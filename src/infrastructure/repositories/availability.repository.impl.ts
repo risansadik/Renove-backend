@@ -1,9 +1,9 @@
-import { AvailabilityModel, SlotModel } from "../databases/schema/availability.schema.js";
+import { AvailabilityModel, SlotModel, type IAvailabilityDocument, type ISlotDocument } from "../databases/schema/availability.schema.js";
 import type { IAvailabilityRepository, ISlotRepository } from "../../domain/repositories/availability.repository.js";
 import type { TherapistAvailabilityEntity, TherapistSlotEntity, SlotStatus } from "../../domain/entities/TherapistAvailability.entity.js";
 
 export class AvailabilityRepository implements IAvailabilityRepository {
-  private toAvailabilityEntity(doc: any): TherapistAvailabilityEntity {
+  private toAvailabilityEntity(doc: IAvailabilityDocument): TherapistAvailabilityEntity {
     const obj = doc.toObject ? doc.toObject() : doc;
     return {
       id: obj._id.toString(),
@@ -47,7 +47,7 @@ export class AvailabilityRepository implements IAvailabilityRepository {
 }
 
 export class SlotRepository implements ISlotRepository {
-  private toSlotEntity(doc: any): TherapistSlotEntity {
+  private toSlotEntity(doc: ISlotDocument): TherapistSlotEntity {
     const obj = doc.toObject ? doc.toObject() : doc;
     return {
       id: obj._id.toString(),

@@ -6,10 +6,12 @@ import { NotFoundError, UnauthorizedError } from "../../../shared/utils/AppError
 import { AdminMapper } from "../../mappers/admin.mapper.js";
 import { ROLES } from "../../../shared/constants/index.js";
 
-export class AdminLoginUseCase {
+import type { IAdminLoginUseCase, ILoginResponse } from "../../interfaces/auth/IAuthUseCase.js";
+
+export class AdminLoginUseCase implements IAdminLoginUseCase {
   constructor(private readonly adminRepo: IAdminRepository) {}
 
-  async execute(dto: AdminLoginDTO) {
+  async execute(dto: AdminLoginDTO): Promise<ILoginResponse> {
     const admin = await this.adminRepo.findByEmail(dto.email);
     if (!admin) throw new NotFoundError("Admin");
 
@@ -17,6 +19,6 @@ export class AdminLoginUseCase {
     if (!isMatch) throw new UnauthorizedError("Invalid credentials");
 
     const tokens = generateTokens({ id: admin.id, email: admin.email, role: ROLES.ADMIN });
-    return { tokens, admin: AdminMapper.toPublicDTO(admin) };
+    return { tokens, user: AdminMapper.toPublicDTO(admin) };
   }
 }

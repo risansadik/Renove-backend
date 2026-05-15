@@ -12,6 +12,8 @@ export interface IAvailabilityDocument extends Document {
   startDate: Date;
   endDate?: Date;
   isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const AvailabilitySchema = new Schema<IAvailabilityDocument>(
@@ -36,6 +38,8 @@ export interface ISlotDocument extends Document {
   startTime: Date;
   endTime: Date;
   status: SlotStatus;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const SlotSchema = new Schema<ISlotDocument>(

@@ -1,6 +1,7 @@
 import type { IBookingRepository } from "../../../domain/repositories/booking.repository.js";
 import type { ISlotRepository } from "../../../domain/repositories/availability.repository.js";
 import type { BookingEntity } from "../../../domain/entities/Booking.entity.js";
+import type { ICreateBookingUseCase } from "../../interfaces/booking/IBookingUseCase.js";
 
 export interface CreateBookingInput {
   therapistId: string;
@@ -9,13 +10,13 @@ export interface CreateBookingInput {
   note?: string;
 }
 
-export class CreateBookingUseCase {
+export class CreateBookingUseCase implements ICreateBookingUseCase {
   constructor(
     private bookingRepository: IBookingRepository,
     private slotRepository: ISlotRepository
   ) {}
 
-  async execute(userId: string, data: CreateBookingInput): Promise<BookingEntity> {
+  async execute({ userId, data }: { userId: string; data: CreateBookingInput }): Promise<BookingEntity> {
     // 1. Check if slot exists and is AVAILABLE
     const slot = await this.slotRepository.findById(data.slotId);
     

@@ -1,8 +1,28 @@
 import type { TherapistEntity } from "../../domain/entities/Therapist.entity.js";
 import type { ITherapistRaw } from "../../infrastructure/databases/schema/therapist.schema.js";
 
-export class TherapistMapper {
+export interface PublicTherapistDTO {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  gender: string;
+  qualification: string;
+  licenseNumber?: string;
+  countryCode?: string;
+  specialization: string[];
+  experience: number;
+  consultationFee: number;
+  bio: string;
+  certifications?: string[];
+  certificationFiles?: string[];
+  profileImage?: string;
+  status: string;
+  isVerified: boolean;
+  createdAt: Date;
+}
 
+export class TherapistMapper {
   static toEntity(doc: ITherapistRaw): TherapistEntity {
     return {
       id: doc._id.toString(),
@@ -30,7 +50,7 @@ export class TherapistMapper {
     };
   }
 
-  static toPublicDTO(entity: TherapistEntity) {
+  static toPublicDTO(entity: TherapistEntity): PublicTherapistDTO {
     return {
       id: entity.id,
       name: entity.name,
@@ -51,5 +71,9 @@ export class TherapistMapper {
       isVerified: entity.isVerified,
       createdAt: entity.createdAt,
     };
+  }
+
+  static toPublicDTOList(entities: TherapistEntity[]): PublicTherapistDTO[] {
+    return entities.map(e => this.toPublicDTO(e));
   }
 }

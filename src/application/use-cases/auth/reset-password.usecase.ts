@@ -3,14 +3,18 @@ import type { ResetPasswordDTO } from "../../dto/auth/user.dto.js";
 import { AppError, NotFoundError } from "../../../shared/utils/AppError.js";
 import { BCRYPT_ROUNDS, HttpStatus } from "../../../shared/constants/index.js";
 import { isOtpExpired } from "../../../shared/utils/otp.js";
+import type { UserEntity } from "../../../domain/entities/User.entity.js";
+import type { TherapistEntity } from "../../../domain/entities/Therapist.entity.js";
 
-export class ResetPasswordUseCase {
+import type { IResetPasswordUseCase } from "../../interfaces/auth/IAuthUseCase.js";
+
+export class ResetPasswordUseCase<T extends UserEntity | TherapistEntity> implements IResetPasswordUseCase {
   constructor(private readonly repo: {
-    findByEmail: (email: string) => Promise<any>;
-    update: (id: string, data: any) => Promise<any>;
+    findByEmail: (email: string) => Promise<T | null>;
+    update: (id: string, data: Partial<T>) => Promise<T>;
   }) {}
 
-  async execute(dto: ResetPasswordDTO, type: "user" | "therapist" = "user"): Promise<void> {
+  async execute({ dto, type = "user" }: { dto: ResetPasswordDTO; type?: "user" | "therapist" }): Promise<void> {
     const account = await this.repo.findByEmail(dto.email);
     if (!account) throw new NotFoundError(type === "user" ? "User" : "Therapist");
     
@@ -23,6 +27,6 @@ export class ResetPasswordUseCase {
       password: hashedPassword,
       otp: undefined,
       otpExpiry: undefined,
-    });
+    } as Partial<T>);
   }
 }

@@ -2,13 +2,17 @@ import type { VerifyOtpDTO } from "../../dto/auth/user.dto.js";
 import { AppError, NotFoundError } from "../../../shared/utils/AppError.js";
 import { HttpStatus } from "../../../shared/constants/index.js";
 import { isOtpExpired } from "../../../shared/utils/otp.js";
+import type { UserEntity } from "../../../domain/entities/User.entity.js";
+import type { TherapistEntity } from "../../../domain/entities/Therapist.entity.js";
 
-export class VerifyResetOtpUseCase {
+import type { IVerifyResetOtpUseCase } from "../../interfaces/auth/IAuthUseCase.js";
+
+export class VerifyResetOtpUseCase<T extends UserEntity | TherapistEntity> implements IVerifyResetOtpUseCase {
   constructor(private readonly repo: {
-    findByEmail: (email: string) => Promise<any>;
+    findByEmail: (email: string) => Promise<T | null>;
   }) {}
 
-  async execute(dto: VerifyOtpDTO, type: "user" | "therapist" = "user"): Promise<void> {
+  async execute({ dto, type = "user" }: { dto: VerifyOtpDTO; type?: "user" | "therapist" }): Promise<void> {
     const account = await this.repo.findByEmail(dto.email);
     if (!account) throw new NotFoundError(type === "user" ? "User" : "Therapist");
     

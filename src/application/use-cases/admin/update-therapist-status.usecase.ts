@@ -7,10 +7,12 @@ import {
 import { THERAPIST_STATUS } from "../../../shared/constants/index.js";
 import { NotFoundError } from "../../../shared/utils/AppError.js";
 
-export class UpdateTherapistStatusUseCase {
+import type { IUpdateTherapistStatusUseCase } from "../../interfaces/admin/IAdminUseCase.js";
+
+export class UpdateTherapistStatusUseCase implements IUpdateTherapistStatusUseCase {
   constructor(private readonly therapistRepo: ITherapistRepository) {}
 
-  async execute(id: string, dto: UpdateTherapistStatusDTO) {
+  async execute({ id, dto }: { id: string; dto: UpdateTherapistStatusDTO }): Promise<{ id: string; status: string }> {
     const therapist = await this.therapistRepo.findById(id);
     if (!therapist) throw new NotFoundError("Therapist");
 

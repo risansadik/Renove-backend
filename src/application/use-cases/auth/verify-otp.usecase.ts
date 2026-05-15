@@ -4,7 +4,9 @@ import { AppError, NotFoundError } from "../../../shared/utils/AppError.js";
 import { isOtpExpired } from "../../../shared/utils/otp.js";
 import { HttpStatus } from "../../../shared/constants/index.js";
 
-export class VerifyOtpUseCase {
+import type { IVerifyOtpUseCase } from "../../interfaces/auth/IAuthUseCase.js";
+
+export class VerifyOtpUseCase implements IVerifyOtpUseCase {
   constructor(private readonly userRepo: IUserRepository) {}
 
   async execute(dto: VerifyOtpDTO): Promise<void> {

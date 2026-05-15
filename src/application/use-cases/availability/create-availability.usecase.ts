@@ -2,6 +2,8 @@ import type { IAvailabilityRepository, ISlotRepository } from "../../../domain/r
 import { SlotGenerator } from "../../../shared/utils/slot-generator.js";
 import { addDays, startOfDay } from "date-fns";
 
+import type { ICreateAvailabilityUseCase } from "../../interfaces/availability/IAvailabilityUseCase.js";
+
 export interface CreateAvailabilityDTO {
   therapistId: string;
   title: string;
@@ -13,7 +15,7 @@ export interface CreateAvailabilityDTO {
   endDate?: Date;
 }
 
-export class CreateAvailabilityUseCase {
+export class CreateAvailabilityUseCase implements ICreateAvailabilityUseCase {
   constructor(
     private availabilityRepo: IAvailabilityRepository,
     private slotRepo: ISlotRepository

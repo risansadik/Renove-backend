@@ -6,10 +6,12 @@ import { generateOtp, getOtpExpiry } from "../../../shared/utils/otp.js";
 import { ConflictError } from "../../../shared/utils/AppError.js";
 import { BCRYPT_ROUNDS, THERAPIST_STATUS } from "../../../shared/constants/index.js";
 
-export class RegisterTherapistUseCase {
+import type { IRegisterTherapistUseCase, IRegisterResponse } from "../../interfaces/auth/IAuthUseCase.js";
+
+export class RegisterTherapistUseCase implements IRegisterTherapistUseCase {
   constructor(private readonly therapistRepo: ITherapistRepository) {}
 
-  async execute(dto: RegisterTherapistDTO): Promise<{ email: string }> {
+  async execute(dto: RegisterTherapistDTO): Promise<IRegisterResponse> {
     const existing = await this.therapistRepo.findByEmail(dto.email);
     console.log("REGISTRATION DEBUG:", { email: dto.email, existingFound: !!existing, isVerified: existing?.isVerified });
     if (existing && existing.isVerified) throw new ConflictError("Email already registered");
@@ -40,6 +42,6 @@ export class RegisterTherapistUseCase {
     }
 
     await sendOtpEmail(dto.email, otp, dto.name);
-    return { email: dto.email };
+    return { message: "Registration successful. Please verify your email.", email: dto.email };
   }
 }

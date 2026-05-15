@@ -5,8 +5,11 @@ export interface ITherapistDocument extends Document {
   name: string;
   email: string;
   password: string;
+  phone?: string;
   gender: "male" | "female" | "other";
   qualification: string;
+  licenseNumber?: string;
+  countryCode?: string;
   specialization: string[];
   experience: number;
   consultationFee: number;

@@ -12,6 +12,8 @@ import { ResponseModel } from "../../shared/utils/response-model.js";
 import { setAuthCookies, clearAuthCookies } from "../../shared/utils/jwt.js";
 import { HttpStatus } from "../../shared/constants/index.js";
 
+import { TherapistMapper } from "../../application/mappers/therapist.mapper.js";
+
 const therapistRepo = new TherapistRepository();
 const userRepo = new UserRepository();
 
@@ -21,7 +23,9 @@ const resendOtpUC = new ResendOtpUseCase(userRepo, therapistRepo);
 const loginUC = new LoginTherapistUseCase(therapistRepo);
 const forgotPasswordUC = new ForgotPasswordUseCase(therapistRepo);
 const verifyResetOtpUC = new VerifyResetOtpUseCase(therapistRepo);
-const resetPasswordUC = new ResetPasswordUseCase(therapistRepo);
+const resetPasswordUC = new ResetPasswordUseCase(therapistRepo as any);
+
+import { TherapistEntity } from "../../domain/entities/Therapist.entity.js";
 
 export const therapistAuthController = {
   register: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -55,16 +59,16 @@ export const therapistAuthController = {
 
   resendOtp: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      await resendOtpUC.execute(req.body, "therapist");
+      await resendOtpUC.execute({ dto: req.body, type: "therapist" });
       res.json(ResponseModel.success("OTP resent successfully", null));
     } catch (err) { next(err); }
   },
 
   login: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { tokens, therapist } = await loginUC.execute(req.body);
+      const { tokens, user } = await loginUC.execute(req.body);
       setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
-      res.json(ResponseModel.success("Login successful", { therapist }));
+      res.json(ResponseModel.success("Login successful", { therapist: TherapistMapper.toPublicDTO(user as TherapistEntity) }));
     } catch (err) { next(err); }
   },
 
@@ -75,21 +79,21 @@ export const therapistAuthController = {
   
   forgotPassword: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      await forgotPasswordUC.execute(req.body, "therapist");
+      await forgotPasswordUC.execute({ dto: req.body, type: "therapist" });
       res.json(ResponseModel.success("Reset OTP sent to your email", null));
     } catch (err) { next(err); }
   },
 
   verifyResetOtp: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      await verifyResetOtpUC.execute(req.body, "therapist");
+      await verifyResetOtpUC.execute({ dto: req.body, type: "therapist" });
       res.json(ResponseModel.success("OTP verified", null));
     } catch (err) { next(err); }
   },
 
   resetPassword: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      await resetPasswordUC.execute(req.body, "therapist");
+      await resetPasswordUC.execute({ dto: req.body, type: "therapist" });
       res.json(ResponseModel.success("Password reset successful", null));
     } catch (err) { next(err); }
   },

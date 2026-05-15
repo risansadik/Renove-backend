@@ -13,6 +13,13 @@ export interface IBookingDocument extends Document {
   updatedAt: Date;
 }
 
+export type IBookingRaw = Omit<IBookingDocument, keyof mongoose.Document | "userId" | "therapistId" | "slotId"> & { 
+  _id: Types.ObjectId;
+  userId: Types.ObjectId | { _id: Types.ObjectId; name: string; email: string };
+  therapistId: Types.ObjectId | { _id: Types.ObjectId; name: string };
+  slotId: Types.ObjectId | { _id: Types.ObjectId; startTime: Date; endTime: Date };
+};
+
 const BookingSchema = new Schema<IBookingDocument>(
   {
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },

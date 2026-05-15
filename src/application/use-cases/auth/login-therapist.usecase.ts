@@ -3,13 +3,14 @@ import type { ITherapistRepository } from "../../../domain/repositories/therapis
 import type { LoginTherapistDTO } from "../../dto/auth/therapist.dto.js";
 import { generateTokens } from "../../../shared/utils/jwt.js";
 import { AppError, NotFoundError, UnauthorizedError } from "../../../shared/utils/AppError.js";
-import { TherapistMapper } from "../../mappers/therapist.mapper.js";
 import { HttpStatus, ROLES, THERAPIST_STATUS } from "../../../shared/constants/index.js";
 
-export class LoginTherapistUseCase {
+import type { ILoginTherapistUseCase, ILoginResponse } from "../../interfaces/auth/IAuthUseCase.js";
+
+export class LoginTherapistUseCase implements ILoginTherapistUseCase {
   constructor(private readonly therapistRepo: ITherapistRepository) {}
 
-  async execute(dto: LoginTherapistDTO) {
+  async execute(dto: LoginTherapistDTO): Promise<ILoginResponse> {
     const therapist = await this.therapistRepo.findByEmail(dto.email);
     if (!therapist) throw new NotFoundError("Therapist");
     if (!therapist.isVerified) throw new AppError("Please verify your email first", HttpStatus.FORBIDDEN);
@@ -20,6 +21,6 @@ export class LoginTherapistUseCase {
     if (!isMatch) throw new UnauthorizedError("Invalid credentials");
 
     const tokens = generateTokens({ id: therapist.id, email: therapist.email, role: ROLES.THERAPIST });
-    return { tokens, therapist: TherapistMapper.toPublicDTO(therapist) };
+    return { tokens, user: therapist };
   }
 }
