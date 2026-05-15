@@ -10,8 +10,9 @@ import { VerifyResetOtpUseCase } from "../../application/use-cases/auth/verify-r
 import { UserRepository } from "../../infrastructure/repositories/user.repository.impl.js";
 import { TherapistRepository } from "../../infrastructure/repositories/therapist.repository.impl.js";
 import { ResponseModel } from "../../shared/utils/response-model.js";
-import { setAuthCookies, clearAuthCookies } from "../../shared/utils/jwt.js";
+import { setAuthCookies, clearAuthCookies, verifyRefreshToken } from "../../shared/utils/jwt.js";
 import { HttpStatus } from "../../shared/constants/index.js";
+import { RefreshTokenUseCase } from "../../application/use-cases/auth/refresh-token.usecase.js";
 
 
 import { UserMapper } from "../../application/mappers/user.mapper.js";
@@ -27,6 +28,7 @@ const googleAuthUC = new GoogleAuthUseCase(userRepo);
 const forgotPasswordUC = new ForgotPasswordUseCase(userRepo);
 const resetPasswordUC = new ResetPasswordUseCase(userRepo);
 const verifyResetOtpUC = new VerifyResetOtpUseCase(userRepo);
+const refreshTokenUC = new RefreshTokenUseCase(userRepo, therapistRepo);
 
 import { UserEntity } from "../../domain/entities/User.entity.js";
 
@@ -92,5 +94,14 @@ export const userAuthController = {
   logout: (_req: Request, res: Response): void => {
     clearAuthCookies(res);
     res.json(ResponseModel.success("Logged out successfully", null));
+  },
+
+  refreshToken: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const refreshToken = req.cookies?.refreshToken;
+      const tokens = await refreshTokenUC.execute(refreshToken);
+      setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
+      res.json(ResponseModel.success("Token refreshed successfully", null));
+    } catch (err) { next(err); }
   },
 };
