@@ -1,4 +1,4 @@
-import { HttpStatus } from "../constants/index";
+import { HttpStatus } from "../constants/index.js";
 
 export interface ApiResponse<T = null>{
     success : boolean;
@@ -8,11 +8,11 @@ export interface ApiResponse<T = null>{
 }
 
 export class ResponseModel {
-  static success<T>(message: string, data: T, statusCode = HttpStatus.OK): ApiResponse<T> {
+  static success<T>(message: string, data: T, statusCode: number = HttpStatus.OK): ApiResponse<T> {
     return { success: true, message, data, statusCode };
   }
  
-  static error(message: string, statusCode = HttpStatus.BAD_REQUEST): ApiResponse<null> {
+  static error(message: string, statusCode: number = HttpStatus.BAD_REQUEST): ApiResponse<null> {
     return { success: false, message, data: null, statusCode };
   }
  

@@ -1,8 +1,8 @@
-import type { ITherapistRepository } from "../../domain/repositories/therapist.repository";
-import type { TherapistEntity } from "../../domain/entities/Therapist.entity";
-import type { TherapistStatus } from "../../shared/constants/index";
-import { TherapistModel } from "../databases/schema/therapist.schema";
-import { TherapistMapper } from "../../application/mappers/therapist.mapper";
+import type { ITherapistRepository } from "../../domain/repositories/therapist.repository.js";
+import type { TherapistEntity } from "../../domain/entities/Therapist.entity.js";
+import type { TherapistStatus } from "../../shared/constants/index.js";
+import { TherapistModel } from "../databases/schema/therapist.schema.js";
+import { TherapistMapper } from "../../application/mappers/therapist.mapper.js";
 
 export class TherapistRepository implements ITherapistRepository {
   async findById(id: string): Promise<TherapistEntity | null> {
@@ -49,6 +49,13 @@ export class TherapistRepository implements ITherapistRepository {
   }
 
   async verifyTherapist(email: string): Promise<void> {
-    await TherapistModel.updateOne({ email }, { isVerified: true, otp: null, otpExpiry: null });
+    await TherapistModel.updateOne({ email },{$set : {isVerified : true},$unset : {otp : "",otpExpiry : ""}});
+  }
+
+  async resetPassword(email: string, hashedPassword: string): Promise<void> {
+    await TherapistModel.updateOne(
+      { email },
+      { $set: { password: hashedPassword }, $unset: { otp: "", otpExpiry: "" } }
+    );
   }
 }

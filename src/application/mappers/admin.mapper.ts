@@ -1,5 +1,5 @@
-import type { AdminEntity } from "../../domain/entities/Admin.entity";
-import type { IAdminRaw } from "../../infrastructure/databases/schema/admin.schema";
+import type { AdminEntity } from "../../domain/entities/Admin.entity.js";
+import type { IAdminRaw } from "../../infrastructure/databases/schema/admin.schema.js";
 
 export class AdminMapper {
 
