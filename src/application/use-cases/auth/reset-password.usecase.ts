@@ -8,14 +8,16 @@ import type { TherapistEntity } from "../../../domain/entities/Therapist.entity.
 
 import type { IResetPasswordUseCase } from "../../interfaces/auth/IAuthUseCase.js";
 
+interface IPasswordResetRepository<T> {
+  findByEmail: (email: string) => Promise<T | null>;
+  update: (id: string, data: Partial<T>) => Promise<T | null>;
+}
+
 export class ResetPasswordUseCase<T extends UserEntity | TherapistEntity> implements IResetPasswordUseCase {
-  constructor(private readonly repo: {
-    findByEmail: (email: string) => Promise<T | null>;
-    update: (id: string, data: Partial<T>) => Promise<T>;
-  }) {}
+  constructor(private readonly _repo: IPasswordResetRepository<T>) {}
 
   async execute({ dto, type = "user" }: { dto: ResetPasswordDTO; type?: "user" | "therapist" }): Promise<void> {
-    const account = await this.repo.findByEmail(dto.email);
+    const account = await this._repo.findByEmail(dto.email);
     if (!account) throw new NotFoundError(type === "user" ? "User" : "Therapist");
     
     if (!account.otp || !account.otpExpiry) throw new AppError("No reset request found");
@@ -23,7 +25,7 @@ export class ResetPasswordUseCase<T extends UserEntity | TherapistEntity> implem
     if (account.otp !== dto.otp) throw new AppError("Invalid OTP");
 
     const hashedPassword = await bcrypt.hash(dto.newPassword, BCRYPT_ROUNDS);
-    await this.repo.update(account.id, {
+    await this._repo.update(account.id, {
       password: hashedPassword,
       otp: undefined,
       otpExpiry: undefined,

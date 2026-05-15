@@ -19,20 +19,18 @@ export class CreateAvailabilityUseCase implements ICreateAvailabilityUseCase {
   constructor(
     private availabilityRepo: IAvailabilityRepository,
     private slotRepo: ISlotRepository
-  ) {}
+  ) { }
 
   async execute(data: CreateAvailabilityDTO) {
-    // 1. Create the availability rule
     const availability = await this.availabilityRepo.create({
       ...data,
       timezone: "UTC",
       isActive: true
     });
 
-    // 2. Generate slots for the next 30 days
     const genStartDate = startOfDay(new Date());
     const genEndDate = addDays(genStartDate, 30);
-    
+
     const slotsToCreate = SlotGenerator.generateSlots(
       data.recurrenceRule,
       genStartDate,

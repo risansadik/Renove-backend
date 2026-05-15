@@ -3,22 +3,22 @@ import type { BookingEntity } from "../../../domain/entities/Booking.entity.js";
 import type { IGetUserBookingsUseCase, IGetTherapistBookingsUseCase, IUpdateBookingStatusUseCase } from "../../interfaces/booking/IBookingUseCase.js";
 
 export class GetUserBookingsUseCase implements IGetUserBookingsUseCase {
-  constructor(private bookingRepository: IBookingRepository) {}
+  constructor(private _bookingRepository: IBookingRepository) {}
   async execute(userId: string): Promise<BookingEntity[]> {
-    return await this.bookingRepository.findByUserId(userId);
+    return await this._bookingRepository.findByUserId(userId);
   }
 }
 
 export class GetTherapistBookingsUseCase implements IGetTherapistBookingsUseCase {
-  constructor(private bookingRepository: IBookingRepository) {}
+  constructor(private _bookingRepository: IBookingRepository) {}
   async execute(therapistId: string): Promise<BookingEntity[]> {
-    return await this.bookingRepository.findByTherapistId(therapistId);
+    return await this._bookingRepository.findByTherapistId(therapistId);
   }
 }
 
 export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase {
-  constructor(private bookingRepository: IBookingRepository) {}
+  constructor(private _bookingRepository: IBookingRepository) {}
   async execute({ id, status, rejectionReason }: { id: string; status: BookingEntity["status"]; rejectionReason?: string }): Promise<BookingEntity | null> {
-    return await this.bookingRepository.updateStatus(id, status, rejectionReason);
+    return await this._bookingRepository.updateStatus(id, status, rejectionReason);
   }
 }

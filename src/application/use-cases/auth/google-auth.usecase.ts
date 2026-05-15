@@ -7,22 +7,22 @@ import { ROLES, USER_STATUS } from "../../../shared/constants/index.js";
 import type { ILoginUserUseCase, ILoginResponse } from "../../interfaces/auth/IAuthUseCase.js";
 
 export class GoogleAuthUseCase implements ILoginUserUseCase {
-  constructor(private readonly userRepo: IUserRepository) {}
+  constructor(private readonly _userRepo: IUserRepository) {}
 
   async execute({ idToken }: { idToken: string }): Promise<ILoginResponse> {
     const googleUser = await verifyGoogleToken(idToken);
 
-    let user = await this.userRepo.findByEmail(googleUser.email);
+    let user = await this._userRepo.findByEmail(googleUser.email);
 
     if (user) {
       if (user.status === USER_STATUS.BLOCKED) throw new AppError("Your account has been blocked", 403);
 
       if (!user.isGoogleAuth) {
-        user = await this.userRepo.update(user.id, { isGoogleAuth: true, isVerified: true });
-        user = (await this.userRepo.findByEmail(googleUser.email))!;
+        user = await this._userRepo.update(user.id, { isGoogleAuth: true, isVerified: true });
+        user = (await this._userRepo.findByEmail(googleUser.email))!;
       }
     } else {
-      user = await this.userRepo.create({
+      user = await this._userRepo.create({
         name: googleUser.name,
         email: googleUser.email,
         isGoogleAuth: true,

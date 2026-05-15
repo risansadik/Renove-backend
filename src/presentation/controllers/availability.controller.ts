@@ -6,17 +6,17 @@ import type { AuthenticatedRequest } from "../../shared/types/express.js";
 
 export class AvailabilityController {
   constructor(
-    private createAvailabilityUseCase: CreateAvailabilityUseCase,
-    private getTherapistRulesUseCase: GetTherapistRulesUseCase,
-    private getAvailableSlotsUseCase: GetAvailableSlotsUseCase,
-    private deleteAvailabilityRuleUseCase: DeleteAvailabilityRuleUseCase
+    private _createAvailabilityUseCase: CreateAvailabilityUseCase,
+    private _getTherapistRulesUseCase: GetTherapistRulesUseCase,
+    private _getAvailableSlotsUseCase: GetAvailableSlotsUseCase,
+    private _deleteAvailabilityRuleUseCase: DeleteAvailabilityRuleUseCase
   ) {}
 
   async createRule(req: Request, res: Response) {
     try {
       const therapistId = (req as AuthenticatedRequest).user.id;
       const data = { ...req.body, therapistId };
-      const availability = await this.createAvailabilityUseCase.execute(data);
+      const availability = await this._createAvailabilityUseCase.execute(data);
       res.status(201).json({ success: true, data: AvailabilityMapper.toRulePublicDTO(availability) });
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "An unexpected error occurred";
@@ -27,7 +27,7 @@ export class AvailabilityController {
   async getTherapistRules(req: Request, res: Response) {
     try {
       const therapistId = (req as AuthenticatedRequest).user.id;
-      const rules = await this.getTherapistRulesUseCase.execute(therapistId);
+      const rules = await this._getTherapistRulesUseCase.execute(therapistId);
       res.status(200).json({ success: true, data: AvailabilityMapper.toRulePublicDTOList(rules) });
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "An unexpected error occurred";
@@ -44,7 +44,7 @@ export class AvailabilityController {
         return;
       }
 
-      const slots = await this.getAvailableSlotsUseCase.execute({
+      const slots = await this._getAvailableSlotsUseCase.execute({
         therapistId: req.params.therapistId,
         startDate: new Date(start as string),
         endDate: new Date(end as string)
@@ -62,7 +62,7 @@ export class AvailabilityController {
       const { id } = req.params;
       const therapistId = (req as AuthenticatedRequest).user.id;
       
-      await this.deleteAvailabilityRuleUseCase.execute({ id, therapistId });
+      await this._deleteAvailabilityRuleUseCase.execute({ id, therapistId });
 
       res.status(200).json({ success: true, message: "Rule and available slots deleted" });
     } catch (error: unknown) {

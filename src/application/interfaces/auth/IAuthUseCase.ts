@@ -22,15 +22,15 @@ export interface IRegisterResponse {
   email?: string;
 }
 
-export interface ILoginUserUseCase extends IUseCase<LoginUserDTO | { idToken: string }, ILoginResponse> {}
-export interface IRegisterUserUseCase extends IUseCase<RegisterUserDTO, IRegisterResponse | { email: string }> {}
-export interface IVerifyOtpUseCase extends IUseCase<VerifyOtpDTO, void> {}
-export interface IResendOtpUseCase extends IUseCase<{ dto: ResendOtpDTO; type?: "user" | "therapist" }, void> {}
-export interface IForgotPasswordUseCase extends IUseCase<{ dto: ForgotPasswordDTO; type?: "user" | "therapist" }, void> {}
-export interface IResetPasswordUseCase extends IUseCase<{ dto: ResetPasswordDTO; type?: "user" | "therapist" }, void> {}
-export interface IVerifyResetOtpUseCase extends IUseCase<{ dto: VerifyOtpDTO; type?: "user" | "therapist" }, void> {}
+export type ILoginUserUseCase = IUseCase<LoginUserDTO | { idToken: string }, ILoginResponse>;
+export type IRegisterUserUseCase = IUseCase<RegisterUserDTO, IRegisterResponse | { email: string }>;
+export type IVerifyOtpUseCase = IUseCase<VerifyOtpDTO, void>;
+export type IResendOtpUseCase = IUseCase<{ dto: ResendOtpDTO; type?: "user" | "therapist" }, void>;
+export type IForgotPasswordUseCase = IUseCase<{ dto: ForgotPasswordDTO; type?: "user" | "therapist" }, void>;
+export type IResetPasswordUseCase = IUseCase<{ dto: ResetPasswordDTO; type?: "user" | "therapist" }, void>;
+export type IVerifyResetOtpUseCase = IUseCase<{ dto: VerifyOtpDTO; type?: "user" | "therapist" }, void>;
 
-export interface ILoginTherapistUseCase extends IUseCase<LoginTherapistDTO, ILoginResponse> {}
-export interface IRegisterTherapistUseCase extends IUseCase<RegisterTherapistDTO, IRegisterResponse> {}
+export type ILoginTherapistUseCase = IUseCase<LoginTherapistDTO, ILoginResponse>;
+export type IRegisterTherapistUseCase = IUseCase<RegisterTherapistDTO, IRegisterResponse>;
 
-export interface IAdminLoginUseCase extends IUseCase<AdminLoginDTO, ILoginResponse> {}
+export type IAdminLoginUseCase = IUseCase<AdminLoginDTO, ILoginResponse>;

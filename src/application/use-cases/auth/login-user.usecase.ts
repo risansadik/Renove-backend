@@ -8,10 +8,10 @@ import { ROLES, USER_STATUS } from "../../../shared/constants/index.js";
 import type { ILoginUserUseCase, ILoginResponse } from "../../interfaces/auth/IAuthUseCase.js";
 
 export class LoginUserUseCase implements ILoginUserUseCase {
-  constructor(private readonly userRepo: IUserRepository) {}
+  constructor(private readonly _userRepo: IUserRepository) {}
 
   async execute(dto: LoginUserDTO): Promise<ILoginResponse> {
-    const user = await this.userRepo.findByEmail(dto.email);
+    const user = await this._userRepo.findByEmail(dto.email);
     if (!user) throw new NotFoundError("User");
     if (!user.password) throw new AppError("Use Google sign-in for this account");
     if (!user.isVerified) throw new AppError("Please verify your email first", 403);

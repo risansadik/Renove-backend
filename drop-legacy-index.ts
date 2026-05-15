@@ -9,8 +9,12 @@ async function dropIndex() {
   try {
     await collection.dropIndex('therapistId_1_date_1_slot_1');
     console.log('Legacy index therapistId_1_date_1_slot_1 dropped successfully.');
-  } catch (error: any) {
-    console.log('Index might not exist or already dropped:', error.message);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.log('Index might not exist or already dropped:', error.message);
+    } else {
+      console.log('An unknown error occurred:', error);
+    }
   }
   
   await mongoose.disconnect();

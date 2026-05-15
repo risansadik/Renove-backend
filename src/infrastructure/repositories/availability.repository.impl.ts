@@ -3,7 +3,7 @@ import type { IAvailabilityRepository, ISlotRepository } from "../../domain/repo
 import type { TherapistAvailabilityEntity, TherapistSlotEntity, SlotStatus } from "../../domain/entities/TherapistAvailability.entity.js";
 
 export class AvailabilityRepository implements IAvailabilityRepository {
-  private toAvailabilityEntity(doc: IAvailabilityDocument): TherapistAvailabilityEntity {
+  private _toAvailabilityEntity(doc: IAvailabilityDocument): TherapistAvailabilityEntity {
     const obj = doc.toObject ? doc.toObject() : doc;
     return {
       id: obj._id.toString(),
@@ -22,12 +22,12 @@ export class AvailabilityRepository implements IAvailabilityRepository {
 
   async create(data: TherapistAvailabilityEntity): Promise<TherapistAvailabilityEntity> {
     const created = await AvailabilityModel.create(data);
-    return this.toAvailabilityEntity(created);
+    return this._toAvailabilityEntity(created);
   }
 
   async update(id: string, data: Partial<TherapistAvailabilityEntity>): Promise<TherapistAvailabilityEntity | null> {
     const updated = await AvailabilityModel.findByIdAndUpdate(id, data, { new: true });
-    return updated ? this.toAvailabilityEntity(updated) : null;
+    return updated ? this._toAvailabilityEntity(updated) : null;
   }
 
   async delete(id: string): Promise<boolean> {
@@ -37,17 +37,17 @@ export class AvailabilityRepository implements IAvailabilityRepository {
 
   async findById(id: string): Promise<TherapistAvailabilityEntity | null> {
     const found = await AvailabilityModel.findById(id);
-    return found ? this.toAvailabilityEntity(found) : null;
+    return found ? this._toAvailabilityEntity(found) : null;
   }
 
   async findByTherapistId(therapistId: string): Promise<TherapistAvailabilityEntity[]> {
     const list = await AvailabilityModel.find({ therapistId });
-    return list.map(item => this.toAvailabilityEntity(item));
+    return list.map(item => this._toAvailabilityEntity(item));
   }
 }
 
 export class SlotRepository implements ISlotRepository {
-  private toSlotEntity(doc: ISlotDocument): TherapistSlotEntity {
+  private _toSlotEntity(doc: ISlotDocument): TherapistSlotEntity {
     const obj = doc.toObject ? doc.toObject() : doc;
     return {
       id: obj._id.toString(),
@@ -67,12 +67,12 @@ export class SlotRepository implements ISlotRepository {
 
   async findById(id: string): Promise<TherapistSlotEntity | null> {
     const found = await SlotModel.findById(id);
-    return found ? this.toSlotEntity(found) : null;
+    return found ? this._toSlotEntity(found) : null;
   }
 
   async updateStatus(id: string, status: SlotStatus): Promise<TherapistSlotEntity | null> {
     const updated = await SlotModel.findByIdAndUpdate(id, { status }, { new: true });
-    return updated ? this.toSlotEntity(updated) : null;
+    return updated ? this._toSlotEntity(updated) : null;
   }
 
   async findAvailable(therapistId: string, startDate: Date, endDate: Date): Promise<TherapistSlotEntity[]> {
@@ -81,7 +81,7 @@ export class SlotRepository implements ISlotRepository {
       status: "AVAILABLE",
       startTime: { $gte: startDate, $lte: endDate }
     }).sort({ startTime: 1 });
-    return slots.map(s => this.toSlotEntity(s));
+    return slots.map(s => this._toSlotEntity(s));
   }
 
   async deleteByAvailabilityId(availabilityId: string): Promise<void> {
