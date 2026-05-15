@@ -7,16 +7,16 @@ import { HttpStatus } from "../../../shared/constants/index.js";
 import type { IVerifyOtpUseCase } from "../../interfaces/auth/IAuthUseCase.js";
 
 export class VerifyOtpUseCase implements IVerifyOtpUseCase {
-  constructor(private readonly userRepo: IUserRepository) {}
+  constructor(private readonly _userRepo: IUserRepository) {}
 
   async execute(dto: VerifyOtpDTO): Promise<void> {
-    const user = await this.userRepo.findByEmail(dto.email);
+    const user = await this._userRepo.findByEmail(dto.email);
     if (!user) throw new NotFoundError("User");
     if (user.isVerified) throw new AppError("Email already verified");
     if (!user.otp || !user.otpExpiry) throw new AppError("No OTP found. Request a new one.");
     if (isOtpExpired(user.otpExpiry)) throw new AppError("OTP has expired. Request a new one.", HttpStatus.GONE);
     if (user.otp !== dto.otp) throw new AppError("Invalid OTP", HttpStatus.BAD_REQUEST);
 
-    await this.userRepo.verifyUser(dto.email);
+    await this._userRepo.verifyUser(dto.email);
   }
 }

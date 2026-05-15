@@ -3,7 +3,7 @@ import type { BookingEntity } from "../../domain/entities/Booking.entity.js";
 import { BookingModel, type IBookingRaw } from "../databases/schema/booking.schema.js";
 
 export class BookingRepositoryImpl implements IBookingRepository {
-  private toEntity(doc: IBookingRaw): BookingEntity {
+  private _toEntity(doc: IBookingRaw): BookingEntity {
     return {
       id: doc._id.toString(),
       userId: typeof doc.userId === 'object' && doc.userId && "name" in doc.userId
@@ -26,7 +26,7 @@ export class BookingRepositoryImpl implements IBookingRepository {
 
   async create(booking: Omit<BookingEntity, "id" | "createdAt" | "updatedAt">): Promise<BookingEntity> {
     const doc = await BookingModel.create(booking);
-    return this.toEntity(doc);
+    return this._toEntity(doc);
   }
 
   async findById(id: string): Promise<BookingEntity | null> {
@@ -34,7 +34,7 @@ export class BookingRepositoryImpl implements IBookingRepository {
       .populate("userId", "name email")
       .populate("therapistId", "name")
       .populate("slotId");
-    return doc ? this.toEntity(doc) : null;
+    return doc ? this._toEntity(doc) : null;
   }
 
   async findByUserId(userId: string): Promise<BookingEntity[]> {
@@ -42,7 +42,7 @@ export class BookingRepositoryImpl implements IBookingRepository {
       .populate("therapistId", "name")
       .populate("slotId")
       .sort({ createdAt: -1 });
-    return docs.map(doc => this.toEntity(doc));
+    return docs.map(doc => this._toEntity(doc));
   }
 
   async findByTherapistId(therapistId: string): Promise<BookingEntity[]> {
@@ -50,7 +50,7 @@ export class BookingRepositoryImpl implements IBookingRepository {
       .populate("userId", "name email")
       .populate("slotId")
       .sort({ createdAt: -1 });
-    return docs.map(doc => this.toEntity(doc));
+    return docs.map(doc => this._toEntity(doc));
   }
 
   async updateStatus(id: string, status: BookingEntity["status"], rejectionReason?: string): Promise<BookingEntity | null> {
@@ -59,7 +59,7 @@ export class BookingRepositoryImpl implements IBookingRepository {
       { status, rejectionReason },
       { new: true }
     );
-    return doc ? this.toEntity(doc) : null;
+    return doc ? this._toEntity(doc) : null;
   }
 
   async checkAvailability(therapistId: string, date: Date, slot: string): Promise<boolean> {

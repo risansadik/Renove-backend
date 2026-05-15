@@ -10,13 +10,13 @@ import { NotFoundError } from "../../../shared/utils/AppError.js";
 import type { IUpdateTherapistStatusUseCase } from "../../interfaces/admin/IAdminUseCase.js";
 
 export class UpdateTherapistStatusUseCase implements IUpdateTherapistStatusUseCase {
-  constructor(private readonly therapistRepo: ITherapistRepository) {}
+  constructor(private readonly _therapistRepo: ITherapistRepository) {}
 
   async execute({ id, dto }: { id: string; dto: UpdateTherapistStatusDTO }): Promise<{ id: string; status: string }> {
-    const therapist = await this.therapistRepo.findById(id);
+    const therapist = await this._therapistRepo.findById(id);
     if (!therapist) throw new NotFoundError("Therapist");
 
-    await this.therapistRepo.updateStatus(id, dto.status);
+    await this._therapistRepo.updateStatus(id, dto.status);
 
     if (dto.status === THERAPIST_STATUS.APPROVED) {
       await sendTherapistApprovalEmail(therapist.email, therapist.name);

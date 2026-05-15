@@ -8,13 +8,13 @@ import type { TherapistEntity } from "../../../domain/entities/Therapist.entity.
 import type { IForgotPasswordUseCase } from "../../interfaces/auth/IAuthUseCase.js";
 
 export class ForgotPasswordUseCase<T extends UserEntity | TherapistEntity> implements IForgotPasswordUseCase {
-  constructor(private readonly repo: {
+  constructor(private readonly _repo: {
     findByEmail: (email: string) => Promise<T | null>;
     updateOtp: (email: string, otp: string, otpExpiry: Date) => Promise<void>;
   }) {}
 
   async execute({ dto, type = "user" }: { dto: ForgotPasswordDTO; type?: "user" | "therapist" }): Promise<void> {
-    const account = await this.repo.findByEmail(dto.email);
+    const account = await this._repo.findByEmail(dto.email);
     if (!account) throw new NotFoundError(type === "user" ? "User" : "Therapist");
     
     // Google auth check only for users
@@ -24,7 +24,7 @@ export class ForgotPasswordUseCase<T extends UserEntity | TherapistEntity> imple
 
     const otp = generateOtp();
     const otpExpiry = getOtpExpiry();
-    await this.repo.updateOtp(dto.email, otp, otpExpiry);
+    await this._repo.updateOtp(dto.email, otp, otpExpiry);
     await sendPasswordResetOtp(dto.email, otp);
   }
 }

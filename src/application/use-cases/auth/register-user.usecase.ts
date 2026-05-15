@@ -9,10 +9,10 @@ import { BCRYPT_ROUNDS, USER_STATUS } from "../../../shared/constants/index.js";
 import type { IRegisterUserUseCase, IRegisterResponse } from "../../interfaces/auth/IAuthUseCase.js";
 
 export class RegisterUserUseCase implements IRegisterUserUseCase {
-  constructor(private readonly userRepo: IUserRepository) {}
+  constructor(private readonly _userRepo: IUserRepository) {}
 
   async execute(dto: RegisterUserDTO): Promise<IRegisterResponse> {
-    const existing = await this.userRepo.findByEmail(dto.email);
+    const existing = await this._userRepo.findByEmail(dto.email);
     if (existing && existing.isVerified) throw new ConflictError("Email already registered");
 
     const hashedPassword = await bcrypt.hash(dto.password, BCRYPT_ROUNDS);
@@ -21,7 +21,7 @@ export class RegisterUserUseCase implements IRegisterUserUseCase {
 
     if (existing) {
       // Update existing unverified user
-      await this.userRepo.update(existing.id, {
+      await this._userRepo.update(existing.id, {
         name: dto.name,
         password: hashedPassword,
         otp,
@@ -29,7 +29,7 @@ export class RegisterUserUseCase implements IRegisterUserUseCase {
       });
     } else {
       // Create new user
-      await this.userRepo.create({
+      await this._userRepo.create({
         name: dto.name,
         email: dto.email,
         password: hashedPassword,

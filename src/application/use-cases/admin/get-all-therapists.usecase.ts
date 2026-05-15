@@ -5,10 +5,10 @@ import type { IGetAllTherapistsUseCase } from "../../interfaces/admin/IAdminUseC
 import type { PublicTherapistDTO } from "../../mappers/therapist.mapper.js";
 
 export class GetAllTherapistsUseCase implements IGetAllTherapistsUseCase {
-  constructor(private readonly therapistRepo: ITherapistRepository) {}
+  constructor(private readonly _therapistRepo: ITherapistRepository) {}
 
   async execute(): Promise<PublicTherapistDTO[]> {
-    const therapists = await this.therapistRepo.findAll();
+    const therapists = await this._therapistRepo.findAll();
     return therapists.map(TherapistMapper.toPublicDTO);
   }
 }

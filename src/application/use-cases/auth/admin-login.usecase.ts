@@ -9,10 +9,10 @@ import { ROLES } from "../../../shared/constants/index.js";
 import type { IAdminLoginUseCase, ILoginResponse } from "../../interfaces/auth/IAuthUseCase.js";
 
 export class AdminLoginUseCase implements IAdminLoginUseCase {
-  constructor(private readonly adminRepo: IAdminRepository) {}
+  constructor(private readonly _adminRepo: IAdminRepository) {}
 
   async execute(dto: AdminLoginDTO): Promise<ILoginResponse> {
-    const admin = await this.adminRepo.findByEmail(dto.email);
+    const admin = await this._adminRepo.findByEmail(dto.email);
     if (!admin) throw new NotFoundError("Admin");
 
     const isMatch = await bcrypt.compare(dto.password, admin.password);

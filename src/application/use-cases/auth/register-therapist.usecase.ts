@@ -9,10 +9,10 @@ import { BCRYPT_ROUNDS, THERAPIST_STATUS } from "../../../shared/constants/index
 import type { IRegisterTherapistUseCase, IRegisterResponse } from "../../interfaces/auth/IAuthUseCase.js";
 
 export class RegisterTherapistUseCase implements IRegisterTherapistUseCase {
-  constructor(private readonly therapistRepo: ITherapistRepository) {}
+  constructor(private readonly _therapistRepo: ITherapistRepository) {}
 
   async execute(dto: RegisterTherapistDTO): Promise<IRegisterResponse> {
-    const existing = await this.therapistRepo.findByEmail(dto.email);
+    const existing = await this._therapistRepo.findByEmail(dto.email);
     console.log("REGISTRATION DEBUG:", { email: dto.email, existingFound: !!existing, isVerified: existing?.isVerified });
     if (existing && existing.isVerified) throw new ConflictError("Email already registered");
 
@@ -22,7 +22,7 @@ export class RegisterTherapistUseCase implements IRegisterTherapistUseCase {
 
     if (existing) {
       // Update existing unverified therapist
-      await this.therapistRepo.update(existing.id, {
+      await this._therapistRepo.update(existing.id, {
         ...dto,
         password: hashedPassword,
         otp,
@@ -31,7 +31,7 @@ export class RegisterTherapistUseCase implements IRegisterTherapistUseCase {
       });
     } else {
       // Create new therapist
-      await this.therapistRepo.create({
+      await this._therapistRepo.create({
         ...dto,
         password: hashedPassword,
         isVerified: false,

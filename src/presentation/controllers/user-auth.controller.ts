@@ -25,7 +25,7 @@ const resendOtpUC = new ResendOtpUseCase(userRepo, therapistRepo);
 const loginUC = new LoginUserUseCase(userRepo);
 const googleAuthUC = new GoogleAuthUseCase(userRepo);
 const forgotPasswordUC = new ForgotPasswordUseCase(userRepo);
-const resetPasswordUC = new ResetPasswordUseCase(userRepo as any);
+const resetPasswordUC = new ResetPasswordUseCase(userRepo);
 const verifyResetOtpUC = new VerifyResetOtpUseCase(userRepo);
 
 import { UserEntity } from "../../domain/entities/User.entity.js";

@@ -5,10 +5,10 @@ import type { IGetAllUsersUseCase } from "../../interfaces/admin/IAdminUseCase.j
 import type { PublicUserDTO } from "../../mappers/user.mapper.js";
 
 export class GetAllUsersUseCase implements IGetAllUsersUseCase {
-  constructor(private readonly userRepo: IUserRepository) {}
+  constructor(private readonly _userRepo: IUserRepository) {}
 
   async execute(): Promise<PublicUserDTO[]> {
-    const users = await this.userRepo.findAll();
+    const users = await this._userRepo.findAll();
     return users.map(UserMapper.toPublicDTO);
   }
 }

@@ -8,10 +8,10 @@ import { HttpStatus, ROLES, THERAPIST_STATUS } from "../../../shared/constants/i
 import type { ILoginTherapistUseCase, ILoginResponse } from "../../interfaces/auth/IAuthUseCase.js";
 
 export class LoginTherapistUseCase implements ILoginTherapistUseCase {
-  constructor(private readonly therapistRepo: ITherapistRepository) {}
+  constructor(private readonly _therapistRepo: ITherapistRepository) {}
 
   async execute(dto: LoginTherapistDTO): Promise<ILoginResponse> {
-    const therapist = await this.therapistRepo.findByEmail(dto.email);
+    const therapist = await this._therapistRepo.findByEmail(dto.email);
     if (!therapist) throw new NotFoundError("Therapist");
     if (!therapist.isVerified) throw new AppError("Please verify your email first", HttpStatus.FORBIDDEN);
     if (therapist.status === THERAPIST_STATUS.PENDING) throw new AppError("Your account is pending admin approval", HttpStatus.FORBIDDEN);

@@ -23,7 +23,7 @@ const resendOtpUC = new ResendOtpUseCase(userRepo, therapistRepo);
 const loginUC = new LoginTherapistUseCase(therapistRepo);
 const forgotPasswordUC = new ForgotPasswordUseCase(therapistRepo);
 const verifyResetOtpUC = new VerifyResetOtpUseCase(therapistRepo);
-const resetPasswordUC = new ResetPasswordUseCase(therapistRepo as any);
+const resetPasswordUC = new ResetPasswordUseCase(therapistRepo);
 
 import { TherapistEntity } from "../../domain/entities/Therapist.entity.js";
 

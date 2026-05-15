@@ -8,12 +8,12 @@ import type { TherapistEntity } from "../../../domain/entities/Therapist.entity.
 import type { IVerifyResetOtpUseCase } from "../../interfaces/auth/IAuthUseCase.js";
 
 export class VerifyResetOtpUseCase<T extends UserEntity | TherapistEntity> implements IVerifyResetOtpUseCase {
-  constructor(private readonly repo: {
+  constructor(private readonly _repo: {
     findByEmail: (email: string) => Promise<T | null>;
   }) {}
 
   async execute({ dto, type = "user" }: { dto: VerifyOtpDTO; type?: "user" | "therapist" }): Promise<void> {
-    const account = await this.repo.findByEmail(dto.email);
+    const account = await this._repo.findByEmail(dto.email);
     if (!account) throw new NotFoundError(type === "user" ? "User" : "Therapist");
     
     if (!account.otp || !account.otpExpiry) {

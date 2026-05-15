@@ -5,13 +5,13 @@ import { NotFoundError } from "../../../shared/utils/AppError.js";
 import type { IUpdateUserStatusUseCase } from "../../interfaces/admin/IAdminUseCase.js";
 
 export class UpdateUserStatusUseCase implements IUpdateUserStatusUseCase {
-  constructor(private readonly userRepo: IUserRepository) {}
+  constructor(private readonly _userRepo: IUserRepository) {}
 
   async execute({ id, dto }: { id: string; dto: UpdateUserStatusDTO }): Promise<{ id: string; status: string }> {
-    const user = await this.userRepo.findById(id);
+    const user = await this._userRepo.findById(id);
     if (!user) throw new NotFoundError("User");
 
-    await this.userRepo.updateStatus(id, dto.status);
+    await this._userRepo.updateStatus(id, dto.status);
     return { id, status: dto.status };
   }
 }
