@@ -33,6 +33,8 @@ export const HttpStatus = {
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
   NOT_FOUND: 404,
+  CONFLICT: 409,
+  GONE : 410,
   INTERNAL_SERVER_ERROR: 500,
 } as const;
 
@@ -58,4 +60,9 @@ export const MAIL_CONFIG = {
   PORT: Number(process.env.SMTP_PORT) || 587,
   USER: process.env.SMTP_USER,
   PASS: process.env.SMTP_PASS,
+} as const;
+
+export const GOOGLE_CONFIG = {
+  CLIENT_ID: process.env.GOOGLE_CLIENT_ID || "",
+  CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || "",
 } as const;

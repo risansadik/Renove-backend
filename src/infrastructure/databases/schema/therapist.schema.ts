@@ -1,20 +1,23 @@
 import mongoose, { Schema, type Types, type Document } from "mongoose";
-import { THERAPIST_STATUS } from "../../../shared/constants/index";
+import { THERAPIST_STATUS, type TherapistStatus } from "../../../shared/constants/index.js";
 
 export interface ITherapistDocument extends Document {
   name: string;
   email: string;
   password: string;
-  phone: string;
+  phone?: string;
   gender: "male" | "female" | "other";
   qualification: string;
+  licenseNumber?: string;
+  countryCode?: string;
   specialization: string[];
   experience: number;
   consultationFee: number;
   bio: string;
   certifications?: string[];
+  certificationFiles?: string[];
   profileImage?: string;
-  status: "pending" | "approved" | "rejected";
+  status: TherapistStatus;
   isVerified: boolean;
   otp?: string;
   otpExpiry?: Date;
@@ -29,7 +32,6 @@ const TherapistSchema = new Schema<ITherapistDocument>(
     name: { type: String, required: true, trim: true },
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
     password: { type: String, required: true },
-    phone: { type: String, required: true },
     gender: { type: String, enum: ["male", "female", "other"], required: true },
     qualification: { type: String, required: true },
     specialization: [{ type: String }],
@@ -37,6 +39,7 @@ const TherapistSchema = new Schema<ITherapistDocument>(
     consultationFee: { type: Number, required: true, min: 0 },
     bio: { type: String, required: true },
     certifications: [{ type: String }],
+    certificationFiles: [{ type: String }],
     profileImage: { type: String },
     status: {
       type: String,
