@@ -16,7 +16,9 @@ export class PaymentRepositoryImpl implements IPaymentRepository {
       status: doc.status,
       receiptUrl: doc.receiptUrl,
       paidAt: doc.paidAt,
-      refundStatus: doc.refundStatus,
+      refundStatus: doc.refundStatus as any,
+      refundAmount: doc.refundAmount,
+      refundedAt: doc.refundedAt,
       createdAt: doc.createdAt,
       updatedAt: doc.updatedAt,
     };

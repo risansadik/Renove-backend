@@ -10,3 +10,12 @@ export type IGetUserBookingsUseCase = IUseCase<{ userId: string; params: Paginat
 export type IGetTherapistBookingsUseCase = IUseCase<{ therapistId: string; params: PaginationParams }, PaginatedResult<BookingEntity>>;
 
 export type IUpdateBookingStatusUseCase = IUseCase<{ id: string; status: BookingEntity["status"]; rejectionReason?: string }, BookingEntity | null>;
+
+export interface CancelBookingInput {
+  bookingId: string;
+  cancelledBy: "user" | "therapist";
+  userIdOrTherapistId: string;
+  reason: string;
+}
+
+export type ICancelBookingUseCase = IUseCase<CancelBookingInput, BookingEntity>;

@@ -12,7 +12,9 @@ export interface IPaymentDocument extends Document {
   status: PaymentStatus;
   receiptUrl?: string;
   paidAt?: Date;
-  refundStatus?: string;
+  refundStatus?: "none" | "pending" | "processed" | "failed" | "partial";
+  refundAmount?: number;
+  refundedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -34,14 +36,19 @@ const PaymentSchema = new Schema<IPaymentDocument>(
     },
     receiptUrl: { type: String },
     paidAt: { type: Date },
-    refundStatus: { type: String },
+    refundStatus: { 
+      type: String, 
+      enum: ["none", "pending", "processed", "failed", "partial"], 
+      default: "none" 
+    },
+    refundAmount: { type: Number },
+    refundedAt: { type: Date },
   },
   { timestamps: true }
 );
 
 // Indexes for faster lookups
 PaymentSchema.index({ bookingId: 1 });
-PaymentSchema.index({ paymentIntentId: 1 });
 PaymentSchema.index({ userId: 1 });
 PaymentSchema.index({ therapistId: 1 });
 

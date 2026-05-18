@@ -33,6 +33,7 @@ export const BOOKING_STATUS = {
   COMPLETED: "completed",
   CANCELLED: "cancelled",
   EXPIRED: "expired",
+  NO_SHOW: "no_show",
 } as const;
 
 export type BookingStatus = (typeof BOOKING_STATUS)[keyof typeof BOOKING_STATUS];
@@ -46,6 +47,16 @@ export const PAYMENT_STATUS = {
 } as const;
 
 export type PaymentStatus = (typeof PAYMENT_STATUS)[keyof typeof PAYMENT_STATUS];
+
+export const REFUND_STATUS = {
+  NONE: "none",
+  PENDING: "pending",
+  PROCESSED: "processed",
+  FAILED: "failed",
+  PARTIAL: "partial",
+} as const;
+
+export type RefundStatus = (typeof REFUND_STATUS)[keyof typeof REFUND_STATUS];
 
 export const SLOT_STATUS = {
   AVAILABLE: "AVAILABLE",

@@ -20,7 +20,6 @@ const WalletSchema = new Schema<IWalletDocument>(
   { timestamps: true }
 );
 
-WalletSchema.index({ therapistId: 1 });
 export const WalletModel = mongoose.model<IWalletDocument>("Wallet", WalletSchema);
 
 // --- User Wallet ---
@@ -39,7 +38,6 @@ const UserWalletSchema = new Schema<IUserWalletDocument>(
   { timestamps: true }
 );
 
-UserWalletSchema.index({ userId: 1 });
 export const UserWalletModel = mongoose.model<IUserWalletDocument>("UserWallet", UserWalletSchema);
 
 // --- Transactions ---

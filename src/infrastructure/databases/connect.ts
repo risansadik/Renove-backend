@@ -16,10 +16,17 @@ export const connectDB = async (): Promise<void> => {
     try {
       const collection = mongoose.connection.collection("bookings");
       const indexes = await collection.listIndexes().toArray();
+      
       const legacyIndex = indexes.find(idx => idx.name === "therapistId_1_date_1_slot_1");
       if (legacyIndex) {
         await collection.dropIndex("therapistId_1_date_1_slot_1");
         logger.info("Dropped legacy index: therapistId_1_date_1_slot_1");
+      }
+
+      const slotIndex = indexes.find(idx => idx.name === "slotId_1");
+      if (slotIndex && !slotIndex.partialFilterExpression) {
+        await collection.dropIndex("slotId_1");
+        logger.info("Dropped legacy unique index: slotId_1 to migrate to partial filter expression index");
       }
     } catch (err) {
       logger.warn("Could not cleanup legacy indexes:", err);

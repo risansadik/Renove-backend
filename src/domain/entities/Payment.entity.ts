@@ -12,7 +12,9 @@ export interface PaymentEntity {
   status: PaymentStatus;
   receiptUrl?: string;
   paidAt?: Date;
-  refundStatus?: string;
+  refundStatus?: "none" | "pending" | "processed" | "failed" | "partial";
+  refundAmount?: number;
+  refundedAt?: Date;
   createdAt?: Date;
   updatedAt?: Date;
 }

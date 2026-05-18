@@ -9,6 +9,9 @@ export interface IBookingDocument extends Document {
   status: BookingStatus;
   note?: string;
   rejectionReason?: string;
+  cancelledBy?: Types.ObjectId;
+  cancellationReason?: string;
+  cancelledAt?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -32,17 +35,28 @@ const BookingSchema = new Schema<IBookingDocument>(
     },
     status: { 
       type: String, 
-      enum: ["pending", "rejected", "awaiting_payment", "confirmed", "completed", "cancelled", "expired"], 
+      enum: ["pending", "rejected", "awaiting_payment", "confirmed", "completed", "cancelled", "expired", "no_show"], 
       default: "pending" 
     },
     note: { type: String },
     rejectionReason: { type: String },
+    cancelledBy: { type: Schema.Types.ObjectId },
+    cancellationReason: { type: String },
+    cancelledAt: { type: Date },
   },
   { timestamps: true }
 );
 
-// Prevent double booking of same slot
-BookingSchema.index({ slotId: 1 }, { unique: true });
+// Prevent double booking of same slot (active bookings only)
+BookingSchema.index(
+  { slotId: 1 },
+  { 
+    unique: true, 
+    partialFilterExpression: { 
+      status: { $nin: ["cancelled", "rejected", "expired"] } 
+    } 
+  }
+);
 
 // Facilitate queries
 BookingSchema.index({ userId: 1 });
