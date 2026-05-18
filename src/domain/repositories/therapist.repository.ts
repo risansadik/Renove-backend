@@ -1,6 +1,7 @@
 import type { BaseRepository } from "./base.repository.js";
 import type { TherapistEntity } from "../entities/Therapist.entity.js";
 import type { TherapistStatus } from "../../shared/constants/index.js";
+import { PaginationParams, PaginatedResult } from "./pagination.js";
 
 export interface ITherapistRepository extends BaseRepository<TherapistEntity> {
     findByEmail(email: string): Promise<TherapistEntity | null>;
@@ -8,5 +9,5 @@ export interface ITherapistRepository extends BaseRepository<TherapistEntity> {
     updateOtp(email: string, otp: string, otpExpiry: Date): Promise<void>;
     verifyTherapist(email: string): Promise<void>;
     resetPassword(email: string, hashedPassword: string): Promise<void>;
-    findByStatus(status: TherapistStatus): Promise<TherapistEntity[]>;
+    findByStatus(status: TherapistStatus, params?: PaginationParams): Promise<PaginatedResult<TherapistEntity>>;
 }

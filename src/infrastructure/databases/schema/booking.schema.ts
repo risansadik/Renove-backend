@@ -16,7 +16,7 @@ export interface IBookingDocument extends Document {
 export type IBookingRaw = Omit<IBookingDocument, keyof mongoose.Document | "userId" | "therapistId" | "slotId"> & { 
   _id: Types.ObjectId;
   userId: Types.ObjectId | { _id: Types.ObjectId; name: string; email: string };
-  therapistId: Types.ObjectId | { _id: Types.ObjectId; name: string };
+  therapistId: Types.ObjectId | { _id: Types.ObjectId; name: string; consultationFee: number };
   slotId: Types.ObjectId | { _id: Types.ObjectId; startTime: Date; endTime: Date };
 };
 
@@ -32,7 +32,7 @@ const BookingSchema = new Schema<IBookingDocument>(
     },
     status: { 
       type: String, 
-      enum: ["pending", "accepted", "rejected", "completed", "cancelled"], 
+      enum: ["pending", "rejected", "awaiting_payment", "confirmed", "completed", "cancelled", "expired"], 
       default: "pending" 
     },
     note: { type: String },

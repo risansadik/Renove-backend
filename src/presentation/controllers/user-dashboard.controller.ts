@@ -2,7 +2,9 @@ import type { Response, NextFunction } from "express";
 import type { AuthRequest } from "../middlewares/auth.middleware.js";
 import { UserProgressRepository } from "../../infrastructure/repositories/user-progress.repository.impl.js";
 import { TherapistModel } from "../../infrastructure/databases/schema/therapist.schema.js";
+import { BookingModel } from "../../infrastructure/databases/schema/booking.schema.js";
 import { ResponseModel } from "../../shared/utils/response-model.js";
+import { BOOKING_STATUS } from "../../shared/constants/index.js";
 
 const progressRepo = new UserProgressRepository();
 
@@ -13,7 +15,11 @@ export const userDashboardController = {
   getDashboard: async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userId = req.user!.id;
-      const progress = await progressRepo.getDashboard(userId);
+      const [progress, totalSessionsDone, pendingPayments] = await Promise.all([
+        progressRepo.getDashboard(userId),
+        BookingModel.countDocuments({ userId, status: BOOKING_STATUS.COMPLETED }),
+        BookingModel.countDocuments({ userId, status: BOOKING_STATUS.AWAITING_PAYMENT }),
+      ]);
 
       const xpInCurrentLevel = progress.xp % XP_PER_LEVEL;
       const xpPercent = Math.round((xpInCurrentLevel / XP_PER_LEVEL) * 100);
@@ -43,7 +49,8 @@ export const userDashboardController = {
           level: progress.level,
           xpPercent,
           streakDays: progress.streakDays,
-          totalSessionsDone: progress.totalSessionsDone,
+          totalSessionsDone: totalSessionsDone ?? progress.totalSessionsDone,
+          pendingPayments,
           missions: progress.missions,
           recentMoods,
           habits: habitsWithWeek,
@@ -77,12 +84,21 @@ export const userDashboardController = {
   },
 
   /** GET /api/user/therapists — approved therapists */
-  getApprovedTherapists: async (_req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+  getApprovedTherapists: async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const therapists = await TherapistModel.find({ status: "approved" })
-        .select("name email specialization experience consultationFee bio")
-        .lean()
-        .exec();
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+      const skip = (page - 1) * limit;
+
+      const [therapists, total] = await Promise.all([
+        TherapistModel.find({ status: "approved" })
+          .select("name email specialization experience consultationFee bio")
+          .skip(skip)
+          .limit(limit)
+          .lean()
+          .exec(),
+        TherapistModel.countDocuments({ status: "approved" })
+      ]);
 
       const mapped = therapists.map((t) => ({
         id: String(t._id),
@@ -94,7 +110,13 @@ export const userDashboardController = {
         avatar: t.name.charAt(0).toUpperCase(),
       }));
 
-      res.json(ResponseModel.success("Therapists fetched", mapped));
+      const totalPages = Math.ceil(total / limit);
+      res.json(ResponseModel.success("Therapists fetched", mapped, 200, {
+        total,
+        page,
+        limit,
+        totalPages
+      }));
     } catch (err) {
       next(err);
     }

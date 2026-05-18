@@ -9,10 +9,18 @@ export class BookingMapper {
         ? (doc.userId as { _id: { toString: () => string } })._id.toString() 
         : (doc.userId as { toString: () => string }).toString(),
       therapistId: typeof doc.therapistId === 'object' && doc.therapistId && '_id' in doc.therapistId
-        ? (doc.therapistId as { _id: { toString: () => string } })._id.toString() 
+        ? { 
+            id: (doc.therapistId as any)._id.toString(), 
+            name: (doc.therapistId as any).name,
+            consultationFee: (doc.therapistId as any).consultationFee 
+          }
         : (doc.therapistId as { toString: () => string }).toString(),
       slotId: typeof doc.slotId === 'object' && doc.slotId && '_id' in doc.slotId
-        ? (doc.slotId as { _id: { toString: () => string } })._id.toString() 
+        ? {
+            id: (doc.slotId as any)._id.toString(),
+            startTime: (doc.slotId as any).startTime,
+            endTime: (doc.slotId as any).endTime
+          }
         : (doc.slotId as { toString: () => string }).toString(),
       type: doc.type,
       status: doc.status,

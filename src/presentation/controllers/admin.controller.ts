@@ -38,10 +38,19 @@ export const adminController = {
     res.json(ResponseModel.success("Logged out successfully", null));
   },
 
-  getAllUsers: async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
+  getAllUsers: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const users = await getAllUsersUC.execute();
-      res.json(ResponseModel.success("Users fetched", users));
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+      const users = await getAllUsersUC.execute({ page, limit });
+      
+      const totalPages = Math.ceil(users.total / limit);
+      res.json(ResponseModel.success("Users fetched", users.data, 200, {
+        total: users.total,
+        page,
+        limit,
+        totalPages
+      }));
     } catch (err) {
       next(err);
     }
@@ -56,10 +65,19 @@ export const adminController = {
     }
   },
 
-  getAllTherapists: async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
+  getAllTherapists: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const therapists = await getAllTherapistsUC.execute();
-      res.json(ResponseModel.success("Therapists fetched", therapists));
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+      const therapists = await getAllTherapistsUC.execute({ page, limit });
+      
+      const totalPages = Math.ceil(therapists.total / limit);
+      res.json(ResponseModel.success("Therapists fetched", therapists.data, 200, {
+        total: therapists.total,
+        page,
+        limit,
+        totalPages
+      }));
     } catch (err) {
       next(err);
     }
