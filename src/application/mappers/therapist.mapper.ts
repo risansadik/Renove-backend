@@ -5,11 +5,8 @@ export interface PublicTherapistDTO {
   id: string;
   name: string;
   email: string;
-  phone?: string;
   gender: string;
   qualification: string;
-  licenseNumber?: string;
-  countryCode?: string;
   specialization: string[];
   experience: number;
   consultationFee: number;
@@ -29,11 +26,8 @@ export class TherapistMapper {
       name: doc.name,
       email: doc.email,
       password: doc.password,
-      phone: doc.phone,
       gender: doc.gender,
       qualification: doc.qualification,
-      licenseNumber: doc.licenseNumber,
-      countryCode: doc.countryCode,
       specialization: doc.specialization,
       experience: doc.experience,
       consultationFee: doc.consultationFee,
@@ -51,15 +45,14 @@ export class TherapistMapper {
   }
 
   static toPublicDTO(entity: TherapistEntity): PublicTherapistDTO {
+    const rawName = entity.name || "";
+    const formattedName = rawName.startsWith("Dr. ") ? rawName : `Dr. ${rawName}`;
     return {
       id: entity.id,
-      name: entity.name,
+      name: formattedName,
       email: entity.email,
-      phone: entity.phone,
       gender: entity.gender,
       qualification: entity.qualification,
-      licenseNumber: entity.licenseNumber,
-      countryCode: entity.countryCode,
       specialization: entity.specialization,
       experience: entity.experience,
       consultationFee: entity.consultationFee,

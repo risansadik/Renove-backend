@@ -11,7 +11,11 @@ export class BookingMapper {
       therapistId: typeof doc.therapistId === 'object' && doc.therapistId && '_id' in doc.therapistId
         ? { 
             id: (doc.therapistId as any)._id.toString(), 
-            name: (doc.therapistId as any).name,
+            name: (doc.therapistId as any).name 
+              ? ((doc.therapistId as any).name.startsWith("Dr. ") 
+                ? (doc.therapistId as any).name 
+                : `Dr. ${(doc.therapistId as any).name}`)
+              : 'Therapist',
             consultationFee: (doc.therapistId as any).consultationFee 
           }
         : (doc.therapistId as { toString: () => string }).toString(),
