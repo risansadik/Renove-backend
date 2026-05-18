@@ -92,7 +92,7 @@ export const userDashboardController = {
 
       const [therapists, total] = await Promise.all([
         TherapistModel.find({ status: "approved" })
-          .select("name email specialization experience consultationFee bio")
+          .select("name email specialization experience consultationFee bio profileImage")
           .skip(skip)
           .limit(limit)
           .lean()
@@ -107,6 +107,7 @@ export const userDashboardController = {
         experience: t.experience,
         consultationFee: t.consultationFee,
         bio: t.bio,
+        profileImage: t.profileImage,
         avatar: t.name.charAt(0).toUpperCase(),
       }));
 
