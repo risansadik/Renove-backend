@@ -11,6 +11,9 @@ export interface BookingEntity {
   status: BookingStatus;
   note?: string;
   rejectionReason?: string;
+  cancelledBy?: string;
+  cancellationReason?: string;
+  cancelledAt?: Date;
   createdAt?: Date;
   updatedAt?: Date;
 }

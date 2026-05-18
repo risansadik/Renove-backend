@@ -7,5 +7,6 @@ export interface IBookingRepository {
   findByUserId(userId: string, params?: PaginationParams): Promise<PaginatedResult<BookingEntity>>;
   findByTherapistId(therapistId: string, params?: PaginationParams): Promise<PaginatedResult<BookingEntity>>;
   updateStatus(id: string, status: BookingEntity["status"], rejectionReason?: string): Promise<BookingEntity | null>;
+  update(id: string, data: Partial<BookingEntity>): Promise<BookingEntity | null>;
   checkAvailability(therapistId: string, date: Date, slot: string): Promise<boolean>;
 }

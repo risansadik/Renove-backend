@@ -26,6 +26,9 @@ export class BookingMapper {
       status: doc.status,
       note: doc.note,
       rejectionReason: doc.rejectionReason,
+      cancelledBy: doc.cancelledBy?.toString(),
+      cancellationReason: doc.cancellationReason,
+      cancelledAt: doc.cancelledAt,
       createdAt: doc.createdAt,
       updatedAt: doc.updatedAt,
     };
@@ -41,6 +44,9 @@ export class BookingMapper {
       status: booking.status,
       note: booking.note,
       rejectionReason: booking.rejectionReason,
+      cancelledBy: booking.cancelledBy,
+      cancellationReason: booking.cancellationReason,
+      cancelledAt: booking.cancelledAt,
       createdAt: booking.createdAt,
       updatedAt: booking.updatedAt
     };

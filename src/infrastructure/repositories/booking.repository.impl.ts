@@ -25,6 +25,9 @@ export class BookingRepositoryImpl implements IBookingRepository {
       status: doc.status,
       note: doc.note,
       rejectionReason: doc.rejectionReason,
+      cancelledBy: doc.cancelledBy?.toString(),
+      cancellationReason: doc.cancellationReason,
+      cancelledAt: doc.cancelledAt,
       createdAt: doc.createdAt,
       updatedAt: doc.updatedAt,
     };
@@ -92,6 +95,15 @@ export class BookingRepositoryImpl implements IBookingRepository {
       { new: true }
     );
     return doc ? this._toEntity(doc) : null;
+  }
+
+  async update(id: string, data: Partial<BookingEntity>): Promise<BookingEntity | null> {
+    const doc = await BookingModel.findByIdAndUpdate(
+      id,
+      { $set: data },
+      { new: true }
+    );
+    return doc ? this._toEntity(doc as unknown as IBookingRaw) : null;
   }
 
   async checkAvailability(therapistId: string, date: Date, slot: string): Promise<boolean> {

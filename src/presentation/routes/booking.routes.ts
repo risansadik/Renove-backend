@@ -2,6 +2,7 @@ import { Router } from "express";
 import { BookingController } from "../controllers/booking.controller.js";
 import { CreateBookingUseCase } from "../../application/use-cases/booking/create-booking.usecase.js";
 import { GetUserBookingsUseCase, GetTherapistBookingsUseCase, UpdateBookingStatusUseCase } from "../../application/use-cases/booking/get-bookings.usecase.js";
+import { CancelBookingUseCase } from "../../application/use-cases/booking/cancel-booking.usecase.js";
 import { BookingRepositoryImpl } from "../../infrastructure/repositories/booking.repository.impl.js";
 import { SlotRepository } from "../../infrastructure/repositories/availability.repository.impl.js";
 import { WalletRepositoryImpl } from "../../infrastructure/repositories/wallet.repository.impl.js";
@@ -24,17 +25,25 @@ const updateBookingStatusUseCase = new UpdateBookingStatusUseCase(
   walletRepository,
   paymentRepository
 );
+const cancelBookingUseCase = new CancelBookingUseCase(
+  bookingRepository,
+  slotRepository,
+  walletRepository,
+  paymentRepository
+);
 
 const bookingController = new BookingController(
   createBookingUseCase,
   getUserBookingsUseCase,
   getTherapistBookingsUseCase,
-  updateBookingStatusUseCase
+  updateBookingStatusUseCase,
+  cancelBookingUseCase
 );
 
 // User Routes
 router.post("/", authenticate, (req, res) => bookingController.createBooking(req, res));
 router.get("/my-sessions", authenticate, (req, res) => bookingController.getUserBookings(req, res));
+router.post("/:id/cancel", authenticate, (req, res) => bookingController.cancelBooking(req, res));
 
 // Therapist Routes
 router.get("/therapist-sessions", authenticate, (req, res) => bookingController.getTherapistBookings(req, res));
