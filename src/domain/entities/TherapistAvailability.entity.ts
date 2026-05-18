@@ -14,7 +14,8 @@ export interface TherapistAvailabilityEntity {
   updatedAt?: Date;
 }
 
-export type SlotStatus = "AVAILABLE" | "RESERVED" | "BOOKED" | "BLOCKED" | "EXPIRED";
+import type { SlotStatus } from "../../shared/constants/index.js";
+export type { SlotStatus };
 
 export interface TherapistSlotEntity {
   id?: string;

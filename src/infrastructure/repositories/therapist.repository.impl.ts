@@ -4,6 +4,8 @@ import type { TherapistStatus } from "../../shared/constants/index.js";
 import { TherapistModel } from "../databases/schema/therapist.schema.js";
 import { TherapistMapper } from "../../application/mappers/therapist.mapper.js";
 
+import { PaginationParams, PaginatedResult } from "../../domain/interfaces/pagination.js";
+
 export class TherapistRepository implements ITherapistRepository {
   async findById(id: string): Promise<TherapistEntity | null> {
     const doc = await TherapistModel.findById(id).lean().exec();
@@ -15,14 +17,34 @@ export class TherapistRepository implements ITherapistRepository {
     return doc ? TherapistMapper.toEntity(doc) : null;
   }
 
-  async findAll(): Promise<TherapistEntity[]> {
-    const docs = await TherapistModel.find().lean().exec();
-    return docs.map(TherapistMapper.toEntity);
+  async findAll(params?: PaginationParams): Promise<PaginatedResult<TherapistEntity>> {
+    const query = TherapistModel.find();
+    if (params) {
+      query.skip((params.page - 1) * params.limit).limit(params.limit);
+    }
+    const [docs, total] = await Promise.all([
+      query.lean().exec(),
+      TherapistModel.countDocuments()
+    ]);
+    return {
+      data: docs.map(TherapistMapper.toEntity),
+      total
+    };
   }
 
-  async findByStatus(status: TherapistStatus): Promise<TherapistEntity[]> {
-    const docs = await TherapistModel.find({ status }).lean().exec();
-    return docs.map(TherapistMapper.toEntity);
+  async findByStatus(status: TherapistStatus, params?: PaginationParams): Promise<PaginatedResult<TherapistEntity>> {
+    const query = TherapistModel.find({ status });
+    if (params) {
+      query.skip((params.page - 1) * params.limit).limit(params.limit);
+    }
+    const [docs, total] = await Promise.all([
+      query.lean().exec(),
+      TherapistModel.countDocuments({ status })
+    ]);
+    return {
+      data: docs.map(TherapistMapper.toEntity),
+      total
+    };
   }
 
   async create(data: Partial<TherapistEntity>): Promise<TherapistEntity> {

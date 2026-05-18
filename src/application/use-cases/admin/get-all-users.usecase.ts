@@ -3,12 +3,16 @@ import { UserMapper } from "../../mappers/user.mapper.js";
 
 import type { IGetAllUsersUseCase } from "../../interfaces/admin/IAdminUseCase.js";
 import type { PublicUserDTO } from "../../mappers/user.mapper.js";
+import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination.js";
 
 export class GetAllUsersUseCase implements IGetAllUsersUseCase {
   constructor(private readonly _userRepo: IUserRepository) {}
 
-  async execute(): Promise<PublicUserDTO[]> {
-    const users = await this._userRepo.findAll();
-    return users.map(UserMapper.toPublicDTO);
+  async execute(params: PaginationParams): Promise<PaginatedResult<PublicUserDTO>> {
+    const result = await this._userRepo.findAll(params);
+    return {
+      data: result.data.map(UserMapper.toPublicDTO),
+      total: result.total
+    };
   }
 }

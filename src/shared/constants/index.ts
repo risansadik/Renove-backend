@@ -25,6 +25,38 @@ export const USER_STATUS = {
 
 export type UserStatus = (typeof USER_STATUS)[keyof typeof USER_STATUS];
 
+export const BOOKING_STATUS = {
+  PENDING: "pending",
+  REJECTED: "rejected",
+  AWAITING_PAYMENT: "awaiting_payment",
+  CONFIRMED: "confirmed",
+  COMPLETED: "completed",
+  CANCELLED: "cancelled",
+  EXPIRED: "expired",
+} as const;
+
+export type BookingStatus = (typeof BOOKING_STATUS)[keyof typeof BOOKING_STATUS];
+
+export const PAYMENT_STATUS = {
+  UNPAID: "unpaid",
+  PENDING: "pending",
+  PAID: "paid",
+  FAILED: "failed",
+  REFUNDED: "refunded",
+} as const;
+
+export type PaymentStatus = (typeof PAYMENT_STATUS)[keyof typeof PAYMENT_STATUS];
+
+export const SLOT_STATUS = {
+  AVAILABLE: "AVAILABLE",
+  RESERVED: "RESERVED",
+  BOOKED: "BOOKED",
+  BLOCKED: "BLOCKED",
+  EXPIRED: "EXPIRED",
+} as const;
+
+export type SlotStatus = (typeof SLOT_STATUS)[keyof typeof SLOT_STATUS];
+
 export const HttpStatus = {
   OK: 200,
   CREATED: 201,

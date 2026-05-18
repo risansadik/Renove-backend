@@ -4,6 +4,8 @@ import { CreateBookingUseCase } from "../../application/use-cases/booking/create
 import { GetUserBookingsUseCase, GetTherapistBookingsUseCase, UpdateBookingStatusUseCase } from "../../application/use-cases/booking/get-bookings.usecase.js";
 import { BookingRepositoryImpl } from "../../infrastructure/repositories/booking.repository.impl.js";
 import { SlotRepository } from "../../infrastructure/repositories/availability.repository.impl.js";
+import { WalletRepositoryImpl } from "../../infrastructure/repositories/wallet.repository.impl.js";
+import { PaymentRepositoryImpl } from "../../infrastructure/repositories/payment.repository.impl.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
 
 const router = Router();
@@ -11,10 +13,17 @@ const router = Router();
 // Dependency Injection
 const bookingRepository = new BookingRepositoryImpl();
 const slotRepository = new SlotRepository();
+const walletRepository = new WalletRepositoryImpl();
+const paymentRepository = new PaymentRepositoryImpl();
+
 const createBookingUseCase = new CreateBookingUseCase(bookingRepository, slotRepository);
 const getUserBookingsUseCase = new GetUserBookingsUseCase(bookingRepository);
 const getTherapistBookingsUseCase = new GetTherapistBookingsUseCase(bookingRepository);
-const updateBookingStatusUseCase = new UpdateBookingStatusUseCase(bookingRepository);
+const updateBookingStatusUseCase = new UpdateBookingStatusUseCase(
+  bookingRepository,
+  walletRepository,
+  paymentRepository
+);
 
 const bookingController = new BookingController(
   createBookingUseCase,

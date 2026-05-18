@@ -26,8 +26,22 @@ export class BookingController {
   async getUserBookings(req: Request, res: Response) {
     try {
       const userId = (req as AuthenticatedRequest).user.id;
-      const bookings = await this._getUserBookingsUseCase.execute(userId);
-      res.status(200).json({ success: true, data: BookingMapper.toPublicDTOList(bookings) });
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+
+      const bookings = await this._getUserBookingsUseCase.execute({ userId, params: { page, limit } });
+      const totalPages = Math.ceil(bookings.total / limit);
+
+      res.status(200).json({ 
+        success: true, 
+        data: BookingMapper.toPublicDTOList(bookings.data),
+        meta: {
+          total: bookings.total,
+          page,
+          limit,
+          totalPages
+        }
+      });
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "An unexpected error occurred";
       res.status(500).json({ success: false, message });
@@ -37,8 +51,22 @@ export class BookingController {
   async getTherapistBookings(req: Request, res: Response) {
     try {
       const therapistId = (req as AuthenticatedRequest).user.id;
-      const bookings = await this._getTherapistBookingsUseCase.execute(therapistId);
-      res.status(200).json({ success: true, data: BookingMapper.toPublicDTOList(bookings) });
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+
+      const bookings = await this._getTherapistBookingsUseCase.execute({ therapistId, params: { page, limit } });
+      const totalPages = Math.ceil(bookings.total / limit);
+
+      res.status(200).json({ 
+        success: true, 
+        data: BookingMapper.toPublicDTOList(bookings.data),
+        meta: {
+          total: bookings.total,
+          page,
+          limit,
+          totalPages
+        }
+      });
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "An unexpected error occurred";
       res.status(500).json({ success: false, message });

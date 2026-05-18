@@ -4,12 +4,13 @@ export interface ApiResponse<T = null>{
     success : boolean;
     message : string;
     data : T | null;
-    statusCode : number
+    statusCode : number;
+    meta?: any;
 }
 
 export class ResponseModel {
-  static success<T>(message: string, data: T, statusCode: number = HttpStatus.OK): ApiResponse<T> {
-    return { success: true, message, data, statusCode };
+  static success<T>(message: string, data: T, statusCode: number = HttpStatus.OK, meta?: any): ApiResponse<T> {
+    return { success: true, message, data, statusCode, meta };
   }
  
   static error(message: string, statusCode: number = HttpStatus.BAD_REQUEST): ApiResponse<null> {
