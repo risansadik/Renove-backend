@@ -2,20 +2,47 @@ import type { Request, Response, NextFunction } from "express";
 import { verifyAccessToken } from "../../shared/utils/jwt.js";
 import { UnauthorizedError, ForbiddenError } from "../../shared/utils/AppError.js";
 import type { Role } from "../../shared/constants/index.js";
+import { UserModel } from "../../infrastructure/databases/schema/user.schema.js";
+import { TherapistModel } from "../../infrastructure/databases/schema/therapist.schema.js";
+import { USER_STATUS } from "../../shared/constants/index.js";
 
 export interface AuthRequest extends Request {
   user?: { id: string; email: string; role: Role };
 }
 
-export const authenticate = (req: AuthRequest, _res: Response, next: NextFunction): void => {
+export const authenticate = async (req: AuthRequest, _res: Response, next: NextFunction): Promise<void> => {
   const token = req.cookies?.accessToken;
   if (!token) return next(new UnauthorizedError("Access token missing"));
 
   try {
-    req.user = verifyAccessToken(token);
+    const decoded = verifyAccessToken(token);
+    req.user = decoded;
+
+    if (decoded.role === "user") {
+      const user = await UserModel.findById(decoded.id);
+      if (!user) {
+        return next(new UnauthorizedError("User account no longer exists"));
+      }
+      if (user.status === USER_STATUS.BLOCKED) {
+        return next(new ForbiddenError("Your account has been blocked"));
+      }
+    } else if (decoded.role === "therapist") {
+      const therapist = await TherapistModel.findById(decoded.id);
+      if (!therapist) {
+        return next(new UnauthorizedError("Therapist account no longer exists"));
+      }
+      if (therapist.status === "rejected") {
+        return next(new ForbiddenError("Your account has been rejected or blocked"));
+      }
+    }
+
     next();
-  } catch {
-    next(new UnauthorizedError("Invalid or expired token"));
+  } catch (err) {
+    if (err instanceof ForbiddenError || err instanceof UnauthorizedError) {
+      next(err);
+    } else {
+      next(new UnauthorizedError("Invalid or expired token"));
+    }
   }
 };
 
