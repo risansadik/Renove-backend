@@ -61,9 +61,10 @@ export class PaymentController {
 
       // Stripe requires a 200 response to acknowledge receipt
       res.status(200).json({ received: true });
-    } catch (err: any) {
-      logger.error("Webhook Error", { message: err.message });
-      res.status(400).send(`Webhook Error: ${err.message}`);
+    } catch (err) {
+      const error = err as Error;
+      logger.error("Webhook Error", { message: error.message });
+      res.status(400).send(`Webhook Error: ${error.message}`);
     }
   }
 

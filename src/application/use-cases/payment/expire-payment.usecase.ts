@@ -26,7 +26,7 @@ export class ExpirePaymentUseCase {
     for (const booking of overdueBookings) {
       try {
         // 1. Expire Booking
-        booking.status = BOOKING_STATUS.EXPIRED as any;
+        booking.status = BOOKING_STATUS.EXPIRED as "expired";
         await booking.save();
 
         // 2. Release Slot
@@ -37,7 +37,7 @@ export class ExpirePaymentUseCase {
         // 3. Mark associated Payment as FAILED if it exists and is unpaid
         await PaymentModel.updateMany(
           { bookingId: booking._id, status: PAYMENT_STATUS.UNPAID },
-          { status: PAYMENT_STATUS.FAILED as any }
+          { status: PAYMENT_STATUS.FAILED as "failed" }
         );
 
         logger.info(`Expired booking ${booking._id} and released slot ${booking.slotId}`);

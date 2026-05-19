@@ -29,8 +29,8 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
     }
 
     // Authorization checks
-    const bookingUserId = typeof booking.userId === "object" ? (booking.userId as any).id : booking.userId;
-    const bookingTherapistId = typeof booking.therapistId === "object" ? (booking.therapistId as any).id : booking.therapistId;
+    const bookingUserId = typeof booking.userId === "object" && booking.userId !== null ? (booking.userId as { id: string }).id : booking.userId as string;
+    const bookingTherapistId = typeof booking.therapistId === "object" && booking.therapistId !== null ? (booking.therapistId as { id: string }).id : booking.therapistId as string;
 
     if (cancelledBy === "user" && bookingUserId !== userIdOrTherapistId) {
       throw new Error("Unauthorized: You do not own this booking");
@@ -40,7 +40,7 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
     }
 
     const slot = await this._slotRepo.findById(
-      typeof booking.slotId === "object" ? (booking.slotId as any).id : booking.slotId
+      typeof booking.slotId === "object" && booking.slotId !== null ? (booking.slotId as { id: string }).id : booking.slotId as string
     );
     if (!slot) {
       throw new Error("Associated slot not found");

@@ -14,8 +14,8 @@ export class BookingRepositoryImpl implements IBookingRepository {
       therapistId: typeof doc.therapistId === 'object' && doc.therapistId && "name" in doc.therapistId
         ? {
           id: doc.therapistId._id.toString(),
-          name: (doc.therapistId as any).name,
-          consultationFee: (doc.therapistId as any).consultationFee
+          name: (doc.therapistId as { name: string }).name,
+          consultationFee: (doc.therapistId as { consultationFee?: number }).consultationFee ?? 0
         }
         : (doc.therapistId as { toString: () => string }).toString(),
       slotId: typeof doc.slotId === 'object' && doc.slotId && "startTime" in doc.slotId

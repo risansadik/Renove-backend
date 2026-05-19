@@ -2,7 +2,7 @@ import mongoose, { Schema, type Document } from "mongoose";
 
 export interface ISettingsDocument extends Document {
   key: string;
-  value: any;
+  value: unknown;
   createdAt: Date;
   updatedAt: Date;
 }

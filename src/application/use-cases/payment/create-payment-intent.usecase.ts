@@ -22,7 +22,7 @@ export class CreatePaymentIntentUseCase {
     }
 
     // Security check: ensure the booking belongs to the requesting user
-    const bookingUserId = typeof booking.userId === 'object' ? (booking.userId as any).id : booking.userId;
+    const bookingUserId = typeof booking.userId === 'object' && booking.userId !== null ? (booking.userId as { id: string }).id : booking.userId as string;
     if (bookingUserId !== userId) {
       throw new AppError("Unauthorized access to booking", HttpStatus.FORBIDDEN);
     }
@@ -31,7 +31,7 @@ export class CreatePaymentIntentUseCase {
       throw new AppError(`Payment can only be made for bookings in AWAITING_PAYMENT status. Current status: ${booking.status}`, HttpStatus.BAD_REQUEST);
     }
 
-    const therapistId = typeof booking.therapistId === 'object' ? (booking.therapistId as any).id : booking.therapistId;
+    const therapistId = typeof booking.therapistId === 'object' && booking.therapistId !== null ? (booking.therapistId as { id: string }).id : booking.therapistId as string;
     const therapist = await this._therapistRepo.findById(therapistId);
 
     if (!therapist) {
