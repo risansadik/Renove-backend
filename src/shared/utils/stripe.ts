@@ -14,7 +14,7 @@ export class StripeHelper {
    * @param amount Amount in cents (e.g., 5000 for $50.00)
    * @param metadata Optional metadata to attach to the intent
    */
-  static async createPaymentIntent(amount: number, metadata: Record<string, any> = {}) {
+  static async createPaymentIntent(amount: number, metadata: Record<string, string> = {}) {
     try {
       const paymentIntent = await stripe.paymentIntents.create({
         amount,

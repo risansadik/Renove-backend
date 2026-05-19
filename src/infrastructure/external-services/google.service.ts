@@ -21,7 +21,7 @@ export const verifyGoogleToken = async (token: string): Promise<GoogleUserPayloa
 
   if (isAccessToken) {
     try {
-      const response = await client.request<any>({
+      const response = await client.request<Record<string, unknown>>({
         url: "https://www.googleapis.com/oauth2/v3/userinfo",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -30,12 +30,12 @@ export const verifyGoogleToken = async (token: string): Promise<GoogleUserPayloa
         throw new AppError("Invalid Google token: Missing profile information", HttpStatus.UNAUTHORIZED);
       }
       return {
-        email: payload.email,
-        name: payload.name,
-        picture: payload.picture,
-        sub: payload.sub,
+        email: payload.email as string,
+        name: payload.name as string,
+        picture: payload.picture as string,
+        sub: payload.sub as string,
       };
-    } catch (error) {
+    } catch {
       throw new AppError("Failed to verify Google access token", HttpStatus.UNAUTHORIZED);
     }
   }

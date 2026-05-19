@@ -22,7 +22,7 @@ export class CompleteSessionUseCase {
       throw new AppError("Booking not found", HttpStatus.NOT_FOUND);
     }
 
-    const bookingTherapistId = typeof booking.therapistId === 'object' ? (booking.therapistId as any).id : booking.therapistId;
+    const bookingTherapistId = typeof booking.therapistId === 'object' && booking.therapistId !== null ? (booking.therapistId as { id: string }).id : booking.therapistId as string;
     if (bookingTherapistId !== therapistId) {
       throw new AppError("Unauthorized: Only the assigned therapist can complete this session", HttpStatus.FORBIDDEN);
     }
@@ -33,8 +33,8 @@ export class CompleteSessionUseCase {
 
     // --- NEW: Time Validation ---
     // Ensure the session has actually started before it can be completed
-    if (booking.slotId && typeof booking.slotId === 'object') {
-      const sessionStartTime = (booking.slotId as any).startTime;
+    if (booking.slotId && typeof booking.slotId === 'object' && booking.slotId !== null) {
+      const sessionStartTime = (booking.slotId as { startTime?: string | Date }).startTime;
       if (sessionStartTime && new Date() < new Date(sessionStartTime)) {
         throw new AppError("Cannot complete a session that hasn't started yet", HttpStatus.BAD_REQUEST);
       }

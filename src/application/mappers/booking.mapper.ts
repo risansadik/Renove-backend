@@ -10,20 +10,20 @@ export class BookingMapper {
         : (doc.userId as { toString: () => string }).toString(),
       therapistId: typeof doc.therapistId === 'object' && doc.therapistId && '_id' in doc.therapistId
         ? { 
-            id: (doc.therapistId as any)._id.toString(), 
-            name: (doc.therapistId as any).name 
-              ? ((doc.therapistId as any).name.startsWith("Dr. ") 
-                ? (doc.therapistId as any).name 
-                : `Dr. ${(doc.therapistId as any).name}`)
+            id: (doc.therapistId as { _id: { toString: () => string } })._id.toString(), 
+            name: (doc.therapistId as { name?: string }).name 
+              ? ((doc.therapistId as { name: string }).name.startsWith("Dr. ") 
+                ? (doc.therapistId as { name: string }).name 
+                : `Dr. ${(doc.therapistId as { name: string }).name}`)
               : 'Therapist',
-            consultationFee: (doc.therapistId as any).consultationFee 
+            consultationFee: (doc.therapistId as { consultationFee?: number }).consultationFee ?? 0
           }
         : (doc.therapistId as { toString: () => string }).toString(),
       slotId: typeof doc.slotId === 'object' && doc.slotId && '_id' in doc.slotId
         ? {
-            id: (doc.slotId as any)._id.toString(),
-            startTime: (doc.slotId as any).startTime,
-            endTime: (doc.slotId as any).endTime
+            id: (doc.slotId as { _id: { toString: () => string } })._id.toString(),
+            startTime: (doc.slotId as { startTime: Date }).startTime,
+            endTime: (doc.slotId as { endTime: Date }).endTime
           }
         : (doc.slotId as { toString: () => string }).toString(),
       type: doc.type,

@@ -31,11 +31,11 @@ export class RefreshTokenUseCase {
       const tokens = generateTokens({
         id: payload.id,
         email: payload.email,
-        role: payload.role as any
+        role: payload.role as "user" | "therapist" | "admin"
       });
 
       return tokens;
-    } catch (error) {
+    } catch {
       throw new UnauthorizedError("Invalid or expired refresh token");
     }
   }

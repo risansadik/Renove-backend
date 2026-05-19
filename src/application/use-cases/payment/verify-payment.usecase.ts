@@ -50,8 +50,8 @@ export class VerifyPaymentUseCase {
         // 5. Update slot
         const booking = await this._bookingRepo.findById(anyPayment.bookingId);
         if (booking) {
-            const slotId = typeof booking.slotId === "object"
-                ? (booking.slotId as any).id
+            const slotId = typeof booking.slotId === "object" && booking.slotId !== null
+                ? (booking.slotId as { id: string }).id
                 : booking.slotId;
             await this._slotRepo.updateStatus(slotId, SLOT_STATUS.BOOKED);
         }

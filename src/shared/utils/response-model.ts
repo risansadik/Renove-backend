@@ -5,11 +5,11 @@ export interface ApiResponse<T = null>{
     message : string;
     data : T | null;
     statusCode : number;
-    meta?: any;
+    meta?: unknown;
 }
 
 export class ResponseModel {
-  static success<T>(message: string, data: T, statusCode: number = HttpStatus.OK, meta?: any): ApiResponse<T> {
+  static success<T>(message: string, data: T, statusCode: number = HttpStatus.OK, meta?: unknown): ApiResponse<T> {
     return { success: true, message, data, statusCode, meta };
   }
  

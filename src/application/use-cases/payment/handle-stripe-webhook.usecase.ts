@@ -54,7 +54,7 @@ export class HandleStripeWebhookUseCase {
       await this._bookingRepo.updateStatus(payment.bookingId, BOOKING_STATUS.CONFIRMED);
       
       // 3. Update Slot Status to BOOKED
-      const slotId = typeof booking.slotId === 'object' ? (booking.slotId as any).id : booking.slotId;
+      const slotId = typeof booking.slotId === 'object' && booking.slotId !== null ? (booking.slotId as { id: string }).id : booking.slotId as string;
       await this._slotRepo.updateStatus(slotId, SLOT_STATUS.BOOKED);
     }
 

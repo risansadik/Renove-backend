@@ -36,8 +36,8 @@ export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase {
     if ((status === BOOKING_STATUS.REJECTED || status === BOOKING_STATUS.CANCELLED) && booking.status !== status) {
       const payment = await this._paymentRepository.findByBookingId(id);
       if (payment && payment.status === PAYMENT_STATUS.PAID) {
-        const userId = typeof booking.userId === "object" ? (booking.userId as any).id : booking.userId;
-        const therapistId = typeof booking.therapistId === "object" ? (booking.therapistId as any).id : booking.therapistId;
+        const userId = typeof booking.userId === "object" && booking.userId !== null ? (booking.userId as { id: string }).id : booking.userId as string;
+        const therapistId = typeof booking.therapistId === "object" && booking.therapistId !== null ? (booking.therapistId as { id: string }).id : booking.therapistId as string;
 
         // 1. Credit User Wallet
         let userWallet = await this._walletRepository.findByUserId(userId);

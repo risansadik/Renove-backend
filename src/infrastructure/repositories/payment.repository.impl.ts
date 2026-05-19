@@ -19,7 +19,7 @@ export class PaymentRepositoryImpl implements IPaymentRepository {
       platformFee: doc.platformFee,
       receiptUrl: doc.receiptUrl,
       paidAt: doc.paidAt,
-      refundStatus: doc.refundStatus as any,
+      refundStatus: doc.refundStatus as "none" | "pending" | "processed" | "failed" | "partial",
       refundAmount: doc.refundAmount,
       refundedAt: doc.refundedAt,
       createdAt: doc.createdAt,
