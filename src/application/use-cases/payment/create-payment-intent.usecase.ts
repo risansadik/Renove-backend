@@ -2,6 +2,7 @@ import { StripeHelper } from "../../../shared/utils/stripe.js";
 import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.js";
 import type { IBookingRepository } from "../../../domain/repositories/booking.repository.js";
 import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.js";
+import type { ISettingsRepository } from "../../../domain/repositories/settings.repository.js";
 import { BOOKING_STATUS, PAYMENT_STATUS, HttpStatus } from "../../../shared/constants/index.js";
 import { AppError } from "../../../shared/utils/AppError.js";
 
@@ -9,7 +10,8 @@ export class CreatePaymentIntentUseCase {
   constructor(
     private _paymentRepo: IPaymentRepository,
     private _bookingRepo: IBookingRepository,
-    private _therapistRepo: ITherapistRepository
+    private _therapistRepo: ITherapistRepository,
+    private _settingsRepo: ISettingsRepository
   ) { }
 
   async execute(bookingId: string, userId: string) {
@@ -40,8 +42,14 @@ export class CreatePaymentIntentUseCase {
       throw new AppError("Therapist consultation fee is not set", HttpStatus.BAD_REQUEST);
     }
 
+    // Retrieve active platform commission percentage and calculate splits
+    const commissionPercentage = await this._settingsRepo.getCommissionPercentage();
+    const consultationFee = therapist.consultationFee;
+    const platformFee = Math.round(consultationFee * (commissionPercentage / 100) * 100) / 100;
+    const totalPaid = consultationFee + platformFee;
+
     // Stripe expects amount in cents
-    const amountInCents = Math.round(therapist.consultationFee * 100);
+    const amountInCents = Math.round(totalPaid * 100);
 
     // Create Payment Intent with Stripe
     const paymentIntent = await StripeHelper.createPaymentIntent(amountInCents, {
@@ -56,7 +64,10 @@ export class CreatePaymentIntentUseCase {
       userId,
       therapistId,
       paymentIntentId: paymentIntent.id,
-      amount: therapist.consultationFee,
+      amount: totalPaid,
+      consultationFee,
+      commissionPercentage,
+      platformFee,
       currency: "usd",
       status: PAYMENT_STATUS.UNPAID,
       provider: "stripe",
@@ -64,7 +75,11 @@ export class CreatePaymentIntentUseCase {
 
     return {
       clientSecret: paymentIntent.client_secret,
-      amount: therapist.consultationFee,
+      amount: totalPaid,
+      consultationFee,
+      commissionPercentage,
+      platformFee,
     };
   }
 }
+

@@ -10,6 +10,9 @@ export interface PaymentEntity {
   amount: number;
   currency: string;
   status: PaymentStatus;
+  consultationFee?: number;
+  commissionPercentage?: number;
+  platformFee?: number;
   receiptUrl?: string;
   paidAt?: Date;
   refundStatus?: "none" | "pending" | "processed" | "failed" | "partial";
@@ -18,3 +21,4 @@ export interface PaymentEntity {
   createdAt?: Date;
   updatedAt?: Date;
 }
+

@@ -8,6 +8,7 @@ import { BookingRepositoryImpl } from "../../infrastructure/repositories/booking
 import { TherapistRepository } from "../../infrastructure/repositories/therapist.repository.impl.js";
 import { WalletRepositoryImpl } from "../../infrastructure/repositories/wallet.repository.impl.js";
 import { SlotRepository } from "../../infrastructure/repositories/availability.repository.impl.js";
+import { SettingsRepositoryImpl } from "../../infrastructure/repositories/settings.repository.impl.js";
 import { authenticate, authorize } from "../middlewares/auth.middleware.js";
 import { ROLES } from "../../shared/constants/index.js";
 import { VerifyPaymentUseCase } from "../../application/use-cases/payment/verify-payment.usecase.js";
@@ -20,9 +21,10 @@ const bookingRepo = new BookingRepositoryImpl();
 const therapistRepo = new TherapistRepository();
 const walletRepo = new WalletRepositoryImpl();
 const slotRepo = new SlotRepository();
+const settingsRepo = new SettingsRepositoryImpl();
 
 // Use Cases
-const createIntentUC = new CreatePaymentIntentUseCase(paymentRepo, bookingRepo, therapistRepo);
+const createIntentUC = new CreatePaymentIntentUseCase(paymentRepo, bookingRepo, therapistRepo, settingsRepo);
 const handleWebhookUC = new HandleStripeWebhookUseCase(paymentRepo, bookingRepo, walletRepo, slotRepo);
 const completeSessionUC = new CompleteSessionUseCase(bookingRepo, walletRepo, paymentRepo);
 const verifyPaymentUC = new VerifyPaymentUseCase(paymentRepo, bookingRepo, walletRepo, slotRepo);

@@ -45,6 +45,13 @@ export class WalletRepositoryImpl implements IWalletRepository {
       type: doc.type as "credit" | "debit",
       description: doc.description,
       status: doc.status as "pending" | "completed" | "failed",
+      bookingId: doc.bookingId?.toString(),
+      consultationFee: doc.consultationFee,
+      commissionPercentage: doc.commissionPercentage,
+      platformFee: doc.platformFee,
+      totalPaid: doc.totalPaid,
+      therapistEarnings: doc.therapistEarnings,
+      refundAmount: doc.refundAmount,
       createdAt: doc.createdAt,
     };
   }
@@ -125,5 +132,10 @@ export class WalletRepositoryImpl implements IWalletRepository {
   async createTransaction(transaction: Partial<TransactionEntity> & { walletType: string }): Promise<TransactionEntity> {
     const doc = await TransactionModel.create(transaction);
     return this._toTransactionEntity(doc);
+  }
+
+  async updateTransactionStatusByBookingId(bookingId: string, status: "pending" | "completed" | "failed"): Promise<boolean> {
+    const res = await TransactionModel.updateMany({ bookingId }, { status });
+    return res.matchedCount > 0;
   }
 }

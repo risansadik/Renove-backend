@@ -9,18 +9,24 @@ import {
 import { AdminRepository } from "../../infrastructure/repositories/admin.repository.impl.js";
 import { UserRepository } from "../../infrastructure/repositories/user.repository.impl.js";
 import { TherapistRepository } from "../../infrastructure/repositories/therapist.repository.impl.js";
+import { SettingsRepositoryImpl } from "../../infrastructure/repositories/settings.repository.impl.js";
+import { GetAdminFinanceStatsUseCase, UpdatePlatformSettingsUseCase } from "../../application/use-cases/admin/admin-finance.usecase.js";
 import { ResponseModel } from "../../shared/utils/response-model.js";
 import { setAuthCookies, clearAuthCookies } from "../../shared/utils/jwt.js";
 
 const adminRepo = new AdminRepository();
 const userRepo = new UserRepository();
 const therapistRepo = new TherapistRepository();
+const settingsRepo = new SettingsRepositoryImpl();
 
 const adminLoginUC = new AdminLoginUseCase(adminRepo);
 const getAllUsersUC = new GetAllUsersUseCase(userRepo);
 const updateUserStatusUC = new UpdateUserStatusUseCase(userRepo);
 const getAllTherapistsUC = new GetAllTherapistsUseCase(therapistRepo);
 const updateTherapistStatusUC = new UpdateTherapistStatusUseCase(therapistRepo);
+const getAdminFinanceStatsUC = new GetAdminFinanceStatsUseCase(settingsRepo);
+const updatePlatformSettingsUC = new UpdatePlatformSettingsUseCase(settingsRepo);
+
 
 export const adminController = {
   login: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -87,6 +93,25 @@ export const adminController = {
     try {
       const result = await updateTherapistStatusUC.execute({ id: req.params.id, dto: req.body });
       res.json(ResponseModel.success("Therapist status updated", result));
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  getFinanceStats: async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const stats = await getAdminFinanceStatsUC.execute();
+      res.json(ResponseModel.success("Admin finance stats fetched successfully", stats));
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  updateCommission: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { commissionPercentage } = req.body;
+      const result = await updatePlatformSettingsUC.execute(Number(commissionPercentage));
+      res.json(ResponseModel.success("Platform commission updated successfully", result));
     } catch (err) {
       next(err);
     }

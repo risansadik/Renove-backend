@@ -51,7 +51,7 @@ export class PaymentController {
   /**
    * Stripe Webhook Handler (Requires raw body for signature verification).
    */
-  async handleWebhook(req: Request, res: Response, next: NextFunction) {
+  async handleWebhook(req: Request, res: Response, _next: NextFunction) {
     try {
       const signature = req.headers["stripe-signature"] as string;
       // Note: req.body must be the raw buffer here, handled by specialized middleware or config

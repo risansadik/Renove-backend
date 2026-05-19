@@ -51,7 +51,7 @@ export class HandleStripeWebhookUseCase {
     // 2. Update Booking Status
     const booking = await this._bookingRepo.findById(payment.bookingId);
     if (booking) {
-      await this._bookingRepo.updateStatus(payment.id!, BOOKING_STATUS.CONFIRMED);
+      await this._bookingRepo.updateStatus(payment.bookingId, BOOKING_STATUS.CONFIRMED);
       
       // 3. Update Slot Status to BOOKED
       const slotId = typeof booking.slotId === 'object' ? (booking.slotId as any).id : booking.slotId;
@@ -59,7 +59,27 @@ export class HandleStripeWebhookUseCase {
     }
 
     // 4. Update Therapist Wallet: Add to Pending Balance
-    await this._walletRepo.addPendingBalance(payment.therapistId, payment.amount);
+    const feeToCredit = payment.consultationFee ?? payment.amount;
+    await this._walletRepo.addPendingBalance(payment.therapistId, feeToCredit);
+
+    // 5. Create ledger transaction history
+    const therapistWallet = await this._walletRepo.findByTherapistId(payment.therapistId);
+    if (therapistWallet) {
+      await this._walletRepo.createTransaction({
+        walletId: therapistWallet.id!,
+        walletType: "TherapistWallet",
+        amount: feeToCredit,
+        type: "credit",
+        description: `Session payment pending (Booking: ${payment.bookingId})`,
+        status: "pending",
+        bookingId: payment.bookingId,
+        consultationFee: payment.consultationFee ?? payment.amount,
+        commissionPercentage: payment.commissionPercentage ?? 0,
+        platformFee: payment.platformFee ?? 0,
+        totalPaid: payment.amount,
+        therapistEarnings: feeToCredit,
+      });
+    }
 
     logger.info("Successfully processed payment success webhook", { 
       paymentId: payment.id, 

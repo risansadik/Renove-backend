@@ -13,5 +13,6 @@ export interface ISlotRepository {
   findById(id: string): Promise<TherapistSlotEntity | null>;
   updateStatus(id: string, status: SlotStatus): Promise<TherapistSlotEntity | null>;
   findAvailable(therapistId: string, startDate: Date, endDate: Date): Promise<TherapistSlotEntity[]>;
+  findByTherapistIdAndDateRange(therapistId: string, startDate: Date, endDate: Date): Promise<TherapistSlotEntity[]>;
   deleteByAvailabilityId(availabilityId: string): Promise<void>;
 }

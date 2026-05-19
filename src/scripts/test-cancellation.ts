@@ -65,7 +65,7 @@ async function runTests() {
 
   // 3. Create Therapist Wallet
   console.log("Creating therapist wallet...");
-  const wallet = await WalletModel.create({
+  await WalletModel.create({
     therapistId: therapist._id,
     pendingBalance: 150, // Simulated pending earnings
     availableBalance: 0,
@@ -138,7 +138,7 @@ async function runTests() {
 
   // 8. Execute Cancellation
   console.log("--- Executing CancelBookingUseCase ---");
-  const result = await cancelUseCase.execute({
+  await cancelUseCase.execute({
     bookingId: booking._id.toString(),
     cancelledBy: "user",
     userIdOrTherapistId: patient._id.toString(),
