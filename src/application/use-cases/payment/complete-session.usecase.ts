@@ -52,22 +52,33 @@ export class CompleteSessionUseCase {
     }
 
     // 3. Move funds in Wallet
-    await this._walletRepo.movePendingToAvailable(bookingTherapistId, payment.amount);
+    const feeToMove = payment.consultationFee ?? payment.amount;
+    await this._walletRepo.movePendingToAvailable(bookingTherapistId, feeToMove);
 
-    // 4. Create Transaction Record
-    const wallet = await this._walletRepo.findByTherapistId(bookingTherapistId);
-    if (wallet) {
-      await this._walletRepo.createTransaction({
-        walletId: wallet.id!,
-        walletType: "TherapistWallet",
-        amount: payment.amount,
-        type: "credit",
-        description: `Earnings from completed session: ${bookingId}`,
-        status: "completed"
-      });
+    // 4. Update ledger transaction status to completed
+    const matched = await this._walletRepo.updateTransactionStatusByBookingId(bookingId, "completed");
+    
+    if (!matched) {
+      const wallet = await this._walletRepo.findByTherapistId(bookingTherapistId);
+      if (wallet) {
+        await this._walletRepo.createTransaction({
+          walletId: wallet.id!,
+          walletType: "TherapistWallet",
+          amount: feeToMove,
+          type: "credit",
+          description: `Earnings from completed session: ${bookingId}`,
+          status: "completed",
+          bookingId: bookingId,
+          consultationFee: payment.consultationFee ?? payment.amount,
+          commissionPercentage: payment.commissionPercentage ?? 0,
+          platformFee: payment.platformFee ?? 0,
+          totalPaid: payment.amount,
+          therapistEarnings: feeToMove,
+        });
+      }
     }
 
-    logger.info(`Session ${bookingId} completed. Moved ${payment.amount} to clinician ${bookingTherapistId} available balance.`);
+    logger.info(`Session ${bookingId} completed. Moved ${feeToMove} to clinician ${bookingTherapistId} available balance.`);
 
     return { success: true };
   }

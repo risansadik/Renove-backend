@@ -10,6 +10,9 @@ export interface IPaymentDocument extends Document {
   amount: number;
   currency: string;
   status: PaymentStatus;
+  consultationFee?: number;
+  commissionPercentage?: number;
+  platformFee?: number;
   receiptUrl?: string;
   paidAt?: Date;
   refundStatus?: "none" | "pending" | "processed" | "failed" | "partial";
@@ -34,6 +37,9 @@ const PaymentSchema = new Schema<IPaymentDocument>(
       default: "unpaid",
       required: true 
     },
+    consultationFee: { type: Number },
+    commissionPercentage: { type: Number },
+    platformFee: { type: Number },
     receiptUrl: { type: String },
     paidAt: { type: Date },
     refundStatus: { 
@@ -46,6 +52,7 @@ const PaymentSchema = new Schema<IPaymentDocument>(
   },
   { timestamps: true }
 );
+
 
 // Indexes for faster lookups
 PaymentSchema.index({ bookingId: 1 });

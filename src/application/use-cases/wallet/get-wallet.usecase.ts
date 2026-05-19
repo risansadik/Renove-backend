@@ -1,7 +1,6 @@
 import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.js";
 import type { TransactionEntity } from "../../../domain/entities/Transaction.entity.js";
-import { ROLES, HttpStatus } from "../../../shared/constants/index.js";
-import { AppError } from "../../../shared/utils/AppError.js";
+import { ROLES } from "../../../shared/constants/index.js";
 
 import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination.js";
 

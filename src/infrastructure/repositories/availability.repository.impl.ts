@@ -84,6 +84,15 @@ export class SlotRepository implements ISlotRepository {
     return slots.map(s => this._toSlotEntity(s));
   }
 
+  async findByTherapistIdAndDateRange(therapistId: string, startDate: Date, endDate: Date): Promise<TherapistSlotEntity[]> {
+    const slots = await SlotModel.find({
+      therapistId,
+      startTime: { $lt: endDate },
+      endTime: { $gt: startDate }
+    }).sort({ startTime: 1 });
+    return slots.map(s => this._toSlotEntity(s));
+  }
+
   async deleteByAvailabilityId(availabilityId: string): Promise<void> {
     await SlotModel.deleteMany({ availabilityId, status: "AVAILABLE" });
   }

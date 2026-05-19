@@ -76,45 +76,64 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
 
     // B. Handle payment refund status & wallet adjustment if payment was PAID
     if (payment && payment.status === PAYMENT_STATUS.PAID) {
-      const refundAmount = payment.amount * refundPercent;
+      const userRefundAmount = payment.amount * refundPercent;
+      const therapistDeduction = (payment.consultationFee ?? payment.amount) * refundPercent;
 
       // Update payment record to processed refund status
       await this._paymentRepo.updateStatus(payment.id!, PAYMENT_STATUS.REFUNDED, {
         refundStatus: "processed",
-        refundAmount: refundAmount,
+        refundAmount: userRefundAmount,
         refundedAt: now
       });
 
-      // Deduct refundAmount from therapist pending wallet
-      if (refundAmount > 0) {
-        await this._walletRepo.addPendingBalance(bookingTherapistId, -refundAmount);
+      // Update original pending transaction status to failed
+      await this._walletRepo.updateTransactionStatusByBookingId(bookingId, "failed");
+
+      // Deduct therapistDeduction from therapist pending wallet
+      if (therapistDeduction > 0) {
+        await this._walletRepo.addPendingBalance(bookingTherapistId, -therapistDeduction);
 
         const therapistWallet = await this._walletRepo.findByTherapistId(bookingTherapistId);
         if (therapistWallet) {
           await this._walletRepo.createTransaction({
             walletId: therapistWallet.id!,
             walletType: "TherapistWallet",
-            amount: refundAmount,
+            amount: therapistDeduction,
             type: "debit",
             description: `Deduction for cancelled session: ${bookingId}`,
-            status: "completed"
+            status: "completed",
+            bookingId: bookingId,
+            consultationFee: payment.consultationFee ?? payment.amount,
+            commissionPercentage: payment.commissionPercentage ?? 0,
+            platformFee: payment.platformFee ?? 0,
+            totalPaid: payment.amount,
+            refundAmount: userRefundAmount,
+            therapistEarnings: -therapistDeduction,
           });
         }
+      }
 
-        // Credit the patient's User Wallet
+      // Credit the patient's User Wallet
+      if (userRefundAmount > 0) {
         let userWallet = await this._walletRepo.findByUserId(bookingUserId);
         if (!userWallet) {
           userWallet = await this._walletRepo.createUserWallet({ userId: bookingUserId });
         }
 
-        await this._walletRepo.addUserBalance(bookingUserId, refundAmount);
+        await this._walletRepo.addUserBalance(bookingUserId, userRefundAmount);
         await this._walletRepo.createTransaction({
           walletId: userWallet.id!,
           walletType: "UserWallet",
-          amount: refundAmount,
+          amount: userRefundAmount,
           type: "credit",
           description: `Refund for cancelled session: ${bookingId}`,
-          status: "completed"
+          status: "completed",
+          bookingId: bookingId,
+          consultationFee: payment.consultationFee ?? payment.amount,
+          commissionPercentage: payment.commissionPercentage ?? 0,
+          platformFee: payment.platformFee ?? 0,
+          totalPaid: payment.amount,
+          refundAmount: userRefundAmount,
         });
       }
     } else if (booking.status === BOOKING_STATUS.AWAITING_PAYMENT) {

@@ -14,7 +14,7 @@ export class VerifyPaymentUseCase {
         private _slotRepo: ISlotRepository
     ) { }
 
-    async execute(bookingId: string, userId: string) {
+    async execute(bookingId: string, _userId: string) {
         // 1. Find local payment record
         const payment = await this._paymentRepo.findByBookingId(bookingId);
         // findByBookingId checks status=paid, so try unpaid too
@@ -57,7 +57,27 @@ export class VerifyPaymentUseCase {
         }
 
         // 6. Add to therapist pending wallet
-        await this._walletRepo.addPendingBalance(anyPayment.therapistId, anyPayment.amount);
+        const feeToCredit = anyPayment.consultationFee ?? anyPayment.amount;
+        await this._walletRepo.addPendingBalance(anyPayment.therapistId, feeToCredit);
+
+        // 7. Create ledger transaction history
+        const therapistWallet = await this._walletRepo.findByTherapistId(anyPayment.therapistId);
+        if (therapistWallet) {
+            await this._walletRepo.createTransaction({
+                walletId: therapistWallet.id!,
+                walletType: "TherapistWallet",
+                amount: feeToCredit,
+                type: "credit",
+                description: `Session payment pending (Booking: ${bookingId})`,
+                status: "pending",
+                bookingId: bookingId,
+                consultationFee: anyPayment.consultationFee ?? anyPayment.amount,
+                commissionPercentage: anyPayment.commissionPercentage ?? 0,
+                platformFee: anyPayment.platformFee ?? 0,
+                totalPaid: anyPayment.amount,
+                therapistEarnings: feeToCredit,
+            });
+        }
 
         return { success: true };
     }
@@ -74,7 +94,10 @@ export class VerifyPaymentUseCase {
             therapistId: doc.therapistId.toString(),
             paymentIntentId: doc.paymentIntentId,
             amount: doc.amount,
+            consultationFee: doc.consultationFee,
+            commissionPercentage: doc.commissionPercentage,
+            platformFee: doc.platformFee,
             status: doc.status,
         };
     }
-}
+}

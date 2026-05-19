@@ -1,7 +1,7 @@
 import type { TherapistWalletEntity } from "../entities/TherapistWallet.entity.js";
 import type { UserWalletEntity } from "../entities/UserWallet.entity.js";
 import type { TransactionEntity } from "../entities/Transaction.entity.js";
-import { PaginationParams, PaginatedResult } from "./pagination.js";
+import { PaginationParams, PaginatedResult } from "../interfaces/pagination.js";
 
 export interface IWalletRepository {
   // Therapist Wallet
@@ -18,4 +18,5 @@ export interface IWalletRepository {
   // Transactions
   getTransactions(walletId: string, walletType: "TherapistWallet" | "UserWallet", params?: PaginationParams): Promise<PaginatedResult<TransactionEntity>>;
   createTransaction(transaction: Partial<TransactionEntity> & { walletType: string }): Promise<TransactionEntity>;
+  updateTransactionStatusByBookingId(bookingId: string, status: "pending" | "completed" | "failed"): Promise<boolean>;
 }

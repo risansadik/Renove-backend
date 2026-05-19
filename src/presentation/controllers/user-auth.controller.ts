@@ -10,7 +10,7 @@ import { VerifyResetOtpUseCase } from "../../application/use-cases/auth/verify-r
 import { UserRepository } from "../../infrastructure/repositories/user.repository.impl.js";
 import { TherapistRepository } from "../../infrastructure/repositories/therapist.repository.impl.js";
 import { ResponseModel } from "../../shared/utils/response-model.js";
-import { setAuthCookies, clearAuthCookies, verifyRefreshToken } from "../../shared/utils/jwt.js";
+import { setAuthCookies, clearAuthCookies } from "../../shared/utils/jwt.js";
 import { HttpStatus } from "../../shared/constants/index.js";
 import { RefreshTokenUseCase } from "../../application/use-cases/auth/refresh-token.usecase.js";
 

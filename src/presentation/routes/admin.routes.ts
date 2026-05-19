@@ -32,4 +32,7 @@ router.patch(
   adminController.updateTherapistStatus
 );
 
+router.get("/finance/stats", authenticate, authorize(ROLES.ADMIN), adminController.getFinanceStats);
+router.patch("/settings/commission", authenticate, authorize(ROLES.ADMIN), adminController.updateCommission);
+
 export default router;

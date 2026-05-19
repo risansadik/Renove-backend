@@ -48,6 +48,13 @@ export interface ITransactionDocument extends Document {
   type: "credit" | "debit";
   description: string;
   status: "pending" | "completed" | "failed";
+  bookingId?: mongoose.Types.ObjectId;
+  consultationFee?: number;
+  commissionPercentage?: number;
+  platformFee?: number;
+  totalPaid?: number;
+  therapistEarnings?: number;
+  refundAmount?: number;
   createdAt: Date;
 }
 
@@ -59,9 +66,17 @@ const TransactionSchema = new Schema<ITransactionDocument>(
     type: { type: String, enum: ["credit", "debit"], required: true },
     description: { type: String, required: true },
     status: { type: String, enum: ["pending", "completed", "failed"], default: "completed" },
+    bookingId: { type: Schema.Types.ObjectId, ref: "Booking" },
+    consultationFee: { type: Number },
+    commissionPercentage: { type: Number },
+    platformFee: { type: Number },
+    totalPaid: { type: Number },
+    therapistEarnings: { type: Number },
+    refundAmount: { type: Number },
   },
   { timestamps: { createdAt: true, updatedAt: false } }
 );
+
 
 TransactionSchema.index({ walletId: 1, createdAt: -1 });
 export const TransactionModel = mongoose.model<ITransactionDocument>("Transaction", TransactionSchema);
