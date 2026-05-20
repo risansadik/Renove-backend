@@ -8,6 +8,7 @@ export interface PublicUserDTO {
   email: string;
   isVerified: boolean;
   status: UserStatus;
+  isGoogleAuth?: boolean;
   createdAt: Date;
 }
 
@@ -35,6 +36,7 @@ export class UserMapper {
       email: entity.email,
       isVerified: entity.isVerified,
       status: entity.status,
+      isGoogleAuth: entity.isGoogleAuth,
       createdAt: entity.createdAt,
     };
   }

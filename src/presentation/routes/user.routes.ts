@@ -3,6 +3,9 @@ import { userAuthController } from "../controllers/user-auth.controller.js";
 import { userDashboardController } from "../controllers/user-dashboard.controller.js";
 import { authenticate, authorize } from "../middlewares/auth.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
+import { upload } from "../middlewares/upload.middleware.js";
+import { profileController } from "../controllers/profile.controller.js";
+import { UpdateUserProfileSchema, ChangePasswordSchema } from "../../application/dto/profile/profile.dto.js";
 import {
   ForgotPasswordSchema,
   GoogleAuthSchema,
@@ -33,6 +36,11 @@ router.get("/dashboard", authenticate, authorize(ROLES.USER), userDashboardContr
 router.post("/mood", authenticate, authorize(ROLES.USER), userDashboardController.logMood);
 router.patch("/missions/:missionId", authenticate, authorize(ROLES.USER), userDashboardController.toggleMission);
 router.get("/therapists", authenticate, authorize(ROLES.USER), userDashboardController.getApprovedTherapists);
+
+// ── Profile (protected) ──────────────────────────────────
+router.get("/profile", authenticate, authorize(ROLES.USER), profileController.getUserProfile);
+router.patch("/profile", authenticate, authorize(ROLES.USER), upload.single("profileImage"), validate(UpdateUserProfileSchema), profileController.updateUserProfile);
+router.post("/profile/password", authenticate, authorize(ROLES.USER), validate(ChangePasswordSchema), profileController.changeUserPassword);
 
 export default router;
 

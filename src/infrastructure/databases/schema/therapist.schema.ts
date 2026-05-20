@@ -16,6 +16,8 @@ export interface ITherapistDocument extends Document {
   profileImage?: string;
   status: TherapistStatus;
   isVerified: boolean;
+  pendingUpdates?: Record<string, unknown>;
+  adminRejectionReason?: string;
   otp?: string;
   otpExpiry?: Date;
   createdAt : Date;
@@ -44,6 +46,8 @@ const TherapistSchema = new Schema<ITherapistDocument>(
       default: THERAPIST_STATUS.PENDING,
     },
     isVerified: { type: Boolean, default: false },
+    pendingUpdates: { type: Schema.Types.Mixed },
+    adminRejectionReason: { type: String },
     otp: { type: String },
     otpExpiry: { type: Date },
   },

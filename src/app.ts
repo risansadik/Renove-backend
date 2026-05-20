@@ -18,7 +18,7 @@ app.use(
       const allowed = (process.env.CLIENT_URL ?? "http://localhost:5173")
         .split(",")
         .map((o) => o.trim())
-        .concat(["http://localhost:5174", "http://localhost:5173"]);
+        .concat(["http://localhost:5174", "http://localhost:5173", "http://10.10.10.144:5173"]);
       if (!origin || allowed.includes(origin)) return cb(null, true);
       cb(new Error(`CORS blocked: ${origin}`));
     },
@@ -43,7 +43,9 @@ app.get("/health", (_req, res) => {
 
 
 app.use("/api/user/auth", userRoutes);
+app.use("/api/user", userRoutes);
 app.use("/api/therapist/auth", therapistRoutes);
+app.use("/api/therapist", therapistRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/availability", availabilityRoutes);
