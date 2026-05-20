@@ -10,7 +10,6 @@ async function cleanupIndexes() {
   console.log('Current indexes on bookings:', JSON.stringify(indexes, null, 2));
   
   for (const index of indexes) {
-    // Skip the ID index and the new slotId index
     if (index.name === '_id_' || index.name === 'slotId_1') continue;
     
     const keys = Object.keys(index.key);

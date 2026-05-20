@@ -29,8 +29,6 @@ router.post(
     { name: "certificationFiles", maxCount: 5 }
   ]),
   (req, _res, next) => {
-    // If body fields are strings (from FormData), try to parse them if needed
-    // Specialization is usually sent as a JSON string or multiple fields
     if (typeof req.body.specialization === "string") {
       try { req.body.specialization = JSON.parse(req.body.specialization); }
       catch { req.body.specialization = req.body.specialization.split(",").map((s: string) => s.trim()).filter(Boolean); }

@@ -9,6 +9,13 @@ export interface GoogleUserPayload {
   sub: string;
 }
 
+interface GoogleUserInfo {
+  email: string;
+  name: string;
+  sub: string;
+  picture?: string;
+}
+
 export const verifyGoogleToken = async (token: string): Promise<GoogleUserPayload> => {
   if (!GOOGLE_CONFIG.CLIENT_ID) {
     throw new AppError("Google Client ID is not configured", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -22,7 +29,7 @@ export const verifyGoogleToken = async (token: string): Promise<GoogleUserPayloa
   if (isAccessToken) {
     try {
       client.setCredentials({ access_token: token });
-      const response = await client.request<any>({
+      const response = await client.request<GoogleUserInfo>({
         url: "https://www.googleapis.com/oauth2/v3/userinfo",
       });
       const payload = response.data;

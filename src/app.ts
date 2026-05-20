@@ -30,7 +30,6 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Webhook route must come BEFORE express.json() to allow express.raw() in its own router
 app.use("/api/payments", paymentRoutes);
 
 
