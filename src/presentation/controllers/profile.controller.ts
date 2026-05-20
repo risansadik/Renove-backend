@@ -15,8 +15,10 @@ import { UpdateAdminProfileUseCase } from "../../application/use-cases/profile/u
 import { ChangeAdminPasswordUseCase } from "../../application/use-cases/profile/change-admin-password.usecase.js";
 
 import { ReviewTherapistProfileUseCase } from "../../application/use-cases/admin/review-therapist-profile.usecase.js";
-import { TherapistModel } from "../../infrastructure/databases/schema/therapist.schema.js";
+import { TherapistModel, type ITherapistDocument } from "../../infrastructure/databases/schema/therapist.schema.js";
 import { THERAPIST_STATUS } from "../../shared/constants/index.js";
+
+type WithId<T> = T & { _id: { toString(): string } };
 
 const getUserProfileUC = new GetUserProfileUseCase();
 const updateUserProfileUC = new UpdateUserProfileUseCase();
@@ -39,7 +41,7 @@ export const profileController = {
       const user = await getUserProfileUC.execute(req.user!.id);
       const mapped = user ? {
         ...user,
-        id: (user as any)._id.toString(),
+        id: (user as WithId<typeof user>)._id.toString(),
       } : null;
       res.json(ResponseModel.success("User profile fetched", { user: mapped }));
     } catch (error) {
@@ -63,7 +65,7 @@ export const profileController = {
       const user = await updateUserProfileUC.execute(req.user!.id, updateData);
       const mapped = user ? {
         ...user,
-        id: (user as any)._id.toString(),
+        id: (user as WithId<typeof user>)._id.toString(),
       } : null;
       res.json(ResponseModel.success("User profile updated", { user: mapped }));
     } catch (error) {
@@ -86,7 +88,7 @@ export const profileController = {
       const therapist = await getTherapistProfileUC.execute(req.user!.id);
       const mapped = therapist ? {
         ...therapist,
-        id: (therapist as any)._id.toString(),
+        id: (therapist as WithId<typeof therapist>)._id.toString(),
       } : null;
       res.json(ResponseModel.success("Therapist profile fetched", { therapist: mapped }));
     } catch (error) {
@@ -116,7 +118,7 @@ export const profileController = {
       const therapist = await updateTherapistProfileUC.execute(req.user!.id, updateData);
       const mapped = therapist ? {
         ...therapist,
-        id: (therapist as any)._id.toString(),
+        id: (therapist as WithId<typeof therapist>)._id.toString(),
       } : null;
       res.json(ResponseModel.success("Therapist profile update processed", { therapist: mapped }));
     } catch (error) {
@@ -139,7 +141,7 @@ export const profileController = {
       const admin = await getAdminProfileUC.execute(req.user!.id);
       const mapped = admin ? {
         ...admin,
-        id: (admin as any)._id.toString(),
+        id: (admin as WithId<typeof admin>)._id.toString(),
       } : null;
       res.json(ResponseModel.success("Admin profile fetched", { admin: mapped }));
     } catch (error) {
@@ -161,7 +163,7 @@ export const profileController = {
       const admin = await updateAdminProfileUC.execute(req.user!.id, updateData);
       const mapped = admin ? {
         ...admin,
-        id: (admin as any)._id.toString(),
+        id: (admin as WithId<typeof admin>)._id.toString(),
       } : null;
       res.json(ResponseModel.success("Admin profile updated", { admin: mapped }));
     } catch (error) {
@@ -181,10 +183,10 @@ export const profileController = {
   // ── ADMIN: THERAPIST REVIEWS ──
   getPendingTherapistUpdates: async (_req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const pendingTherapists = await TherapistModel.find({ status: THERAPIST_STATUS.REVIEW_REQUIRED }).select("-password").lean();
-      const mapped = pendingTherapists.map((t: any) => ({
+      const pendingTherapists = await TherapistModel.find({ status: THERAPIST_STATUS.REVIEW_REQUIRED }).select("-password").lean<ITherapistDocument[]>();
+      const mapped = pendingTherapists.map((t) => ({
         ...t,
-        id: t._id.toString(),
+        id: (t as WithId<ITherapistDocument>)._id.toString(),
       }));
       res.json(ResponseModel.success("Pending therapist updates fetched", { therapists: mapped }));
     } catch (error) {
@@ -197,7 +199,7 @@ export const profileController = {
       const therapist = await reviewTherapistProfileUC.execute(req.params.id, status, reason);
       const mapped = therapist ? {
         ...therapist,
-        id: (therapist as any)._id.toString(),
+        id: (therapist as WithId<typeof therapist>)._id.toString(),
       } : null;
       res.json(ResponseModel.success(`Therapist profile update ${status}`, { therapist: mapped }));
     } catch (error) {
