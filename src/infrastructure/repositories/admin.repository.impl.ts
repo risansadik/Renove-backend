@@ -1,7 +1,8 @@
-import type { IAdminRepository } from "../../domain/repositories/admin.repository";
-import type { AdminEntity } from "../../domain/entities/Admin.entity";
-import { AdminModel } from "../databases/schema/admin.schema";
-import { AdminMapper } from "../../application/mappers/admin.mapper";
+import type { IAdminRepository } from "../../domain/repositories/admin.repository.js";
+import type { AdminEntity } from "../../domain/entities/Admin.entity.js";
+import { AdminModel } from "../databases/schema/admin.schema.js";
+import { AdminMapper } from "../../application/mappers/admin.mapper.js";
+import { PaginationParams, PaginatedResult } from "../../domain/interfaces/pagination.js";
 
 export class AdminRepository implements IAdminRepository {
   async findById(id: string): Promise<AdminEntity | null> {
@@ -14,9 +15,19 @@ export class AdminRepository implements IAdminRepository {
     return doc ? AdminMapper.toEntity(doc) : null;
   }
 
-  async findAll(): Promise<AdminEntity[]> {
-    const docs = await AdminModel.find().lean();
-    return docs.map(AdminMapper.toEntity);
+  async findAll(params?: PaginationParams): Promise<PaginatedResult<AdminEntity>> {
+    const query = AdminModel.find();
+    if (params) {
+      query.skip((params.page - 1) * params.limit).limit(params.limit);
+    }
+    const [docs, total] = await Promise.all([
+      query.lean().exec(),
+      AdminModel.countDocuments()
+    ]);
+    return {
+      data: docs.map(AdminMapper.toEntity),
+      total
+    };
   }
 
   async create(data: Partial<AdminEntity>): Promise<AdminEntity> {

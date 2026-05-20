@@ -1,15 +1,14 @@
-import dns from "node:dns";
-dns.setServers(["8.8.8.8", "8.8.4.4"]); 
-
 import "dotenv/config";
-import app from "./app";
-import { connectDB } from "./infrastructure/databases/connect";
-import { logger } from "./shared/utils/logger";
+import app from "./app.js";
+import { connectDB } from "./infrastructure/databases/connect.js";
+import { initCronJobs } from "./infrastructure/scheduler.js";
+import { logger } from "./shared/utils/logger.js";
 
 const PORT = process.env.PORT ?? 5000;
 
 const startServer = async (): Promise<void> => {
   await connectDB();
+  initCronJobs();
   app.listen(PORT, () => {
     logger.info(`reNove server running on port ${PORT} [${process.env.NODE_ENV}]`);
   });

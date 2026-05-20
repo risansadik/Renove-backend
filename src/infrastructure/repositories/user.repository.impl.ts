@@ -1,7 +1,9 @@
-import type { IUserRepository } from "../../domain/repositories/user.repository";
-import type { UserEntity } from "../../domain/entities/User.entity";
-import { UserModel } from "../databases/schema/user.schema";
-import { UserMapper } from "../../application/mappers/user.mapper";
+import type { IUserRepository } from "../../domain/repositories/user.repository.js";
+import type { UserEntity } from "../../domain/entities/User.entity.js";
+import { UserModel } from "../databases/schema/user.schema.js";
+import { UserMapper } from "../../application/mappers/user.mapper.js";
+
+import { PaginationParams, PaginatedResult } from "../../domain/interfaces/pagination.js";
 
 export class UserRepository implements IUserRepository {
   async findById(id: string): Promise<UserEntity | null> {
@@ -14,9 +16,19 @@ export class UserRepository implements IUserRepository {
     return doc ? UserMapper.toEntity(doc) : null;
   }
 
-  async findAll(): Promise<UserEntity[]> {
-    const docs = await UserModel.find().lean().exec();
-    return docs.map(UserMapper.toEntity);
+  async findAll(params?: PaginationParams): Promise<PaginatedResult<UserEntity>> {
+    const query = UserModel.find();
+    if (params) {
+      query.skip((params.page - 1) * params.limit).limit(params.limit);
+    }
+    const [docs, total] = await Promise.all([
+      query.lean().exec(),
+      UserModel.countDocuments()
+    ]);
+    return {
+      data: docs.map(UserMapper.toEntity),
+      total
+    };
   }
 
   async create(data: Partial<UserEntity>): Promise<UserEntity> {
@@ -39,7 +51,10 @@ export class UserRepository implements IUserRepository {
   }
 
   async verifyUser(email: string): Promise<void> {
-    await UserModel.updateOne({ email }, { isVerified: true, otp: null, otpExpiry: null });
+    await UserModel.updateOne(
+      { email },
+      { $set: { isVerified: true }, $unset: { otp: "", otpExpiry: "" } }
+    );
   }
 
   async updateStatus(id: string, status: UserEntity["status"]): Promise<void> {

@@ -14,6 +14,7 @@ export const THERAPIST_STATUS = {
   PENDING: "pending",
   APPROVED: "approved",
   REJECTED: "rejected",
+  REVIEW_REQUIRED: "review_required",
 } as const;
 
 export type TherapistStatus = (typeof THERAPIST_STATUS)[keyof typeof THERAPIST_STATUS];
@@ -25,6 +26,49 @@ export const USER_STATUS = {
 
 export type UserStatus = (typeof USER_STATUS)[keyof typeof USER_STATUS];
 
+export const BOOKING_STATUS = {
+  PENDING: "pending",
+  REJECTED: "rejected",
+  AWAITING_PAYMENT: "awaiting_payment",
+  CONFIRMED: "confirmed",
+  COMPLETED: "completed",
+  CANCELLED: "cancelled",
+  EXPIRED: "expired",
+  NO_SHOW: "no_show",
+} as const;
+
+export type BookingStatus = (typeof BOOKING_STATUS)[keyof typeof BOOKING_STATUS];
+
+export const PAYMENT_STATUS = {
+  UNPAID: "unpaid",
+  PENDING: "pending",
+  PAID: "paid",
+  FAILED: "failed",
+  REFUNDED: "refunded",
+} as const;
+
+export type PaymentStatus = (typeof PAYMENT_STATUS)[keyof typeof PAYMENT_STATUS];
+
+export const REFUND_STATUS = {
+  NONE: "none",
+  PENDING: "pending",
+  PROCESSED: "processed",
+  FAILED: "failed",
+  PARTIAL: "partial",
+} as const;
+
+export type RefundStatus = (typeof REFUND_STATUS)[keyof typeof REFUND_STATUS];
+
+export const SLOT_STATUS = {
+  AVAILABLE: "AVAILABLE",
+  RESERVED: "RESERVED",
+  BOOKED: "BOOKED",
+  BLOCKED: "BLOCKED",
+  EXPIRED: "EXPIRED",
+} as const;
+
+export type SlotStatus = (typeof SLOT_STATUS)[keyof typeof SLOT_STATUS];
+
 export const HttpStatus = {
   OK: 200,
   CREATED: 201,
@@ -33,6 +77,8 @@ export const HttpStatus = {
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
   NOT_FOUND: 404,
+  CONFLICT: 409,
+  GONE : 410,
   INTERNAL_SERVER_ERROR: 500,
 } as const;
 
@@ -58,4 +104,9 @@ export const MAIL_CONFIG = {
   PORT: Number(process.env.SMTP_PORT) || 587,
   USER: process.env.SMTP_USER,
   PASS: process.env.SMTP_PASS,
+} as const;
+
+export const GOOGLE_CONFIG = {
+  CLIENT_ID: process.env.GOOGLE_CLIENT_ID || "",
+  CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || "",
 } as const;

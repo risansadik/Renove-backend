@@ -1,15 +1,31 @@
-import type { TherapistEntity } from "../../domain/entities/Therapist.entity";
-import type { ITherapistRaw } from "../../infrastructure/databases/schema/therapist.schema";
+import type { TherapistEntity } from "../../domain/entities/Therapist.entity.js";
+import type { ITherapistRaw } from "../../infrastructure/databases/schema/therapist.schema.js";
+
+export interface PublicTherapistDTO {
+  id: string;
+  name: string;
+  email: string;
+  gender: string;
+  qualification: string;
+  specialization: string[];
+  experience: number;
+  consultationFee: number;
+  bio: string;
+  certifications?: string[];
+  certificationFiles?: string[];
+  profileImage?: string;
+  status: string;
+  isVerified: boolean;
+  createdAt: Date;
+}
 
 export class TherapistMapper {
-
   static toEntity(doc: ITherapistRaw): TherapistEntity {
     return {
       id: doc._id.toString(),
       name: doc.name,
       email: doc.email,
       password: doc.password,
-      phone: doc.phone,
       gender: doc.gender,
       qualification: doc.qualification,
       specialization: doc.specialization,
@@ -17,6 +33,7 @@ export class TherapistMapper {
       consultationFee: doc.consultationFee,
       bio: doc.bio,
       certifications: doc.certifications,
+      certificationFiles: doc.certificationFiles,
       profileImage: doc.profileImage,
       status: doc.status,
       isVerified: doc.isVerified,
@@ -27,12 +44,13 @@ export class TherapistMapper {
     };
   }
 
-  static toPublicDTO(entity: TherapistEntity) {
+  static toPublicDTO(entity: TherapistEntity): PublicTherapistDTO {
+    const rawName = entity.name || "";
+    const formattedName = rawName.startsWith("Dr. ") ? rawName : `Dr. ${rawName}`;
     return {
       id: entity.id,
-      name: entity.name,
+      name: formattedName,
       email: entity.email,
-      phone: entity.phone,
       gender: entity.gender,
       qualification: entity.qualification,
       specialization: entity.specialization,
@@ -40,10 +58,15 @@ export class TherapistMapper {
       consultationFee: entity.consultationFee,
       bio: entity.bio,
       certifications: entity.certifications,
+      certificationFiles: entity.certificationFiles,
       profileImage: entity.profileImage,
       status: entity.status,
       isVerified: entity.isVerified,
       createdAt: entity.createdAt,
     };
+  }
+
+  static toPublicDTOList(entities: TherapistEntity[]): PublicTherapistDTO[] {
+    return entities.map(e => this.toPublicDTO(e));
   }
 }

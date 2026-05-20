@@ -1,4 +1,4 @@
-import { OTP_LENGTH } from "../constants/index";
+import { OTP_EXPIRY_MINUTES, OTP_LENGTH } from "../constants/index.js";
 
 export const generateOtp = (): string => {
   const digits = "0123456789";
@@ -9,7 +9,7 @@ export const generateOtp = (): string => {
   return otp;
 };
 
-export const getOtpExpiry = (minutes = 10): Date => {
+export const getOtpExpiry = (minutes = OTP_EXPIRY_MINUTES): Date => {
   return new Date(Date.now() + minutes * 60 * 1000);
 };
 
