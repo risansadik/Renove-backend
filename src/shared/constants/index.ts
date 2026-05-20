@@ -14,6 +14,7 @@ export const THERAPIST_STATUS = {
   PENDING: "pending",
   APPROVED: "approved",
   REJECTED: "rejected",
+  REVIEW_REQUIRED: "review_required",
 } as const;
 
 export type TherapistStatus = (typeof THERAPIST_STATUS)[keyof typeof THERAPIST_STATUS];

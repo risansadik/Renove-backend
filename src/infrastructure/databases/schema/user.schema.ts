@@ -6,6 +6,7 @@ export interface IUserDocument extends Document {
   email: string;
   password?: string;
   isGoogleAuth: boolean;
+  profileImage?: string;
   isVerified: boolean;
   status: UserStatus;
   otp?: string;
@@ -22,6 +23,7 @@ const UserSchema = new Schema<IUserDocument>(
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
     password: { type: String },
     isGoogleAuth: { type: Boolean, default: false },
+    profileImage: { type: String },
     isVerified: { type: Boolean, default: false },
     status: { type: String, enum: Object.values(USER_STATUS), default: USER_STATUS.ACTIVE },
     otp: { type: String },

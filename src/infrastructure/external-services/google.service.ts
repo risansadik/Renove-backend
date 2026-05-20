@@ -21,21 +21,22 @@ export const verifyGoogleToken = async (token: string): Promise<GoogleUserPayloa
 
   if (isAccessToken) {
     try {
-      const response = await client.request<Record<string, unknown>>({
+      client.setCredentials({ access_token: token });
+      const response = await client.request<any>({
         url: "https://www.googleapis.com/oauth2/v3/userinfo",
-        headers: { Authorization: `Bearer ${token}` },
       });
       const payload = response.data;
       if (!payload?.email || !payload?.name || !payload?.sub) {
         throw new AppError("Invalid Google token: Missing profile information", HttpStatus.UNAUTHORIZED);
       }
       return {
-        email: payload.email as string,
-        name: payload.name as string,
-        picture: payload.picture as string,
-        sub: payload.sub as string,
+        email: payload.email,
+        name: payload.name,
+        picture: payload.picture,
+        sub: payload.sub,
       };
-    } catch {
+    } catch (error) {
+      console.error("Google access token verification error details:", error);
       throw new AppError("Failed to verify Google access token", HttpStatus.UNAUTHORIZED);
     }
   }
@@ -59,6 +60,7 @@ export const verifyGoogleToken = async (token: string): Promise<GoogleUserPayloa
       sub: payload.sub,
     };
   } catch (error) {
+    console.error("Google ID token verification error details:", error);
     if (error instanceof AppError) throw error;
     throw new AppError("Failed to verify Google token", HttpStatus.UNAUTHORIZED);
   }
