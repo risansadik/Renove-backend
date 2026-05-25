@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import type { ZodSchema } from "zod";
-import { ResponseModel } from "../../shared/utils/response-model.js";
-import { HttpStatus } from "../../shared/constants/index.js";
+import { ResponseModel } from "../../shared/utils/response-model.ts";
+import { HttpStatus } from "../../shared/constants/index.ts";
 
 export const validate = (schema: ZodSchema) => {
   return (req: Request, res: Response, next: NextFunction): void => {

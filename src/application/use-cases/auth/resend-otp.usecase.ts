@@ -1,13 +1,13 @@
-import type { IUserRepository } from "../../../domain/repositories/user.repository.js";
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.js";
-import type { ResendOtpDTO } from "../../dto/auth/user.dto.js";
-import { sendOtpEmail } from "../../../infrastructure/external-services/email.service.js";
-import { generateOtp, getOtpExpiry } from "../../../shared/utils/otp.js";
-import { AppError, NotFoundError } from "../../../shared/utils/AppError.js";
+import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
+import type { ResendOtpDTO } from "../../dto/auth/user.dto.ts";
+import { sendOtpEmail } from "../../../infrastructure/external-services/email.service.ts";
+import { generateOtp, getOtpExpiry } from "../../../shared/utils/otp.ts";
+import { AppError, NotFoundError } from "../../../shared/utils/AppError.ts";
 
 
 
-import type { IResendOtpUseCase } from "../../interfaces/auth/IAuthUseCase.js";
+import type { IResendOtpUseCase } from "../../interfaces/auth/IAuthUseCase.ts";
 
 export class ResendOtpUseCase implements IResendOtpUseCase {
   constructor(

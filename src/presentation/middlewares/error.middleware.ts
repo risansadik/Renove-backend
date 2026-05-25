@@ -1,8 +1,8 @@
 import type { Request, Response, NextFunction } from "express";
-import { AppError } from "../../shared/utils/AppError.js";
-import { ResponseModel } from "../../shared/utils/response-model.js";
-import { logger } from "../../shared/utils/logger.js";
-import { HttpStatus } from "../../shared/constants/index.js";
+import { AppError } from "../../shared/utils/AppError.ts";
+import { ResponseModel } from "../../shared/utils/response-model.ts";
+import { logger } from "../../shared/utils/logger.ts";
+import { HttpStatus } from "../../shared/constants/index.ts";
 
 export const errorHandler = (
   err: Error,

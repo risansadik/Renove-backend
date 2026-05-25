@@ -1,18 +1,18 @@
 import type { Request, Response, NextFunction } from "express";
-import { RegisterTherapistUseCase } from "../../application/use-cases/auth/register-therapist.usecase.js";
-import { VerifyTherapistOtpUseCase } from "../../application/use-cases/auth/verify-therapist-otp.usecase.js";
-import { ResendOtpUseCase } from "../../application/use-cases/auth/resend-otp.usecase.js";
-import { LoginTherapistUseCase } from "../../application/use-cases/auth/login-therapist.usecase.js";
-import { ForgotPasswordUseCase } from "../../application/use-cases/auth/forgot-password.usecase.js";
-import { VerifyResetOtpUseCase } from "../../application/use-cases/auth/verify-reset-otp.usecase.js";
-import { ResetPasswordUseCase } from "../../application/use-cases/auth/reset-password.usecase.js";
-import { TherapistRepository } from "../../infrastructure/repositories/therapist.repository.impl.js";
-import { UserRepository } from "../../infrastructure/repositories/user.repository.impl.js";
-import { ResponseModel } from "../../shared/utils/response-model.js";
-import { setAuthCookies, clearAuthCookies } from "../../shared/utils/jwt.js";
-import { HttpStatus } from "../../shared/constants/index.js";
+import { RegisterTherapistUseCase } from "../../application/use-cases/auth/register-therapist.usecase.ts";
+import { VerifyTherapistOtpUseCase } from "../../application/use-cases/auth/verify-therapist-otp.usecase.ts";
+import { ResendOtpUseCase } from "../../application/use-cases/auth/resend-otp.usecase.ts";
+import { LoginTherapistUseCase } from "../../application/use-cases/auth/login-therapist.usecase.ts";
+import { ForgotPasswordUseCase } from "../../application/use-cases/auth/forgot-password.usecase.ts";
+import { VerifyResetOtpUseCase } from "../../application/use-cases/auth/verify-reset-otp.usecase.ts";
+import { ResetPasswordUseCase } from "../../application/use-cases/auth/reset-password.usecase.ts";
+import { TherapistRepository } from "../../infrastructure/repositories/therapist.repository.impl.ts";
+import { UserRepository } from "../../infrastructure/repositories/user.repository.impl.ts";
+import { ResponseModel } from "../../shared/utils/response-model.ts";
+import { setAuthCookies, clearAuthCookies } from "../../shared/utils/jwt.ts";
+import { HttpStatus } from "../../shared/constants/index.ts";
 
-import { TherapistMapper } from "../../application/mappers/therapist.mapper.js";
+import { TherapistMapper } from "../../application/mappers/therapist.mapper.ts";
 
 const therapistRepo = new TherapistRepository();
 const userRepo = new UserRepository();
@@ -25,7 +25,7 @@ const forgotPasswordUC = new ForgotPasswordUseCase(therapistRepo);
 const verifyResetOtpUC = new VerifyResetOtpUseCase(therapistRepo);
 const resetPasswordUC = new ResetPasswordUseCase(therapistRepo);
 
-import { TherapistEntity } from "../../domain/entities/Therapist.entity.js";
+import { TherapistEntity } from "../../domain/entities/Therapist.entity.ts";
 
 export const therapistAuthController = {
   register: async (req: Request, res: Response, next: NextFunction): Promise<void> => {

@@ -1,10 +1,10 @@
-import { stripe } from "../../../shared/utils/stripe.js";
-import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.js";
-import type { IBookingRepository } from "../../../domain/repositories/booking.repository.js";
-import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.js";
-import type { ISlotRepository } from "../../../domain/repositories/availability.repository.js";
-import { BOOKING_STATUS, PAYMENT_STATUS, SLOT_STATUS, HttpStatus } from "../../../shared/constants/index.js";
-import { AppError } from "../../../shared/utils/AppError.js";
+import { stripe } from "../../../shared/utils/stripe.ts";
+import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.ts";
+import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
+import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.ts";
+import type { ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
+import { BOOKING_STATUS, PAYMENT_STATUS, SLOT_STATUS, HttpStatus } from "../../../shared/constants/index.ts";
+import { AppError } from "../../../shared/utils/AppError.ts";
 
 export class VerifyPaymentUseCase {
     constructor(
@@ -84,7 +84,7 @@ export class VerifyPaymentUseCase {
 
     // findByBookingId only finds paid records — we need a helper for unpaid
     private async _findUnpaidByBookingId(bookingId: string) {
-        const { PaymentModel } = await import("../../../infrastructure/databases/schema/payment.schema.js");
+        const { PaymentModel } = await import("../../../infrastructure/databases/schema/payment.schema.ts");
         const doc = await PaymentModel.findOne({ bookingId });
         if (!doc) return null;
         return {
@@ -100,4 +100,4 @@ export class VerifyPaymentUseCase {
             status: doc.status,
         };
     }
-}
+}

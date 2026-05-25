@@ -1,4 +1,4 @@
-import { HttpStatus } from "../constants/index.js";
+import { HttpStatus } from "../constants/index.ts";
 
 export interface ApiResponse<T = null>{
     success : boolean;

@@ -1,6 +1,6 @@
-import type { TherapistAvailabilityEntity, TherapistSlotEntity } from "../../../domain/entities/TherapistAvailability.entity.js";
-import type { IUseCase } from "../IUseCase.js";
-import type { CreateAvailabilityDTO } from "../../use-cases/availability/create-availability.usecase.js";
+import type { TherapistAvailabilityEntity, TherapistSlotEntity } from "../../../domain/entities/TherapistAvailability.entity.ts";
+import type { IUseCase } from "../IUseCase.ts";
+import type { CreateAvailabilityDTO } from "../../use-cases/availability/create-availability.usecase.ts";
 
 export type ICreateAvailabilityUseCase = IUseCase<CreateAvailabilityDTO, TherapistAvailabilityEntity>;
 

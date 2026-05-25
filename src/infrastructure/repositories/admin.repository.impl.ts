@@ -1,8 +1,8 @@
-import type { IAdminRepository } from "../../domain/repositories/admin.repository.js";
-import type { AdminEntity } from "../../domain/entities/Admin.entity.js";
-import { AdminModel } from "../databases/schema/admin.schema.js";
-import { AdminMapper } from "../../application/mappers/admin.mapper.js";
-import { PaginationParams, PaginatedResult } from "../../domain/interfaces/pagination.js";
+import type { IAdminRepository } from "../../domain/repositories/admin.repository.ts";
+import type { AdminEntity } from "../../domain/entities/Admin.entity.ts";
+import { AdminModel } from "../databases/schema/admin.schema.ts";
+import { AdminMapper } from "../../application/mappers/admin.mapper.ts";
+import { PaginationParams, PaginatedResult } from "../../domain/interfaces/pagination.ts";
 
 export class AdminRepository implements IAdminRepository {
   async findById(id: string): Promise<AdminEntity | null> {

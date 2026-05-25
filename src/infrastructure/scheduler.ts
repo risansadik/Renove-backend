@@ -1,6 +1,6 @@
 import cron from "node-cron";
-import { ExpirePaymentUseCase } from "../application/use-cases/payment/expire-payment.usecase.js";
-import { logger } from "../shared/utils/logger.js";
+import { ExpirePaymentUseCase } from "../application/use-cases/payment/expire-payment.usecase.ts";
+import { logger } from "../shared/utils/logger.ts";
 
 export const initCronJobs = () => {
   const expirePaymentUC = new ExpirePaymentUseCase();

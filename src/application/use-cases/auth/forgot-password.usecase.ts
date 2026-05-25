@@ -1,11 +1,11 @@
-import type { ForgotPasswordDTO } from "../../dto/auth/user.dto.js";
-import { sendPasswordResetOtp } from "../../../infrastructure/external-services/email.service.js";
-import { generateOtp, getOtpExpiry } from "../../../shared/utils/otp.js";
-import { AppError, NotFoundError } from "../../../shared/utils/AppError.js";
-import type { UserEntity } from "../../../domain/entities/User.entity.js";
-import type { TherapistEntity } from "../../../domain/entities/Therapist.entity.js";
+import type { ForgotPasswordDTO } from "../../dto/auth/user.dto.ts";
+import { sendPasswordResetOtp } from "../../../infrastructure/external-services/email.service.ts";
+import { generateOtp, getOtpExpiry } from "../../../shared/utils/otp.ts";
+import { AppError, NotFoundError } from "../../../shared/utils/AppError.ts";
+import type { UserEntity } from "../../../domain/entities/User.entity.ts";
+import type { TherapistEntity } from "../../../domain/entities/Therapist.entity.ts";
 
-import type { IForgotPasswordUseCase } from "../../interfaces/auth/IAuthUseCase.js";
+import type { IForgotPasswordUseCase } from "../../interfaces/auth/IAuthUseCase.ts";
 
 export class ForgotPasswordUseCase<T extends UserEntity | TherapistEntity> implements IForgotPasswordUseCase {
   constructor(private readonly _repo: {

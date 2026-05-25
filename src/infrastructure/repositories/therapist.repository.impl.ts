@@ -1,10 +1,10 @@
-import type { ITherapistRepository } from "../../domain/repositories/therapist.repository.js";
-import type { TherapistEntity } from "../../domain/entities/Therapist.entity.js";
-import type { TherapistStatus } from "../../shared/constants/index.js";
-import { TherapistModel } from "../databases/schema/therapist.schema.js";
-import { TherapistMapper } from "../../application/mappers/therapist.mapper.js";
+import type { ITherapistRepository } from "../../domain/repositories/therapist.repository.ts";
+import type { TherapistEntity } from "../../domain/entities/Therapist.entity.ts";
+import type { TherapistStatus } from "../../shared/constants/index.ts";
+import { TherapistModel } from "../databases/schema/therapist.schema.ts";
+import { TherapistMapper } from "../../application/mappers/therapist.mapper.ts";
 
-import { PaginationParams, PaginatedResult } from "../../domain/interfaces/pagination.js";
+import { PaginationParams, PaginatedResult } from "../../domain/interfaces/pagination.ts";
 
 export class TherapistRepository implements ITherapistRepository {
   async findById(id: string): Promise<TherapistEntity | null> {

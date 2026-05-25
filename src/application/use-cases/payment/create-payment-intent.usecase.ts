@@ -1,10 +1,10 @@
-import { StripeHelper } from "../../../shared/utils/stripe.js";
-import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.js";
-import type { IBookingRepository } from "../../../domain/repositories/booking.repository.js";
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.js";
-import type { ISettingsRepository } from "../../../domain/repositories/settings.repository.js";
-import { BOOKING_STATUS, PAYMENT_STATUS, HttpStatus } from "../../../shared/constants/index.js";
-import { AppError } from "../../../shared/utils/AppError.js";
+import { StripeHelper } from "../../../shared/utils/stripe.ts";
+import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.ts";
+import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
+import type { ISettingsRepository } from "../../../domain/repositories/settings.repository.ts";
+import { BOOKING_STATUS, PAYMENT_STATUS, HttpStatus } from "../../../shared/constants/index.ts";
+import { AppError } from "../../../shared/utils/AppError.ts";
 
 export class CreatePaymentIntentUseCase {
   constructor(

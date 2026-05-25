@@ -1,9 +1,9 @@
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.js";
-import type { VerifyTherapistOtpDTO } from "../../dto/auth/therapist.dto.js";
-import { AppError, NotFoundError } from "../../../shared/utils/AppError.js";
-import { isOtpExpired } from "../../../shared/utils/otp.js";
-import { HttpStatus } from "../../../shared/constants/index.js";
-import type { IVerifyOtpUseCase } from "../../interfaces/auth/IAuthUseCase.js";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
+import type { VerifyTherapistOtpDTO } from "../../dto/auth/therapist.dto.ts";
+import { AppError, NotFoundError } from "../../../shared/utils/AppError.ts";
+import { isOtpExpired } from "../../../shared/utils/otp.ts";
+import { HttpStatus } from "../../../shared/constants/index.ts";
+import type { IVerifyOtpUseCase } from "../../interfaces/auth/IAuthUseCase.ts";
 
 export class VerifyTherapistOtpUseCase implements IVerifyOtpUseCase {
   constructor(private readonly _therapistRepo: ITherapistRepository) {}

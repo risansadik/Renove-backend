@@ -1,7 +1,7 @@
-import type { TherapistWalletEntity } from "../entities/TherapistWallet.entity.js";
-import type { UserWalletEntity } from "../entities/UserWallet.entity.js";
-import type { TransactionEntity } from "../entities/Transaction.entity.js";
-import { PaginationParams, PaginatedResult } from "../interfaces/pagination.js";
+import type { TherapistWalletEntity } from "../entities/TherapistWallet.entity.ts";
+import type { UserWalletEntity } from "../entities/UserWallet.entity.ts";
+import type { TransactionEntity } from "../entities/Transaction.entity.ts";
+import { PaginationParams, PaginatedResult } from "../interfaces/pagination.ts";
 
 export interface IWalletRepository {
   // Therapist Wallet

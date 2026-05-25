@@ -1,7 +1,7 @@
-import type { BaseRepository } from "./base.repository.js";
-import type { TherapistEntity } from "../entities/Therapist.entity.js";
-import type { TherapistStatus } from "../../shared/constants/index.js";
-import { PaginationParams, PaginatedResult } from "../interfaces/pagination.js";
+import type { BaseRepository } from "./base.repository.ts";
+import type { TherapistEntity } from "../entities/Therapist.entity.ts";
+import type { TherapistStatus } from "../../shared/constants/index.ts";
+import { PaginationParams, PaginatedResult } from "../interfaces/pagination.ts";
 
 export interface ITherapistRepository extends BaseRepository<TherapistEntity> {
     findByEmail(email: string): Promise<TherapistEntity | null>;

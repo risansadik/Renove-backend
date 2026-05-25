@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { AvailabilityController } from "../controllers/availability.controller.js";
-import { CreateAvailabilityUseCase } from "../../application/use-cases/availability/create-availability.usecase.js";
-import { AvailabilityRepository, SlotRepository } from "../../infrastructure/repositories/availability.repository.impl.js";
-import { authenticate } from "../middlewares/auth.middleware.js";
+import { AvailabilityController } from "../controllers/availability.controller.ts";
+import { CreateAvailabilityUseCase } from "../../application/use-cases/availability/create-availability.usecase.ts";
+import { AvailabilityRepository, SlotRepository } from "../../infrastructure/repositories/availability.repository.impl.ts";
+import { authenticate } from "../middlewares/auth.middleware.ts";
 
-import { GetTherapistRulesUseCase, GetAvailableSlotsUseCase, DeleteAvailabilityRuleUseCase } from "../../application/use-cases/availability/availability-operations.usecase.js";
+import { GetTherapistRulesUseCase, GetAvailableSlotsUseCase, DeleteAvailabilityRuleUseCase } from "../../application/use-cases/availability/availability-operations.usecase.ts";
 
 const router = Router();
 

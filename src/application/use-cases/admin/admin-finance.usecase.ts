@@ -1,8 +1,8 @@
-import { ISettingsRepository } from "../../../domain/repositories/settings.repository.js";
-import { WalletModel, TransactionModel } from "../../../infrastructure/databases/schema/wallet.schema.js";
-import { PaymentModel } from "../../../infrastructure/databases/schema/payment.schema.js";
-import { HttpStatus } from "../../../shared/constants/index.js";
-import { AppError } from "../../../shared/utils/AppError.js";
+import { ISettingsRepository } from "../../../domain/repositories/settings.repository.ts";
+import { WalletModel, TransactionModel } from "../../../infrastructure/databases/schema/wallet.schema.ts";
+import { PaymentModel } from "../../../infrastructure/databases/schema/payment.schema.ts";
+import { HttpStatus } from "../../../shared/constants/index.ts";
+import { AppError } from "../../../shared/utils/AppError.ts";
 
 export class GetAdminFinanceStatsUseCase {
   constructor(private _settingsRepo: ISettingsRepository) {}

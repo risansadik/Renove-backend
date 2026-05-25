@@ -1,8 +1,8 @@
-import { BookingModel } from "../../../infrastructure/databases/schema/booking.schema.js";
-import { SlotModel } from "../../../infrastructure/databases/schema/availability.schema.js";
-import { PaymentModel } from "../../../infrastructure/databases/schema/payment.schema.js";
-import { BOOKING_STATUS, SLOT_STATUS, PAYMENT_STATUS } from "../../../shared/constants/index.js";
-import { logger } from "../../../shared/utils/logger.js";
+import { BookingModel } from "../../../infrastructure/databases/schema/booking.schema.ts";
+import { SlotModel } from "../../../infrastructure/databases/schema/availability.schema.ts";
+import { PaymentModel } from "../../../infrastructure/databases/schema/payment.schema.ts";
+import { BOOKING_STATUS, SLOT_STATUS, PAYMENT_STATUS } from "../../../shared/constants/index.ts";
+import { logger } from "../../../shared/utils/logger.ts";
 import { subMinutes } from "date-fns";
 
 export class ExpirePaymentUseCase {

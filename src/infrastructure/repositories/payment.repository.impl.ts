@@ -1,6 +1,6 @@
-import type { IPaymentRepository } from "../../domain/repositories/payment.repository.js";
-import type { PaymentEntity } from "../../domain/entities/Payment.entity.js";
-import { PaymentModel, type IPaymentDocument } from "../databases/schema/payment.schema.js";
+import type { IPaymentRepository } from "../../domain/repositories/payment.repository.ts";
+import type { PaymentEntity } from "../../domain/entities/Payment.entity.ts";
+import { PaymentModel, type IPaymentDocument } from "../databases/schema/payment.schema.ts";
 
 export class PaymentRepositoryImpl implements IPaymentRepository {
   private _toEntity(doc: IPaymentDocument): PaymentEntity {

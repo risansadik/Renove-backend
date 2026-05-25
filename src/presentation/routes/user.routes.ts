@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { userAuthController } from "../controllers/user-auth.controller.js";
-import { userDashboardController } from "../controllers/user-dashboard.controller.js";
-import { authenticate, authorize } from "../middlewares/auth.middleware.js";
-import { validate } from "../middlewares/validate.middleware.js";
-import { upload } from "../middlewares/upload.middleware.js";
-import { profileController } from "../controllers/profile.controller.js";
-import { UpdateUserProfileSchema, ChangePasswordSchema } from "../../application/dto/profile/profile.dto.js";
+import { userAuthController } from "../controllers/user-auth.controller.ts";
+import { userDashboardController } from "../controllers/user-dashboard.controller.ts";
+import { authenticate, authorize } from "../middlewares/auth.middleware.ts";
+import { validate } from "../middlewares/validate.middleware.ts";
+import { upload } from "../middlewares/upload.middleware.ts";
+import { profileController } from "../controllers/profile.controller.ts";
+import { UpdateUserProfileSchema, ChangePasswordSchema } from "../../application/dto/profile/profile.dto.ts";
 import {
   ForgotPasswordSchema,
   GoogleAuthSchema,
@@ -14,8 +14,8 @@ import {
   ResendOtpSchema,
   ResetPasswordSchema,
   VerifyOtpSchema,
-} from "../../application/dto/auth/user.dto.js";
-import { ROLES } from "../../shared/constants/index.js";
+} from "../../application/dto/auth/user.dto.ts";
+import { ROLES } from "../../shared/constants/index.ts";
 
 const router = Router();
 

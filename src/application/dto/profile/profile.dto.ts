@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { THERAPIST_STATUS } from "../../../shared/constants/index.js";
+import { THERAPIST_STATUS } from "../../../shared/constants/index.ts";
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 

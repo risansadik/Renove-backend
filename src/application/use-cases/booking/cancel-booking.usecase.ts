@@ -1,10 +1,10 @@
-import type { IBookingRepository } from "../../../domain/repositories/booking.repository.js";
-import type { ISlotRepository } from "../../../domain/repositories/availability.repository.js";
-import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.js";
-import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.js";
-import type { BookingEntity } from "../../../domain/entities/Booking.entity.js";
-import type { ICancelBookingUseCase, CancelBookingInput } from "../../interfaces/booking/IBookingUseCase.js";
-import { BOOKING_STATUS, PAYMENT_STATUS } from "../../../shared/constants/index.js";
+import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
+import type { ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
+import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.ts";
+import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.ts";
+import type { BookingEntity } from "../../../domain/entities/Booking.entity.ts";
+import type { ICancelBookingUseCase, CancelBookingInput } from "../../interfaces/booking/IBookingUseCase.ts";
+import { BOOKING_STATUS, PAYMENT_STATUS } from "../../../shared/constants/index.ts";
 
 export class CancelBookingUseCase implements ICancelBookingUseCase {
   constructor(

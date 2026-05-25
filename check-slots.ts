@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { SlotModel } from './src/infrastructure/databases/schema/availability.schema.js';
+import { SlotModel } from './src/infrastructure/databases/schema/availability.schema.ts';
 import dotenv from 'dotenv';
 dotenv.config();
 

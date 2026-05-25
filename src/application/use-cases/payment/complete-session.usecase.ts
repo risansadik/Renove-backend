@@ -1,9 +1,9 @@
-import type { IBookingRepository } from "../../../domain/repositories/booking.repository.js";
-import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.js";
-import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.js";
-import { BOOKING_STATUS, HttpStatus } from "../../../shared/constants/index.js";
-import { AppError } from "../../../shared/utils/AppError.js";
-import { logger } from "../../../shared/utils/logger.js";
+import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
+import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.ts";
+import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.ts";
+import { BOOKING_STATUS, HttpStatus } from "../../../shared/constants/index.ts";
+import { AppError } from "../../../shared/utils/AppError.ts";
+import { logger } from "../../../shared/utils/logger.ts";
 
 export class CompleteSessionUseCase {
   constructor(

@@ -1,7 +1,7 @@
-import type { IBookingRepository } from "../../../domain/repositories/booking.repository.js";
-import type { ISlotRepository } from "../../../domain/repositories/availability.repository.js";
-import type { BookingEntity } from "../../../domain/entities/Booking.entity.js";
-import type { ICreateBookingUseCase } from "../../interfaces/booking/IBookingUseCase.js";
+import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
+import type { ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
+import type { BookingEntity } from "../../../domain/entities/Booking.entity.ts";
+import type { ICreateBookingUseCase } from "../../interfaces/booking/IBookingUseCase.ts";
 
 export interface CreateBookingInput {
   therapistId: string;

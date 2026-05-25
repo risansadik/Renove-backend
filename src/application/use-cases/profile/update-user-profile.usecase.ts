@@ -1,6 +1,6 @@
-import { UserModel } from "../../../infrastructure/databases/schema/user.schema.js";
-import { AppError } from "../../../shared/utils/AppError.js";
-import { HttpStatus } from "../../../shared/constants/index.js";
+import { UserModel } from "../../../infrastructure/databases/schema/user.schema.ts";
+import { AppError } from "../../../shared/utils/AppError.ts";
+import { HttpStatus } from "../../../shared/constants/index.ts";
 
 export interface UpdateUserProfileDto {
   name?: string;

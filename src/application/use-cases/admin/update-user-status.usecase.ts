@@ -1,8 +1,8 @@
-import type { IUserRepository } from "../../../domain/repositories/user.repository.js";
-import type { UpdateUserStatusDTO } from "../../dto/auth/admin.dto.js";
-import { NotFoundError } from "../../../shared/utils/AppError.js";
+import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
+import type { UpdateUserStatusDTO } from "../../dto/auth/admin.dto.ts";
+import { NotFoundError } from "../../../shared/utils/AppError.ts";
 
-import type { IUpdateUserStatusUseCase } from "../../interfaces/admin/IAdminUseCase.js";
+import type { IUpdateUserStatusUseCase } from "../../interfaces/admin/IAdminUseCase.ts";
 
 export class UpdateUserStatusUseCase implements IUpdateUserStatusUseCase {
   constructor(private readonly _userRepo: IUserRepository) {}

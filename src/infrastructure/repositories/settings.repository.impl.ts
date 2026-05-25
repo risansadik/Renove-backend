@@ -1,5 +1,5 @@
-import type { ISettingsRepository } from "../../domain/repositories/settings.repository.js";
-import { SettingsModel } from "../databases/schema/settings.schema.js";
+import type { ISettingsRepository } from "../../domain/repositories/settings.repository.ts";
+import { SettingsModel } from "../databases/schema/settings.schema.ts";
 
 export class SettingsRepositoryImpl implements ISettingsRepository {
   async getCommissionPercentage(): Promise<number> {

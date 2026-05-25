@@ -1,7 +1,7 @@
-import type { BookingEntity } from "../../../domain/entities/Booking.entity.js";
-import type { CreateBookingInput } from "../../use-cases/booking/create-booking.usecase.js";
-import type { IUseCase } from "../IUseCase.js";
-import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination.js";
+import type { BookingEntity } from "../../../domain/entities/Booking.entity.ts";
+import type { CreateBookingInput } from "../../use-cases/booking/create-booking.usecase.ts";
+import type { IUseCase } from "../IUseCase.ts";
+import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination.ts";
 
 export type ICreateBookingUseCase = IUseCase<{ userId: string; data: CreateBookingInput }, BookingEntity>;
 

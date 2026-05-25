@@ -1,8 +1,8 @@
-import type { IBookingRepository } from "../../domain/repositories/booking.repository.js";
-import type { BookingEntity } from "../../domain/entities/Booking.entity.js";
-import { BookingModel, type IBookingRaw } from "../databases/schema/booking.schema.js";
+import type { IBookingRepository } from "../../domain/repositories/booking.repository.ts";
+import type { BookingEntity } from "../../domain/entities/Booking.entity.ts";
+import { BookingModel, type IBookingRaw } from "../databases/schema/booking.schema.ts";
 
-import { PaginationParams, PaginatedResult } from "../../domain/interfaces/pagination.js";
+import { PaginationParams, PaginatedResult } from "../../domain/interfaces/pagination.ts";
 
 export class BookingRepositoryImpl implements IBookingRepository {
   private _toEntity(doc: IBookingRaw): BookingEntity {

@@ -1,8 +1,8 @@
 import "dotenv/config";
-import app from "./app.js";
-import { connectDB } from "./infrastructure/databases/connect.js";
-import { initCronJobs } from "./infrastructure/scheduler.js";
-import { logger } from "./shared/utils/logger.js";
+import app from "./app.ts";
+import { connectDB } from "./infrastructure/databases/connect.ts";
+import { initCronJobs } from "./infrastructure/scheduler.ts";
+import { logger } from "./shared/utils/logger.ts";
 
 const PORT = process.env.PORT ?? 5000;
 

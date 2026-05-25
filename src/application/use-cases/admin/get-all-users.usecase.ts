@@ -1,9 +1,9 @@
-import type { IUserRepository } from "../../../domain/repositories/user.repository.js";
-import { UserMapper } from "../../mappers/user.mapper.js";
+import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
+import { UserMapper } from "../../mappers/user.mapper.ts";
 
-import type { IGetAllUsersUseCase } from "../../interfaces/admin/IAdminUseCase.js";
-import type { PublicUserDTO } from "../../mappers/user.mapper.js";
-import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination.js";
+import type { IGetAllUsersUseCase } from "../../interfaces/admin/IAdminUseCase.ts";
+import type { PublicUserDTO } from "../../mappers/user.mapper.ts";
+import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination.ts";
 
 export class GetAllUsersUseCase implements IGetAllUsersUseCase {
   constructor(private readonly _userRepo: IUserRepository) {}

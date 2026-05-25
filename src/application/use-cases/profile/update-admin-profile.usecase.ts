@@ -1,6 +1,6 @@
-import { AdminModel } from "../../../infrastructure/databases/schema/admin.schema.js";
-import { AppError } from "../../../shared/utils/AppError.js";
-import { HttpStatus } from "../../../shared/constants/index.js";
+import { AdminModel } from "../../../infrastructure/databases/schema/admin.schema.ts";
+import { AppError } from "../../../shared/utils/AppError.ts";
+import { HttpStatus } from "../../../shared/constants/index.ts";
 
 export interface UpdateAdminProfileDto {
   name?: string;

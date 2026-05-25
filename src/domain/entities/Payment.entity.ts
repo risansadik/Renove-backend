@@ -1,4 +1,4 @@
-import type { PaymentStatus } from "../../shared/constants/index.js";
+import type { PaymentStatus } from "../../shared/constants/index.ts";
 
 export interface PaymentEntity {
   id?: string;

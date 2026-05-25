@@ -1,4 +1,4 @@
-import { PaginationParams, PaginatedResult } from "../interfaces/pagination.js";
+import { PaginationParams, PaginatedResult } from "../interfaces/pagination.ts";
 
 export interface BaseRepository<T> {
   findById(id: string): Promise<T | null>;

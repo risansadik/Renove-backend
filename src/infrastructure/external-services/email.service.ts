@@ -1,6 +1,6 @@
-import { MAIL_CONFIG } from "../../shared/constants/index.js";
+import { MAIL_CONFIG } from "../../shared/constants/index.ts";
 import nodemailer from "nodemailer";
-import { logger } from "../../shared/utils/logger.js";
+import { logger } from "../../shared/utils/logger.ts";
 
 
 const transporter = nodemailer.createTransport({

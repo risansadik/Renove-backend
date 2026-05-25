@@ -1,17 +1,17 @@
 import express, { Router } from "express";
-import { PaymentController } from "../controllers/payment.controller.js";
-import { CreatePaymentIntentUseCase } from "../../application/use-cases/payment/create-payment-intent.usecase.js";
-import { HandleStripeWebhookUseCase } from "../../application/use-cases/payment/handle-stripe-webhook.usecase.js";
-import { CompleteSessionUseCase } from "../../application/use-cases/payment/complete-session.usecase.js";
-import { PaymentRepositoryImpl } from "../../infrastructure/repositories/payment.repository.impl.js";
-import { BookingRepositoryImpl } from "../../infrastructure/repositories/booking.repository.impl.js";
-import { TherapistRepository } from "../../infrastructure/repositories/therapist.repository.impl.js";
-import { WalletRepositoryImpl } from "../../infrastructure/repositories/wallet.repository.impl.js";
-import { SlotRepository } from "../../infrastructure/repositories/availability.repository.impl.js";
-import { SettingsRepositoryImpl } from "../../infrastructure/repositories/settings.repository.impl.js";
-import { authenticate, authorize } from "../middlewares/auth.middleware.js";
-import { ROLES } from "../../shared/constants/index.js";
-import { VerifyPaymentUseCase } from "../../application/use-cases/payment/verify-payment.usecase.js";
+import { PaymentController } from "../controllers/payment.controller.ts";
+import { CreatePaymentIntentUseCase } from "../../application/use-cases/payment/create-payment-intent.usecase.ts";
+import { HandleStripeWebhookUseCase } from "../../application/use-cases/payment/handle-stripe-webhook.usecase.ts";
+import { CompleteSessionUseCase } from "../../application/use-cases/payment/complete-session.usecase.ts";
+import { PaymentRepositoryImpl } from "../../infrastructure/repositories/payment.repository.impl.ts";
+import { BookingRepositoryImpl } from "../../infrastructure/repositories/booking.repository.impl.ts";
+import { TherapistRepository } from "../../infrastructure/repositories/therapist.repository.impl.ts";
+import { WalletRepositoryImpl } from "../../infrastructure/repositories/wallet.repository.impl.ts";
+import { SlotRepository } from "../../infrastructure/repositories/availability.repository.impl.ts";
+import { SettingsRepositoryImpl } from "../../infrastructure/repositories/settings.repository.impl.ts";
+import { authenticate, authorize } from "../middlewares/auth.middleware.ts";
+import { ROLES } from "../../shared/constants/index.ts";
+import { VerifyPaymentUseCase } from "../../application/use-cases/payment/verify-payment.usecase.ts";
 
 const router = Router();
 

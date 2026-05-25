@@ -1,9 +1,9 @@
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.js";
-import { TherapistMapper } from "../../mappers/therapist.mapper.js";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
+import { TherapistMapper } from "../../mappers/therapist.mapper.ts";
 
-import type { IGetAllTherapistsUseCase } from "../../interfaces/admin/IAdminUseCase.js";
-import type { PublicTherapistDTO } from "../../mappers/therapist.mapper.js";
-import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination.js";
+import type { IGetAllTherapistsUseCase } from "../../interfaces/admin/IAdminUseCase.ts";
+import type { PublicTherapistDTO } from "../../mappers/therapist.mapper.ts";
+import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination.ts";
 
 export class GetAllTherapistsUseCase implements IGetAllTherapistsUseCase {
   constructor(private readonly _therapistRepo: ITherapistRepository) {}

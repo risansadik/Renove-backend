@@ -1,6 +1,6 @@
 import dns from "node:dns";
 import mongoose from "mongoose";
-import { logger } from "../../shared/utils/logger.js";
+import { logger } from "../../shared/utils/logger.ts";
 
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
 

@@ -1,7 +1,7 @@
-import type { IWalletRepository } from "../../domain/repositories/wallet.repository.js";
-import type { TherapistWalletEntity } from "../../domain/entities/TherapistWallet.entity.js";
-import type { UserWalletEntity } from "../../domain/entities/UserWallet.entity.js";
-import type { TransactionEntity } from "../../domain/entities/Transaction.entity.js";
+import type { IWalletRepository } from "../../domain/repositories/wallet.repository.ts";
+import type { TherapistWalletEntity } from "../../domain/entities/TherapistWallet.entity.ts";
+import type { UserWalletEntity } from "../../domain/entities/UserWallet.entity.ts";
+import type { TransactionEntity } from "../../domain/entities/Transaction.entity.ts";
 import { 
   WalletModel, 
   UserWalletModel, 
@@ -9,9 +9,9 @@ import {
   type IWalletDocument, 
   type IUserWalletDocument, 
   type ITransactionDocument 
-} from "../databases/schema/wallet.schema.js";
+} from "../databases/schema/wallet.schema.ts";
 
-import { PaginationParams, PaginatedResult } from "../../domain/interfaces/pagination.js";
+import { PaginationParams, PaginatedResult } from "../../domain/interfaces/pagination.ts";
 
 export class WalletRepositoryImpl implements IWalletRepository {
   // --- Helpers ---

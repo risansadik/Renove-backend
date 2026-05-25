@@ -1,10 +1,10 @@
-import type { IUserRepository } from "../../../domain/repositories/user.repository.js";
-import { verifyGoogleToken } from "../../../infrastructure/external-services/google.service.js";
-import { generateTokens } from "../../../shared/utils/jwt.js";
-import { AppError } from "../../../shared/utils/AppError.js";
-import { ROLES, USER_STATUS } from "../../../shared/constants/index.js";
+import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
+import { verifyGoogleToken } from "../../../infrastructure/external-services/google.service.ts";
+import { generateTokens } from "../../../shared/utils/jwt.ts";
+import { AppError } from "../../../shared/utils/AppError.ts";
+import { ROLES, USER_STATUS } from "../../../shared/constants/index.ts";
 
-import type { ILoginUserUseCase, ILoginResponse } from "../../interfaces/auth/IAuthUseCase.js";
+import type { ILoginUserUseCase, ILoginResponse } from "../../interfaces/auth/IAuthUseCase.ts";
 
 export class GoogleAuthUseCase implements ILoginUserUseCase {
   constructor(private readonly _userRepo: IUserRepository) {}

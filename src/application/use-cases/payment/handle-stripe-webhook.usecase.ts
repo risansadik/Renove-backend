@@ -1,9 +1,9 @@
-import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.js";
-import type { IBookingRepository } from "../../../domain/repositories/booking.repository.js";
-import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.js";
-import type { ISlotRepository } from "../../../domain/repositories/availability.repository.js";
-import { BOOKING_STATUS, PAYMENT_STATUS, SLOT_STATUS } from "../../../shared/constants/index.js";
-import { logger } from "../../../shared/utils/logger.js";
+import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.ts";
+import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
+import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.ts";
+import type { ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
+import { BOOKING_STATUS, PAYMENT_STATUS, SLOT_STATUS } from "../../../shared/constants/index.ts";
+import { logger } from "../../../shared/utils/logger.ts";
 import type Stripe from "stripe";
 
 export class HandleStripeWebhookUseCase {

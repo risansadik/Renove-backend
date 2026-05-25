@@ -1,5 +1,5 @@
 import mongoose, { Schema, type Types, type Document } from "mongoose";
-import { THERAPIST_STATUS, type TherapistStatus } from "../../../shared/constants/index.js";
+import { THERAPIST_STATUS, type TherapistStatus } from "../../../shared/constants/index.ts";
 
 export interface ITherapistDocument extends Document {
   name: string;

@@ -1,10 +1,10 @@
-import type { IUserRepository } from "../../../domain/repositories/user.repository.js";
-import type { VerifyOtpDTO } from "../../dto/auth/user.dto.js";
-import { AppError, NotFoundError } from "../../../shared/utils/AppError.js";
-import { isOtpExpired } from "../../../shared/utils/otp.js";
-import { HttpStatus } from "../../../shared/constants/index.js";
+import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
+import type { VerifyOtpDTO } from "../../dto/auth/user.dto.ts";
+import { AppError, NotFoundError } from "../../../shared/utils/AppError.ts";
+import { isOtpExpired } from "../../../shared/utils/otp.ts";
+import { HttpStatus } from "../../../shared/constants/index.ts";
 
-import type { IVerifyOtpUseCase } from "../../interfaces/auth/IAuthUseCase.js";
+import type { IVerifyOtpUseCase } from "../../interfaces/auth/IAuthUseCase.ts";
 
 export class VerifyOtpUseCase implements IVerifyOtpUseCase {
   constructor(private readonly _userRepo: IUserRepository) {}

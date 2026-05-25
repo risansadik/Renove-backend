@@ -1,12 +1,12 @@
 import bcrypt from "bcryptjs";
-import type { ResetPasswordDTO } from "../../dto/auth/user.dto.js";
-import { AppError, NotFoundError } from "../../../shared/utils/AppError.js";
-import { BCRYPT_ROUNDS, HttpStatus } from "../../../shared/constants/index.js";
-import { isOtpExpired } from "../../../shared/utils/otp.js";
-import type { UserEntity } from "../../../domain/entities/User.entity.js";
-import type { TherapistEntity } from "../../../domain/entities/Therapist.entity.js";
+import type { ResetPasswordDTO } from "../../dto/auth/user.dto.ts";
+import { AppError, NotFoundError } from "../../../shared/utils/AppError.ts";
+import { BCRYPT_ROUNDS, HttpStatus } from "../../../shared/constants/index.ts";
+import { isOtpExpired } from "../../../shared/utils/otp.ts";
+import type { UserEntity } from "../../../domain/entities/User.entity.ts";
+import type { TherapistEntity } from "../../../domain/entities/Therapist.entity.ts";
 
-import type { IResetPasswordUseCase } from "../../interfaces/auth/IAuthUseCase.js";
+import type { IResetPasswordUseCase } from "../../interfaces/auth/IAuthUseCase.ts";
 
 interface IPasswordResetRepository<T> {
   findByEmail: (email: string) => Promise<T | null>;

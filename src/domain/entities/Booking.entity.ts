@@ -1,4 +1,4 @@
-import type { BookingStatus } from "../../shared/constants/index.js";
+import type { BookingStatus } from "../../shared/constants/index.ts";
 export type { BookingStatus };
 export type SessionType = "video" | "chat" | "in-person";
 

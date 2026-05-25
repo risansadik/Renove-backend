@@ -1,8 +1,8 @@
-import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.js";
-import type { TransactionEntity } from "../../../domain/entities/Transaction.entity.js";
-import { ROLES } from "../../../shared/constants/index.js";
+import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.ts";
+import type { TransactionEntity } from "../../../domain/entities/Transaction.entity.ts";
+import { ROLES } from "../../../shared/constants/index.ts";
 
-import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination.js";
+import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination.ts";
 
 export class GetWalletUseCase {
   constructor(private _walletRepo: IWalletRepository) {}

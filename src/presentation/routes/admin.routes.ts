@@ -1,16 +1,16 @@
 import { Router } from "express";
-import { adminController } from "../controllers/admin.controller.js";
-import { authenticate, authorize } from "../middlewares/auth.middleware.js";
-import { validate } from "../middlewares/validate.middleware.js";
-import { upload } from "../middlewares/upload.middleware.js";
-import { profileController } from "../controllers/profile.controller.js";
-import { UpdateAdminProfileSchema, ChangePasswordSchema, ReviewTherapistUpdateSchema } from "../../application/dto/profile/profile.dto.js";
+import { adminController } from "../controllers/admin.controller.ts";
+import { authenticate, authorize } from "../middlewares/auth.middleware.ts";
+import { validate } from "../middlewares/validate.middleware.ts";
+import { upload } from "../middlewares/upload.middleware.ts";
+import { profileController } from "../controllers/profile.controller.ts";
+import { UpdateAdminProfileSchema, ChangePasswordSchema, ReviewTherapistUpdateSchema } from "../../application/dto/profile/profile.dto.ts";
 import {
   AdminLoginSchema,
   UpdateTherapistStatusSchema,
   UpdateUserStatusSchema,
-} from "../../application/dto/auth/admin.dto.js";
-import { ROLES } from "../../shared/constants/index.js";
+} from "../../application/dto/auth/admin.dto.ts";
+import { ROLES } from "../../shared/constants/index.ts";
 
 const router = Router();
 

@@ -1,23 +1,23 @@
 import { Router } from "express";
-import { therapistAuthController } from "../controllers/therapist-auth-controller.js";
-import { therapistDashboardController } from "../controllers/therapist-dashboard.controller.js";
-import { upload } from "../middlewares/upload.middleware.js";
-import { authenticate, authorize } from "../middlewares/auth.middleware.js";
-import { validate } from "../middlewares/validate.middleware.js";
-import { profileController } from "../controllers/profile.controller.js";
-import { UpdateTherapistProfileSchema, ChangePasswordSchema } from "../../application/dto/profile/profile.dto.js";
+import { therapistAuthController } from "../controllers/therapist-auth-controller.ts";
+import { therapistDashboardController } from "../controllers/therapist-dashboard.controller.ts";
+import { upload } from "../middlewares/upload.middleware.ts";
+import { authenticate, authorize } from "../middlewares/auth.middleware.ts";
+import { validate } from "../middlewares/validate.middleware.ts";
+import { profileController } from "../controllers/profile.controller.ts";
+import { UpdateTherapistProfileSchema, ChangePasswordSchema } from "../../application/dto/profile/profile.dto.ts";
 import {
   LoginTherapistSchema,
   RegisterTherapistSchema,
   ResendTherapistOtpSchema,
   VerifyTherapistOtpSchema,
-} from "../../application/dto/auth/therapist.dto.js";
+} from "../../application/dto/auth/therapist.dto.ts";
 import {
   ForgotPasswordSchema,
   ResetPasswordSchema,
   VerifyOtpSchema,
-} from "../../application/dto/auth/user.dto.js";
-import { ROLES } from "../../shared/constants/index.js";
+} from "../../application/dto/auth/user.dto.ts";
+import { ROLES } from "../../shared/constants/index.ts";
 
 const router = Router();
 

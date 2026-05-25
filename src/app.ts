@@ -1,14 +1,14 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import userRoutes from "./presentation/routes/user.routes.js";
-import therapistRoutes from "./presentation/routes/therapist.routes.js";
-import adminRoutes from "./presentation/routes/admin.routes.js";
-import bookingRoutes from "./presentation/routes/booking.routes.js";
-import availabilityRoutes from "./presentation/routes/availability.routes.js";
-import paymentRoutes from "./presentation/routes/payment.routes.js";
-import walletRoutes from "./presentation/routes/wallet.routes.js";
-import { errorHandler, notFoundHandler } from "./presentation/middlewares/error.middleware.js";
+import userRoutes from "./presentation/routes/user.routes.ts";
+import therapistRoutes from "./presentation/routes/therapist.routes.ts";
+import adminRoutes from "./presentation/routes/admin.routes.ts";
+import bookingRoutes from "./presentation/routes/booking.routes.ts";
+import availabilityRoutes from "./presentation/routes/availability.routes.ts";
+import paymentRoutes from "./presentation/routes/payment.routes.ts";
+import walletRoutes from "./presentation/routes/wallet.routes.ts";
+import { errorHandler, notFoundHandler } from "./presentation/middlewares/error.middleware.ts";
 
 const app = express();
 

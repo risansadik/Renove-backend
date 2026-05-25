@@ -1,6 +1,6 @@
-import type { UserEntity } from "../../domain/entities/User.entity.js";
-import type { IUserRaw } from "../../infrastructure/databases/schema/user.schema.js";
-import type { UserStatus } from "../../shared/constants/index.js";
+import type { UserEntity } from "../../domain/entities/User.entity.ts";
+import type { IUserRaw } from "../../infrastructure/databases/schema/user.schema.ts";
+import type { UserStatus } from "../../shared/constants/index.ts";
 
 export interface PublicUserDTO {
   id: string;

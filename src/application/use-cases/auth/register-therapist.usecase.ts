@@ -1,12 +1,12 @@
 import bcrypt from "bcryptjs";
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.js";
-import type { RegisterTherapistDTO } from "../../dto/auth/therapist.dto.js";
-import { sendOtpEmail } from "../../../infrastructure/external-services/email.service.js";
-import { generateOtp, getOtpExpiry } from "../../../shared/utils/otp.js";
-import { ConflictError } from "../../../shared/utils/AppError.js";
-import { BCRYPT_ROUNDS, THERAPIST_STATUS } from "../../../shared/constants/index.js";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
+import type { RegisterTherapistDTO } from "../../dto/auth/therapist.dto.ts";
+import { sendOtpEmail } from "../../../infrastructure/external-services/email.service.ts";
+import { generateOtp, getOtpExpiry } from "../../../shared/utils/otp.ts";
+import { ConflictError } from "../../../shared/utils/AppError.ts";
+import { BCRYPT_ROUNDS, THERAPIST_STATUS } from "../../../shared/constants/index.ts";
 
-import type { IRegisterTherapistUseCase, IRegisterResponse } from "../../interfaces/auth/IAuthUseCase.js";
+import type { IRegisterTherapistUseCase, IRegisterResponse } from "../../interfaces/auth/IAuthUseCase.ts";
 
 export class RegisterTherapistUseCase implements IRegisterTherapistUseCase {
   constructor(private readonly _therapistRepo: ITherapistRepository) {}

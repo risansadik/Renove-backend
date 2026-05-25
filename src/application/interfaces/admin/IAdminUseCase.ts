@@ -1,8 +1,8 @@
-import type { IUseCase } from "../IUseCase.js";
-import type { PublicUserDTO } from "../../mappers/user.mapper.js";
-import type { PublicTherapistDTO } from "../../mappers/therapist.mapper.js";
-import type { UpdateUserStatusDTO, UpdateTherapistStatusDTO } from "../../dto/auth/admin.dto.js";
-import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination.js";
+import type { IUseCase } from "../IUseCase.ts";
+import type { PublicUserDTO } from "../../mappers/user.mapper.ts";
+import type { PublicTherapistDTO } from "../../mappers/therapist.mapper.ts";
+import type { UpdateUserStatusDTO, UpdateTherapistStatusDTO } from "../../dto/auth/admin.dto.ts";
+import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination.ts";
 
 export type IGetAllUsersUseCase = IUseCase<PaginationParams, PaginatedResult<PublicUserDTO>>;
 

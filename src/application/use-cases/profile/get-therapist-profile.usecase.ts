@@ -1,6 +1,6 @@
-import { TherapistModel } from "../../../infrastructure/databases/schema/therapist.schema.js";
-import { AppError } from "../../../shared/utils/AppError.js";
-import { HttpStatus } from "../../../shared/constants/index.js";
+import { TherapistModel } from "../../../infrastructure/databases/schema/therapist.schema.ts";
+import { AppError } from "../../../shared/utils/AppError.ts";
+import { HttpStatus } from "../../../shared/constants/index.ts";
 
 export class GetTherapistProfileUseCase {
   async execute(therapistId: string) {

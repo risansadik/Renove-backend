@@ -1,21 +1,21 @@
 import type { Request, Response, NextFunction } from "express";
-import { RegisterUserUseCase } from "../../application/use-cases/auth/register-user.usecase.js";
-import { VerifyOtpUseCase } from "../../application/use-cases/auth/verify-otp.usecase.js";
-import { ResendOtpUseCase } from "../../application/use-cases/auth/resend-otp.usecase.js";
-import { LoginUserUseCase } from "../../application/use-cases/auth/login-user.usecase.js";
-import { GoogleAuthUseCase } from "../../application/use-cases/auth/google-auth.usecase.js";
-import { ForgotPasswordUseCase } from "../../application/use-cases/auth/forgot-password.usecase.js";
-import { ResetPasswordUseCase } from "../../application/use-cases/auth/reset-password.usecase.js";
-import { VerifyResetOtpUseCase } from "../../application/use-cases/auth/verify-reset-otp.usecase.js";
-import { UserRepository } from "../../infrastructure/repositories/user.repository.impl.js";
-import { TherapistRepository } from "../../infrastructure/repositories/therapist.repository.impl.js";
-import { ResponseModel } from "../../shared/utils/response-model.js";
-import { setAuthCookies, clearAuthCookies } from "../../shared/utils/jwt.js";
-import { HttpStatus } from "../../shared/constants/index.js";
-import { RefreshTokenUseCase } from "../../application/use-cases/auth/refresh-token.usecase.js";
+import { RegisterUserUseCase } from "../../application/use-cases/auth/register-user.usecase.ts";
+import { VerifyOtpUseCase } from "../../application/use-cases/auth/verify-otp.usecase.ts";
+import { ResendOtpUseCase } from "../../application/use-cases/auth/resend-otp.usecase.ts";
+import { LoginUserUseCase } from "../../application/use-cases/auth/login-user.usecase.ts";
+import { GoogleAuthUseCase } from "../../application/use-cases/auth/google-auth.usecase.ts";
+import { ForgotPasswordUseCase } from "../../application/use-cases/auth/forgot-password.usecase.ts";
+import { ResetPasswordUseCase } from "../../application/use-cases/auth/reset-password.usecase.ts";
+import { VerifyResetOtpUseCase } from "../../application/use-cases/auth/verify-reset-otp.usecase.ts";
+import { UserRepository } from "../../infrastructure/repositories/user.repository.impl.ts";
+import { TherapistRepository } from "../../infrastructure/repositories/therapist.repository.impl.ts";
+import { ResponseModel } from "../../shared/utils/response-model.ts";
+import { setAuthCookies, clearAuthCookies } from "../../shared/utils/jwt.ts";
+import { HttpStatus } from "../../shared/constants/index.ts";
+import { RefreshTokenUseCase } from "../../application/use-cases/auth/refresh-token.usecase.ts";
 
 
-import { UserMapper } from "../../application/mappers/user.mapper.js";
+import { UserMapper } from "../../application/mappers/user.mapper.ts";
 
 const userRepo = new UserRepository();
 const therapistRepo = new TherapistRepository();
@@ -30,7 +30,7 @@ const resetPasswordUC = new ResetPasswordUseCase(userRepo);
 const verifyResetOtpUC = new VerifyResetOtpUseCase(userRepo);
 const refreshTokenUC = new RefreshTokenUseCase(userRepo, therapistRepo);
 
-import { UserEntity } from "../../domain/entities/User.entity.js";
+import { UserEntity } from "../../domain/entities/User.entity.ts";
 
 export const userAuthController = {
   register: async (req: Request, res: Response, next: NextFunction): Promise<void> => {

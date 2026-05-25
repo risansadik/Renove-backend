@@ -1,5 +1,5 @@
-import type { TherapistAvailabilityEntity, TherapistSlotEntity } from "../../domain/entities/TherapistAvailability.entity.js";
-import type { IAvailabilityDocument, ISlotDocument } from "../../infrastructure/databases/schema/availability.schema.js";
+import type { TherapistAvailabilityEntity, TherapistSlotEntity } from "../../domain/entities/TherapistAvailability.entity.ts";
+import type { IAvailabilityDocument, ISlotDocument } from "../../infrastructure/databases/schema/availability.schema.ts";
 
 export class AvailabilityMapper {
   static toRuleEntity(doc: IAvailabilityDocument): TherapistAvailabilityEntity {

@@ -1,13 +1,13 @@
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.js";
-import type { UpdateTherapistStatusDTO } from "../../dto/auth/admin.dto.js";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
+import type { UpdateTherapistStatusDTO } from "../../dto/auth/admin.dto.ts";
 import {
   sendTherapistApprovalEmail,
   sendTherapistRejectionEmail,
-} from "../../../infrastructure/external-services/email.service.js";
-import { THERAPIST_STATUS } from "../../../shared/constants/index.js";
-import { NotFoundError } from "../../../shared/utils/AppError.js";
+} from "../../../infrastructure/external-services/email.service.ts";
+import { THERAPIST_STATUS } from "../../../shared/constants/index.ts";
+import { NotFoundError } from "../../../shared/utils/AppError.ts";
 
-import type { IUpdateTherapistStatusUseCase } from "../../interfaces/admin/IAdminUseCase.js";
+import type { IUpdateTherapistStatusUseCase } from "../../interfaces/admin/IAdminUseCase.ts";
 
 export class UpdateTherapistStatusUseCase implements IUpdateTherapistStatusUseCase {
   constructor(private readonly _therapistRepo: ITherapistRepository) {}
