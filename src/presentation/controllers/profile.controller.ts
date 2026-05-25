@@ -1,22 +1,22 @@
 import type { Response, NextFunction } from "express";
-import type { AuthRequest } from "../middlewares/auth.middleware.js";
-import { ResponseModel } from "../../shared/utils/response-model.js";
+import type { AuthRequest } from "../middlewares/auth.middleware.ts";
+import { ResponseModel } from "../../shared/utils/response-model.ts";
 
-import { GetUserProfileUseCase } from "../../application/use-cases/profile/get-user-profile.usecase.js";
-import { UpdateUserProfileUseCase } from "../../application/use-cases/profile/update-user-profile.usecase.js";
-import { ChangeUserPasswordUseCase } from "../../application/use-cases/profile/change-user-password.usecase.js";
+import { GetUserProfileUseCase } from "../../application/use-cases/profile/get-user-profile.usecase.ts";
+import { UpdateUserProfileUseCase } from "../../application/use-cases/profile/update-user-profile.usecase.ts";
+import { ChangeUserPasswordUseCase } from "../../application/use-cases/profile/change-user-password.usecase.ts";
 
-import { GetTherapistProfileUseCase } from "../../application/use-cases/profile/get-therapist-profile.usecase.js";
-import { UpdateTherapistProfileUseCase } from "../../application/use-cases/profile/update-therapist-profile.usecase.js";
-import { ChangeTherapistPasswordUseCase } from "../../application/use-cases/profile/change-therapist-password.usecase.js";
+import { GetTherapistProfileUseCase } from "../../application/use-cases/profile/get-therapist-profile.usecase.ts";
+import { UpdateTherapistProfileUseCase } from "../../application/use-cases/profile/update-therapist-profile.usecase.ts";
+import { ChangeTherapistPasswordUseCase } from "../../application/use-cases/profile/change-therapist-password.usecase.ts";
 
-import { GetAdminProfileUseCase } from "../../application/use-cases/profile/get-admin-profile.usecase.js";
-import { UpdateAdminProfileUseCase } from "../../application/use-cases/profile/update-admin-profile.usecase.js";
-import { ChangeAdminPasswordUseCase } from "../../application/use-cases/profile/change-admin-password.usecase.js";
+import { GetAdminProfileUseCase } from "../../application/use-cases/profile/get-admin-profile.usecase.ts";
+import { UpdateAdminProfileUseCase } from "../../application/use-cases/profile/update-admin-profile.usecase.ts";
+import { ChangeAdminPasswordUseCase } from "../../application/use-cases/profile/change-admin-password.usecase.ts";
 
-import { ReviewTherapistProfileUseCase } from "../../application/use-cases/admin/review-therapist-profile.usecase.js";
-import { TherapistModel, type ITherapistDocument } from "../../infrastructure/databases/schema/therapist.schema.js";
-import { THERAPIST_STATUS } from "../../shared/constants/index.js";
+import { ReviewTherapistProfileUseCase } from "../../application/use-cases/admin/review-therapist-profile.usecase.ts";
+import { TherapistModel, type ITherapistDocument } from "../../infrastructure/databases/schema/therapist.schema.ts";
+import { THERAPIST_STATUS } from "../../shared/constants/index.ts";
 
 type WithId<T> = T & { _id: { toString(): string } };
 

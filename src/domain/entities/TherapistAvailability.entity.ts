@@ -14,7 +14,7 @@ export interface TherapistAvailabilityEntity {
   updatedAt?: Date;
 }
 
-import type { SlotStatus } from "../../shared/constants/index.js";
+import type { SlotStatus } from "../../shared/constants/index.ts";
 export type { SlotStatus };
 
 export interface TherapistSlotEntity {

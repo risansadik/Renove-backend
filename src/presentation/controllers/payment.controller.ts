@@ -1,12 +1,12 @@
 import type { Request, Response, NextFunction } from "express";
-import { CreatePaymentIntentUseCase } from "../../application/use-cases/payment/create-payment-intent.usecase.js";
-import { HandleStripeWebhookUseCase } from "../../application/use-cases/payment/handle-stripe-webhook.usecase.js";
-import { CompleteSessionUseCase } from "../../application/use-cases/payment/complete-session.usecase.js";
-import { StripeHelper } from "../../shared/utils/stripe.js";
-import { ResponseModel } from "../../shared/utils/response-model.js";
-import { logger } from "../../shared/utils/logger.js";
-import type { AuthenticatedRequest } from "../../shared/types/express.js";
-import { VerifyPaymentUseCase } from "../../application/use-cases/payment/verify-payment.usecase.js";
+import { CreatePaymentIntentUseCase } from "../../application/use-cases/payment/create-payment-intent.usecase.ts";
+import { HandleStripeWebhookUseCase } from "../../application/use-cases/payment/handle-stripe-webhook.usecase.ts";
+import { CompleteSessionUseCase } from "../../application/use-cases/payment/complete-session.usecase.ts";
+import { StripeHelper } from "../../shared/utils/stripe.ts";
+import { ResponseModel } from "../../shared/utils/response-model.ts";
+import { logger } from "../../shared/utils/logger.ts";
+import type { AuthenticatedRequest } from "../../shared/types/express.ts";
+import { VerifyPaymentUseCase } from "../../application/use-cases/payment/verify-payment.usecase.ts";
 
 export class PaymentController {
   constructor(

@@ -1,12 +1,12 @@
 import bcrypt from "bcryptjs";
-import type { IUserRepository } from "../../../domain/repositories/user.repository.js";
-import type { RegisterUserDTO } from "../../dto/auth/user.dto.js";
-import { sendOtpEmail } from "../../../infrastructure/external-services/email.service.js";
-import { generateOtp, getOtpExpiry } from "../../../shared/utils/otp.js";
-import { ConflictError } from "../../../shared/utils/AppError.js";
-import { BCRYPT_ROUNDS, USER_STATUS } from "../../../shared/constants/index.js";
+import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
+import type { RegisterUserDTO } from "../../dto/auth/user.dto.ts";
+import { sendOtpEmail } from "../../../infrastructure/external-services/email.service.ts";
+import { generateOtp, getOtpExpiry } from "../../../shared/utils/otp.ts";
+import { ConflictError } from "../../../shared/utils/AppError.ts";
+import { BCRYPT_ROUNDS, USER_STATUS } from "../../../shared/constants/index.ts";
 
-import type { IRegisterUserUseCase, IRegisterResponse } from "../../interfaces/auth/IAuthUseCase.js";
+import type { IRegisterUserUseCase, IRegisterResponse } from "../../interfaces/auth/IAuthUseCase.ts";
 
 export class RegisterUserUseCase implements IRegisterUserUseCase {
   constructor(private readonly _userRepo: IUserRepository) {}

@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
-import { GetWalletUseCase } from "../../application/use-cases/wallet/get-wallet.usecase.js";
-import { ResponseModel } from "../../shared/utils/response-model.js";
-import type { AuthenticatedRequest } from "../../shared/types/express.js";
+import { GetWalletUseCase } from "../../application/use-cases/wallet/get-wallet.usecase.ts";
+import { ResponseModel } from "../../shared/utils/response-model.ts";
+import type { AuthenticatedRequest } from "../../shared/types/express.ts";
 
 export class WalletController {
   constructor(private _getWalletUC: GetWalletUseCase) {}

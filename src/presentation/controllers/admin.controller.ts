@@ -1,18 +1,18 @@
 import type { Request, Response, NextFunction } from "express";
-import { AdminLoginUseCase } from "../../application/use-cases/auth/admin-login.usecase.js";
+import { AdminLoginUseCase } from "../../application/use-cases/auth/admin-login.usecase.ts";
 import {
   GetAllUsersUseCase,
   UpdateUserStatusUseCase,
   GetAllTherapistsUseCase,
   UpdateTherapistStatusUseCase,
-} from "../../application/use-cases/admin/admin-management.usecase.js";
-import { AdminRepository } from "../../infrastructure/repositories/admin.repository.impl.js";
-import { UserRepository } from "../../infrastructure/repositories/user.repository.impl.js";
-import { TherapistRepository } from "../../infrastructure/repositories/therapist.repository.impl.js";
-import { SettingsRepositoryImpl } from "../../infrastructure/repositories/settings.repository.impl.js";
-import { GetAdminFinanceStatsUseCase, UpdatePlatformSettingsUseCase } from "../../application/use-cases/admin/admin-finance.usecase.js";
-import { ResponseModel } from "../../shared/utils/response-model.js";
-import { setAuthCookies, clearAuthCookies } from "../../shared/utils/jwt.js";
+} from "../../application/use-cases/admin/admin-management.usecase.ts";
+import { AdminRepository } from "../../infrastructure/repositories/admin.repository.impl.ts";
+import { UserRepository } from "../../infrastructure/repositories/user.repository.impl.ts";
+import { TherapistRepository } from "../../infrastructure/repositories/therapist.repository.impl.ts";
+import { SettingsRepositoryImpl } from "../../infrastructure/repositories/settings.repository.impl.ts";
+import { GetAdminFinanceStatsUseCase, UpdatePlatformSettingsUseCase } from "../../application/use-cases/admin/admin-finance.usecase.ts";
+import { ResponseModel } from "../../shared/utils/response-model.ts";
+import { setAuthCookies, clearAuthCookies } from "../../shared/utils/jwt.ts";
 
 const adminRepo = new AdminRepository();
 const userRepo = new UserRepository();

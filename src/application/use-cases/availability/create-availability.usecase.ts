@@ -1,10 +1,10 @@
-import type { IAvailabilityRepository, ISlotRepository } from "../../../domain/repositories/availability.repository.js";
-import { SlotGenerator } from "../../../shared/utils/slot-generator.js";
+import type { IAvailabilityRepository, ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
+import { SlotGenerator } from "../../../shared/utils/slot-generator.ts";
 import { addDays, startOfDay } from "date-fns";
-import { AppError } from "../../../shared/utils/AppError.js";
-import { HttpStatus } from "../../../shared/constants/index.js";
+import { AppError } from "../../../shared/utils/AppError.ts";
+import { HttpStatus } from "../../../shared/constants/index.ts";
 
-import type { ICreateAvailabilityUseCase } from "../../interfaces/availability/IAvailabilityUseCase.js";
+import type { ICreateAvailabilityUseCase } from "../../interfaces/availability/IAvailabilityUseCase.ts";
 
 export interface CreateAvailabilityDTO {
   therapistId: string;

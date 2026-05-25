@@ -1,11 +1,11 @@
-import type { IBookingRepository } from "../../../domain/repositories/booking.repository.js";
-import type { BookingEntity } from "../../../domain/entities/Booking.entity.js";
-import type { IGetUserBookingsUseCase, IGetTherapistBookingsUseCase, IUpdateBookingStatusUseCase } from "../../interfaces/booking/IBookingUseCase.js";
-import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.js";
-import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.js";
-import { BOOKING_STATUS, PAYMENT_STATUS } from "../../../shared/constants/index.js";
+import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
+import type { BookingEntity } from "../../../domain/entities/Booking.entity.ts";
+import type { IGetUserBookingsUseCase, IGetTherapistBookingsUseCase, IUpdateBookingStatusUseCase } from "../../interfaces/booking/IBookingUseCase.ts";
+import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.ts";
+import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.ts";
+import { BOOKING_STATUS, PAYMENT_STATUS } from "../../../shared/constants/index.ts";
 
-import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination.js";
+import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination.ts";
 
 export class GetUserBookingsUseCase implements IGetUserBookingsUseCase {
   constructor(private _bookingRepository: IBookingRepository) {}

@@ -1,11 +1,11 @@
 import bcrypt from "bcryptjs";
-import type { IUserRepository } from "../../../domain/repositories/user.repository.js";
-import type { LoginUserDTO } from "../../dto/auth/user.dto.js";
-import { generateTokens } from "../../../shared/utils/jwt.js";
-import { AppError, NotFoundError, UnauthorizedError } from "../../../shared/utils/AppError.js";
-import { ROLES, USER_STATUS } from "../../../shared/constants/index.js";
+import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
+import type { LoginUserDTO } from "../../dto/auth/user.dto.ts";
+import { generateTokens } from "../../../shared/utils/jwt.ts";
+import { AppError, NotFoundError, UnauthorizedError } from "../../../shared/utils/AppError.ts";
+import { ROLES, USER_STATUS } from "../../../shared/constants/index.ts";
 
-import type { ILoginUserUseCase, ILoginResponse } from "../../interfaces/auth/IAuthUseCase.js";
+import type { ILoginUserUseCase, ILoginResponse } from "../../interfaces/auth/IAuthUseCase.ts";
 
 export class LoginUserUseCase implements ILoginUserUseCase {
   constructor(private readonly _userRepo: IUserRepository) {}

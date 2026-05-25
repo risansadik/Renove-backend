@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import { logger } from "./logger.js";
+import { logger } from "./logger.ts";
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY || "sk_test_placeholder";
 const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET || "";

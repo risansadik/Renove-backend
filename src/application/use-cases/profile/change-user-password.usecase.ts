@@ -1,6 +1,6 @@
-import { UserModel } from "../../../infrastructure/databases/schema/user.schema.js";
-import { AppError } from "../../../shared/utils/AppError.js";
-import { HttpStatus, BCRYPT_ROUNDS } from "../../../shared/constants/index.js";
+import { UserModel } from "../../../infrastructure/databases/schema/user.schema.ts";
+import { AppError } from "../../../shared/utils/AppError.ts";
+import { HttpStatus, BCRYPT_ROUNDS } from "../../../shared/constants/index.ts";
 import bcrypt from "bcryptjs";
 
 export class ChangeUserPasswordUseCase {

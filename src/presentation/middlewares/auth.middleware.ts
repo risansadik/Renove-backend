@@ -1,10 +1,10 @@
 import type { Request, Response, NextFunction } from "express";
-import { verifyAccessToken } from "../../shared/utils/jwt.js";
-import { UnauthorizedError, ForbiddenError } from "../../shared/utils/AppError.js";
-import type { Role } from "../../shared/constants/index.js";
-import { UserModel } from "../../infrastructure/databases/schema/user.schema.js";
-import { TherapistModel } from "../../infrastructure/databases/schema/therapist.schema.js";
-import { USER_STATUS } from "../../shared/constants/index.js";
+import { verifyAccessToken } from "../../shared/utils/jwt.ts";
+import { UnauthorizedError, ForbiddenError } from "../../shared/utils/AppError.ts";
+import type { Role } from "../../shared/constants/index.ts";
+import { UserModel } from "../../infrastructure/databases/schema/user.schema.ts";
+import { TherapistModel } from "../../infrastructure/databases/schema/therapist.schema.ts";
+import { USER_STATUS } from "../../shared/constants/index.ts";
 
 export interface AuthRequest extends Request {
   user?: { id: string; email: string; role: Role };

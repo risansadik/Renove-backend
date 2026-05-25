@@ -3,9 +3,9 @@ dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import { TherapistModel } from "../infrastructure/databases/schema/therapist.schema.js";
-import { UserModel } from "../infrastructure/databases/schema/user.schema.js";
-import { BCRYPT_ROUNDS } from "../shared/constants/index.js";
+import { TherapistModel } from "../infrastructure/databases/schema/therapist.schema.ts";
+import { UserModel } from "../infrastructure/databases/schema/user.schema.ts";
+import { BCRYPT_ROUNDS } from "../shared/constants/index.ts";
 
 const run = async () => {
   const mongoUri = "mongodb+srv://risansadik_db_user:bmOvh6yOzFhPyQg7@cluster0.h7wjcvs.mongodb.net/";

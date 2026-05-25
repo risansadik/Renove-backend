@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
-import type { CreateAvailabilityUseCase } from "../../application/use-cases/availability/create-availability.usecase.js";
-import type { GetTherapistRulesUseCase, GetAvailableSlotsUseCase, DeleteAvailabilityRuleUseCase } from "../../application/use-cases/availability/availability-operations.usecase.js";
-import { AvailabilityMapper } from "../../application/mappers/availability.mapper.js";
-import type { AuthenticatedRequest } from "../../shared/types/express.js";
+import type { CreateAvailabilityUseCase } from "../../application/use-cases/availability/create-availability.usecase.ts";
+import type { GetTherapistRulesUseCase, GetAvailableSlotsUseCase, DeleteAvailabilityRuleUseCase } from "../../application/use-cases/availability/availability-operations.usecase.ts";
+import { AvailabilityMapper } from "../../application/mappers/availability.mapper.ts";
+import type { AuthenticatedRequest } from "../../shared/types/express.ts";
 
 export class AvailabilityController {
   constructor(

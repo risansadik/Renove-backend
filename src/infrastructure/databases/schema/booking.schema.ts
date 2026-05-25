@@ -1,5 +1,5 @@
 import mongoose, { Schema, type Document, type Types } from "mongoose";
-import type { BookingStatus, SessionType } from "../../../domain/entities/Booking.entity.js";
+import type { BookingStatus, SessionType } from "../../../domain/entities/Booking.entity.ts";
 
 export interface IBookingDocument extends Document {
   userId: Types.ObjectId;

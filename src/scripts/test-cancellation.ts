@@ -3,18 +3,18 @@ import dns from "node:dns";
 import mongoose from "mongoose";
 
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
-import { UserModel } from "../infrastructure/databases/schema/user.schema.js";
-import { TherapistModel } from "../infrastructure/databases/schema/therapist.schema.js";
-import { AvailabilityModel, SlotModel } from "../infrastructure/databases/schema/availability.schema.js";
-import { BookingModel } from "../infrastructure/databases/schema/booking.schema.js";
-import { PaymentModel } from "../infrastructure/databases/schema/payment.schema.js";
-import { WalletModel, TransactionModel, UserWalletModel } from "../infrastructure/databases/schema/wallet.schema.js";
-import { BookingRepositoryImpl } from "../infrastructure/repositories/booking.repository.impl.js";
-import { SlotRepository } from "../infrastructure/repositories/availability.repository.impl.js";
-import { WalletRepositoryImpl } from "../infrastructure/repositories/wallet.repository.impl.js";
-import { PaymentRepositoryImpl } from "../infrastructure/repositories/payment.repository.impl.js";
-import { CancelBookingUseCase } from "../application/use-cases/booking/cancel-booking.usecase.js";
-import { BOOKING_STATUS, PAYMENT_STATUS } from "../shared/constants/index.js";
+import { UserModel } from "../infrastructure/databases/schema/user.schema.ts";
+import { TherapistModel } from "../infrastructure/databases/schema/therapist.schema.ts";
+import { AvailabilityModel, SlotModel } from "../infrastructure/databases/schema/availability.schema.ts";
+import { BookingModel } from "../infrastructure/databases/schema/booking.schema.ts";
+import { PaymentModel } from "../infrastructure/databases/schema/payment.schema.ts";
+import { WalletModel, TransactionModel, UserWalletModel } from "../infrastructure/databases/schema/wallet.schema.ts";
+import { BookingRepositoryImpl } from "../infrastructure/repositories/booking.repository.impl.ts";
+import { SlotRepository } from "../infrastructure/repositories/availability.repository.impl.ts";
+import { WalletRepositoryImpl } from "../infrastructure/repositories/wallet.repository.impl.ts";
+import { PaymentRepositoryImpl } from "../infrastructure/repositories/payment.repository.impl.ts";
+import { CancelBookingUseCase } from "../application/use-cases/booking/cancel-booking.usecase.ts";
+import { BOOKING_STATUS, PAYMENT_STATUS } from "../shared/constants/index.ts";
 
 async function runTests() {
   const mongoUri = process.env.MONGO_URI;
@@ -147,7 +147,7 @@ async function runTests() {
 
   // 9. Assertions
   console.log("\n--- Verification Assertions ---");
-  
+
   // A. Check Booking status
   const updatedBooking = await BookingModel.findById(booking._id);
   console.log(`Booking Status: Expected 'cancelled', Got '${updatedBooking?.status}'`);

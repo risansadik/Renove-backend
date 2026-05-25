@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { BookingController } from "../controllers/booking.controller.js";
-import { CreateBookingUseCase } from "../../application/use-cases/booking/create-booking.usecase.js";
-import { GetUserBookingsUseCase, GetTherapistBookingsUseCase, UpdateBookingStatusUseCase } from "../../application/use-cases/booking/get-bookings.usecase.js";
-import { CancelBookingUseCase } from "../../application/use-cases/booking/cancel-booking.usecase.js";
-import { BookingRepositoryImpl } from "../../infrastructure/repositories/booking.repository.impl.js";
-import { SlotRepository } from "../../infrastructure/repositories/availability.repository.impl.js";
-import { WalletRepositoryImpl } from "../../infrastructure/repositories/wallet.repository.impl.js";
-import { PaymentRepositoryImpl } from "../../infrastructure/repositories/payment.repository.impl.js";
-import { authenticate } from "../middlewares/auth.middleware.js";
+import { BookingController } from "../controllers/booking.controller.ts";
+import { CreateBookingUseCase } from "../../application/use-cases/booking/create-booking.usecase.ts";
+import { GetUserBookingsUseCase, GetTherapistBookingsUseCase, UpdateBookingStatusUseCase } from "../../application/use-cases/booking/get-bookings.usecase.ts";
+import { CancelBookingUseCase } from "../../application/use-cases/booking/cancel-booking.usecase.ts";
+import { BookingRepositoryImpl } from "../../infrastructure/repositories/booking.repository.impl.ts";
+import { SlotRepository } from "../../infrastructure/repositories/availability.repository.impl.ts";
+import { WalletRepositoryImpl } from "../../infrastructure/repositories/wallet.repository.impl.ts";
+import { PaymentRepositoryImpl } from "../../infrastructure/repositories/payment.repository.impl.ts";
+import { authenticate } from "../middlewares/auth.middleware.ts";
 
 const router = Router();
 

@@ -1,4 +1,4 @@
-import type { TherapistAvailabilityEntity, TherapistSlotEntity, SlotStatus } from "../../domain/entities/TherapistAvailability.entity.js";
+import type { TherapistAvailabilityEntity, TherapistSlotEntity, SlotStatus } from "../../domain/entities/TherapistAvailability.entity.ts";
 
 export interface IAvailabilityRepository {
   create(data: TherapistAvailabilityEntity): Promise<TherapistAvailabilityEntity>;

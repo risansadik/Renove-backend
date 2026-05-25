@@ -1,9 +1,9 @@
-import type { IUserRepository } from "../../domain/repositories/user.repository.js";
-import type { UserEntity } from "../../domain/entities/User.entity.js";
-import { UserModel } from "../databases/schema/user.schema.js";
-import { UserMapper } from "../../application/mappers/user.mapper.js";
+import type { IUserRepository } from "../../domain/repositories/user.repository.ts";
+import type { UserEntity } from "../../domain/entities/User.entity.ts";
+import { UserModel } from "../databases/schema/user.schema.ts";
+import { UserMapper } from "../../application/mappers/user.mapper.ts";
 
-import { PaginationParams, PaginatedResult } from "../../domain/interfaces/pagination.js";
+import { PaginationParams, PaginatedResult } from "../../domain/interfaces/pagination.ts";
 
 export class UserRepository implements IUserRepository {
   async findById(id: string): Promise<UserEntity | null> {

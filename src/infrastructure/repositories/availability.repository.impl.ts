@@ -1,6 +1,6 @@
-import { AvailabilityModel, SlotModel, type IAvailabilityDocument, type ISlotDocument } from "../databases/schema/availability.schema.js";
-import type { IAvailabilityRepository, ISlotRepository } from "../../domain/repositories/availability.repository.js";
-import type { TherapistAvailabilityEntity, TherapistSlotEntity, SlotStatus } from "../../domain/entities/TherapistAvailability.entity.js";
+import { AvailabilityModel, SlotModel, type IAvailabilityDocument, type ISlotDocument } from "../databases/schema/availability.schema.ts";
+import type { IAvailabilityRepository, ISlotRepository } from "../../domain/repositories/availability.repository.ts";
+import type { TherapistAvailabilityEntity, TherapistSlotEntity, SlotStatus } from "../../domain/entities/TherapistAvailability.entity.ts";
 
 export class AvailabilityRepository implements IAvailabilityRepository {
   private _toAvailabilityEntity(doc: IAvailabilityDocument): TherapistAvailabilityEntity {

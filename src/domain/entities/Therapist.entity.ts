@@ -1,4 +1,4 @@
-import type { TherapistStatus } from "../../shared/constants/index.js";
+import type { TherapistStatus } from "../../shared/constants/index.ts";
 
 export interface TherapistEntity {
   id: string;

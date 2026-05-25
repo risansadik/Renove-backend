@@ -1,11 +1,11 @@
-import type { VerifyOtpDTO } from "../../dto/auth/user.dto.js";
-import { AppError, NotFoundError } from "../../../shared/utils/AppError.js";
-import { HttpStatus } from "../../../shared/constants/index.js";
-import { isOtpExpired } from "../../../shared/utils/otp.js";
-import type { UserEntity } from "../../../domain/entities/User.entity.js";
-import type { TherapistEntity } from "../../../domain/entities/Therapist.entity.js";
+import type { VerifyOtpDTO } from "../../dto/auth/user.dto.ts";
+import { AppError, NotFoundError } from "../../../shared/utils/AppError.ts";
+import { HttpStatus } from "../../../shared/constants/index.ts";
+import { isOtpExpired } from "../../../shared/utils/otp.ts";
+import type { UserEntity } from "../../../domain/entities/User.entity.ts";
+import type { TherapistEntity } from "../../../domain/entities/Therapist.entity.ts";
 
-import type { IVerifyResetOtpUseCase } from "../../interfaces/auth/IAuthUseCase.js";
+import type { IVerifyResetOtpUseCase } from "../../interfaces/auth/IAuthUseCase.ts";
 
 export class VerifyResetOtpUseCase<T extends UserEntity | TherapistEntity> implements IVerifyResetOtpUseCase {
   constructor(private readonly _repo: {

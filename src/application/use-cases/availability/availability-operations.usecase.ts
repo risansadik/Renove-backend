@@ -1,6 +1,6 @@
-import type { IAvailabilityRepository, ISlotRepository } from "../../../domain/repositories/availability.repository.js";
-import type { IGetTherapistRulesUseCase, IGetAvailableSlotsUseCase, IDeleteAvailabilityRuleUseCase } from "../../interfaces/availability/IAvailabilityUseCase.js";
-import type { TherapistAvailabilityEntity, TherapistSlotEntity } from "../../../domain/entities/TherapistAvailability.entity.js";
+import type { IAvailabilityRepository, ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
+import type { IGetTherapistRulesUseCase, IGetAvailableSlotsUseCase, IDeleteAvailabilityRuleUseCase } from "../../interfaces/availability/IAvailabilityUseCase.ts";
+import type { TherapistAvailabilityEntity, TherapistSlotEntity } from "../../../domain/entities/TherapistAvailability.entity.ts";
 
 export class GetTherapistRulesUseCase implements IGetTherapistRulesUseCase {
   constructor(private _availabilityRepo: IAvailabilityRepository) {}

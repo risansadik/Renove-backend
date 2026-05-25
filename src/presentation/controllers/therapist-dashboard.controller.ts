@@ -1,11 +1,11 @@
 import type { Response, NextFunction } from "express";
-import type { AuthRequest } from "../middlewares/auth.middleware.js";
-import { UserModel } from "../../infrastructure/databases/schema/user.schema.js";
-import { TherapistModel } from "../../infrastructure/databases/schema/therapist.schema.js";
-import { WalletModel } from "../../infrastructure/databases/schema/wallet.schema.js";
-import { BookingModel } from "../../infrastructure/databases/schema/booking.schema.js";
-import { ResponseModel } from "../../shared/utils/response-model.js";
-import { BOOKING_STATUS } from "../../shared/constants/index.js";
+import type { AuthRequest } from "../middlewares/auth.middleware.ts";
+import { UserModel } from "../../infrastructure/databases/schema/user.schema.ts";
+import { TherapistModel } from "../../infrastructure/databases/schema/therapist.schema.ts";
+import { WalletModel } from "../../infrastructure/databases/schema/wallet.schema.ts";
+import { BookingModel } from "../../infrastructure/databases/schema/booking.schema.ts";
+import { ResponseModel } from "../../shared/utils/response-model.ts";
+import { BOOKING_STATUS } from "../../shared/constants/index.ts";
 import { startOfDay, endOfDay, startOfWeek, endOfWeek } from "date-fns";
 
 export const therapistDashboardController = {

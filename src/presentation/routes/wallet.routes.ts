@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { WalletController } from "../controllers/wallet.controller.js";
-import { GetWalletUseCase } from "../../application/use-cases/wallet/get-wallet.usecase.js";
-import { WalletRepositoryImpl } from "../../infrastructure/repositories/wallet.repository.impl.js";
-import { authenticate } from "../middlewares/auth.middleware.js";
+import { WalletController } from "../controllers/wallet.controller.ts";
+import { GetWalletUseCase } from "../../application/use-cases/wallet/get-wallet.usecase.ts";
+import { WalletRepositoryImpl } from "../../infrastructure/repositories/wallet.repository.impl.ts";
+import { authenticate } from "../middlewares/auth.middleware.ts";
 
 const router = Router();
 

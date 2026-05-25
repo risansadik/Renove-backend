@@ -1,8 +1,8 @@
-import { verifyRefreshToken, generateTokens } from "../../../shared/utils/jwt.js";
-import { UnauthorizedError } from "../../../shared/utils/AppError.js";
-import type { IUserRepository } from "../../../domain/repositories/user.repository.js";
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.js";
-import { ROLES } from "../../../shared/constants/index.js";
+import { verifyRefreshToken, generateTokens } from "../../../shared/utils/jwt.ts";
+import { UnauthorizedError } from "../../../shared/utils/AppError.ts";
+import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
+import { ROLES } from "../../../shared/constants/index.ts";
 
 export class RefreshTokenUseCase {
   constructor(

@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
-import type { CreateBookingUseCase } from "../../application/use-cases/booking/create-booking.usecase.js";
-import type { GetUserBookingsUseCase, GetTherapistBookingsUseCase, UpdateBookingStatusUseCase } from "../../application/use-cases/booking/get-bookings.usecase.js";
-import type { CancelBookingUseCase } from "../../application/use-cases/booking/cancel-booking.usecase.js";
-import { BookingMapper } from "../../application/mappers/booking.mapper.js";
-import type { AuthenticatedRequest } from "../../shared/types/express.js";
+import type { CreateBookingUseCase } from "../../application/use-cases/booking/create-booking.usecase.ts";
+import type { GetUserBookingsUseCase, GetTherapistBookingsUseCase, UpdateBookingStatusUseCase } from "../../application/use-cases/booking/get-bookings.usecase.ts";
+import type { CancelBookingUseCase } from "../../application/use-cases/booking/cancel-booking.usecase.ts";
+import { BookingMapper } from "../../application/mappers/booking.mapper.ts";
+import type { AuthenticatedRequest } from "../../shared/types/express.ts";
 
 export class BookingController {
   constructor(

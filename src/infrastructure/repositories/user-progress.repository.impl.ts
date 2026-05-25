@@ -1,5 +1,5 @@
-import { UserProgressModel } from "../databases/schema/user-progress.schema.js";
-import type { IUserProgressDocument, IMission } from "../databases/schema/user-progress.schema.js";
+import { UserProgressModel } from "../databases/schema/user-progress.schema.ts";
+import type { IUserProgressDocument, IMission } from "../databases/schema/user-progress.schema.ts";
 
 const XP_PER_LEVEL = 500;
 

@@ -1,10 +1,10 @@
 import type { Response, NextFunction } from "express";
-import type { AuthRequest } from "../middlewares/auth.middleware.js";
-import { UserProgressRepository } from "../../infrastructure/repositories/user-progress.repository.impl.js";
-import { TherapistModel } from "../../infrastructure/databases/schema/therapist.schema.js";
-import { BookingModel } from "../../infrastructure/databases/schema/booking.schema.js";
-import { ResponseModel } from "../../shared/utils/response-model.js";
-import { BOOKING_STATUS } from "../../shared/constants/index.js";
+import type { AuthRequest } from "../middlewares/auth.middleware.ts";
+import { UserProgressRepository } from "../../infrastructure/repositories/user-progress.repository.impl.ts";
+import { TherapistModel } from "../../infrastructure/databases/schema/therapist.schema.ts";
+import { BookingModel } from "../../infrastructure/databases/schema/booking.schema.ts";
+import { ResponseModel } from "../../shared/utils/response-model.ts";
+import { BOOKING_STATUS } from "../../shared/constants/index.ts";
 
 const progressRepo = new UserProgressRepository();
 

@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "reNove - AI-powered addiction recovery platform backend",
   "type": "module",
-  "main": "dist/server.js",
+  "main": "dist/server.ts",
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node dist/server.ts",
     "lint": "eslint .",
     "seed:admin": "tsx src/scripts/seed-admin.ts"
   },

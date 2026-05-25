@@ -1,5 +1,5 @@
 import mongoose, { Schema, type Document } from "mongoose";
-import type { PaymentStatus } from "../../../shared/constants/index.js";
+import type { PaymentStatus } from "../../../shared/constants/index.ts";
 
 export interface IPaymentDocument extends Document {
   bookingId: mongoose.Types.ObjectId;

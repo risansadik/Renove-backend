@@ -1,5 +1,5 @@
-import type { BookingEntity } from "../entities/Booking.entity.js";
-import { PaginationParams, PaginatedResult } from "../interfaces/pagination.js";
+import type { BookingEntity } from "../entities/Booking.entity.ts";
+import { PaginationParams, PaginatedResult } from "../interfaces/pagination.ts";
 
 export interface IBookingRepository {
   create(booking: Omit<BookingEntity, "id" | "createdAt" | "updatedAt">): Promise<BookingEntity>;

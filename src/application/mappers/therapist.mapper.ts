@@ -1,5 +1,5 @@
-import type { TherapistEntity } from "../../domain/entities/Therapist.entity.js";
-import type { ITherapistRaw } from "../../infrastructure/databases/schema/therapist.schema.js";
+import type { TherapistEntity } from "../../domain/entities/Therapist.entity.ts";
+import type { ITherapistRaw } from "../../infrastructure/databases/schema/therapist.schema.ts";
 
 export interface PublicTherapistDTO {
   id: string;

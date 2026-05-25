@@ -1,4 +1,4 @@
-import type { UserStatus } from "../../shared/constants/index.js";
+import type { UserStatus } from "../../shared/constants/index.ts";
 
 export interface UserEntity {
   id: string;

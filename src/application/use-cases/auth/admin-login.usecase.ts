@@ -1,12 +1,12 @@
 import bcrypt from "bcryptjs";
-import type { IAdminRepository } from "../../../domain/repositories/admin.repository.js";
-import type { AdminLoginDTO } from "../../dto/auth/admin.dto.js";
-import { generateTokens } from "../../../shared/utils/jwt.js";
-import { NotFoundError, UnauthorizedError } from "../../../shared/utils/AppError.js";
-import { AdminMapper } from "../../mappers/admin.mapper.js";
-import { ROLES } from "../../../shared/constants/index.js";
+import type { IAdminRepository } from "../../../domain/repositories/admin.repository.ts";
+import type { AdminLoginDTO } from "../../dto/auth/admin.dto.ts";
+import { generateTokens } from "../../../shared/utils/jwt.ts";
+import { NotFoundError, UnauthorizedError } from "../../../shared/utils/AppError.ts";
+import { AdminMapper } from "../../mappers/admin.mapper.ts";
+import { ROLES } from "../../../shared/constants/index.ts";
 
-import type { IAdminLoginUseCase, ILoginResponse } from "../../interfaces/auth/IAuthUseCase.js";
+import type { IAdminLoginUseCase, ILoginResponse } from "../../interfaces/auth/IAuthUseCase.ts";
 
 export class AdminLoginUseCase implements IAdminLoginUseCase {
   constructor(private readonly _adminRepo: IAdminRepository) {}
