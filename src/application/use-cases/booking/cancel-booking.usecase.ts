@@ -4,7 +4,8 @@ import type { IWalletRepository } from "../../../domain/repositories/wallet.repo
 import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.ts";
 import type { BookingEntity } from "../../../domain/entities/Booking.entity.ts";
 import type { ICancelBookingUseCase, CancelBookingInput } from "../../interfaces/booking/IBookingUseCase.ts";
-import { BOOKING_STATUS, PAYMENT_STATUS } from "../../../shared/constants/index.ts";
+import { BOOKING_STATUS, HttpStatus, PAYMENT_STATUS } from "../../../shared/constants/index.ts";
+import { AppError, ForbiddenError, NotFoundError } from "../../../shared/utils/AppError.ts";
 
 export class CancelBookingUseCase implements ICancelBookingUseCase {
   constructor(
@@ -17,15 +18,15 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
   async execute({ bookingId, cancelledBy, userIdOrTherapistId, reason }: CancelBookingInput): Promise<BookingEntity> {
     const booking = await this._bookingRepo.findById(bookingId);
     if (!booking) {
-      throw new Error("Booking not found");
+      throw new NotFoundError("Booking");
     }
 
     if (booking.status === BOOKING_STATUS.CANCELLED) {
-      throw new Error("Booking is already cancelled");
+      throw new AppError("Booking is already cancelled", HttpStatus.BAD_REQUEST);
     }
 
     if (booking.status === BOOKING_STATUS.COMPLETED) {
-      throw new Error("Cannot cancel a completed session");
+      throw new AppError("Cannot cancel a completed session", HttpStatus.BAD_REQUEST);
     }
 
     // Authorization checks
@@ -33,17 +34,17 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
     const bookingTherapistId = typeof booking.therapistId === "object" && booking.therapistId !== null ? (booking.therapistId as { id: string }).id : booking.therapistId as string;
 
     if (cancelledBy === "user" && bookingUserId !== userIdOrTherapistId) {
-      throw new Error("Unauthorized: You do not own this booking");
+      throw new ForbiddenError("Unauthorized: You do not own this booking");
     }
     if (cancelledBy === "therapist" && bookingTherapistId !== userIdOrTherapistId) {
-      throw new Error("Unauthorized: You are not assigned to this booking");
+      throw new ForbiddenError("Unauthorized: You are not assigned to this booking");
     }
 
     const slot = await this._slotRepo.findById(
       typeof booking.slotId === "object" && booking.slotId !== null ? (booking.slotId as { id: string }).id : booking.slotId as string
     );
     if (!slot) {
-      throw new Error("Associated slot not found");
+      throw new NotFoundError("Associated slot");
     }
 
     const now = new Date();
@@ -153,7 +154,7 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
     });
 
     if (!updatedBooking) {
-      throw new Error("Failed to update booking status");
+      throw new AppError("Failed to update booking status", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     return updatedBooking;

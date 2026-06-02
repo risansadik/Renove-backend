@@ -1,6 +1,7 @@
 import { Model, Document } from "mongoose";
-import { BaseRepository as IBaseRepository } from "../../domain/repositories/base.repository";
-import { PaginationParams, NestedPaginatedResult } from "../../domain/interfaces/pagination";
+import { BaseRepository as IBaseRepository } from "../../domain/repositories/base.repository.ts";
+import { PaginationParams, NestedPaginatedResult } from "../../domain/interfaces/pagination.ts";
+import { PAGINATION } from "../../shared/constants/index.ts";
 
 export abstract class BaseRepository<T extends { id: string }, D extends Document> implements IBaseRepository<T> {
   constructor(protected readonly model: Model<D>) {}
@@ -20,8 +21,8 @@ export abstract class BaseRepository<T extends { id: string }, D extends Documen
   }
 
   public async findAll(params?: PaginationParams): Promise<NestedPaginatedResult<T>> {
-    const page = Math.max(1, params?.page ?? 1);
-    const limit = Math.max(1, params?.limit ?? 10);
+    const page = Math.max(1, params?.page ?? PAGINATION.DEFAULT_PAGE);
+    const limit = Math.max(1, params?.limit ?? PAGINATION.DEFAULT_LIMIT);
     const skip = (page - 1) * limit;
 
     const [documents, total] = await Promise.all([

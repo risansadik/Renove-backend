@@ -16,6 +16,8 @@ export interface TherapistEntity {
   profileImage?: string;
   status: TherapistStatus;
   isVerified: boolean;
+  pendingUpdates?: Partial<Omit<TherapistEntity, "id" | "email" | "password" | "status" | "isVerified" | "createdAt" | "updatedAt">>;
+  adminRejectionReason?: string;
   otp?: string;
   otpExpiry?: Date;
   createdAt: Date;

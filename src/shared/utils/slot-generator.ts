@@ -1,5 +1,7 @@
-import pkg from 'rrule';
-const { rrulestr } = pkg;
+import pkg, { RRule } from "rrule";
+// Use unknown to bypass ESM interop issues safely without using 'any'
+const rrulestr = (pkg as unknown as { rrulestr: (s: string) => RRule }).rrulestr;
+
 import { startOfDay, isAfter, format } from "date-fns";
 
 export class SlotGenerator {
@@ -23,13 +25,13 @@ export class SlotGenerator {
     if (!ruleStr.includes("DTSTART")) {
       // Use floating time (no Z) to ensure it's relative to the day, not UTC
       const dtStart = format(startOfDay(startDate), "yyyyMMdd'T'HHmmss");
-      finalRuleStr = `DTSTART:${dtStart}\n${ruleStr}`;
+      // Ensure the recurrence part is prefixed with RRULE: for valid multi-line iCalendar format
+      const rrulePart = ruleStr.startsWith("RRULE:") ? ruleStr : `RRULE:${ruleStr}`;
+      finalRuleStr = `DTSTART:${dtStart}\n${rrulePart}`;
     }
 
     const rule = rrulestr(finalRuleStr);
     
-    // Search from the start of the range (inclusive)
-    // We add a small buffer back in time to ensure we catch today's occurrences
     const searchStart = startOfDay(startDate);
     const occurrences = rule.between(searchStart, endDate, true);
 
@@ -44,7 +46,6 @@ export class SlotGenerator {
       const slotEnd = new Date(occ);
       slotEnd.setHours(endH, endM, 0, 0);
 
-      // Only add if it's in the future
       if (isAfter(slotStart, new Date())) {
         slots.push({ start: slotStart, end: slotEnd });
       }

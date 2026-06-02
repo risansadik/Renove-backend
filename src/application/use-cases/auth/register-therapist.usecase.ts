@@ -1,32 +1,39 @@
-import bcrypt from "bcryptjs";
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
-import type { RegisterTherapistDTO } from "../../dto/auth/therapist.dto.ts";
-import { sendOtpEmail } from "../../../infrastructure/external-services/email.service.ts";
-import { generateOtp, getOtpExpiry } from "../../../shared/utils/otp.ts";
+import { injectable, inject } from "inversify";
+import { TYPES } from "../../../shared/constants/tokens.ts";
 import { ConflictError } from "../../../shared/utils/AppError.ts";
-import { BCRYPT_ROUNDS, THERAPIST_STATUS } from "../../../shared/constants/index.ts";
+import { THERAPIST_STATUS, OTP_TTL_SECONDS, MESSAGES } from "../../../shared/constants/index.ts";
 
+// Interfaces
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
+import type { IOtpCacheRepository } from "../../../domain/repositories/otp-cache.repository.ts";
+import type { IEmailService } from "../../interfaces/services/IEmailService.ts";
+import type { IOtpGenerator } from "../../interfaces/services/IOtpGenerator.ts";
+import type { IPasswordHasher } from "../../interfaces/services/IPasswordHasher.ts";
 import type { IRegisterTherapistUseCase, IRegisterResponse } from "../../interfaces/auth/IAuthUseCase.ts";
+import type { RegisterTherapistDTO } from "../../dto/auth/therapist.dto.ts";
 
+@injectable()
 export class RegisterTherapistUseCase implements IRegisterTherapistUseCase {
-  constructor(private readonly _therapistRepo: ITherapistRepository) {}
+  constructor(
+    @inject(TYPES.TherapistRepository) private readonly _therapistRepo: ITherapistRepository,
+    @inject(TYPES.OtpCacheRepository) private readonly _otpCacheRepo: IOtpCacheRepository,
+    @inject(TYPES.EmailService) private readonly _emailService: IEmailService,
+    @inject(TYPES.PasswordHasher) private readonly _passwordHasher: IPasswordHasher,
+    @inject(TYPES.OtpGenerator) private readonly _otpGenerator: IOtpGenerator
+  ) {}
 
   async execute(dto: RegisterTherapistDTO): Promise<IRegisterResponse> {
     const existing = await this._therapistRepo.findByEmail(dto.email);
-    console.log("REGISTRATION DEBUG:", { email: dto.email, existingFound: !!existing, isVerified: existing?.isVerified });
     if (existing && existing.isVerified) throw new ConflictError("Email already registered");
 
-    const hashedPassword = await bcrypt.hash(dto.password, BCRYPT_ROUNDS);
-    const otp = generateOtp();
-    const otpExpiry = getOtpExpiry();
+    const hashedPassword = await this._passwordHasher.hash(dto.password);
+    const otp = this._otpGenerator.generate();
 
     if (existing) {
       // Update existing unverified therapist
       await this._therapistRepo.update(existing.id, {
         ...dto,
         password: hashedPassword,
-        otp,
-        otpExpiry,
         status: THERAPIST_STATUS.PENDING,
       });
     } else {
@@ -36,12 +43,12 @@ export class RegisterTherapistUseCase implements IRegisterTherapistUseCase {
         password: hashedPassword,
         isVerified: false,
         status: THERAPIST_STATUS.PENDING,
-        otp,
-        otpExpiry,
       });
     }
 
-    await sendOtpEmail(dto.email, otp, dto.name);
-    return { message: "Registration successful. Please verify your email.", email: dto.email };
+    await this._otpCacheRepo.setOtp(dto.email, otp, OTP_TTL_SECONDS);
+    await this._emailService.sendOtpEmail(dto.email, otp, dto.name);
+
+    return { message: MESSAGES.AUTH.REGISTER_SUCCESS, email: dto.email };
   }
 }

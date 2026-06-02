@@ -1,6 +1,7 @@
 import type { IAvailabilityRepository, ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
 import type { IGetTherapistRulesUseCase, IGetAvailableSlotsUseCase, IDeleteAvailabilityRuleUseCase } from "../../interfaces/availability/IAvailabilityUseCase.ts";
 import type { TherapistAvailabilityEntity, TherapistSlotEntity } from "../../../domain/entities/TherapistAvailability.entity.ts";
+import { ForbiddenError, NotFoundError } from "../../../shared/utils/AppError.ts";
 
 export class GetTherapistRulesUseCase implements IGetTherapistRulesUseCase {
   constructor(private _availabilityRepo: IAvailabilityRepository) {}
@@ -23,8 +24,12 @@ export class DeleteAvailabilityRuleUseCase implements IDeleteAvailabilityRuleUse
   ) {}
   async execute({ id, therapistId }: { id: string; therapistId: string }): Promise<void> {
     const rule = await this._availabilityRepo.findById(id);
-    if (!rule || rule.therapistId !== therapistId) {
-      throw new Error("Availability rule not found or unauthorized");
+    if (!rule) {
+      throw new NotFoundError("Availability rule");
+    }
+
+    if (rule.therapistId !== therapistId) {
+      throw new ForbiddenError("Unauthorized availability rule access");
     }
     await this._availabilityRepo.delete(id);
     await this._slotRepo.deleteByAvailabilityId(id);

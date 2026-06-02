@@ -5,5 +5,7 @@ export interface IPaymentRepository {
   findById(id: string): Promise<PaymentEntity | null>;
   findByPaymentIntentId(paymentIntentId: string): Promise<PaymentEntity | null>;
   findByBookingId(bookingId: string): Promise<PaymentEntity | null>;
+  findAnyByBookingId(bookingId: string): Promise<PaymentEntity | null>;
   updateStatus(id: string, status: PaymentEntity["status"], extra?: Partial<PaymentEntity>): Promise<PaymentEntity | null>;
+  failUnpaidByBookingId(bookingId: string): Promise<void>;
 }

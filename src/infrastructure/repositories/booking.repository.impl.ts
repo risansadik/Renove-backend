@@ -1,9 +1,11 @@
+import { injectable } from "inversify";
 import type { IBookingRepository } from "../../domain/repositories/booking.repository.ts";
 import type { BookingEntity } from "../../domain/entities/Booking.entity.ts";
+import type { BookingStatus } from "../../shared/constants/index.ts";
 import { BookingModel, type IBookingRaw } from "../databases/schema/booking.schema.ts";
-
 import { PaginationParams, PaginatedResult } from "../../domain/interfaces/pagination.ts";
 
+@injectable()
 export class BookingRepositoryImpl implements IBookingRepository {
   private _toEntity(doc: IBookingRaw): BookingEntity {
     return {
@@ -107,7 +109,6 @@ export class BookingRepositoryImpl implements IBookingRepository {
   }
 
   async checkAvailability(therapistId: string, date: Date, slot: string): Promise<boolean> {
-    // Check for any non-rejected, non-cancelled bookings
     const existing = await BookingModel.findOne({
       therapistId,
       date: {
@@ -118,5 +119,26 @@ export class BookingRepositoryImpl implements IBookingRepository {
       status: { $nin: ["rejected", "cancelled"] }
     });
     return !existing;
+  }
+
+  async countByUserAndStatus(userId: string, status: BookingStatus): Promise<number> {
+    return BookingModel.countDocuments({ userId, status }).exec();
+  }
+
+  async countByTherapistAndStatusBetween(therapistId: string, status: BookingStatus, start: Date, end: Date): Promise<number> {
+    return BookingModel.countDocuments({
+      therapistId,
+      status,
+      createdAt: { $gte: start, $lte: end },
+    }).exec();
+  }
+
+  async findAwaitingPaymentOlderThan(threshold: Date): Promise<BookingEntity[]> {
+    const docs = await BookingModel.find({
+      status: "awaiting_payment",
+      updatedAt: { $lt: threshold },
+    }).exec();
+
+    return docs.map((doc) => this._toEntity(doc as unknown as IBookingRaw));
   }
 }

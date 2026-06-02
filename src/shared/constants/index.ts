@@ -6,9 +6,18 @@ export const ROLES = {
 
 export type Role = (typeof ROLES)[keyof typeof ROLES];
 
-export const OTP_EXPIRY_MINUTES = 10;
+export const OTP_EXPIRY_MINUTES = 5;
+export const OTP_TTL_SECONDS = OTP_EXPIRY_MINUTES * 60;
 export const OTP_LENGTH = 6;
 export const BCRYPT_ROUNDS = 12;
+export const PAYMENT_EXPIRY_MINUTES = 15;
+export const MS_IN_DAY = 86400000;
+export const MAX_FILE_SIZE = 10 * 1024 * 1024;
+
+export const PAGINATION = {
+  DEFAULT_PAGE: 1,
+  DEFAULT_LIMIT: 10,
+} as const;
 
 export const THERAPIST_STATUS = {
   PENDING: "pending",
@@ -109,4 +118,75 @@ export const MAIL_CONFIG = {
 export const GOOGLE_CONFIG = {
   CLIENT_ID: process.env.GOOGLE_CLIENT_ID || "",
   CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || "",
+} as const;
+
+export const S3_CONFIG = {
+  REGION: process.env.AWS_REGION || "us-east-1",
+  ACCESS_KEY: process.env.AWS_ACCESS_KEY_ID || "",
+  SECRET_KEY: process.env.AWS_SECRET_ACCESS_KEY || "",
+  BUCKET_NAME: process.env.AWS_S3_BUCKET_NAME || "",
+} as const;
+
+export const MESSAGES = {
+  AUTH: {
+    REGISTER_SUCCESS: "Registration successful. Please verify your email.",
+    VERIFY_SUCCESS: "Email verified successfully",
+    OTP_RESENT: "OTP resent successfully",
+    LOGIN_SUCCESS: "Login successful",
+    LOGOUT_SUCCESS: "Logged out successfully",
+    GOOGLE_SUCCESS: "Google authentication successful",
+    FORGOT_PW_SUCCESS: "Password reset OTP sent to your email",
+    RESET_PW_SUCCESS: "Password reset successful",
+    TOKEN_REFRESHED: "Token refreshed successfully",
+    THERAPIST_REGISTER_SUBMITTED: "Registration submitted. Please verify your email.",
+    THERAPIST_VERIFY_PENDING: "Email verified. Please wait for admin approval.",
+  },
+  BOOKING: {
+    CREATED: "Booking created",
+    FETCHED: "Bookings fetched",
+    UPDATED: "Booking status updated",
+    CANCELLED: "Booking cancelled",
+  },
+  PROFILE: {
+    USER_FETCHED: "User profile fetched",
+    USER_UPDATED: "User profile updated",
+    PW_CHANGED: "Password changed successfully",
+    THERAPIST_FETCHED: "Therapist profile fetched",
+    THERAPIST_UPDATE_PROCESSED: "Therapist profile update processed",
+    ADMIN_FETCHED: "Admin profile fetched",
+    ADMIN_UPDATED: "Admin profile updated",
+    PENDING_UPDATES_FETCHED: "Pending therapist updates fetched",
+  },
+  DASHBOARD: {
+    FETCHED: "Dashboard fetched",
+    MOOD_LOGGED: "Mood logged",
+    MISSION_UPDATED: "Mission updated",
+    THERAPISTS_FETCHED: "Therapists fetched",
+  },
+  ADMIN: {
+    LOGIN_SUCCESS: "Admin login successful",
+    USERS_FETCHED: "Users fetched",
+    USER_STATUS_UPDATED: "User status updated",
+    THERAPISTS_FETCHED: "Therapists fetched",
+    THERAPIST_STATUS_UPDATED: "Therapist status updated",
+    FINANCE_STATS_FETCHED: "Admin finance stats fetched successfully",
+    COMMISSION_UPDATED: (pct: number) => `Platform commission updated to ${pct}%`,
+  },
+  WALLET: {
+    FETCHED: "Wallet data fetched successfully",
+  },
+  AVAILABILITY: {
+    RULE_CREATED: "Availability rule created",
+    RULES_FETCHED: "Availability rules fetched",
+    SLOTS_FETCHED: "Available slots fetched",
+    RULE_DELETED: "Rule and available slots deleted",
+  },
+  PAYMENT: {
+    INTENT_CREATED: "Payment intent created successfully",
+    SESSION_COMPLETED: "Session completed and funds moved",
+    VERIFIED: "Payment verified",
+  },
+  COMMON: {
+    INTERNAL_ERROR: "Internal server error",
+  }
 } as const;

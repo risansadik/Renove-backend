@@ -6,12 +6,33 @@ import { HttpStatus } from "../../shared/constants/index.ts";
 
 export const errorHandler = (
   err: Error,
-  _req: Request,
+  req: Request,
   res: Response,
   _next: NextFunction
 ): void => {
   if (err instanceof AppError) {
-    res.status(err.statusCode).json(ResponseModel.error(err.message, err.statusCode));
+    const body = {
+      ...ResponseModel.error(err.message, err.statusCode),
+      ...(err.details ? { errors: err.details } : {}),
+    };
+
+    res.status(err.statusCode).json(body);
+    return;
+  }
+
+  if (req.originalUrl === "/api/payments/webhook") {
+    logger.error("Webhook Error", { message: err.message });
+    res.status(HttpStatus.BAD_REQUEST).send(`Webhook Error: ${err.message}`);
+    return;
+  }
+
+  if (err.name === "JsonWebTokenError" || err.name === "TokenExpiredError") {
+    res.status(HttpStatus.UNAUTHORIZED).json(ResponseModel.error("Invalid or expired token", HttpStatus.UNAUTHORIZED));
+    return;
+  }
+
+  if (err instanceof SyntaxError) {
+    res.status(HttpStatus.BAD_REQUEST).json(ResponseModel.error("Invalid JSON payload", HttpStatus.BAD_REQUEST));
     return;
   }
 

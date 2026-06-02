@@ -2,6 +2,8 @@ import type { IBookingRepository } from "../../../domain/repositories/booking.re
 import type { ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
 import type { BookingEntity } from "../../../domain/entities/Booking.entity.ts";
 import type { ICreateBookingUseCase } from "../../interfaces/booking/IBookingUseCase.ts";
+import { HttpStatus } from "../../../shared/constants/index.ts";
+import { AppError, NotFoundError } from "../../../shared/utils/AppError.ts";
 
 export interface CreateBookingInput {
   therapistId: string;
@@ -21,29 +23,25 @@ export class CreateBookingUseCase implements ICreateBookingUseCase {
     const slot = await this.slotRepository.findById(data.slotId);
 
     if (!slot) {
-      throw new Error("The selected slot does not exist");
+      throw new NotFoundError("The selected slot");
     }
 
     if (slot.status !== "AVAILABLE") {
-      throw new Error("This slot is no longer available for booking");
+      throw new AppError("This slot is no longer available for booking", HttpStatus.BAD_REQUEST);
     }
 
     await this.slotRepository.updateStatus(data.slotId, "RESERVED");
 
-    try {
-      const booking = await this.bookingRepository.create({
+    return this.bookingRepository.create({
         userId,
         therapistId: data.therapistId,
         slotId: data.slotId,
         type: data.type,
         status: "pending",
         note: data.note,
-      });
-      return booking;
-    } catch (err) {
-
+      }).catch(async (err) => {
       await this.slotRepository.updateStatus(data.slotId, "AVAILABLE");
       throw err;
-    }
+    });
   }
 }

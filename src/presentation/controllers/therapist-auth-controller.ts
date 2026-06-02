@@ -1,100 +1,83 @@
-import type { Request, Response, NextFunction } from "express";
-import { RegisterTherapistUseCase } from "../../application/use-cases/auth/register-therapist.usecase.ts";
-import { VerifyTherapistOtpUseCase } from "../../application/use-cases/auth/verify-therapist-otp.usecase.ts";
-import { ResendOtpUseCase } from "../../application/use-cases/auth/resend-otp.usecase.ts";
-import { LoginTherapistUseCase } from "../../application/use-cases/auth/login-therapist.usecase.ts";
-import { ForgotPasswordUseCase } from "../../application/use-cases/auth/forgot-password.usecase.ts";
-import { VerifyResetOtpUseCase } from "../../application/use-cases/auth/verify-reset-otp.usecase.ts";
-import { ResetPasswordUseCase } from "../../application/use-cases/auth/reset-password.usecase.ts";
-import { TherapistRepository } from "../../infrastructure/repositories/therapist.repository.impl.ts";
-import { UserRepository } from "../../infrastructure/repositories/user.repository.impl.ts";
-import { ResponseModel } from "../../shared/utils/response-model.ts";
-import { setAuthCookies, clearAuthCookies } from "../../shared/utils/jwt.ts";
-import { HttpStatus } from "../../shared/constants/index.ts";
-
+import type { Request, Response } from "express";
+import { injectable, inject } from "inversify";
+import type {
+  IForgotPasswordUseCase,
+  ILoginTherapistUseCase,
+  IRegisterTherapistUseCase,
+  IResendOtpUseCase,
+  IResetPasswordUseCase,
+  IVerifyOtpUseCase,
+  IVerifyResetOtpUseCase,
+} from "../../application/interfaces/auth/IAuthUseCase.ts";
 import { TherapistMapper } from "../../application/mappers/therapist.mapper.ts";
+import type { TherapistEntity } from "../../domain/entities/Therapist.entity.ts";
+import { HttpStatus, MESSAGES } from "../../shared/constants/index.ts";
+import { TYPES } from "../../shared/constants/tokens.ts";
+import { setAuthCookies, clearAuthCookies } from "../../shared/utils/jwt.ts";
+import type { S3File } from "../../shared/types/express.ts";
+import { ResponseModel } from "../../shared/utils/response-model.ts";
 
-const therapistRepo = new TherapistRepository();
-const userRepo = new UserRepository();
+@injectable()
+export class TherapistAuthController {
+  constructor(
+    @inject(TYPES.RegisterTherapistUseCase) private readonly _registerUC: IRegisterTherapistUseCase,
+    @inject(TYPES.VerifyTherapistOtpUseCase) private readonly _verifyOtpUC: IVerifyOtpUseCase,
+    @inject(TYPES.ResendOtpUseCase) private readonly _resendOtpUC: IResendOtpUseCase,
+    @inject(TYPES.LoginTherapistUseCase) private readonly _loginUC: ILoginTherapistUseCase,
+    @inject(TYPES.ForgotPasswordUseCase) private readonly _forgotPasswordUC: IForgotPasswordUseCase,
+    @inject(TYPES.VerifyResetOtpUseCase) private readonly _verifyResetOtpUC: IVerifyResetOtpUseCase,
+    @inject(TYPES.ResetPasswordUseCase) private readonly _resetPasswordUC: IResetPasswordUseCase
+  ) {}
 
-const registerUC = new RegisterTherapistUseCase(therapistRepo);
-const verifyOtpUC = new VerifyTherapistOtpUseCase(therapistRepo);
-const resendOtpUC = new ResendOtpUseCase(userRepo, therapistRepo);
-const loginUC = new LoginTherapistUseCase(therapistRepo);
-const forgotPasswordUC = new ForgotPasswordUseCase(therapistRepo);
-const verifyResetOtpUC = new VerifyResetOtpUseCase(therapistRepo);
-const resetPasswordUC = new ResetPasswordUseCase(therapistRepo);
+  public register = async (req: Request, res: Response): Promise<void> => {
+    const files = req.files as { [fieldname: string]: S3File[] | undefined } | undefined;
+    const profileImage = files?.profileImage?.[0]?.location;
+    const certificationFiles = files?.certificationFiles?.map((file) => file.location) ?? [];
 
-import { TherapistEntity } from "../../domain/entities/Therapist.entity.ts";
+    const payload = {
+      ...req.body,
+      profileImage,
+      certificationFiles,
+      certifications: req.body.certifications ?? [],
+    };
 
-export const therapistAuthController = {
-  register: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      const profileImage = files?.profileImage?.[0]?.path;
-      const certificationFiles = files?.certificationFiles?.map(f => f.path) || [];
+    const data = await this._registerUC.execute(payload);
+    res.status(HttpStatus.CREATED).json(ResponseModel.created(MESSAGES.AUTH.THERAPIST_REGISTER_SUBMITTED, data));
+  };
 
-      const payload = {
-        ...req.body,
-        profileImage,
-        certificationFiles,
-        certifications: req.body.certifications || []
-      };
+  public verifyOtp = async (req: Request, res: Response): Promise<void> => {
+    await this._verifyOtpUC.execute(req.body);
+    res.json(ResponseModel.success(MESSAGES.AUTH.THERAPIST_VERIFY_PENDING, null));
+  };
 
-      console.log("THERAPIST REGISTRATION PAYLOAD:", payload);
-      const data = await registerUC.execute(payload);
-      res.status(HttpStatus.CREATED).json(ResponseModel.created("Registration submitted. Please verify your email.", data));
-    } catch (err) { 
-      console.error("THERAPIST REGISTRATION 500 ERROR:", err);
-      next(err); 
-    }
-  },
+  public resendOtp = async (req: Request, res: Response): Promise<void> => {
+    await this._resendOtpUC.execute({ dto: req.body, type: "therapist" });
+    res.json(ResponseModel.success(MESSAGES.AUTH.OTP_RESENT, null));
+  };
 
-  verifyOtp: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      await verifyOtpUC.execute(req.body);
-      res.json(ResponseModel.success("Email verified. Please wait for admin approval.", null));
-    } catch (err) { next(err); }
-  },
+  public login = async (req: Request, res: Response): Promise<void> => {
+    const { tokens, user } = await this._loginUC.execute(req.body);
+    setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
+    res.json(ResponseModel.success(MESSAGES.AUTH.LOGIN_SUCCESS, { therapist: TherapistMapper.toPublicDTO(user as TherapistEntity) }));
+  };
 
-  resendOtp: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      await resendOtpUC.execute({ dto: req.body, type: "therapist" });
-      res.json(ResponseModel.success("OTP resent successfully", null));
-    } catch (err) { next(err); }
-  },
-
-  login: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const { tokens, user } = await loginUC.execute(req.body);
-      setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
-      res.json(ResponseModel.success("Login successful", { therapist: TherapistMapper.toPublicDTO(user as TherapistEntity) }));
-    } catch (err) { next(err); }
-  },
-
-  logout: (_req: Request, res: Response): void => {
+  public logout = (_req: Request, res: Response): void => {
     clearAuthCookies(res);
-    res.json(ResponseModel.success("Logged out successfully", null));
-  },
-  
-  forgotPassword: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      await forgotPasswordUC.execute({ dto: req.body, type: "therapist" });
-      res.json(ResponseModel.success("Reset OTP sent to your email", null));
-    } catch (err) { next(err); }
-  },
+    res.json(ResponseModel.success(MESSAGES.AUTH.LOGOUT_SUCCESS, null));
+  };
 
-  verifyResetOtp: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      await verifyResetOtpUC.execute({ dto: req.body, type: "therapist" });
-      res.json(ResponseModel.success("OTP verified", null));
-    } catch (err) { next(err); }
-  },
+  public forgotPassword = async (req: Request, res: Response): Promise<void> => {
+    await this._forgotPasswordUC.execute({ dto: req.body, type: "therapist" });
+    res.json(ResponseModel.success(MESSAGES.AUTH.FORGOT_PW_SUCCESS, null));
+  };
 
-  resetPassword: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      await resetPasswordUC.execute({ dto: req.body, type: "therapist" });
-      res.json(ResponseModel.success("Password reset successful", null));
-    } catch (err) { next(err); }
-  },
-};
+  public verifyResetOtp = async (req: Request, res: Response): Promise<void> => {
+    await this._verifyResetOtpUC.execute({ dto: req.body, type: "therapist" });
+    res.json(ResponseModel.success(MESSAGES.AUTH.VERIFY_SUCCESS, null));
+  };
+
+  public resetPassword = async (req: Request, res: Response): Promise<void> => {
+    await this._resetPasswordUC.execute({ dto: req.body, type: "therapist" });
+    res.json(ResponseModel.success(MESSAGES.AUTH.RESET_PW_SUCCESS, null));
+  };
+}

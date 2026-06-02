@@ -9,8 +9,6 @@ export interface IUserDocument extends Document {
   profileImage?: string;
   isVerified: boolean;
   status: UserStatus;
-  otp?: string;
-  otpExpiry?: Date;
   createdAt : Date;
   updatedAt : Date;
 }
@@ -26,8 +24,6 @@ const UserSchema = new Schema<IUserDocument>(
     profileImage: { type: String },
     isVerified: { type: Boolean, default: false },
     status: { type: String, enum: Object.values(USER_STATUS), default: USER_STATUS.ACTIVE },
-    otp: { type: String },
-    otpExpiry: { type: Date },
   },
   { timestamps: true }
 );

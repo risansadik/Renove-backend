@@ -1,49 +1,44 @@
-import { BookingModel } from "../../../infrastructure/databases/schema/booking.schema.ts";
-import { SlotModel } from "../../../infrastructure/databases/schema/availability.schema.ts";
-import { PaymentModel } from "../../../infrastructure/databases/schema/payment.schema.ts";
-import { BOOKING_STATUS, SLOT_STATUS, PAYMENT_STATUS } from "../../../shared/constants/index.ts";
-import { logger } from "../../../shared/utils/logger.ts";
 import { subMinutes } from "date-fns";
+import type { ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
+import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
+import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.ts";
+import { BOOKING_STATUS, SLOT_STATUS, PAYMENT_EXPIRY_MINUTES } from "../../../shared/constants/index.ts";
+import { logger } from "../../../shared/utils/logger.ts";
 
 export class ExpirePaymentUseCase {
-  /**
-   * Identifies and expires bookings that have been in AWAITING_PAYMENT for too long.
-   * Runs as a background task.
-   */
-  async execute() {
-    const expirationThreshold = subMinutes(new Date(), 15);
+  constructor(
+    private readonly _bookingRepo: IBookingRepository,
+    private readonly _slotRepo: ISlotRepository,
+    private readonly _paymentRepo: IPaymentRepository
+  ) {}
 
-    // Find bookings that are awaiting payment and haven't been updated for 15 minutes
-    const overdueBookings = await BookingModel.find({
-      status: BOOKING_STATUS.AWAITING_PAYMENT,
-      updatedAt: { $lt: expirationThreshold }
-    });
+  async execute(): Promise<void> {
+    const expirationThreshold = subMinutes(new Date(), PAYMENT_EXPIRY_MINUTES);
+    const overdueBookings = await this._bookingRepo.findAwaitingPaymentOlderThan(expirationThreshold);
 
     if (overdueBookings.length === 0) return;
 
     logger.info(`Found ${overdueBookings.length} overdue payments to expire.`);
 
-    for (const booking of overdueBookings) {
-      try {
-        // 1. Expire Booking
-        booking.status = BOOKING_STATUS.EXPIRED as "expired";
-        await booking.save();
+    const expirationJobs = overdueBookings
+      .filter((booking) => Boolean(booking.id))
+      .map(async (booking) => {
+        const bookingId = booking.id!;
+        await this._bookingRepo.updateStatus(bookingId, BOOKING_STATUS.EXPIRED);
 
-        // 2. Release Slot
-        await SlotModel.findByIdAndUpdate(booking.slotId, {
-          status: SLOT_STATUS.AVAILABLE
-        });
+        const slotId = typeof booking.slotId === "object" && booking.slotId !== null
+          ? booking.slotId.id
+          : booking.slotId;
+        await this._slotRepo.updateStatus(slotId, SLOT_STATUS.AVAILABLE);
 
-        // 3. Mark associated Payment as FAILED if it exists and is unpaid
-        await PaymentModel.updateMany(
-          { bookingId: booking._id, status: PAYMENT_STATUS.UNPAID },
-          { status: PAYMENT_STATUS.FAILED as "failed" }
-        );
+        await this._paymentRepo.failUnpaidByBookingId(bookingId);
 
-        logger.info(`Expired booking ${booking._id} and released slot ${booking.slotId}`);
-      } catch (error) {
-        logger.error(`Failed to expire booking ${booking._id}`, { error });
-      }
-    }
+        logger.info(`Expired booking ${bookingId} and released slot ${slotId}`);
+      });
+
+    const results = await Promise.allSettled(expirationJobs);
+    results
+      .filter((result) => result.status === "rejected")
+      .forEach((result) => logger.error("Failed to expire booking", { error: result.reason }));
   }
 }

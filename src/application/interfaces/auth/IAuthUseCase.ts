@@ -22,15 +22,20 @@ export interface IRegisterResponse {
   email?: string;
 }
 
-export type ILoginUserUseCase = IUseCase<LoginUserDTO | { idToken: string }, ILoginResponse>;
+// User Auth Use Cases
+export type ILoginUserUseCase = IUseCase<LoginUserDTO, ILoginResponse>;
+export type IGoogleAuthUseCase = IUseCase<{ idToken: string }, ILoginResponse>; // Added explicit contract
 export type IRegisterUserUseCase = IUseCase<RegisterUserDTO, IRegisterResponse | { email: string }>;
 export type IVerifyOtpUseCase = IUseCase<VerifyOtpDTO, void>;
 export type IResendOtpUseCase = IUseCase<{ dto: ResendOtpDTO; type?: "user" | "therapist" }, void>;
 export type IForgotPasswordUseCase = IUseCase<{ dto: ForgotPasswordDTO; type?: "user" | "therapist" }, void>;
 export type IResetPasswordUseCase = IUseCase<{ dto: ResetPasswordDTO; type?: "user" | "therapist" }, void>;
 export type IVerifyResetOtpUseCase = IUseCase<{ dto: VerifyOtpDTO; type?: "user" | "therapist" }, void>;
+export type IRefreshTokenUseCase = IUseCase<string, { accessToken: string; refreshToken: string }>; // Added explicit contract
 
+// Therapist Auth Use Cases
 export type ILoginTherapistUseCase = IUseCase<LoginTherapistDTO, ILoginResponse>;
 export type IRegisterTherapistUseCase = IUseCase<RegisterTherapistDTO, IRegisterResponse>;
 
+// Admin Auth Use Cases
 export type IAdminLoginUseCase = IUseCase<AdminLoginDTO, ILoginResponse>;

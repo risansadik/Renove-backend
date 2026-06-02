@@ -1,10 +1,9 @@
 import type { Request, Response, NextFunction } from "express";
 import type { ZodSchema } from "zod";
-import { ResponseModel } from "../../shared/utils/response-model.ts";
-import { HttpStatus } from "../../shared/constants/index.ts";
+import { ValidationError } from "../../shared/utils/AppError.ts";
 
 export const validate = (schema: ZodSchema) => {
-  return (req: Request, res: Response, next: NextFunction): void => {
+  return (req: Request, _res: Response, next: NextFunction): void => {
     const result = schema.safeParse(req.body);
     if (!result.success) {
       const errors = result.error.errors.map((e) => ({
@@ -12,8 +11,7 @@ export const validate = (schema: ZodSchema) => {
         message: e.message,
       }));
       console.log("VALIDATION FAILED:", { errors, body: req.body });
-      res.status(HttpStatus.BAD_REQUEST).json({ ...ResponseModel.error("Validation failed"), errors });
-      return;
+      return next(new ValidationError("Validation failed", errors));
     }
     req.body = result.data;
     next();

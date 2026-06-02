@@ -1,3 +1,4 @@
+import { injectable } from "inversify";
 import type { IWalletRepository } from "../../domain/repositories/wallet.repository.ts";
 import type { TherapistWalletEntity } from "../../domain/entities/TherapistWallet.entity.ts";
 import type { UserWalletEntity } from "../../domain/entities/UserWallet.entity.ts";
@@ -10,9 +11,9 @@ import {
   type IUserWalletDocument, 
   type ITransactionDocument 
 } from "../databases/schema/wallet.schema.ts";
-
 import { PaginationParams, PaginatedResult } from "../../domain/interfaces/pagination.ts";
 
+@injectable()
 export class WalletRepositoryImpl implements IWalletRepository {
   // --- Helpers ---
   private _toTherapistEntity(doc: IWalletDocument): TherapistWalletEntity {

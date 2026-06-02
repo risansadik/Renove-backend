@@ -1,7 +1,9 @@
-import { MAIL_CONFIG } from "../../shared/constants/index.ts";
+import { injectable } from "inversify";
 import nodemailer from "nodemailer";
+import { HttpStatus, MAIL_CONFIG } from "../../shared/constants/index.ts";
 import { logger } from "../../shared/utils/logger.ts";
-
+import type { IEmailService } from "../../application/interfaces/services/IEmailService.ts";
+import { AppError } from "../../shared/utils/AppError.ts";
 
 const transporter = nodemailer.createTransport({
   host: MAIL_CONFIG.HOST,
@@ -22,54 +24,57 @@ const emailLayout = (content: string) => `
   </div>
 `;
 
+// Private internal helper function
 const sendMail = async (to: string, subject: string, html: string): Promise<void> => {
-  try {
-    await transporter.sendMail({
-      from: MAIL_CONFIG.FROM,
-      to,
-      subject,
-      html: emailLayout(html),
-    });
-  } catch (error) {
+  await transporter.sendMail({
+    from: MAIL_CONFIG.FROM,
+    to,
+    subject,
+    html: emailLayout(html),
+  }).catch((error) => {
     logger.error("Email send failed:", error);
-    throw new Error("Failed to send email");
+    throw new AppError("Failed to send email", HttpStatus.INTERNAL_SERVER_ERROR);
+  });
+};
+
+@injectable()
+export class EmailService implements IEmailService {
+  
+  public async sendOtpEmail(email: string, otp: string, name: string): Promise<void> {
+    const content = `
+      <p>Hi <strong>${name}</strong>,</p>
+      <p>Your verification code is:</p>
+      <div style="font-size: 36px; font-weight: bold; letter-spacing: 8px; color: ${MAIL_CONFIG.BRAND_COLOR}; margin: 24px 0;">${otp}</div>
+      <p>This code expires in <strong>5 minutes</strong>. Do not share it with anyone.</p>
+    `;
+    await sendMail(email, `${MAIL_CONFIG.BRAND_NAME} - Verify Your Email`, content);
   }
-};
 
-export const sendOtpEmail = async (email: string, otp: string, name: string): Promise<void> => {
-  const content = `
-    <p>Hi <strong>${name}</strong>,</p>
-    <p>Your verification code is:</p>
-    <div style="font-size: 36px; font-weight: bold; letter-spacing: 8px; color: ${MAIL_CONFIG.BRAND_COLOR}; margin: 24px 0;">${otp}</div>
-    <p>This code expires in <strong>10 minutes</strong>. Do not share it with anyone.</p>
-  `;
-  await sendMail(email, `${MAIL_CONFIG.BRAND_NAME} - Verify Your Email`, content);
-};
+  public async sendPasswordResetOtp(email: string, otp: string): Promise<void> {
+    const content = `
+      <h3>Password Reset</h3>
+      <p>Your password reset OTP is:</p>
+      <div style="font-size: 36px; font-weight: bold; letter-spacing: 8px; color: ${MAIL_CONFIG.BRAND_COLOR}; margin: 24px 0;">${otp}</div>
+      <p>This code expires in <strong>5 minutes</strong>.</p>
+    `;
+    await sendMail(email, `${MAIL_CONFIG.BRAND_NAME} - Password Reset OTP`, content);
+  }
 
-export const sendPasswordResetOtp = async (email: string, otp: string): Promise<void> => {
-  const content = `
-    <h3>Password Reset</h3>
-    <p>Your password reset OTP is:</p>
-    <div style="font-size: 36px; font-weight: bold; letter-spacing: 8px; color: ${MAIL_CONFIG.BRAND_COLOR}; margin: 24px 0;">${otp}</div>
-    <p>This code expires in <strong>10 minutes</strong>.</p>
-  `;
-  await sendMail(email, `${MAIL_CONFIG.BRAND_NAME} - Password Reset OTP`, content);
-};
+  public async sendTherapistApprovalEmail(email: string, name: string): Promise<void> {
+    const content = `
+      <h3>Application Approved!</h3>
+      <p>Congratulations <strong>${name}</strong>!</p>
+      <p>Your therapist application has been approved. You can now log in to your dashboard.</p>
+    `;
+    await sendMail(email, `${MAIL_CONFIG.BRAND_NAME} - Application Approved`, content);
+  }
 
-export const sendTherapistApprovalEmail = async (email: string, name: string): Promise<void> => {
-  const content = `
-    <h3>Application Approved!</h3>
-    <p>Congratulations <strong>${name}</strong>!</p>
-    <p>Your therapist application has been approved. You can now log in to your dashboard.</p>
-  `;
-  await sendMail(email, `${MAIL_CONFIG.BRAND_NAME} - Application Approved`, content);
-};
-
-export const sendTherapistRejectionEmail = async (email: string, name: string): Promise<void> => {
-  const content = `
-    <h3>Application Update</h3>
-    <p>Hi <strong>${name}</strong>,</p>
-    <p>Your therapist application was not approved at this time.</p>
-  `;
-  await sendMail(email, `${MAIL_CONFIG.BRAND_NAME} - Application Update`, content);
-};
+  public async sendTherapistRejectionEmail(email: string, name: string): Promise<void> {
+    const content = `
+      <h3>Application Update</h3>
+      <p>Hi <strong>${name}</strong>,</p>
+      <p>Your therapist application was not approved at this time.</p>
+    `;
+    await sendMail(email, `${MAIL_CONFIG.BRAND_NAME} - Application Update`, content);
+  }
+}

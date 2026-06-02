@@ -1,209 +1,123 @@
-import type { Response, NextFunction } from "express";
-import type { AuthRequest } from "../middlewares/auth.middleware.ts";
+import type { Response } from "express";
+import { injectable, inject } from "inversify";
+import type { GetPendingTherapistUpdatesUseCase } from "../../application/use-cases/admin/get-pending-therapist-updates.usecase.ts";
+import type { ReviewTherapistProfileUseCase } from "../../application/use-cases/admin/review-therapist-profile.usecase.ts";
+import type { ChangeAdminPasswordUseCase } from "../../application/use-cases/profile/change-admin-password.usecase.ts";
+import type { ChangeTherapistPasswordUseCase } from "../../application/use-cases/profile/change-therapist-password.usecase.ts";
+import type { ChangeUserPasswordUseCase } from "../../application/use-cases/profile/change-user-password.usecase.ts";
+import type { GetAdminProfileUseCase } from "../../application/use-cases/profile/get-admin-profile.usecase.ts";
+import type { GetTherapistProfileUseCase } from "../../application/use-cases/profile/get-therapist-profile.usecase.ts";
+import type { GetUserProfileUseCase } from "../../application/use-cases/profile/get-user-profile.usecase.ts";
+import type { UpdateAdminProfileUseCase } from "../../application/use-cases/profile/update-admin-profile.usecase.ts";
+import type { UpdateTherapistProfileUseCase } from "../../application/use-cases/profile/update-therapist-profile.usecase.ts";
+import type { UpdateUserProfileUseCase } from "../../application/use-cases/profile/update-user-profile.usecase.ts";
+import { TYPES } from "../../shared/constants/tokens.ts";
+import { MESSAGES } from "../../shared/constants/index.ts";
+import type { AuthRequest, S3File } from "../../shared/types/express.ts";
 import { ResponseModel } from "../../shared/utils/response-model.ts";
+import { AppError } from "../../shared/utils/AppError.ts";
 
-import { GetUserProfileUseCase } from "../../application/use-cases/profile/get-user-profile.usecase.ts";
-import { UpdateUserProfileUseCase } from "../../application/use-cases/profile/update-user-profile.usecase.ts";
-import { ChangeUserPasswordUseCase } from "../../application/use-cases/profile/change-user-password.usecase.ts";
+@injectable()
+export class ProfileController {
+  constructor(
+    @inject(TYPES.GetUserProfileUseCase) private readonly _getUserProfileUC: GetUserProfileUseCase,
+    @inject(TYPES.UpdateUserProfileUseCase) private readonly _updateUserProfileUC: UpdateUserProfileUseCase,
+    @inject(TYPES.ChangeUserPasswordUseCase) private readonly _changeUserPasswordUC: ChangeUserPasswordUseCase,
+    @inject(TYPES.GetTherapistProfileUseCase) private readonly _getTherapistProfileUC: GetTherapistProfileUseCase,
+    @inject(TYPES.UpdateTherapistProfileUseCase) private readonly _updateTherapistProfileUC: UpdateTherapistProfileUseCase,
+    @inject(TYPES.ChangeTherapistPasswordUseCase) private readonly _changeTherapistPasswordUC: ChangeTherapistPasswordUseCase,
+    @inject(TYPES.GetAdminProfileUseCase) private readonly _getAdminProfileUC: GetAdminProfileUseCase,
+    @inject(TYPES.UpdateAdminProfileUseCase) private readonly _updateAdminProfileUC: UpdateAdminProfileUseCase,
+    @inject(TYPES.ChangeAdminPasswordUseCase) private readonly _changeAdminPasswordUC: ChangeAdminPasswordUseCase,
+    @inject(TYPES.GetPendingTherapistUpdatesUseCase) private readonly _getPendingTherapistUpdatesUC: GetPendingTherapistUpdatesUseCase,
+    @inject(TYPES.ReviewTherapistProfileUseCase) private readonly _reviewTherapistProfileUC: ReviewTherapistProfileUseCase
+  ) {}
 
-import { GetTherapistProfileUseCase } from "../../application/use-cases/profile/get-therapist-profile.usecase.ts";
-import { UpdateTherapistProfileUseCase } from "../../application/use-cases/profile/update-therapist-profile.usecase.ts";
-import { ChangeTherapistPasswordUseCase } from "../../application/use-cases/profile/change-therapist-password.usecase.ts";
+  public getUserProfile = async (req: AuthRequest, res: Response): Promise<void> => {
+    const user = await this._getUserProfileUC.execute(req.user!.id);
+    res.json(ResponseModel.success(MESSAGES.PROFILE.USER_FETCHED, { user }));
+  };
 
-import { GetAdminProfileUseCase } from "../../application/use-cases/profile/get-admin-profile.usecase.ts";
-import { UpdateAdminProfileUseCase } from "../../application/use-cases/profile/update-admin-profile.usecase.ts";
-import { ChangeAdminPasswordUseCase } from "../../application/use-cases/profile/change-admin-password.usecase.ts";
+  public updateUserProfile = async (req: AuthRequest, res: Response): Promise<void> => {
+    const updateData = {
+      ...req.body,
+    };
 
-import { ReviewTherapistProfileUseCase } from "../../application/use-cases/admin/review-therapist-profile.usecase.ts";
-import { TherapistModel, type ITherapistDocument } from "../../infrastructure/databases/schema/therapist.schema.ts";
-import { THERAPIST_STATUS } from "../../shared/constants/index.ts";
-
-type WithId<T> = T & { _id: { toString(): string } };
-
-const getUserProfileUC = new GetUserProfileUseCase();
-const updateUserProfileUC = new UpdateUserProfileUseCase();
-const changeUserPasswordUC = new ChangeUserPasswordUseCase();
-
-const getTherapistProfileUC = new GetTherapistProfileUseCase();
-const updateTherapistProfileUC = new UpdateTherapistProfileUseCase();
-const changeTherapistPasswordUC = new ChangeTherapistPasswordUseCase();
-
-const getAdminProfileUC = new GetAdminProfileUseCase();
-const updateAdminProfileUC = new UpdateAdminProfileUseCase();
-const changeAdminPasswordUC = new ChangeAdminPasswordUseCase();
-
-const reviewTherapistProfileUC = new ReviewTherapistProfileUseCase();
-
-export const profileController = {
-  // ── USER PROFILE ──
-  getUserProfile: async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const user = await getUserProfileUC.execute(req.user!.id);
-      const mapped = user ? {
-        ...user,
-        id: (user as WithId<typeof user>)._id.toString(),
-      } : null;
-      res.json(ResponseModel.success("User profile fetched", { user: mapped }));
-    } catch (error) {
-      next(error);
+    if (req.file) {
+      const s3File = req.file as unknown as S3File;
+      updateData.profileImage = s3File.location;
     }
-  },
-  updateUserProfile: async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      // If a file was uploaded (e.g. avatar), multer places it in req.file.path or similar depending on config.
-      // Usually req.file.filename or Cloudinary URL.
-      let profileImage = req.body.profileImage;
-      if (req.file) {
-        profileImage = req.file.path;
-      }
 
-      const updateData = {
-        ...req.body,
-        ...(profileImage && { profileImage })
-      };
+    const user = await this._updateUserProfileUC.execute(req.user!.id, updateData);
+    res.json(ResponseModel.success(MESSAGES.PROFILE.USER_UPDATED, { user }));
+  };
 
-      const user = await updateUserProfileUC.execute(req.user!.id, updateData);
-      const mapped = user ? {
-        ...user,
-        id: (user as WithId<typeof user>)._id.toString(),
-      } : null;
-      res.json(ResponseModel.success("User profile updated", { user: mapped }));
-    } catch (error) {
-      next(error);
+  public changeUserPassword = async (req: AuthRequest, res: Response): Promise<void> => {
+    const { currentPassword, newPassword } = req.body;
+    await this._changeUserPasswordUC.execute(req.user!.id, currentPassword, newPassword);
+    res.json(ResponseModel.success(MESSAGES.PROFILE.PW_CHANGED, null));
+  };
+
+  public getTherapistProfile = async (req: AuthRequest, res: Response): Promise<void> => {
+    const therapist = await this._getTherapistProfileUC.execute(req.user!.id);
+    res.json(ResponseModel.success(MESSAGES.PROFILE.THERAPIST_FETCHED, { therapist }));
+  };
+
+  public updateTherapistProfile = async (req: AuthRequest, res: Response): Promise<void> => {
+    const updateData = { ...req.body };
+    const files = req.files as { [fieldname: string]: S3File[] | undefined } | undefined;
+
+    if (files?.profileImage?.[0]) {
+      updateData.profileImage = files.profileImage[0].location;
     }
-  },
-  changeUserPassword: async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const { currentPassword, newPassword } = req.body;
-      await changeUserPasswordUC.execute(req.user!.id, currentPassword, newPassword);
-      res.json(ResponseModel.success("Password changed successfully", null));
-    } catch (error) {
-      next(error);
-    }
-  },
 
-  // ── THERAPIST PROFILE ──
-  getTherapistProfile: async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const therapist = await getTherapistProfileUC.execute(req.user!.id);
-      const mapped = therapist ? {
-        ...therapist,
-        id: (therapist as WithId<typeof therapist>)._id.toString(),
-      } : null;
-      res.json(ResponseModel.success("Therapist profile fetched", { therapist: mapped }));
-    } catch (error) {
-      next(error);
+    if (files?.certificationFiles) {
+      updateData.certificationFiles = files.certificationFiles.map((file) => file.location);
     }
-  },
-  updateTherapistProfile: async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      let profileImage = req.body.profileImage;
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
-      if (files?.profileImage?.[0]) {
-        profileImage = files.profileImage[0].path;
-      }
+    const therapist = await this._updateTherapistProfileUC.execute(req.user!.id, updateData);
+    res.json(ResponseModel.success(MESSAGES.PROFILE.THERAPIST_UPDATE_PROCESSED, { therapist }));
+  };
 
-      let certificationFiles = req.body.certificationFiles;
-      if (files?.certificationFiles) {
-        certificationFiles = files.certificationFiles.map(f => f.path);
-      }
+  public changeTherapistPassword = async (req: AuthRequest, res: Response): Promise<void> => {
+    const { currentPassword, newPassword } = req.body;
+    await this._changeTherapistPasswordUC.execute(req.user!.id, currentPassword, newPassword);
+    res.json(ResponseModel.success(MESSAGES.PROFILE.PW_CHANGED, null));
+  };
 
-      const updateData = {
-        ...req.body,
-        ...(profileImage && { profileImage }),
-        ...(certificationFiles && { certificationFiles })
-      };
+  public getAdminProfile = async (req: AuthRequest, res: Response): Promise<void> => {
+    const admin = await this._getAdminProfileUC.execute(req.user!.id);
+    res.json(ResponseModel.success(MESSAGES.PROFILE.ADMIN_FETCHED, { admin }));
+  };
 
-      const therapist = await updateTherapistProfileUC.execute(req.user!.id, updateData);
-      const mapped = therapist ? {
-        ...therapist,
-        id: (therapist as WithId<typeof therapist>)._id.toString(),
-      } : null;
-      res.json(ResponseModel.success("Therapist profile update processed", { therapist: mapped }));
-    } catch (error) {
-      next(error);
+  public updateAdminProfile = async (req: AuthRequest, res: Response): Promise<void> => {
+    const updateData = {
+      ...req.body,
+    };
+
+    if (req.file) {
+      const s3File = req.file as unknown as S3File;
+      updateData.profileImage = s3File.location;
     }
-  },
-  changeTherapistPassword: async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const { currentPassword, newPassword } = req.body;
-      await changeTherapistPasswordUC.execute(req.user!.id, currentPassword, newPassword);
-      res.json(ResponseModel.success("Password changed successfully", null));
-    } catch (error) {
-      next(error);
-    }
-  },
 
-  // ── ADMIN PROFILE ──
-  getAdminProfile: async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const admin = await getAdminProfileUC.execute(req.user!.id);
-      const mapped = admin ? {
-        ...admin,
-        id: (admin as WithId<typeof admin>)._id.toString(),
-      } : null;
-      res.json(ResponseModel.success("Admin profile fetched", { admin: mapped }));
-    } catch (error) {
-      next(error);
-    }
-  },
-  updateAdminProfile: async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      let profileImage = req.body.profileImage;
-      if (req.file) {
-        profileImage = req.file.path;
-      }
+    const admin = await this._updateAdminProfileUC.execute(req.user!.id, updateData);
+    res.json(ResponseModel.success(MESSAGES.PROFILE.ADMIN_UPDATED, { admin }));
+  };
 
-      const updateData = {
-        ...req.body,
-        ...(profileImage && { profileImage })
-      };
+  public changeAdminPassword = async (req: AuthRequest, res: Response): Promise<void> => {
+    const { currentPassword, newPassword } = req.body;
+    await this._changeAdminPasswordUC.execute(req.user!.id, currentPassword, newPassword);
+    res.json(ResponseModel.success(MESSAGES.PROFILE.PW_CHANGED, null));
+  };
 
-      const admin = await updateAdminProfileUC.execute(req.user!.id, updateData);
-      const mapped = admin ? {
-        ...admin,
-        id: (admin as WithId<typeof admin>)._id.toString(),
-      } : null;
-      res.json(ResponseModel.success("Admin profile updated", { admin: mapped }));
-    } catch (error) {
-      next(error);
-    }
-  },
-  changeAdminPassword: async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const { currentPassword, newPassword } = req.body;
-      await changeAdminPasswordUC.execute(req.user!.id, currentPassword, newPassword);
-      res.json(ResponseModel.success("Password changed successfully", null));
-    } catch (error) {
-      next(error);
-    }
-  },
+  public getPendingTherapistUpdates = async (_req: AuthRequest, res: Response): Promise<void> => {
+    const therapists = await this._getPendingTherapistUpdatesUC.execute();
+    res.json(ResponseModel.success(MESSAGES.PROFILE.PENDING_UPDATES_FETCHED, { therapists }));
+  };
 
-  // ── ADMIN: THERAPIST REVIEWS ──
-  getPendingTherapistUpdates: async (_req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const pendingTherapists = await TherapistModel.find({ status: THERAPIST_STATUS.REVIEW_REQUIRED }).select("-password").lean<ITherapistDocument[]>();
-      const mapped = pendingTherapists.map((t) => ({
-        ...t,
-        id: (t as WithId<ITherapistDocument>)._id.toString(),
-      }));
-      res.json(ResponseModel.success("Pending therapist updates fetched", { therapists: mapped }));
-    } catch (error) {
-      next(error);
-    }
-  },
-  reviewTherapistUpdate: async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const { status, reason } = req.body;
-      const therapist = await reviewTherapistProfileUC.execute(req.params.id, status, reason);
-      const mapped = therapist ? {
-        ...therapist,
-        id: (therapist as WithId<typeof therapist>)._id.toString(),
-      } : null;
-      res.json(ResponseModel.success(`Therapist profile update ${status}`, { therapist: mapped }));
-    } catch (error) {
-      next(error);
-    }
-  }
-};
+  public reviewTherapistUpdate = async (req: AuthRequest, res: Response): Promise<void> => {
+    const { status, reason } = req.body;
+    const therapist = await this._reviewTherapistProfileUC.execute(req.params.id, status, reason);
+    res.json(ResponseModel.success(`Therapist profile update ${status}`, { therapist }));
+  };
+}
