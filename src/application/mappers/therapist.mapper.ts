@@ -1,5 +1,5 @@
 import type { TherapistEntity } from "../../domain/entities/Therapist.entity.ts";
-import type { ITherapistRaw } from "../../infrastructure/databases/schema/therapist.schema.ts";
+import type { TherapistStatus } from "../../shared/constants/index.ts";
 
 export interface PublicTherapistDTO {
   id: string;
@@ -14,36 +14,15 @@ export interface PublicTherapistDTO {
   certifications?: string[];
   certificationFiles?: string[];
   profileImage?: string;
-  status: string;
+  status: TherapistStatus;
   isVerified: boolean;
+  pendingUpdates?: TherapistEntity["pendingUpdates"];
+  adminRejectionReason?: string;
   createdAt: Date;
+  updatedAt?: Date;
 }
 
 export class TherapistMapper {
-  static toEntity(doc: ITherapistRaw): TherapistEntity {
-    return {
-      id: doc._id.toString(),
-      name: doc.name,
-      email: doc.email,
-      password: doc.password,
-      gender: doc.gender,
-      qualification: doc.qualification,
-      specialization: doc.specialization,
-      experience: doc.experience,
-      consultationFee: doc.consultationFee,
-      bio: doc.bio,
-      certifications: doc.certifications,
-      certificationFiles: doc.certificationFiles,
-      profileImage: doc.profileImage,
-      status: doc.status,
-      isVerified: doc.isVerified,
-      otp: doc.otp,
-      otpExpiry: doc.otpExpiry,
-      createdAt: doc.createdAt,
-      updatedAt: doc.updatedAt,
-    };
-  }
-
   static toPublicDTO(entity: TherapistEntity): PublicTherapistDTO {
     const rawName = entity.name || "";
     const formattedName = rawName.startsWith("Dr. ") ? rawName : `Dr. ${rawName}`;
@@ -68,5 +47,19 @@ export class TherapistMapper {
 
   static toPublicDTOList(entities: TherapistEntity[]): PublicTherapistDTO[] {
     return entities.map(e => this.toPublicDTO(e));
+  }
+
+  static toProfileDTO(entity: TherapistEntity): PublicTherapistDTO {
+    return {
+      ...this.toPublicDTO(entity),
+      name: entity.name,
+      pendingUpdates: entity.pendingUpdates,
+      adminRejectionReason: entity.adminRejectionReason,
+      updatedAt: entity.updatedAt,
+    };
+  }
+
+  static toProfileDTOList(entities: TherapistEntity[]): PublicTherapistDTO[] {
+    return entities.map(e => this.toProfileDTO(e));
   }
 }

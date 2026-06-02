@@ -1,107 +1,94 @@
-import type { Request, Response, NextFunction } from "express";
-import { RegisterUserUseCase } from "../../application/use-cases/auth/register-user.usecase.ts";
-import { VerifyOtpUseCase } from "../../application/use-cases/auth/verify-otp.usecase.ts";
-import { ResendOtpUseCase } from "../../application/use-cases/auth/resend-otp.usecase.ts";
-import { LoginUserUseCase } from "../../application/use-cases/auth/login-user.usecase.ts";
-import { GoogleAuthUseCase } from "../../application/use-cases/auth/google-auth.usecase.ts";
-import { ForgotPasswordUseCase } from "../../application/use-cases/auth/forgot-password.usecase.ts";
-import { ResetPasswordUseCase } from "../../application/use-cases/auth/reset-password.usecase.ts";
-import { VerifyResetOtpUseCase } from "../../application/use-cases/auth/verify-reset-otp.usecase.ts";
-import { UserRepository } from "../../infrastructure/repositories/user.repository.impl.ts";
-import { TherapistRepository } from "../../infrastructure/repositories/therapist.repository.impl.ts";
+import { Request, Response } from "express";
+import { injectable, inject } from "inversify";
+import { TYPES } from "../../shared/constants/tokens.ts";
+
+// Utilities & Mappers
 import { ResponseModel } from "../../shared/utils/response-model.ts";
 import { setAuthCookies, clearAuthCookies } from "../../shared/utils/jwt.ts";
-import { HttpStatus } from "../../shared/constants/index.ts";
-import { RefreshTokenUseCase } from "../../application/use-cases/auth/refresh-token.usecase.ts";
-
-
+import { HttpStatus, MESSAGES } from "../../shared/constants/index.ts";
 import { UserMapper } from "../../application/mappers/user.mapper.ts";
 
-const userRepo = new UserRepository();
-const therapistRepo = new TherapistRepository();
-
-const registerUC = new RegisterUserUseCase(userRepo);
-const verifyOtpUC = new VerifyOtpUseCase(userRepo);
-const resendOtpUC = new ResendOtpUseCase(userRepo, therapistRepo);
-const loginUC = new LoginUserUseCase(userRepo);
-const googleAuthUC = new GoogleAuthUseCase(userRepo);
-const forgotPasswordUC = new ForgotPasswordUseCase(userRepo);
-const resetPasswordUC = new ResetPasswordUseCase(userRepo);
-const verifyResetOtpUC = new VerifyResetOtpUseCase(userRepo);
-const refreshTokenUC = new RefreshTokenUseCase(userRepo, therapistRepo);
-
+// Entities
 import { UserEntity } from "../../domain/entities/User.entity.ts";
 
-export const userAuthController = {
-  register: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const data = await registerUC.execute(req.body);
-      res.status(HttpStatus.CREATED).json(ResponseModel.created("Registration successful. Please verify your email.", data));
-    } catch (err) { next(err); }
-  },
+// Use Case Interfaces
+import type { 
+  IRegisterUserUseCase, 
+  IVerifyOtpUseCase, 
+  IResendOtpUseCase, 
+  ILoginUserUseCase, 
+  IGoogleAuthUseCase, 
+  IForgotPasswordUseCase, 
+  IResetPasswordUseCase, 
+  IVerifyResetOtpUseCase, 
+  IRefreshTokenUseCase 
+} from "../../application/interfaces/auth/IAuthUseCase.ts";
 
-  verifyOtp: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      await verifyOtpUC.execute(req.body);
-      res.json(ResponseModel.success("Email verified successfully", null));
-    } catch (err) { next(err); }
-  },
+@injectable()
+export class UserAuthController {
+  constructor(
+    @inject(TYPES.RegisterUserUseCase) private readonly _registerUC: IRegisterUserUseCase,
+    @inject(TYPES.VerifyOtpUseCase) private readonly _verifyOtpUC: IVerifyOtpUseCase,
+    @inject(TYPES.ResendOtpUseCase) private readonly _resendOtpUC: IResendOtpUseCase,
+    @inject(TYPES.LoginUserUseCase) private readonly _loginUC: ILoginUserUseCase,
+    @inject(TYPES.GoogleAuthUseCase) private readonly _googleAuthUC: IGoogleAuthUseCase,
+    @inject(TYPES.ForgotPasswordUseCase) private readonly _forgotPasswordUC: IForgotPasswordUseCase,
+    @inject(TYPES.ResetPasswordUseCase) private readonly _resetPasswordUC: IResetPasswordUseCase,
+    @inject(TYPES.VerifyResetOtpUseCase) private readonly _verifyResetOtpUC: IVerifyResetOtpUseCase,
+    @inject(TYPES.RefreshTokenUseCase) private readonly _refreshTokenUC: IRefreshTokenUseCase
+  ) {}
 
-  resendOtp: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      await resendOtpUC.execute({ dto: req.body, type: "user" });
-      res.json(ResponseModel.success("OTP resent successfully", null));
-    } catch (err) { next(err); }
-  },
+  public register = async (req: Request, res: Response): Promise<void> => {
+    const data = await this._registerUC.execute(req.body);
+    res.status(HttpStatus.CREATED).json(ResponseModel.created(MESSAGES.AUTH.REGISTER_SUCCESS, data));
+  };
 
-  login: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const { tokens, user } = await loginUC.execute(req.body);
-      setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
-      res.json(ResponseModel.success("Login successful", { user: UserMapper.toPublicDTO(user as UserEntity) }));
-    } catch (err) { next(err); }
-  },
+  public verifyOtp = async (req: Request, res: Response): Promise<void> => {
+    await this._verifyOtpUC.execute(req.body);
+    res.json(ResponseModel.success(MESSAGES.AUTH.VERIFY_SUCCESS, null));
+  };
 
-  googleAuth: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const { tokens, user } = await googleAuthUC.execute({ idToken: req.body.idToken });
-      setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
-      res.json(ResponseModel.success("Google authentication successful", { user: UserMapper.toPublicDTO(user as UserEntity) }));
-    } catch (err) { next(err); }
-  },
+  public resendOtp = async (req: Request, res: Response): Promise<void> => {
+    await this._resendOtpUC.execute({ dto: req.body, type: "user" });
+    res.json(ResponseModel.success(MESSAGES.AUTH.OTP_RESENT, null));
+  };
 
-  forgotPassword: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      await forgotPasswordUC.execute({ dto: req.body, type: "user" });
-      res.json(ResponseModel.success("Password reset OTP sent to your email", null));
-    } catch (err) { next(err); }
-  },
+  public login = async (req: Request, res: Response): Promise<void> => {
+    const { tokens, user } = await this._loginUC.execute(req.body);
+    setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
+    res.json(ResponseModel.success(MESSAGES.AUTH.LOGIN_SUCCESS, { user: UserMapper.toPublicDTO(user as UserEntity) }));
+  };
 
-  resetPassword: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      await resetPasswordUC.execute({ dto: req.body, type: "user" });
-      res.json(ResponseModel.success("Password reset successful", null));
-    } catch (err) { next(err); }
-  },
+  public googleAuth = async (req: Request, res: Response): Promise<void> => {
+    const { tokens, user } = await this._googleAuthUC.execute({ idToken: req.body.idToken });
+    setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
+    res.json(ResponseModel.success(MESSAGES.AUTH.GOOGLE_SUCCESS, { user: UserMapper.toPublicDTO(user as UserEntity) }));
+  };
 
-  verifyResetOtp: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      await verifyResetOtpUC.execute({ dto: req.body, type: "user" });
-      res.json(ResponseModel.success("OTP verified successfully", null));
-    } catch (err) { next(err); }
-  },
+  public forgotPassword = async (req: Request, res: Response): Promise<void> => {
+    await this._forgotPasswordUC.execute({ dto: req.body, type: "user" });
+    res.json(ResponseModel.success(MESSAGES.AUTH.FORGOT_PW_SUCCESS, null));
+  };
 
-  logout: (_req: Request, res: Response): void => {
+  public resetPassword = async (req: Request, res: Response): Promise<void> => {
+    await this._resetPasswordUC.execute({ dto: req.body, type: "user" });
+    res.json(ResponseModel.success(MESSAGES.AUTH.RESET_PW_SUCCESS, null));
+  };
+
+  public verifyResetOtp = async (req: Request, res: Response): Promise<void> => {
+    await this._verifyResetOtpUC.execute({ dto: req.body, type: "user" });
+    res.json(ResponseModel.success(MESSAGES.AUTH.VERIFY_SUCCESS, null));
+  };
+
+  public logout = (_req: Request, res: Response): void => {
     clearAuthCookies(res);
-    res.json(ResponseModel.success("Logged out successfully", null));
-  },
+    res.json(ResponseModel.success(MESSAGES.AUTH.LOGOUT_SUCCESS, null));
+  };
 
-  refreshToken: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const refreshToken = req.cookies?.refreshToken;
-      const tokens = await refreshTokenUC.execute(refreshToken);
-      setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
-      res.json(ResponseModel.success("Token refreshed successfully", null));
-    } catch (err) { next(err); }
-  },
-};
+  public refreshToken = async (req: Request, res: Response): Promise<void> => {
+    const refreshToken = req.cookies?.refreshToken;
+    const tokens = await this._refreshTokenUC.execute(refreshToken);
+    setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
+    res.json(ResponseModel.success(MESSAGES.AUTH.TOKEN_REFRESHED, null));
+  };
+}

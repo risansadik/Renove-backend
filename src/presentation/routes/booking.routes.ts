@@ -1,52 +1,20 @@
 import { Router } from "express";
+import { appContainer } from "../../infrastructure/di/container.ts";
 import { BookingController } from "../controllers/booking.controller.ts";
-import { CreateBookingUseCase } from "../../application/use-cases/booking/create-booking.usecase.ts";
-import { GetUserBookingsUseCase, GetTherapistBookingsUseCase, UpdateBookingStatusUseCase } from "../../application/use-cases/booking/get-bookings.usecase.ts";
-import { CancelBookingUseCase } from "../../application/use-cases/booking/cancel-booking.usecase.ts";
-import { BookingRepositoryImpl } from "../../infrastructure/repositories/booking.repository.impl.ts";
-import { SlotRepository } from "../../infrastructure/repositories/availability.repository.impl.ts";
-import { WalletRepositoryImpl } from "../../infrastructure/repositories/wallet.repository.impl.ts";
-import { PaymentRepositoryImpl } from "../../infrastructure/repositories/payment.repository.impl.ts";
-import { authenticate } from "../middlewares/auth.middleware.ts";
+import { authenticate } from "../../infrastructure/di/middlewares.ts";
+import { TYPES } from "../../shared/constants/tokens.ts";
+import { asyncHandler } from "../middlewares/async-handler.middleware.ts";
 
 const router = Router();
-
-// Dependency Injection
-const bookingRepository = new BookingRepositoryImpl();
-const slotRepository = new SlotRepository();
-const walletRepository = new WalletRepositoryImpl();
-const paymentRepository = new PaymentRepositoryImpl();
-
-const createBookingUseCase = new CreateBookingUseCase(bookingRepository, slotRepository);
-const getUserBookingsUseCase = new GetUserBookingsUseCase(bookingRepository);
-const getTherapistBookingsUseCase = new GetTherapistBookingsUseCase(bookingRepository);
-const updateBookingStatusUseCase = new UpdateBookingStatusUseCase(
-  bookingRepository,
-  walletRepository,
-  paymentRepository
-);
-const cancelBookingUseCase = new CancelBookingUseCase(
-  bookingRepository,
-  slotRepository,
-  walletRepository,
-  paymentRepository
-);
-
-const bookingController = new BookingController(
-  createBookingUseCase,
-  getUserBookingsUseCase,
-  getTherapistBookingsUseCase,
-  updateBookingStatusUseCase,
-  cancelBookingUseCase
-);
+const bookingController = appContainer.get<BookingController>(TYPES.BookingController);
 
 // User Routes
-router.post("/", authenticate, (req, res) => bookingController.createBooking(req, res));
-router.get("/my-sessions", authenticate, (req, res) => bookingController.getUserBookings(req, res));
-router.post("/:id/cancel", authenticate, (req, res) => bookingController.cancelBooking(req, res));
+router.post("/", authenticate, asyncHandler(bookingController.createBooking));
+router.get("/my-sessions", authenticate, asyncHandler(bookingController.getUserBookings));
+router.post("/:id/cancel", authenticate, asyncHandler(bookingController.cancelBooking));
 
 // Therapist Routes
-router.get("/therapist-sessions", authenticate, (req, res) => bookingController.getTherapistBookings(req, res));
-router.patch("/:id/status", authenticate, (req, res) => bookingController.updateStatus(req, res));
+router.get("/therapist-sessions", authenticate, asyncHandler(bookingController.getTherapistBookings));
+router.patch("/:id/status", authenticate, asyncHandler(bookingController.updateStatus));
 
 export default router;

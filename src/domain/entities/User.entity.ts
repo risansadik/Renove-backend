@@ -6,10 +6,9 @@ export interface UserEntity {
   email: string;
   password?: string;
   isGoogleAuth: boolean;
+  profileImage?: string;
   isVerified: boolean;
   status: UserStatus;
-  otp?: string;
-  otpExpiry?: Date;
   createdAt: Date;
   updatedAt: Date;
 }

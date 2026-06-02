@@ -1,7 +1,9 @@
+import { injectable } from "inversify";
 import { AvailabilityModel, SlotModel, type IAvailabilityDocument, type ISlotDocument } from "../databases/schema/availability.schema.ts";
 import type { IAvailabilityRepository, ISlotRepository } from "../../domain/repositories/availability.repository.ts";
 import type { TherapistAvailabilityEntity, TherapistSlotEntity, SlotStatus } from "../../domain/entities/TherapistAvailability.entity.ts";
 
+@injectable()
 export class AvailabilityRepository implements IAvailabilityRepository {
   private _toAvailabilityEntity(doc: IAvailabilityDocument): TherapistAvailabilityEntity {
     const obj = doc.toObject ? doc.toObject() : doc;
@@ -46,6 +48,7 @@ export class AvailabilityRepository implements IAvailabilityRepository {
   }
 }
 
+@injectable()
 export class SlotRepository implements ISlotRepository {
   private _toSlotEntity(doc: ISlotDocument): TherapistSlotEntity {
     const obj = doc.toObject ? doc.toObject() : doc;

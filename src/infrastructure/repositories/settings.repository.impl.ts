@@ -1,6 +1,8 @@
+import { injectable } from "inversify";
 import type { ISettingsRepository } from "../../domain/repositories/settings.repository.ts";
 import { SettingsModel } from "../databases/schema/settings.schema.ts";
 
+@injectable()
 export class SettingsRepositoryImpl implements ISettingsRepository {
   async getCommissionPercentage(): Promise<number> {
     const doc = await SettingsModel.findOne({ key: "platform_commission" });

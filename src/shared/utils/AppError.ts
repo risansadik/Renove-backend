@@ -3,7 +3,8 @@ import { HttpStatus } from "../constants/index.ts";
 export class AppError extends Error {
   constructor(
     public readonly message: string,
-    public readonly statusCode: number = HttpStatus.BAD_REQUEST
+    public readonly statusCode: number = HttpStatus.BAD_REQUEST,
+    public readonly details?: unknown
   ) {
     super(message);
     this.name = "AppError";
@@ -32,5 +33,11 @@ export class ForbiddenError extends AppError {
 export class ConflictError extends AppError {
   constructor(message = "Conflict") {
     super(message, HttpStatus.CONFLICT);
+  }
+}
+
+export class ValidationError extends AppError {
+  constructor(message = "Validation failed", details?: unknown) {
+    super(message, HttpStatus.BAD_REQUEST, details);
   }
 }

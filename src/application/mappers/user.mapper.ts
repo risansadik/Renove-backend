@@ -1,5 +1,4 @@
 import type { UserEntity } from "../../domain/entities/User.entity.ts";
-import type { IUserRaw } from "../../infrastructure/databases/schema/user.schema.ts";
 import type { UserStatus } from "../../shared/constants/index.ts";
 
 export interface PublicUserDTO {
@@ -9,26 +8,12 @@ export interface PublicUserDTO {
   isVerified: boolean;
   status: UserStatus;
   isGoogleAuth?: boolean;
+  profileImage?: string;
   createdAt: Date;
+  updatedAt?: Date;
 }
 
 export class UserMapper {
-  static toEntity(doc: IUserRaw): UserEntity {
-    return {
-      id: doc._id.toString(),
-      name: doc.name,
-      email: doc.email,
-      password: doc.password,
-      isGoogleAuth: doc.isGoogleAuth,
-      isVerified: doc.isVerified,
-      status: doc.status,
-      otp: doc.otp,
-      otpExpiry: doc.otpExpiry,
-      createdAt: doc.createdAt,
-      updatedAt: doc.updatedAt,
-    };
-  }
-
   static toPublicDTO(entity: UserEntity): PublicUserDTO {
     return {
       id: entity.id,
@@ -37,11 +22,19 @@ export class UserMapper {
       isVerified: entity.isVerified,
       status: entity.status,
       isGoogleAuth: entity.isGoogleAuth,
+      profileImage: entity.profileImage,
       createdAt: entity.createdAt,
     };
   }
 
   static toPublicDTOList(entities: UserEntity[]): PublicUserDTO[] {
     return entities.map(e => this.toPublicDTO(e));
+  }
+
+  static toProfileDTO(entity: UserEntity): PublicUserDTO {
+    return {
+      ...this.toPublicDTO(entity),
+      updatedAt: entity.updatedAt,
+    };
   }
 }

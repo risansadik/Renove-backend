@@ -1,34 +1,41 @@
-import bcrypt from "bcryptjs";
-import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
-import type { RegisterUserDTO } from "../../dto/auth/user.dto.ts";
-import { sendOtpEmail } from "../../../infrastructure/external-services/email.service.ts";
-import { generateOtp, getOtpExpiry } from "../../../shared/utils/otp.ts";
+import { injectable, inject } from "inversify";
+import { TYPES } from "../../../shared/constants/tokens.ts";
 import { ConflictError } from "../../../shared/utils/AppError.ts";
-import { BCRYPT_ROUNDS, USER_STATUS } from "../../../shared/constants/index.ts";
+import { USER_STATUS, OTP_TTL_SECONDS, MESSAGES } from "../../../shared/constants/index.ts";
 
+// Interfaces
+import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
+import type { IOtpCacheRepository } from "../../../domain/repositories/otp-cache.repository.ts";
+import type { IEmailService } from "../../interfaces/services/IEmailService.ts";
+import type { IOtpGenerator } from "../../interfaces/services/IOtpGenerator.ts";
+import type { IPasswordHasher } from "../../interfaces/services/IPasswordHasher.ts";
 import type { IRegisterUserUseCase, IRegisterResponse } from "../../interfaces/auth/IAuthUseCase.ts";
+import type { RegisterUserDTO } from "../../dto/auth/user.dto.ts";
 
+@injectable()
 export class RegisterUserUseCase implements IRegisterUserUseCase {
-  constructor(private readonly _userRepo: IUserRepository) {}
+  constructor(
+    @inject(TYPES.UserRepository) private readonly _userRepo: IUserRepository,
+    @inject(TYPES.OtpCacheRepository) private readonly _otpCacheRepo: IOtpCacheRepository,
+    @inject(TYPES.EmailService) private readonly _emailService: IEmailService,
+    @inject(TYPES.PasswordHasher) private readonly _passwordHasher: IPasswordHasher,
+    @inject(TYPES.OtpGenerator) private readonly _otpGenerator: IOtpGenerator
+  ) {}
 
   async execute(dto: RegisterUserDTO): Promise<IRegisterResponse> {
     const existing = await this._userRepo.findByEmail(dto.email);
     if (existing && existing.isVerified) throw new ConflictError("Email already registered");
 
-    const hashedPassword = await bcrypt.hash(dto.password, BCRYPT_ROUNDS);
-    const otp = generateOtp();
-    const otpExpiry = getOtpExpiry();
+    const hashedPassword = await this._passwordHasher.hash(dto.password);
+    const otp = this._otpGenerator.generate();
 
     if (existing) {
-      // Update existing unverified user
       await this._userRepo.update(existing.id, {
         name: dto.name,
         password: hashedPassword,
-        otp,
-        otpExpiry,
       });
     } else {
-      // Create new user
+
       await this._userRepo.create({
         name: dto.name,
         email: dto.email,
@@ -36,12 +43,16 @@ export class RegisterUserUseCase implements IRegisterUserUseCase {
         isGoogleAuth: false,
         isVerified: false,
         status: USER_STATUS.ACTIVE,
-        otp,
-        otpExpiry,
       });
     }
 
-    await sendOtpEmail(dto.email, otp, dto.name);
-    return { message: "Registration successful. Please verify your email.", email: dto.email };
+    await this._otpCacheRepo.setOtp(dto.email, otp, OTP_TTL_SECONDS);
+
+    await this._emailService.sendOtpEmail(dto.email, otp, dto.name);
+
+    return { 
+      message: MESSAGES.AUTH.REGISTER_SUCCESS, 
+      email: dto.email 
+    };
   }
 }

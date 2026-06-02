@@ -1,0 +1,25 @@
+import "reflect-metadata";
+import { Container } from "inversify";
+import { registerAdminModule } from "./modules/admin.module.ts";
+import { registerAuthModule } from "./modules/auth.module.ts";
+import { registerAvailabilityModule } from "./modules/availability.module.ts";
+import { registerBookingModule } from "./modules/booking.module.ts";
+import { registerDashboardModule } from "./modules/dashboard.module.ts";
+import { registerInfrastructureModule } from "./modules/infrastructure.module.ts";
+import { registerPaymentModule } from "./modules/payment.module.ts";
+import { registerProfileModule } from "./modules/profile.module.ts";
+import { registerWalletModule } from "./modules/wallet.module.ts";
+
+const appContainer = new Container();
+
+registerInfrastructureModule(appContainer);
+registerAuthModule(appContainer);
+registerAdminModule(appContainer);
+registerAvailabilityModule(appContainer);
+registerBookingModule(appContainer);
+registerPaymentModule(appContainer);
+registerProfileModule(appContainer);
+registerDashboardModule(appContainer);
+registerWalletModule(appContainer);
+
+export { appContainer };

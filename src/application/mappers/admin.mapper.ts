@@ -1,22 +1,29 @@
 import type { AdminEntity } from "../../domain/entities/Admin.entity.ts";
-import type { IAdminRaw } from "../../infrastructure/databases/schema/admin.schema.ts";
+
+export interface PublicAdminDTO {
+  id: string;
+  name: string;
+  email: string;
+  profileImage?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
 
 export class AdminMapper {
-
-  static toEntity(doc: IAdminRaw): AdminEntity {
+  static toPublicDTO(entity: AdminEntity): PublicAdminDTO {
     return {
-      id: doc._id.toString(),
-      email: doc.email,
-      password: doc.password,
-      createdAt: doc.createdAt,
-      updatedAt: doc.updatedAt,
+      id: entity.id,
+      name: entity.name,
+      email: entity.email,
+      profileImage: entity.profileImage,
     };
   }
 
-  static toPublicDTO(entity: AdminEntity) {
+  static toProfileDTO(entity: AdminEntity): PublicAdminDTO {
     return {
-      id: entity.id,
-      email: entity.email,
+      ...this.toPublicDTO(entity),
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
     };
   }
 }

@@ -1,81 +1,66 @@
-import type { Request, Response, NextFunction } from "express";
-import { CreatePaymentIntentUseCase } from "../../application/use-cases/payment/create-payment-intent.usecase.ts";
-import { HandleStripeWebhookUseCase } from "../../application/use-cases/payment/handle-stripe-webhook.usecase.ts";
-import { CompleteSessionUseCase } from "../../application/use-cases/payment/complete-session.usecase.ts";
+import type { Request, Response } from "express";
+import { injectable, inject } from "inversify";
+import type { CreatePaymentIntentUseCase } from "../../application/use-cases/payment/create-payment-intent.usecase.ts";
+import type { HandleStripeWebhookUseCase } from "../../application/use-cases/payment/handle-stripe-webhook.usecase.ts";
+import type { CompleteSessionUseCase } from "../../application/use-cases/payment/complete-session.usecase.ts";
 import { StripeHelper } from "../../shared/utils/stripe.ts";
 import { ResponseModel } from "../../shared/utils/response-model.ts";
-import { logger } from "../../shared/utils/logger.ts";
 import type { AuthenticatedRequest } from "../../shared/types/express.ts";
-import { VerifyPaymentUseCase } from "../../application/use-cases/payment/verify-payment.usecase.ts";
+import type { VerifyPaymentUseCase } from "../../application/use-cases/payment/verify-payment.usecase.ts";
+import { MESSAGES } from "../../shared/constants/index.ts";
+import { TYPES } from "../../shared/constants/tokens.ts";
 
+@injectable()
 export class PaymentController {
   constructor(
-    private _createIntentUC: CreatePaymentIntentUseCase,
-    private _handleWebhookUC: HandleStripeWebhookUseCase,
-    private _completeSessionUC: CompleteSessionUseCase,
-    private _verifyPaymentUC: VerifyPaymentUseCase,
+    @inject(TYPES.CreatePaymentIntentUseCase) private readonly _createIntentUC: CreatePaymentIntentUseCase,
+    @inject(TYPES.HandleStripeWebhookUseCase) private readonly _handleWebhookUC: HandleStripeWebhookUseCase,
+    @inject(TYPES.CompleteSessionUseCase) private readonly _completeSessionUC: CompleteSessionUseCase,
+    @inject(TYPES.VerifyPaymentUseCase) private readonly _verifyPaymentUC: VerifyPaymentUseCase
   ) { }
 
   /**
    * Creates a Stripe Payment Intent for a specific booking.
    */
-  async createIntent(req: Request, res: Response, next: NextFunction) {
-    try {
-      const userId = (req as AuthenticatedRequest).user.id;
-      const { bookingId } = req.body;
+  public createIntent = async (req: Request, res: Response): Promise<void> => {
+    const userId = (req as AuthenticatedRequest).user.id;
+    const { bookingId } = req.body;
 
-      const result = await this._createIntentUC.execute(bookingId, userId);
+    const result = await this._createIntentUC.execute(bookingId, userId);
 
-      res.json(ResponseModel.success("Payment intent created successfully", result));
-    } catch (err) {
-      next(err);
-    }
-  }
+    res.json(ResponseModel.success(MESSAGES.PAYMENT.INTENT_CREATED, result));
+  };
 
   /**
    * Handles session completion by therapist.
    */
-  async completeSession(req: Request, res: Response, next: NextFunction) {
-    try {
-      const therapistId = (req as AuthenticatedRequest).user.id;
-      const { bookingId } = req.params;
+  public completeSession = async (req: Request, res: Response): Promise<void> => {
+    const therapistId = (req as AuthenticatedRequest).user.id;
+    const { bookingId } = req.params;
 
-      const result = await this._completeSessionUC.execute(bookingId, therapistId);
+    const result = await this._completeSessionUC.execute(bookingId, therapistId);
 
-      res.json(ResponseModel.success("Session completed and funds moved", result));
-    } catch (err) {
-      next(err);
-    }
-  }
+    res.json(ResponseModel.success(MESSAGES.PAYMENT.SESSION_COMPLETED, result));
+  };
 
   /**
    * Stripe Webhook Handler (Requires raw body for signature verification).
    */
-  async handleWebhook(req: Request, res: Response, _next: NextFunction) {
-    try {
-      const signature = req.headers["stripe-signature"] as string;
-      // Note: req.body must be the raw buffer here, handled by specialized middleware or config
-      const event = StripeHelper.verifyWebhook(req.body, signature);
+  public handleWebhook = async (req: Request, res: Response): Promise<void> => {
+    const signature = req.headers["stripe-signature"] as string;
+    // Note: req.body must be the raw buffer here, handled by specialized middleware or config
+    const event = StripeHelper.verifyWebhook(req.body, signature);
 
-      await this._handleWebhookUC.execute(event);
+    await this._handleWebhookUC.execute(event);
 
-      // Stripe requires a 200 response to acknowledge receipt
-      res.status(200).json({ received: true });
-    } catch (err) {
-      const error = err as Error;
-      logger.error("Webhook Error", { message: error.message });
-      res.status(400).send(`Webhook Error: ${error.message}`);
-    }
-  }
+    // Stripe requires a 200 response to acknowledge receipt
+    res.status(200).json({ received: true });
+  };
 
-  async verifyPayment(req: Request, res: Response, next: NextFunction) {
-    try {
-      const userId = (req as AuthenticatedRequest).user.id;
-      const { bookingId } = req.body;
-      const result = await this._verifyPaymentUC.execute(bookingId, userId);
-      res.json(ResponseModel.success("Payment verified", result));
-    } catch (err) {
-      next(err);
-    }
-  }
+  public verifyPayment = async (req: Request, res: Response): Promise<void> => {
+    const userId = (req as AuthenticatedRequest).user.id;
+    const { bookingId } = req.body;
+    const result = await this._verifyPaymentUC.execute(bookingId, userId);
+    res.json(ResponseModel.success(MESSAGES.PAYMENT.VERIFIED, result));
+  };
 }

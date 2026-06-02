@@ -1,119 +1,87 @@
-import type { Request, Response, NextFunction } from "express";
-import { AdminLoginUseCase } from "../../application/use-cases/auth/admin-login.usecase.ts";
-import {
-  GetAllUsersUseCase,
-  UpdateUserStatusUseCase,
-  GetAllTherapistsUseCase,
-  UpdateTherapistStatusUseCase,
-} from "../../application/use-cases/admin/admin-management.usecase.ts";
-import { AdminRepository } from "../../infrastructure/repositories/admin.repository.impl.ts";
-import { UserRepository } from "../../infrastructure/repositories/user.repository.impl.ts";
-import { TherapistRepository } from "../../infrastructure/repositories/therapist.repository.impl.ts";
-import { SettingsRepositoryImpl } from "../../infrastructure/repositories/settings.repository.impl.ts";
-import { GetAdminFinanceStatsUseCase, UpdatePlatformSettingsUseCase } from "../../application/use-cases/admin/admin-finance.usecase.ts";
-import { ResponseModel } from "../../shared/utils/response-model.ts";
+import type { Request, Response } from "express";
+import { injectable, inject } from "inversify";
+import type {
+  IGetAllTherapistsUseCase,
+  IGetAllUsersUseCase,
+  IUpdateTherapistStatusUseCase,
+  IUpdateUserStatusUseCase,
+} from "../../application/interfaces/admin/IAdminUseCase.ts";
+import type { IAdminLoginUseCase } from "../../application/interfaces/auth/IAuthUseCase.ts";
+import type { GetAdminFinanceStatsUseCase, UpdatePlatformSettingsUseCase } from "../../application/use-cases/admin/admin-finance.usecase.ts";
+import { PAGINATION, MESSAGES } from "../../shared/constants/index.ts";
+import { TYPES } from "../../shared/constants/tokens.ts";
 import { setAuthCookies, clearAuthCookies } from "../../shared/utils/jwt.ts";
+import { ResponseModel } from "../../shared/utils/response-model.ts";
 
-const adminRepo = new AdminRepository();
-const userRepo = new UserRepository();
-const therapistRepo = new TherapistRepository();
-const settingsRepo = new SettingsRepositoryImpl();
+@injectable()
+export class AdminController {
+  constructor(
+    @inject(TYPES.AdminLoginUseCase) private readonly _adminLoginUC: IAdminLoginUseCase,
+    @inject(TYPES.GetAllUsersUseCase) private readonly _getAllUsersUC: IGetAllUsersUseCase,
+    @inject(TYPES.UpdateUserStatusUseCase) private readonly _updateUserStatusUC: IUpdateUserStatusUseCase,
+    @inject(TYPES.GetAllTherapistsUseCase) private readonly _getAllTherapistsUC: IGetAllTherapistsUseCase,
+    @inject(TYPES.UpdateTherapistStatusUseCase) private readonly _updateTherapistStatusUC: IUpdateTherapistStatusUseCase,
+    @inject(TYPES.AdminFinanceUseCase) private readonly _getAdminFinanceStatsUC: GetAdminFinanceStatsUseCase,
+    @inject(TYPES.UpdatePlatformSettingsUseCase) private readonly _updatePlatformSettingsUC: UpdatePlatformSettingsUseCase
+  ) {}
 
-const adminLoginUC = new AdminLoginUseCase(adminRepo);
-const getAllUsersUC = new GetAllUsersUseCase(userRepo);
-const updateUserStatusUC = new UpdateUserStatusUseCase(userRepo);
-const getAllTherapistsUC = new GetAllTherapistsUseCase(therapistRepo);
-const updateTherapistStatusUC = new UpdateTherapistStatusUseCase(therapistRepo);
-const getAdminFinanceStatsUC = new GetAdminFinanceStatsUseCase(settingsRepo);
-const updatePlatformSettingsUC = new UpdatePlatformSettingsUseCase(settingsRepo);
+  public login = async (req: Request, res: Response): Promise<void> => {
+    const { tokens, user } = await this._adminLoginUC.execute(req.body);
+    setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
+    res.json(ResponseModel.success(MESSAGES.ADMIN.LOGIN_SUCCESS, { admin: user }));
+  };
 
-
-export const adminController = {
-  login: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const { tokens, user } = await adminLoginUC.execute(req.body);
-      setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
-      res.json(ResponseModel.success("Admin login successful", { admin: user }));
-    } catch (err) {
-      next(err);
-    }
-  },
-
-  logout: (_req: Request, res: Response): void => {
+  public logout = (_req: Request, res: Response): void => {
     clearAuthCookies(res);
-    res.json(ResponseModel.success("Logged out successfully", null));
-  },
+    res.json(ResponseModel.success(MESSAGES.AUTH.LOGOUT_SUCCESS, null));
+  };
 
-  getAllUsers: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 10;
-      const users = await getAllUsersUC.execute({ page, limit });
-      
-      const totalPages = Math.ceil(users.total / limit);
-      res.json(ResponseModel.success("Users fetched", users.data, 200, {
-        total: users.total,
-        page,
-        limit,
-        totalPages
-      }));
-    } catch (err) {
-      next(err);
-    }
-  },
+  public getAllUsers = async (req: Request, res: Response): Promise<void> => {
+    const page = parseInt(req.query.page as string) || PAGINATION.DEFAULT_PAGE;
+    const limit = parseInt(req.query.limit as string) || PAGINATION.DEFAULT_LIMIT;
+    const search = typeof req.query.search === "string" ? req.query.search.trim() : undefined;
+    const users = await this._getAllUsersUC.execute({ page, limit, search });
 
-  updateUserStatus: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const result = await updateUserStatusUC.execute({ id: req.params.id, dto: req.body });
-      res.json(ResponseModel.success("User status updated", result));
-    } catch (err) {
-      next(err);
-    }
-  },
+    res.json(ResponseModel.success(MESSAGES.ADMIN.USERS_FETCHED, users.data, 200, {
+      total: users.total,
+      page,
+      limit,
+      totalPages: Math.ceil(users.total / limit),
+    }));
+  };
 
-  getAllTherapists: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 10;
-      const therapists = await getAllTherapistsUC.execute({ page, limit });
-      
-      const totalPages = Math.ceil(therapists.total / limit);
-      res.json(ResponseModel.success("Therapists fetched", therapists.data, 200, {
-        total: therapists.total,
-        page,
-        limit,
-        totalPages
-      }));
-    } catch (err) {
-      next(err);
-    }
-  },
+  public updateUserStatus = async (req: Request, res: Response): Promise<void> => {
+    const result = await this._updateUserStatusUC.execute({ id: req.params.id, dto: req.body });
+    res.json(ResponseModel.success(MESSAGES.ADMIN.USER_STATUS_UPDATED, result));
+  };
 
-  updateTherapistStatus: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const result = await updateTherapistStatusUC.execute({ id: req.params.id, dto: req.body });
-      res.json(ResponseModel.success("Therapist status updated", result));
-    } catch (err) {
-      next(err);
-    }
-  },
+  public getAllTherapists = async (req: Request, res: Response): Promise<void> => {
+    const page = parseInt(req.query.page as string) || PAGINATION.DEFAULT_PAGE;
+    const limit = parseInt(req.query.limit as string) || PAGINATION.DEFAULT_LIMIT;
+    const search = typeof req.query.search === "string" ? req.query.search.trim() : undefined;
+    const therapists = await this._getAllTherapistsUC.execute({ page, limit, search });
 
-  getFinanceStats: async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const stats = await getAdminFinanceStatsUC.execute();
-      res.json(ResponseModel.success("Admin finance stats fetched successfully", stats));
-    } catch (err) {
-      next(err);
-    }
-  },
+    res.json(ResponseModel.success(MESSAGES.ADMIN.THERAPISTS_FETCHED, therapists.data, 200, {
+      total: therapists.total,
+      page,
+      limit,
+      totalPages: Math.ceil(therapists.total / limit),
+    }));
+  };
 
-  updateCommission: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const { commissionPercentage } = req.body;
-      const result = await updatePlatformSettingsUC.execute(Number(commissionPercentage));
-      res.json(ResponseModel.success("Platform commission updated successfully", result));
-    } catch (err) {
-      next(err);
-    }
-  },
-};
+  public updateTherapistStatus = async (req: Request, res: Response): Promise<void> => {
+    const result = await this._updateTherapistStatusUC.execute({ id: req.params.id, dto: req.body });
+    res.json(ResponseModel.success(MESSAGES.ADMIN.THERAPIST_STATUS_UPDATED, result));
+  };
+
+  public getFinanceStats = async (_req: Request, res: Response): Promise<void> => {
+    const stats = await this._getAdminFinanceStatsUC.execute();
+    res.json(ResponseModel.success(MESSAGES.ADMIN.FINANCE_STATS_FETCHED, stats));
+  };
+
+  public updateCommission = async (req: Request, res: Response): Promise<void> => {
+    const { commissionPercentage } = req.body;
+    const result = await this._updatePlatformSettingsUC.execute(Number(commissionPercentage));
+    res.json(ResponseModel.success(MESSAGES.ADMIN.COMMISSION_UPDATED(Number(commissionPercentage)), result));
+  };
+}

@@ -1,5 +1,4 @@
 import Stripe from "stripe";
-import { logger } from "./logger.ts";
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY || "sk_test_placeholder";
 const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET || "";
@@ -15,20 +14,14 @@ export class StripeHelper {
    * @param metadata Optional metadata to attach to the intent
    */
   static async createPaymentIntent(amount: number, metadata: Record<string, string> = {}) {
-    try {
-      const paymentIntent = await stripe.paymentIntents.create({
-        amount,
-        currency: "usd",
-        metadata,
-        automatic_payment_methods: {
-          enabled: true,
-        },
-      });
-      return paymentIntent;
-    } catch (error) {
-      logger.error("Error creating Stripe Payment Intent", { error });
-      throw error;
-    }
+    return stripe.paymentIntents.create({
+      amount,
+      currency: "usd",
+      metadata,
+      automatic_payment_methods: {
+        enabled: true,
+      },
+    });
   }
 
   /**
@@ -37,16 +30,10 @@ export class StripeHelper {
    * @param signature Signature header from Stripe
    */
   static verifyWebhook(payload: string | Buffer, signature: string) {
-    try {
-      const event = stripe.webhooks.constructEvent(
-        payload,
-        signature,
-        stripeWebhookSecret
-      );
-      return event;
-    } catch (error) {
-      logger.error("Stripe Webhook Verification Failed", { error });
-      throw error;
-    }
+    return stripe.webhooks.constructEvent(
+      payload,
+      signature,
+      stripeWebhookSecret
+    );
   }
 }

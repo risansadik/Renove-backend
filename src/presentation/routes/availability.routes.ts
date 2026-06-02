@@ -1,32 +1,17 @@
 import { Router } from "express";
+import { appContainer } from "../../infrastructure/di/container.ts";
 import { AvailabilityController } from "../controllers/availability.controller.ts";
-import { CreateAvailabilityUseCase } from "../../application/use-cases/availability/create-availability.usecase.ts";
-import { AvailabilityRepository, SlotRepository } from "../../infrastructure/repositories/availability.repository.impl.ts";
-import { authenticate } from "../middlewares/auth.middleware.ts";
-
-import { GetTherapistRulesUseCase, GetAvailableSlotsUseCase, DeleteAvailabilityRuleUseCase } from "../../application/use-cases/availability/availability-operations.usecase.ts";
+import { authenticate } from "../../infrastructure/di/middlewares.ts";
+import { TYPES } from "../../shared/constants/tokens.ts";
+import { asyncHandler } from "../middlewares/async-handler.middleware.ts";
 
 const router = Router();
-
-// DI
-const availabilityRepo = new AvailabilityRepository();
-const slotRepo = new SlotRepository();
-const createAvailabilityUseCase = new CreateAvailabilityUseCase(availabilityRepo, slotRepo);
-const getTherapistRulesUseCase = new GetTherapistRulesUseCase(availabilityRepo);
-const getAvailableSlotsUseCase = new GetAvailableSlotsUseCase(slotRepo);
-const deleteAvailabilityRuleUseCase = new DeleteAvailabilityRuleUseCase(availabilityRepo, slotRepo);
-
-const controller = new AvailabilityController(
-  createAvailabilityUseCase,
-  getTherapistRulesUseCase,
-  getAvailableSlotsUseCase,
-  deleteAvailabilityRuleUseCase
-);
+const controller = appContainer.get<AvailabilityController>(TYPES.AvailabilityController);
 
 // Routes
-router.post("/", authenticate, (req, res) => controller.createRule(req, res));
-router.get("/my-rules", authenticate, (req, res) => controller.getTherapistRules(req, res));
-router.delete("/:id", authenticate, (req, res) => controller.deleteRule(req, res));
-router.get("/slots/:therapistId", (req, res) => controller.getAvailableSlots(req, res));
+router.post("/", authenticate, asyncHandler(controller.createRule));
+router.get("/my-rules", authenticate, asyncHandler(controller.getTherapistRules));
+router.delete("/:id", authenticate, asyncHandler(controller.deleteRule));
+router.get("/slots/:therapistId", asyncHandler(controller.getAvailableSlots));
 
 export default router;

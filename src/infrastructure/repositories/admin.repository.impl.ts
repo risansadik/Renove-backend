@@ -1,47 +1,27 @@
+import { injectable } from "inversify";
+
+import { BaseRepository } from "./base-repository.impl.ts";
+
 import type { IAdminRepository } from "../../domain/repositories/admin.repository.ts";
 import type { AdminEntity } from "../../domain/entities/Admin.entity.ts";
+
 import { AdminModel } from "../databases/schema/admin.schema.ts";
-import { AdminMapper } from "../../application/mappers/admin.mapper.ts";
-import { PaginationParams, PaginatedResult } from "../../domain/interfaces/pagination.ts";
+import type { IAdminDocument } from "../databases/schema/admin.schema.ts";
 
-export class AdminRepository implements IAdminRepository {
-  async findById(id: string): Promise<AdminEntity | null> {
-    const doc = await AdminModel.findById(id).lean();
-    return doc ? AdminMapper.toEntity(doc) : null;
+@injectable()
+export class AdminRepository
+  extends BaseRepository<AdminEntity, IAdminDocument>
+  implements IAdminRepository
+{
+  constructor() {
+    super(AdminModel);
   }
 
-  async findByEmail(email: string): Promise<AdminEntity | null> {
-    const doc = await AdminModel.findOne({ email }).lean();
-    return doc ? AdminMapper.toEntity(doc) : null;
-  }
+  public async findByEmail(
+    email: string
+  ): Promise<AdminEntity | null> {
+    const document = await this.model.findOne({ email }).exec();
 
-  async findAll(params?: PaginationParams): Promise<PaginatedResult<AdminEntity>> {
-    const query = AdminModel.find();
-    if (params) {
-      query.skip((params.page - 1) * params.limit).limit(params.limit);
-    }
-    const [docs, total] = await Promise.all([
-      query.lean().exec(),
-      AdminModel.countDocuments()
-    ]);
-    return {
-      data: docs.map(AdminMapper.toEntity),
-      total
-    };
-  }
-
-  async create(data: Partial<AdminEntity>): Promise<AdminEntity> {
-    const doc = await AdminModel.create(data);
-    return AdminMapper.toEntity(doc.toObject());
-  }
-
-  async update(id: string, data: Partial<AdminEntity>): Promise<AdminEntity | null> {
-    const doc = await AdminModel.findByIdAndUpdate(id, data, { new: true }).lean();
-    return doc ? AdminMapper.toEntity(doc) : null;
-  }
-
-  async delete(id: string): Promise<boolean> {
-    const result = await AdminModel.findByIdAndDelete(id);
-    return !!result;
+    return document ? this.toEntity(document) : null;
   }
 }

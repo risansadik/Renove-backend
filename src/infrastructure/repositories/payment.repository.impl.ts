@@ -1,7 +1,9 @@
+import { injectable } from "inversify";
 import type { IPaymentRepository } from "../../domain/repositories/payment.repository.ts";
 import type { PaymentEntity } from "../../domain/entities/Payment.entity.ts";
 import { PaymentModel, type IPaymentDocument } from "../databases/schema/payment.schema.ts";
 
+@injectable()
 export class PaymentRepositoryImpl implements IPaymentRepository {
   private _toEntity(doc: IPaymentDocument): PaymentEntity {
     return {
@@ -47,6 +49,11 @@ export class PaymentRepositoryImpl implements IPaymentRepository {
     return doc ? this._toEntity(doc) : null;
   }
 
+  async findAnyByBookingId(bookingId: string): Promise<PaymentEntity | null> {
+    const doc = await PaymentModel.findOne({ bookingId });
+    return doc ? this._toEntity(doc) : null;
+  }
+
   async updateStatus(id: string, status: PaymentEntity["status"], extra?: Partial<PaymentEntity>): Promise<PaymentEntity | null> {
     const doc = await PaymentModel.findByIdAndUpdate(
       id,
@@ -54,5 +61,9 @@ export class PaymentRepositoryImpl implements IPaymentRepository {
       { new: true }
     );
     return doc ? this._toEntity(doc) : null;
+  }
+
+  async failUnpaidByBookingId(bookingId: string): Promise<void> {
+    await PaymentModel.updateMany({ bookingId, status: "unpaid" }, { status: "failed" });
   }
 }

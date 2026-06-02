@@ -1,34 +1,45 @@
 import multer from "multer";
-import { v2 as cloudinary } from "cloudinary";
-import { CloudinaryStorage } from "multer-storage-cloudinary";
+import { S3Client } from "@aws-sdk/client-s3";
+import multerS3 from "multer-s3";
 import dotenv from "dotenv";
 import type { Request } from "express";
 import type { FileFilterCallback } from "multer";
+import { MAX_FILE_SIZE, S3_CONFIG } from "../../shared/constants/index.ts";
 
 dotenv.config();
 
-// Direct configuration to ensure environment variables are used
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+// AWS S3 Client Configuration
+const s3 = new S3Client({
+  region: S3_CONFIG.REGION,
+  credentials: {
+    accessKeyId: S3_CONFIG.ACCESS_KEY,
+    secretAccessKey: S3_CONFIG.SECRET_KEY,
+  },
 });
 
-// Configure Cloudinary Storage with extra safety
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: async (_req, file) => {
-    const isImage = file.mimetype.startsWith('image/');
+// Configure S3 Storage
+const storage = multerS3({
+  s3: s3,
+  bucket: S3_CONFIG.BUCKET_NAME,
+  contentType: multerS3.AUTO_CONTENT_TYPE,
+  metadata: (
+    _req: Request,
+    file: Express.Multer.File,
+    cb: (error: Error | null, metadata?: Record<string, string>) => void
+  ) => {
+    cb(null, { fieldName: file.fieldname });
+  },
+  key: (
+    _req: Request,
+    file: Express.Multer.File,
+    cb: (error: Error | null, key?: string) => void
+  ) => {
     const folder = file.fieldname === 'profileImage' ? 'renove/profiles' : 'renove/certifications';
-    
-    return {
-      folder: folder,
-      // For PDF/Documents use 'raw', for Images use 'image'
-      resource_type: isImage ? 'image' : 'auto', 
-      // If it's an image, convert to webp, otherwise keep original extension (pdf)
-      format: isImage ? 'webp' : undefined, 
-      public_id: `${Date.now()}-${file.originalname.split('.')[0].replace(/[^a-z0-9]/gi, '_')}`,
-    };
+    const timestamp = Date.now();
+    const sanitizedName = file.originalname.split('.')[0].replace(/[^a-z0-9]/gi, '_');
+    const extension = file.originalname.split('.').pop();
+
+    cb(null, `${folder}/${timestamp}-${sanitizedName}.${extension}`);
   },
 });
 
@@ -51,6 +62,6 @@ export const upload = multer({
   storage,
   fileFilter,
   limits: {
-    fileSize: 10 * 1024 * 1024, // Increased to 10MB to be safe
+    fileSize: MAX_FILE_SIZE, // Increased to 10MB to be safe
   },
 });

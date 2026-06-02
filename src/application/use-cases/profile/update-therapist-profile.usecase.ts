@@ -1,6 +1,7 @@
-import { TherapistModel } from "../../../infrastructure/databases/schema/therapist.schema.ts";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
 import { AppError } from "../../../shared/utils/AppError.ts";
 import { HttpStatus, THERAPIST_STATUS } from "../../../shared/constants/index.ts";
+import { TherapistMapper } from "../../mappers/therapist.mapper.ts";
 
 export interface UpdateTherapistProfileDto {
   name?: string;
@@ -15,33 +16,30 @@ export interface UpdateTherapistProfileDto {
 }
 
 export class UpdateTherapistProfileUseCase {
+  constructor(private readonly _therapistRepo: ITherapistRepository) {}
+
   async execute(therapistId: string, data: UpdateTherapistProfileDto) {
-    const therapist = await TherapistModel.findById(therapistId);
+    const therapist = await this._therapistRepo.findById(therapistId);
     if (!therapist) {
       throw new AppError("Therapist not found", HttpStatus.NOT_FOUND);
     }
 
-    // Identify if updates are purely personal or include professional data
     const { name, profileImage, ...professionalData } = data;
-
-    // Apply personal updates immediately
-    if (name) therapist.name = name;
-    if (profileImage) therapist.profileImage = profileImage;
-
-    // If professional data is included, stage it in pendingUpdates and require review
     const hasProfessionalUpdates = Object.keys(professionalData).length > 0;
-    
+    const updateData: Parameters<ITherapistRepository["update"]>[1] = {};
+
+    if (name) updateData.name = name;
+    if (profileImage) updateData.profileImage = profileImage;
+
     if (hasProfessionalUpdates) {
-      const currentPending = therapist.pendingUpdates || {};
-      therapist.pendingUpdates = { ...currentPending, ...professionalData };
-      therapist.status = THERAPIST_STATUS.REVIEW_REQUIRED;
-      therapist.adminRejectionReason = undefined; // clear previous rejection reason
+      updateData.pendingUpdates = { ...(therapist.pendingUpdates ?? {}), ...professionalData };
+      updateData.status = THERAPIST_STATUS.REVIEW_REQUIRED;
+      updateData.adminRejectionReason = undefined;
     }
 
-    await therapist.save();
-    
-    // Return sanitized updated document
-    const updated = await TherapistModel.findById(therapistId).select("-password").lean();
-    return updated;
+    const updated = await this._therapistRepo.update(therapistId, updateData);
+    if (!updated) return null;
+
+    return TherapistMapper.toProfileDTO(updated);
   }
 }

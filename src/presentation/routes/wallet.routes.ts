@@ -1,21 +1,14 @@
 import { Router } from "express";
+import { appContainer } from "../../infrastructure/di/container.ts";
 import { WalletController } from "../controllers/wallet.controller.ts";
-import { GetWalletUseCase } from "../../application/use-cases/wallet/get-wallet.usecase.ts";
-import { WalletRepositoryImpl } from "../../infrastructure/repositories/wallet.repository.impl.ts";
-import { authenticate } from "../middlewares/auth.middleware.ts";
+import { authenticate } from "../../infrastructure/di/middlewares.ts";
+import { TYPES } from "../../shared/constants/tokens.ts";
+import { asyncHandler } from "../middlewares/async-handler.middleware.ts";
 
 const router = Router();
-
-// Infrastructure
-const walletRepo = new WalletRepositoryImpl();
-
-// Use Cases
-const getWalletUC = new GetWalletUseCase(walletRepo);
-
-// Controller
-const walletController = new WalletController(getWalletUC);
+const walletController = appContainer.get<WalletController>(TYPES.WalletController);
 
 // Routes
-router.get("/", authenticate, (req, res, next) => walletController.getWallet(req, res, next));
+router.get("/", authenticate, asyncHandler(walletController.getWallet));
 
 export default router;
