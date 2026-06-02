@@ -5,21 +5,33 @@ import type { IWalletRepository } from "../../../domain/repositories/wallet.repo
 import type { ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
 import { BOOKING_STATUS, PAYMENT_STATUS, SLOT_STATUS, HttpStatus } from "../../../shared/constants/index.ts";
 import { AppError } from "../../../shared/utils/AppError.ts";
+import { inject, injectable } from "inversify";
+import { TYPES } from "../../../shared/constants/tokens.ts";
+import { IVerifyPaymentInput } from "../../interfaces/payment/IPaymentUseCase.ts";
 
+@injectable()
 export class VerifyPaymentUseCase {
   constructor(
-    private readonly _paymentRepo: IPaymentRepository,
-    private readonly _bookingRepo: IBookingRepository,
-    private readonly _walletRepo: IWalletRepository,
-    private readonly _slotRepo: ISlotRepository
+    @inject(TYPES.PaymentRepository)private readonly _paymentRepo: IPaymentRepository,
+    @inject(TYPES.BookingRepository)private readonly _bookingRepo: IBookingRepository,
+    @inject(TYPES.WalletRepository)private readonly _walletRepo: IWalletRepository,
+    @inject(TYPES.SlotRepository)private readonly _slotRepo: ISlotRepository
   ) {}
 
-  async execute(bookingId: string, _userId: string) {
+  async execute({bookingId, userId} : IVerifyPaymentInput) : Promise<{success?: boolean,alreadyProcessed?: boolean}>{
     const payment = await this._paymentRepo.findByBookingId(bookingId);
     const anyPayment = payment ?? await this._paymentRepo.findAnyByBookingId(bookingId);
 
     if (!anyPayment) {
       throw new AppError("Payment record not found", HttpStatus.NOT_FOUND);
+    }
+
+    const paymentUserId = typeof anyPayment.userId === 'object' && anyPayment.userId !== null 
+      ? (anyPayment.userId as { id: string }).id 
+      : (anyPayment.userId as string);
+
+    if (paymentUserId !== userId) {
+      throw new AppError("Unauthorized access to payment verification", HttpStatus.FORBIDDEN);
     }
 
     if (anyPayment.status === PAYMENT_STATUS.PAID) {
@@ -44,8 +56,8 @@ export class VerifyPaymentUseCase {
     const booking = await this._bookingRepo.findById(anyPayment.bookingId);
     if (booking) {
       const slotId = typeof booking.slotId === "object" && booking.slotId !== null
-        ? booking.slotId.id
-        : booking.slotId;
+        ? (booking.slotId as { id: string }).id
+        : (booking.slotId as string);
       await this._slotRepo.updateStatus(slotId, SLOT_STATUS.BOOKED);
     }
 

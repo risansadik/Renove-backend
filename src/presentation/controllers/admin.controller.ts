@@ -5,9 +5,10 @@ import type {
   IGetAllUsersUseCase,
   IUpdateTherapistStatusUseCase,
   IUpdateUserStatusUseCase,
+  IGetAdminFinanceStatsUseCase,
+  IUpdatePlatformSettingsUseCase
 } from "../../application/interfaces/admin/IAdminUseCase.ts";
 import type { IAdminLoginUseCase } from "../../application/interfaces/auth/IAuthUseCase.ts";
-import type { GetAdminFinanceStatsUseCase, UpdatePlatformSettingsUseCase } from "../../application/use-cases/admin/admin-finance.usecase.ts";
 import { PAGINATION, MESSAGES } from "../../shared/constants/index.ts";
 import { TYPES } from "../../shared/constants/tokens.ts";
 import { setAuthCookies, clearAuthCookies } from "../../shared/utils/jwt.ts";
@@ -21,8 +22,8 @@ export class AdminController {
     @inject(TYPES.UpdateUserStatusUseCase) private readonly _updateUserStatusUC: IUpdateUserStatusUseCase,
     @inject(TYPES.GetAllTherapistsUseCase) private readonly _getAllTherapistsUC: IGetAllTherapistsUseCase,
     @inject(TYPES.UpdateTherapistStatusUseCase) private readonly _updateTherapistStatusUC: IUpdateTherapistStatusUseCase,
-    @inject(TYPES.AdminFinanceUseCase) private readonly _getAdminFinanceStatsUC: GetAdminFinanceStatsUseCase,
-    @inject(TYPES.UpdatePlatformSettingsUseCase) private readonly _updatePlatformSettingsUC: UpdatePlatformSettingsUseCase
+    @inject(TYPES.AdminFinanceUseCase) private readonly _getAdminFinanceStatsUC: IGetAdminFinanceStatsUseCase,
+    @inject(TYPES.UpdatePlatformSettingsUseCase) private readonly _updatePlatformSettingsUC: IUpdatePlatformSettingsUseCase
   ) {}
 
   public login = async (req: Request, res: Response): Promise<void> => {

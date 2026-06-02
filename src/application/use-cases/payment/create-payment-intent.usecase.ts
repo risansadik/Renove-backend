@@ -5,16 +5,20 @@ import type { ITherapistRepository } from "../../../domain/repositories/therapis
 import type { ISettingsRepository } from "../../../domain/repositories/settings.repository.ts";
 import { BOOKING_STATUS, PAYMENT_STATUS, HttpStatus } from "../../../shared/constants/index.ts";
 import { AppError } from "../../../shared/utils/AppError.ts";
+import { ICreatePaymentIntentInput, ICreatePaymentIntentUseCase } from "../../interfaces/payment/IPaymentUseCase.ts";
+import { inject, injectable } from "inversify";
+import { TYPES } from "../../../shared/constants/tokens.ts";
 
-export class CreatePaymentIntentUseCase {
+@injectable()
+export class CreatePaymentIntentUseCase implements ICreatePaymentIntentUseCase {
   constructor(
-    private _paymentRepo: IPaymentRepository,
-    private _bookingRepo: IBookingRepository,
-    private _therapistRepo: ITherapistRepository,
-    private _settingsRepo: ISettingsRepository
+    @inject(TYPES.PaymentRepository) private readonly _paymentRepo: IPaymentRepository,
+    @inject(TYPES.BookingRepository) private readonly _bookingRepo: IBookingRepository,
+    @inject(TYPES.TherapistRepository) private readonly _therapistRepo: ITherapistRepository,
+    @inject(TYPES.SettingsRepository) private readonly _settingsRepo: ISettingsRepository
   ) { }
 
-  async execute(bookingId: string, userId: string) {
+  async execute({ bookingId, userId }: ICreatePaymentIntentInput): Promise<{ clientSecret: string | null, amount: number, consultationFee: number, commissionPercentage: number, platformFee: number }> {
     const booking = await this._bookingRepo.findById(bookingId);
 
     if (!booking) {

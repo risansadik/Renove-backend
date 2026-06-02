@@ -4,17 +4,24 @@ import type { IWalletRepository } from "../../../domain/repositories/wallet.repo
 import type { ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
 import { BOOKING_STATUS, PAYMENT_STATUS, SLOT_STATUS } from "../../../shared/constants/index.ts";
 import { logger } from "../../../shared/utils/logger.ts";
-import type Stripe from "stripe";
+import Stripe from "stripe";
+import { IHandleStripeWebhookInput, IHandleStripeWebhookUseCase } from "../../interfaces/payment/IPaymentUseCase.ts";
+import { injectable,inject } from "inversify";
+import { TYPES } from "../../../shared/constants/tokens.ts";
+import { StripeHelper } from "../../../shared/utils/stripe.ts";
 
-export class HandleStripeWebhookUseCase {
+@injectable()
+export class HandleStripeWebhookUseCase implements IHandleStripeWebhookUseCase{
   constructor(
-    private _paymentRepo: IPaymentRepository,
-    private _bookingRepo: IBookingRepository,
-    private _walletRepo: IWalletRepository,
-    private _slotRepo: ISlotRepository
+   @inject(TYPES.PaymentRepository) private _paymentRepo: IPaymentRepository,
+   @inject(TYPES.BookingRepository) private _bookingRepo: IBookingRepository,
+   @inject(TYPES.WalletRepository) private _walletRepo: IWalletRepository,
+   @inject(TYPES.SlotRepository) private _slotRepo: ISlotRepository
   ) {}
 
-  async execute(event: Stripe.Event) {
+  async execute({signature,rawBody} : IHandleStripeWebhookInput): Promise<void> {
+
+    const event = StripeHelper.verifyWebhook(rawBody, signature);
     logger.info(`Processing Stripe Webhook Event: ${event.type}`, { eventId: event.id });
 
     switch (event.type) {
@@ -45,7 +52,6 @@ export class HandleStripeWebhookUseCase {
     // 1. Update Payment Record
     await this._paymentRepo.updateStatus(payment.id!, PAYMENT_STATUS.PAID, {
       paidAt: new Date(),
-      // In a real app, you might want to store the receipt URL if available
     });
 
     // 2. Update Booking Status

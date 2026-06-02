@@ -1,13 +1,18 @@
+import { inject, injectable } from "inversify";
+import { TYPES } from "../../../shared/constants/tokens.ts";
 import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.ts";
 import type { TransactionEntity } from "../../../domain/entities/Transaction.entity.ts";
 import { ROLES } from "../../../shared/constants/index.ts";
+import type { PaginatedResult } from "../../../domain/interfaces/pagination.ts";
+import type { IGetWalletUseCase, IGetWalletInput, WalletResult } from "../../interfaces/wallet/IWalletUseCase.ts";
 
-import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination.ts";
+@injectable()
+export class GetWalletUseCase implements IGetWalletUseCase {
+  constructor(
+    @inject(TYPES.WalletRepository) private readonly _walletRepo: IWalletRepository
+  ) {}
 
-export class GetWalletUseCase {
-  constructor(private _walletRepo: IWalletRepository) {}
-
-  async execute(id: string, role: string, params: PaginationParams) {
+  async execute({ id, role, params }: IGetWalletInput): Promise<WalletResult> {
     let wallet;
     let transactions: PaginatedResult<TransactionEntity> = { data: [], total: 0 };
     let walletType: "TherapistWallet" | "UserWallet";

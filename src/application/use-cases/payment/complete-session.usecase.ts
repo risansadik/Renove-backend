@@ -4,18 +4,19 @@ import type { IPaymentRepository } from "../../../domain/repositories/payment.re
 import { BOOKING_STATUS, HttpStatus } from "../../../shared/constants/index.ts";
 import { AppError } from "../../../shared/utils/AppError.ts";
 import { logger } from "../../../shared/utils/logger.ts";
+import { ICompleteSessionInput, ICompleteSessionUseCase } from "../../interfaces/payment/IPaymentUseCase.ts";
+import { inject, injectable } from "inversify";
+import { TYPES } from "../../../shared/constants/tokens.ts";
 
-export class CompleteSessionUseCase {
+@injectable()
+export class CompleteSessionUseCase implements ICompleteSessionUseCase {
   constructor(
-    private _bookingRepo: IBookingRepository,
-    private _walletRepo: IWalletRepository,
-    private _paymentRepo: IPaymentRepository
-  ) {}
+    @inject(TYPES.BookingRepository) private readonly _bookingRepo: IBookingRepository,
+    @inject(TYPES.WalletRepository) private readonly _walletRepo: IWalletRepository,
+    @inject(TYPES.PaymentRepository) private readonly _paymentRepo: IPaymentRepository,
+  ) { }
 
-  /**
-   * Finalizes a session, marking booking as completed and moving funds to available balance.
-   */
-  async execute(bookingId: string, therapistId: string) {
+  async execute({ bookingId, therapistId }: ICompleteSessionInput): Promise<{ success: boolean, message?: string }> {
     const booking = await this._bookingRepo.findById(bookingId);
 
     if (!booking) {
@@ -31,8 +32,6 @@ export class CompleteSessionUseCase {
       throw new AppError(`Only confirmed bookings can be completed. Current status: ${booking.status}`, HttpStatus.BAD_REQUEST);
     }
 
-    // --- NEW: Time Validation ---
-    // Ensure the session has actually started before it can be completed
     if (booking.slotId && typeof booking.slotId === 'object' && booking.slotId !== null) {
       const sessionStartTime = (booking.slotId as { startTime?: string | Date }).startTime;
       if (sessionStartTime && new Date() < new Date(sessionStartTime)) {
@@ -45,7 +44,7 @@ export class CompleteSessionUseCase {
 
     // 2. Find associated successful payment to get amount
     const payment = await this._paymentRepo.findByBookingId(bookingId);
-    
+
     if (!payment) {
       logger.warn(`No PAID payment record found for booking ${bookingId} during completion. Funds will not be moved.`);
       return { success: true, message: "Booking completed, but no payment record found for fund transfer." };
@@ -57,7 +56,7 @@ export class CompleteSessionUseCase {
 
     // 4. Update ledger transaction status to completed
     const matched = await this._walletRepo.updateTransactionStatusByBookingId(bookingId, "completed");
-    
+
     if (!matched) {
       const wallet = await this._walletRepo.findByTherapistId(bookingTherapistId);
       if (wallet) {

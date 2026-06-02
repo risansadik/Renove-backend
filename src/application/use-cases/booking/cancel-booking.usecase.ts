@@ -6,13 +6,16 @@ import type { BookingEntity } from "../../../domain/entities/Booking.entity.ts";
 import type { ICancelBookingUseCase, CancelBookingInput } from "../../interfaces/booking/IBookingUseCase.ts";
 import { BOOKING_STATUS, HttpStatus, PAYMENT_STATUS } from "../../../shared/constants/index.ts";
 import { AppError, ForbiddenError, NotFoundError } from "../../../shared/utils/AppError.ts";
+import { injectable, inject } from "inversify";
+import { TYPES } from "../../../shared/constants/tokens.ts";
 
+@injectable()
 export class CancelBookingUseCase implements ICancelBookingUseCase {
   constructor(
-    private _bookingRepo: IBookingRepository,
-    private _slotRepo: ISlotRepository,
-    private _walletRepo: IWalletRepository,
-    private _paymentRepo: IPaymentRepository
+    @inject(TYPES.BookingRepository)private readonly _bookingRepo: IBookingRepository,
+    @inject(TYPES.SlotRepository)private    readonly _slotRepo: ISlotRepository,
+    @inject(TYPES.WalletRepository)private  readonly _walletRepo: IWalletRepository,
+    @inject(TYPES.PaymentRepository)private readonly _paymentRepo: IPaymentRepository
   ) {}
 
   async execute({ bookingId, cancelledBy, userIdOrTherapistId, reason }: CancelBookingInput): Promise<BookingEntity> {

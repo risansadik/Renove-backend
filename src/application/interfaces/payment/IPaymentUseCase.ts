@@ -1,19 +1,42 @@
-export interface ICompleteSessionUseCase {
-  execute(bookingId: string, therapistId: string): Promise<{ success: boolean; message?: string }>;
+import type { IUseCase } from "../IUseCase.ts";
+
+
+export interface ICreatePaymentIntentInput {
+  bookingId: string;
+  userId: string;
 }
 
-export interface ICreatePaymentIntentUseCase {
-  execute(bookingId: string, userId: string): Promise<{ clientSecret: string | null; amount: number; consultationFee: number; commissionPercentage: number; platformFee: number }>;
+export interface ICompleteSessionInput {
+  bookingId: string;
+  therapistId: string;
 }
 
-export interface IExpirePaymentUseCase {
-  execute(bookingId: string): Promise<void>;
+
+export interface IHandleStripeWebhookInput {
+  signature: string;
+  rawBody: string;
 }
 
-export interface IHandleStripeWebhookUseCase {
-  execute(signature: string, rawBody: string): Promise<void>;
+
+export type ICreatePaymentIntentUseCase = IUseCase<
+  ICreatePaymentIntentInput, 
+  { clientSecret: string | null; amount: number; consultationFee: number; commissionPercentage: number; platformFee: number }
+>;
+
+export type ICompleteSessionUseCase = IUseCase<
+  ICompleteSessionInput, 
+  { success: boolean; message?: string }
+>;
+
+export interface IVerifyPaymentInput {
+  bookingId: string;
+  userId: string;
 }
 
-export interface IVerifyPaymentUseCase {
-  execute(sessionId: string): Promise<{ success: boolean }>;
-}
+
+
+export type IExpirePaymentUseCase = IUseCase<void, void>;
+
+export type IVerifyPaymentUseCase = IUseCase<IVerifyPaymentInput, { success?: boolean ; alreadyProccesed ?: boolean}>;
+
+export type IHandleStripeWebhookUseCase = IUseCase<IHandleStripeWebhookInput, void>;

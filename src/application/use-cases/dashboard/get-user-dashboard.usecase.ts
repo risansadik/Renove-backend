@@ -1,19 +1,20 @@
+import { inject, injectable } from "inversify";
 import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
 import type { IUserProgressRepository } from "../../../domain/repositories/user-progress.repository.ts";
-import type { PaginationParams } from "../../../domain/interfaces/pagination.ts";
-import { TherapistMapper } from "../../mappers/therapist.mapper.ts";
-import { BOOKING_STATUS, THERAPIST_STATUS } from "../../../shared/constants/index.ts";
+import { BOOKING_STATUS } from "../../../shared/constants/index.ts";
+import { IGetUserDashboardUseCase, IUserDashboardResponse } from "../../interfaces/dashboard/IDashboardUseCase.ts";
+import { TYPES } from "../../../shared/constants/tokens.ts";
 
 const XP_PER_LEVEL = 500;
 
-export class GetUserDashboardUseCase {
+@injectable()
+export class GetUserDashboardUseCase implements IGetUserDashboardUseCase{
   constructor(
-    private readonly _progressRepo: IUserProgressRepository,
-    private readonly _bookingRepo: IBookingRepository
+    @inject(TYPES.UserProgressRepository) private readonly _progressRepo: IUserProgressRepository,
+    @inject(TYPES.BookingRepository) private readonly _bookingRepo: IBookingRepository
   ) {}
 
-  async execute(userId: string) {
+  async execute(userId: string) : Promise<IUserDashboardResponse> {
     const [progress, totalSessionsDone, pendingPayments] = await Promise.all([
       this._progressRepo.getDashboard(userId),
       this._bookingRepo.countByUserAndStatus(userId, BOOKING_STATUS.COMPLETED),
@@ -50,38 +51,6 @@ export class GetUserDashboardUseCase {
       recentMoods,
       habits,
       weekDays,
-    };
-  }
-}
-
-export class LogMoodUseCase {
-  constructor(private readonly _progressRepo: IUserProgressRepository) {}
-
-  async execute(userId: string, mood: string): Promise<void> {
-    await this._progressRepo.logMood(userId, mood);
-  }
-}
-
-export class ToggleMissionUseCase {
-  constructor(private readonly _progressRepo: IUserProgressRepository) {}
-
-  async execute(userId: string, missionId: string) {
-    return this._progressRepo.toggleMission(userId, missionId);
-  }
-}
-
-export class GetApprovedTherapistsUseCase {
-  constructor(private readonly _therapistRepo: ITherapistRepository) {}
-
-  async execute(params: PaginationParams) {
-    const result = await this._therapistRepo.findByStatus(THERAPIST_STATUS.APPROVED, params);
-
-    return {
-      data: result.data.map((therapist) => ({
-        ...TherapistMapper.toPublicDTO(therapist),
-        avatar: therapist.name.charAt(0).toUpperCase(),
-      })),
-      total: result.total,
     };
   }
 }

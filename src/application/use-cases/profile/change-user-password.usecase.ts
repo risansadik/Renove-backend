@@ -2,14 +2,18 @@ import type { IUserRepository } from "../../../domain/repositories/user.reposito
 import { AppError } from "../../../shared/utils/AppError.ts";
 import { HttpStatus } from "../../../shared/constants/index.ts";
 import type { IPasswordHasher } from "../../interfaces/services/IPasswordHasher.ts";
+import { inject, injectable } from "inversify";
+import { TYPES } from "../../../shared/constants/tokens.ts";
+import { IChangePasswordInput, IChangeUserPasswordUseCase } from "../../interfaces/profile/IProfileUseCase.ts";
 
-export class ChangeUserPasswordUseCase {
+@injectable()
+export class ChangeUserPasswordUseCase implements IChangeUserPasswordUseCase{
   constructor(
-    private readonly _userRepo: IUserRepository,
-    private readonly _passwordHasher: IPasswordHasher
+    @inject(TYPES.UserRepository) private readonly _userRepo: IUserRepository,
+    @inject(TYPES.PasswordHasher) private readonly _passwordHasher: IPasswordHasher
   ) {}
 
-  async execute(userId: string, currentPasswordRaw: string, newPasswordRaw: string) {
+  async execute({id: userId , currentPasswordRaw, newPasswordRaw} : IChangePasswordInput) : Promise<boolean> {
     const user = await this._userRepo.findById(userId);
     if (!user) {
       throw new AppError("User not found", HttpStatus.NOT_FOUND);

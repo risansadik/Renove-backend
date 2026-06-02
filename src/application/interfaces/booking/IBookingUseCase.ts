@@ -1,7 +1,13 @@
 import type { BookingEntity } from "../../../domain/entities/Booking.entity.ts";
-import type { CreateBookingInput } from "../../use-cases/booking/create-booking.usecase.ts";
 import type { IUseCase } from "../IUseCase.ts";
 import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination.ts";
+
+export interface CreateBookingInput {
+  therapistId: string;
+  slotId: string;
+  type: "video" | "chat" | "in-person";
+  note?: string;
+}
 
 export type ICreateBookingUseCase = IUseCase<{ userId: string; data: CreateBookingInput }, BookingEntity>;
 

@@ -1,15 +1,24 @@
+import { inject, injectable } from "inversify";
 import type { IFinanceRepository } from "../../../domain/repositories/finance.repository.ts";
 import type { ISettingsRepository } from "../../../domain/repositories/settings.repository.ts";
 import { HttpStatus } from "../../../shared/constants/index.ts";
 import { AppError } from "../../../shared/utils/AppError.ts";
+import type {
+  IGetAdminFinanceStatsUseCase,
+  IUpdatePlatformSettingsUseCase,
+  IFinanceStatsResponse
+} from '../../../application/interfaces/admin/IAdminUseCase.ts'
+import { TYPES } from "../../../shared/constants/tokens.ts";
 
-export class GetAdminFinanceStatsUseCase {
+
+@injectable()
+export class GetAdminFinanceStatsUseCase implements IGetAdminFinanceStatsUseCase {
   constructor(
-    private readonly _settingsRepo: ISettingsRepository,
-    private readonly _financeRepo: IFinanceRepository
-  ) {}
+    @inject(TYPES.SettingsRepository) private readonly _settingsRepo: ISettingsRepository,
+    @inject(TYPES.FinanceRepository) private readonly _financeRepo: IFinanceRepository
+  ) { }
 
-  async execute() {
+  async execute(): Promise<IFinanceStatsResponse> {
     const [financeStats, commissionPercentage] = await Promise.all([
       this._financeRepo.getAdminFinanceStats(),
       this._settingsRepo.getCommissionPercentage(),
@@ -22,10 +31,13 @@ export class GetAdminFinanceStatsUseCase {
   }
 }
 
-export class UpdatePlatformSettingsUseCase {
-  constructor(private readonly _settingsRepo: ISettingsRepository) {}
+@injectable()
+export class UpdatePlatformSettingsUseCase implements IUpdatePlatformSettingsUseCase {
+  constructor(
+    @inject(TYPES.SettingsRepository) private readonly _settingsRepo: ISettingsRepository
+  ) { }
 
-  async execute(percentage: number) {
+  async execute(percentage: number): Promise<{ success: boolean; message: string }> {
     if (percentage < 0 || percentage > 100) {
       throw new AppError("Commission percentage must be between 0 and 100", HttpStatus.BAD_REQUEST);
     }

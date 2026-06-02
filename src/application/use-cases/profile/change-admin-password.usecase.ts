@@ -2,14 +2,18 @@ import type { IAdminRepository } from "../../../domain/repositories/admin.reposi
 import { AppError } from "../../../shared/utils/AppError.ts";
 import { HttpStatus } from "../../../shared/constants/index.ts";
 import type { IPasswordHasher } from "../../interfaces/services/IPasswordHasher.ts";
+import { inject, injectable } from "inversify";
+import { TYPES } from "../../../shared/constants/tokens.ts";
+import { IChangeAdminPasswordUseCase, IChangePasswordInput } from "../../interfaces/profile/IProfileUseCase.ts";
 
-export class ChangeAdminPasswordUseCase {
+@injectable()
+export class ChangeAdminPasswordUseCase implements IChangeAdminPasswordUseCase{
   constructor(
-    private readonly _adminRepo: IAdminRepository,
-    private readonly _passwordHasher: IPasswordHasher
+    @inject(TYPES.AdminRepository) private readonly _adminRepo: IAdminRepository,
+    @inject(TYPES.PasswordHasher) private readonly _passwordHasher: IPasswordHasher
   ) {}
 
-  async execute(adminId: string, currentPasswordRaw: string, newPasswordRaw: string) {
+  async execute({id:adminId ,currentPasswordRaw,newPasswordRaw} : IChangePasswordInput) : Promise<boolean> {
     const admin = await this._adminRepo.findById(adminId);
     if (!admin) {
       throw new AppError("Admin not found", HttpStatus.NOT_FOUND);

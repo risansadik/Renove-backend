@@ -30,8 +30,6 @@ const userAuthController = appContainer.get<UserAuthController>(TYPES.UserAuthCo
 const profileController = appContainer.get<ProfileController>(TYPES.ProfileController);
 const userDashboardController = appContainer.get<UserDashboardController>(TYPES.UserDashboardController);
 
-// ── Auth (public) ────────────────────────────────────────
-// Note: We use arrow syntax wrappers to preserve the "this" context inside your class methods
 router.post("/register", validate(RegisterUserSchema), asyncHandler(userAuthController.register));
 router.post("/verify-otp", validate(VerifyOtpSchema), asyncHandler(userAuthController.verifyOtp));
 router.post("/resend-otp", validate(ResendOtpSchema), asyncHandler(userAuthController.resendOtp));

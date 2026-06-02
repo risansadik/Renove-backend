@@ -1,17 +1,19 @@
+import { inject, injectable } from "inversify";
+import { TYPES } from "../../../shared/constants/tokens.ts";
 import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
 import { AppError } from "../../../shared/utils/AppError.ts";
 import { HttpStatus } from "../../../shared/constants/index.ts";
-import { UserMapper } from "../../mappers/user.mapper.ts";
+import { UserMapper, PublicUserDTO } from "../../mappers/user.mapper.ts";
+import type { IUpdateUserProfileUseCase, IUpdateUserProfileInput } from "../../interfaces/profile/IProfileUseCase.ts";
 
-export interface UpdateUserProfileDto {
-  name?: string;
-  profileImage?: string;
-}
+@injectable()
+export class UpdateUserProfileUseCase implements IUpdateUserProfileUseCase {
+  constructor(
+    @inject(TYPES.UserRepository) private readonly _userRepo: IUserRepository
+  ) {}
 
-export class UpdateUserProfileUseCase {
-  constructor(private readonly _userRepo: IUserRepository) {}
-
-  async execute(userId: string, data: UpdateUserProfileDto) {
+  // Fixed: Parameters packed into unified input payload object
+  async execute({ userId, data }: IUpdateUserProfileInput): Promise<PublicUserDTO> {
     const user = await this._userRepo.update(userId, data);
 
     if (!user) {
