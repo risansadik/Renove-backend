@@ -1,32 +1,19 @@
-import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
-import type { BookingEntity } from "../../../domain/entities/Booking.entity.ts";
-import type { IGetUserBookingsUseCase, IGetTherapistBookingsUseCase, IUpdateBookingStatusUseCase } from "../../interfaces/booking/IBookingUseCase.ts";
-import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.ts";
-import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.ts";
+import { BookingEntity } from "../../../domain/entities/Booking.entity.ts";
+import { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
+import { IPaymentRepository } from "../../../domain/repositories/payment.repository.ts";
+import { IWalletRepository } from "../../../domain/repositories/wallet.repository.ts";
 import { BOOKING_STATUS, PAYMENT_STATUS } from "../../../shared/constants/index.ts";
+import { TYPES } from "../../../shared/constants/tokens.ts";
+import { IUpdateBookingStatusUseCase } from "../../interfaces/booking/IBookingUseCase.ts";
+import { injectable, inject } from "inversify";
 
-import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination.ts";
-
-export class GetUserBookingsUseCase implements IGetUserBookingsUseCase {
-  constructor(private _bookingRepository: IBookingRepository) {}
-  async execute({ userId, params }: { userId: string; params: PaginationParams }): Promise<PaginatedResult<BookingEntity>> {
-    return await this._bookingRepository.findByUserId(userId, params);
-  }
-}
-
-export class GetTherapistBookingsUseCase implements IGetTherapistBookingsUseCase {
-  constructor(private _bookingRepository: IBookingRepository) {}
-  async execute({ therapistId, params }: { therapistId: string; params: PaginationParams }): Promise<PaginatedResult<BookingEntity>> {
-    return await this._bookingRepository.findByTherapistId(therapistId, params);
-  }
-}
-
+@injectable()
 export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase {
   constructor(
-    private _bookingRepository: IBookingRepository,
-    private _walletRepository: IWalletRepository,
-    private _paymentRepository: IPaymentRepository
-  ) {}
+    @inject(TYPES.BookingRepository) private readonly _bookingRepository: IBookingRepository,
+    @inject(TYPES.WalletRepository) private readonly _walletRepository: IWalletRepository,
+    @inject(TYPES.PaymentRepository) private readonly _paymentRepository: IPaymentRepository
+  ) { }
 
   async execute({ id, status, rejectionReason }: { id: string; status: BookingEntity["status"]; rejectionReason?: string }): Promise<BookingEntity | null> {
     const booking = await this._bookingRepository.findById(id);

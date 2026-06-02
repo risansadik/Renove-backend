@@ -1,23 +1,18 @@
 import type { Response } from "express";
 import { injectable, inject } from "inversify";
-import type {
-  GetApprovedTherapistsUseCase,
-  GetUserDashboardUseCase,
-  LogMoodUseCase,
-  ToggleMissionUseCase,
-} from "../../application/use-cases/dashboard/user-dashboard.usecase.ts";
 import { PAGINATION, MESSAGES } from "../../shared/constants/index.ts";
 import { TYPES } from "../../shared/constants/tokens.ts";
 import type { AuthRequest } from "../../shared/types/express.ts";
 import { ResponseModel } from "../../shared/utils/response-model.ts";
+import { IGetApprovedTherapistsUseCase, IGetUserDashboardUseCase, ILogMoodUseCase, IToggleMissionUseCase } from "../../application/interfaces/dashboard/IDashboardUseCase.ts";
 
 @injectable()
 export class UserDashboardController {
   constructor(
-    @inject(TYPES.GetUserDashboardUseCase) private readonly _getDashboardUC: GetUserDashboardUseCase,
-    @inject(TYPES.LogMoodUseCase) private readonly _logMoodUC: LogMoodUseCase,
-    @inject(TYPES.ToggleMissionUseCase) private readonly _toggleMissionUC: ToggleMissionUseCase,
-    @inject(TYPES.GetApprovedTherapistsUseCase) private readonly _getApprovedTherapistsUC: GetApprovedTherapistsUseCase
+    @inject(TYPES.GetUserDashboardUseCase) private readonly _getDashboardUC: IGetUserDashboardUseCase,
+    @inject(TYPES.LogMoodUseCase) private readonly _logMoodUC: ILogMoodUseCase,
+    @inject(TYPES.ToggleMissionUseCase) private readonly _toggleMissionUC: IToggleMissionUseCase,
+    @inject(TYPES.GetApprovedTherapistsUseCase) private readonly _getApprovedTherapistsUC: IGetApprovedTherapistsUseCase
   ) {}
 
   public getDashboard = async (req: AuthRequest, res: Response): Promise<void> => {
@@ -26,12 +21,12 @@ export class UserDashboardController {
   };
 
   public logMood = async (req: AuthRequest, res: Response): Promise<void> => {
-    await this._logMoodUC.execute(req.user!.id, req.body.mood);
+    await this._logMoodUC.execute({userId:req.user!.id, mood:req.body.mood});
     res.json(ResponseModel.success(MESSAGES.DASHBOARD.MOOD_LOGGED, null));
   };
 
   public toggleMission = async (req: AuthRequest, res: Response): Promise<void> => {
-    const missions = await this._toggleMissionUC.execute(req.user!.id, req.params.missionId);
+    const missions = await this._toggleMissionUC.execute({userId:req.user!.id, missionId:req.params.missionId});
     res.json(ResponseModel.success(MESSAGES.DASHBOARD.MISSION_UPDATED, { missions }));
   };
 

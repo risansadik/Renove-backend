@@ -1,42 +1,57 @@
-import type { UpdateUserProfileDto } from "../../use-cases/profile/update-user-profile.usecase.ts";
-import type { UpdateTherapistProfileDto } from "../../use-cases/profile/update-therapist-profile.usecase.ts";
+import type { IUseCase } from "../IUseCase.ts";
 import type { UpdateAdminProfileDto } from "../../use-cases/profile/update-admin-profile.usecase.ts";
 import type { PublicAdminDTO } from "../../mappers/admin.mapper.ts";
 import type { PublicTherapistDTO } from "../../mappers/therapist.mapper.ts";
 import type { PublicUserDTO } from "../../mappers/user.mapper.ts";
 
-export interface IGetUserProfileUseCase {
-  execute(userId: string): Promise<PublicUserDTO>;
+export interface UpdateUserProfileDto {
+  name?: string;
+  profileImage?: string;
 }
 
-export interface IUpdateUserProfileUseCase {
-  execute(userId: string, data: UpdateUserProfileDto): Promise<PublicUserDTO>;
+export interface IUpdateUserProfileInput {
+  userId: string;
+  data: UpdateUserProfileDto;
+}
+export interface UpdateTherapistProfileDto {
+  name?: string;
+  profileImage?: string;
+  qualification?: string;
+  specialization?: string[];
+  experience?: number;
+  consultationFee?: number;
+  bio?: string;
+  certifications?: string[];
+  certificationFiles?: string[];
 }
 
-export interface IChangeUserPasswordUseCase {
-  execute(userId: string, currentPasswordRaw: string, newPasswordRaw: string): Promise<boolean>;
+
+export interface IUpdateTherapistProfileInput {
+  therapistId: string;
+  data: UpdateTherapistProfileDto;
 }
 
-export interface IGetTherapistProfileUseCase {
-  execute(therapistId: string): Promise<PublicTherapistDTO>;
+export interface IUpdateAdminProfileInput {
+  adminId: string;
+  data: UpdateAdminProfileDto;
 }
 
-export interface IUpdateTherapistProfileUseCase {
-  execute(therapistId: string, data: UpdateTherapistProfileDto): Promise<PublicTherapistDTO | null>;
+export interface IChangePasswordInput {
+  id: string;
+  currentPasswordRaw: string;
+  newPasswordRaw: string;
 }
 
-export interface IChangeTherapistPasswordUseCase {
-  execute(therapistId: string, currentPasswordRaw: string, newPasswordRaw: string): Promise<boolean>;
-}
 
-export interface IGetAdminProfileUseCase {
-  execute(adminId: string): Promise<PublicAdminDTO>;
-}
 
-export interface IUpdateAdminProfileUseCase {
-  execute(adminId: string, data: UpdateAdminProfileDto): Promise<PublicAdminDTO>;
-}
+export type IGetUserProfileUseCase = IUseCase<string, PublicUserDTO>;
+export type IUpdateUserProfileUseCase = IUseCase<IUpdateUserProfileInput, PublicUserDTO>;
+export type IChangeUserPasswordUseCase = IUseCase<IChangePasswordInput, boolean>;
 
-export interface IChangeAdminPasswordUseCase {
-  execute(adminId: string, currentPasswordRaw: string, newPasswordRaw: string): Promise<boolean>;
-}
+export type IGetTherapistProfileUseCase = IUseCase<string, PublicTherapistDTO>;
+export type IUpdateTherapistProfileUseCase = IUseCase<IUpdateTherapistProfileInput, PublicTherapistDTO | null>;
+export type IChangeTherapistPasswordUseCase = IUseCase<IChangePasswordInput, boolean>;
+
+export type IGetAdminProfileUseCase = IUseCase<string, PublicAdminDTO>;
+export type IUpdateAdminProfileUseCase = IUseCase<IUpdateAdminProfileInput, PublicAdminDTO>;
+export type IChangeAdminPasswordUseCase = IUseCase<IChangePasswordInput, boolean>;

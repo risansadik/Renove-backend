@@ -2,14 +2,18 @@ import type { ITherapistRepository } from "../../../domain/repositories/therapis
 import { AppError } from "../../../shared/utils/AppError.ts";
 import { HttpStatus } from "../../../shared/constants/index.ts";
 import type { IPasswordHasher } from "../../interfaces/services/IPasswordHasher.ts";
+import { inject, injectable } from "inversify";
+import { TYPES } from "../../../shared/constants/tokens.ts";
+import { IChangePasswordInput, IChangeTherapistPasswordUseCase } from "../../interfaces/profile/IProfileUseCase.ts";
 
-export class ChangeTherapistPasswordUseCase {
+@injectable()
+export class ChangeTherapistPasswordUseCase implements IChangeTherapistPasswordUseCase{
   constructor(
-    private readonly _therapistRepo: ITherapistRepository,
-    private readonly _passwordHasher: IPasswordHasher
+    @inject(TYPES.TherapistRepository)private readonly _therapistRepo: ITherapistRepository,
+    @inject(TYPES.PasswordHasher)private readonly _passwordHasher: IPasswordHasher
   ) {}
 
-  async execute(therapistId: string, currentPasswordRaw: string, newPasswordRaw: string) {
+  async execute({id:therapistId, currentPasswordRaw, newPasswordRaw} : IChangePasswordInput) : Promise<boolean> {
     const therapist = await this._therapistRepo.findById(therapistId);
     if (!therapist) {
       throw new AppError("Therapist not found", HttpStatus.NOT_FOUND);

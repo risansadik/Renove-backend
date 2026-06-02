@@ -1,12 +1,18 @@
 import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
 import { AppError } from "../../../shared/utils/AppError.ts";
 import { HttpStatus, THERAPIST_STATUS } from "../../../shared/constants/index.ts";
-import { TherapistMapper } from "../../mappers/therapist.mapper.ts";
+import { PublicTherapistDTO, TherapistMapper } from "../../mappers/therapist.mapper.ts";
+import { IReviewTherapistInput, IReviewTherapistProfileUseCase } from "../../interfaces/admin/IAdminUseCase.ts";
+import { inject, injectable } from "inversify";
+import { TYPES } from "../../../shared/constants/tokens.ts";
 
-export class ReviewTherapistProfileUseCase {
-  constructor(private readonly _therapistRepo: ITherapistRepository) {}
+@injectable()
+export class ReviewTherapistProfileUseCase implements IReviewTherapistProfileUseCase {
+  constructor(
+   @inject(TYPES.TherapistRepository) private readonly _therapistRepo: ITherapistRepository
+  ) {}
 
-  async execute(therapistId: string, status: typeof THERAPIST_STATUS.APPROVED | typeof THERAPIST_STATUS.REJECTED, reason?: string) {
+  async execute({therapistId,status,reason} : IReviewTherapistInput) : Promise<PublicTherapistDTO | null> {
     const therapist = await this._therapistRepo.findById(therapistId);
 
     if (!therapist) {

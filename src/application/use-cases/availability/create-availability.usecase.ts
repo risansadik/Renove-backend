@@ -4,23 +4,16 @@ import { addDays, startOfDay } from "date-fns";
 import { AppError } from "../../../shared/utils/AppError.ts";
 import { HttpStatus } from "../../../shared/constants/index.ts";
 
-import type { ICreateAvailabilityUseCase } from "../../interfaces/availability/IAvailabilityUseCase.ts";
+import type { CreateAvailabilityDTO, ICreateAvailabilityUseCase } from "../../interfaces/availability/IAvailabilityUseCase.ts";
+import { inject, injectable } from "inversify";
+import { TYPES } from "../../../shared/constants/tokens.ts";
 
-export interface CreateAvailabilityDTO {
-  therapistId: string;
-  title: string;
-  startTime: string;
-  endTime: string;
-  recurrenceRule: string;
-  recurrenceType: "weekly" | "once" | "daily";
-  startDate: Date;
-  endDate?: Date;
-}
 
+@injectable()
 export class CreateAvailabilityUseCase implements ICreateAvailabilityUseCase {
   constructor(
-    private availabilityRepo: IAvailabilityRepository,
-    private slotRepo: ISlotRepository
+    @inject(TYPES.AvailabilityRepository) private readonly _availabilityRepo: IAvailabilityRepository,
+    @inject(TYPES.SlotRepository) private readonly _slotRepo: ISlotRepository
   ) { }
 
   async execute(data: CreateAvailabilityDTO) {
@@ -41,7 +34,7 @@ export class CreateAvailabilityUseCase implements ICreateAvailabilityUseCase {
     }
 
     // 2. Fetch existing slots for this therapist that fall in the range
-    const existingSlots = await this.slotRepo.findByTherapistIdAndDateRange(
+    const existingSlots = await this._slotRepo.findByTherapistIdAndDateRange(
       data.therapistId,
       genStartDate,
       genEndDate
@@ -71,7 +64,7 @@ export class CreateAvailabilityUseCase implements ICreateAvailabilityUseCase {
     }
 
     // 4. Create availability if validation passes
-    const availability = await this.availabilityRepo.create({
+    const availability = await this._availabilityRepo.create({
       ...data,
       timezone: "UTC",
       isActive: true
@@ -89,7 +82,7 @@ export class CreateAvailabilityUseCase implements ICreateAvailabilityUseCase {
     console.log(`[DEBUG] Generated ${slotEntities.length} slots for therapist ${data.therapistId}`);
 
     if (slotEntities.length > 0) {
-      await this.slotRepo.createMany(slotEntities);
+      await this._slotRepo.createMany(slotEntities);
       console.log(`[DEBUG] Successfully persisted slots`);
     }
 

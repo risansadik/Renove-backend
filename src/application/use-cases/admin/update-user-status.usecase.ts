@@ -3,9 +3,14 @@ import type { UpdateUserStatusDTO } from "../../dto/auth/admin.dto.ts";
 import { NotFoundError } from "../../../shared/utils/AppError.ts";
 
 import type { IUpdateUserStatusUseCase } from "../../interfaces/admin/IAdminUseCase.ts";
+import { inject, injectable } from "inversify";
+import { TYPES } from "../../../shared/constants/tokens.ts";
 
+@injectable()
 export class UpdateUserStatusUseCase implements IUpdateUserStatusUseCase {
-  constructor(private readonly _userRepo: IUserRepository) {}
+  constructor(
+    @inject(TYPES.UserRepository) private readonly _userRepo: IUserRepository
+  ) {}
 
   async execute({ id, dto }: { id: string; dto: UpdateUserStatusDTO }): Promise<{ id: string; status: string }> {
     const user = await this._userRepo.findById(id);

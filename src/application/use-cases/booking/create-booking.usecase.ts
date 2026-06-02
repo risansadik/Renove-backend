@@ -1,26 +1,23 @@
 import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
 import type { ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
 import type { BookingEntity } from "../../../domain/entities/Booking.entity.ts";
-import type { ICreateBookingUseCase } from "../../interfaces/booking/IBookingUseCase.ts";
+import type { CreateBookingInput, ICreateBookingUseCase } from "../../interfaces/booking/IBookingUseCase.ts";
 import { HttpStatus } from "../../../shared/constants/index.ts";
 import { AppError, NotFoundError } from "../../../shared/utils/AppError.ts";
+import { injectable, inject } from "inversify";
+import { TYPES } from "../../../shared/constants/tokens.ts";
 
-export interface CreateBookingInput {
-  therapistId: string;
-  slotId: string;
-  type: "video" | "chat" | "in-person";
-  note?: string;
-}
 
+@injectable()
 export class CreateBookingUseCase implements ICreateBookingUseCase {
   constructor(
-    private bookingRepository: IBookingRepository,
-    private slotRepository: ISlotRepository
+    @inject(TYPES.BookingRepository) private readonly _bookingRepository: IBookingRepository,
+    @inject(TYPES.SlotRepository) private readonly _slotRepository: ISlotRepository
   ) { }
 
   async execute({ userId, data }: { userId: string; data: CreateBookingInput }): Promise<BookingEntity> {
 
-    const slot = await this.slotRepository.findById(data.slotId);
+    const slot = await this._slotRepository.findById(data.slotId);
 
     if (!slot) {
       throw new NotFoundError("The selected slot");
@@ -30,17 +27,17 @@ export class CreateBookingUseCase implements ICreateBookingUseCase {
       throw new AppError("This slot is no longer available for booking", HttpStatus.BAD_REQUEST);
     }
 
-    await this.slotRepository.updateStatus(data.slotId, "RESERVED");
+    await this._slotRepository.updateStatus(data.slotId, "RESERVED");
 
-    return this.bookingRepository.create({
-        userId,
-        therapistId: data.therapistId,
-        slotId: data.slotId,
-        type: data.type,
-        status: "pending",
-        note: data.note,
-      }).catch(async (err) => {
-      await this.slotRepository.updateStatus(data.slotId, "AVAILABLE");
+    return this._bookingRepository.create({
+      userId,
+      therapistId: data.therapistId,
+      slotId: data.slotId,
+      type: data.type,
+      status: "pending",
+      note: data.note,
+    }).catch(async (err) => {
+      await this._slotRepository.updateStatus(data.slotId, "AVAILABLE");
       throw err;
     });
   }

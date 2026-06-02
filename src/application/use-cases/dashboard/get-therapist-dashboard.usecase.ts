@@ -5,13 +5,17 @@ import type { IUserRepository } from "../../../domain/repositories/user.reposito
 import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.ts";
 import { BOOKING_STATUS, USER_STATUS } from "../../../shared/constants/index.ts";
 import { NotFoundError } from "../../../shared/utils/AppError.ts";
+import { IGetTherapistDashboardUseCase } from "../../interfaces/dashboard/IDashboardUseCase.ts";
+import { injectable, inject } from "inversify";
+import { TYPES } from "../../../shared/constants/tokens.ts";
 
-export class GetTherapistDashboardUseCase {
+@injectable()
+export class GetTherapistDashboardUseCase implements IGetTherapistDashboardUseCase{
   constructor(
-    private readonly _therapistRepo: ITherapistRepository,
-    private readonly _walletRepo: IWalletRepository,
-    private readonly _bookingRepo: IBookingRepository,
-    private readonly _userRepo: IUserRepository
+    @inject(TYPES.TherapistRepository) private readonly _therapistRepo: ITherapistRepository,
+    @inject(TYPES.WalletRepository) private readonly _walletRepo: IWalletRepository,
+    @inject(TYPES.BookingRepository) private readonly _bookingRepo: IBookingRepository,
+    @inject(TYPES.UserRepository) private readonly _userRepo: IUserRepository
   ) {}
 
   async execute(therapistId: string) {

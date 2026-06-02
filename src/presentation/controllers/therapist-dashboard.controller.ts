@@ -1,6 +1,6 @@
 import type { Response } from "express";
 import { injectable, inject } from "inversify";
-import type { GetTherapistDashboardUseCase } from "../../application/use-cases/dashboard/therapist-dashboard.usecase.ts";
+import type { GetTherapistDashboardUseCase } from "../../application/use-cases/dashboard/get-therapist-dashboard.usecase.ts";
 import { TYPES } from "../../shared/constants/tokens.ts";
 import type { AuthRequest } from "../../shared/types/express.ts";
 import { ResponseModel } from "../../shared/utils/response-model.ts";

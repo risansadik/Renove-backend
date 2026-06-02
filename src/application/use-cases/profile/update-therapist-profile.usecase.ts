@@ -1,24 +1,19 @@
+import { inject, injectable } from "inversify";
+import { TYPES } from "../../../shared/constants/tokens.ts";
 import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
 import { AppError } from "../../../shared/utils/AppError.ts";
 import { HttpStatus, THERAPIST_STATUS } from "../../../shared/constants/index.ts";
-import { TherapistMapper } from "../../mappers/therapist.mapper.ts";
+import { TherapistMapper, PublicTherapistDTO } from "../../mappers/therapist.mapper.ts";
+import type { IUpdateTherapistProfileUseCase, IUpdateTherapistProfileInput } from "../../interfaces/profile/IProfileUseCase.ts";
 
-export interface UpdateTherapistProfileDto {
-  name?: string;
-  profileImage?: string;
-  qualification?: string;
-  specialization?: string[];
-  experience?: number;
-  consultationFee?: number;
-  bio?: string;
-  certifications?: string[];
-  certificationFiles?: string[];
-}
 
-export class UpdateTherapistProfileUseCase {
-  constructor(private readonly _therapistRepo: ITherapistRepository) {}
+@injectable()
+export class UpdateTherapistProfileUseCase implements IUpdateTherapistProfileUseCase {
+  constructor(
+    @inject(TYPES.TherapistRepository) private readonly _therapistRepo: ITherapistRepository
+  ) {}
 
-  async execute(therapistId: string, data: UpdateTherapistProfileDto) {
+  async execute({ therapistId, data }: IUpdateTherapistProfileInput): Promise<PublicTherapistDTO | null> {
     const therapist = await this._therapistRepo.findById(therapistId);
     if (!therapist) {
       throw new AppError("Therapist not found", HttpStatus.NOT_FOUND);
