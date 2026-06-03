@@ -14,7 +14,7 @@ export const TYPES = {
   SettingsRepository: Symbol.for("ISettingsRepository"),
   TherapistRepository: Symbol.for("ITherapistRepository"),
   UserProgressRepository: Symbol.for("IUserProgressRepository"),
-  WalletRepository: Symbol.for("IWalletRepository"),
+  WalletRepository: Symbol.for("WalletRepository"),
 
   // External Services
   EmailService: Symbol.for("IEmailService"),

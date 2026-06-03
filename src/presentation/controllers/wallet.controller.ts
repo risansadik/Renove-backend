@@ -15,7 +15,7 @@ export class WalletController {
     const page = parseInt(req.query.page as string) || PAGINATION.DEFAULT_PAGE;
     const limit = parseInt(req.query.limit as string) || PAGINATION.DEFAULT_LIMIT;
 
-    const result = await this._getWalletUC.execute(id, role, { page, limit });
+    const result = await this._getWalletUC.execute({id, role,params: { page, limit }});
     
     const totalPages = Math.ceil(result.transactions.total / limit);
 
