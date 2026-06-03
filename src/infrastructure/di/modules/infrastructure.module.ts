@@ -10,7 +10,6 @@ import type { ISettingsRepository } from "../../../domain/repositories/settings.
 import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
 import type { IUserProgressRepository } from "../../../domain/repositories/user-progress.repository.ts";
 import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
-import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.ts";
 import type { IEmailService } from "../../../application/interfaces/services/IEmailService.ts";
 import type { IGoogleService } from "../../../application/interfaces/services/IGoogleService.ts";
 import type { IOtpGenerator } from "../../../application/interfaces/services/IOtpGenerator.ts";
@@ -33,7 +32,6 @@ import { SettingsRepositoryImpl } from "../../repositories/settings.repository.i
 import { TherapistRepository } from "../../repositories/therapist.repository.impl.ts";
 import { UserProgressRepository } from "../../repositories/user-progress.repository.impl.ts";
 import { UserRepository } from "../../repositories/user.repository.impl.ts";
-import { WalletRepositoryImpl } from "../../repositories/wallet.repository.impl.ts";
 
 export const registerInfrastructureModule = (container: Container): void => {
   container.bind<Redis>(TYPES.RedisClient).toConstantValue(initRedis());
@@ -49,7 +47,6 @@ export const registerInfrastructureModule = (container: Container): void => {
   container.bind<ITherapistRepository>(TYPES.TherapistRepository).to(TherapistRepository).inSingletonScope();
   container.bind<IUserProgressRepository>(TYPES.UserProgressRepository).to(UserProgressRepository).inSingletonScope();
   container.bind<IUserRepository>(TYPES.UserRepository).to(UserRepository).inSingletonScope();
-  container.bind<IWalletRepository>(TYPES.WalletRepository).to(WalletRepositoryImpl).inSingletonScope();
 
   container.bind<IEmailService>(TYPES.EmailService).to(EmailService).inSingletonScope();
   container.bind<IGoogleService>(TYPES.GoogleService).to(GoogleService).inSingletonScope();

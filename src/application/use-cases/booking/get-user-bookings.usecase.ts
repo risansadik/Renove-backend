@@ -10,7 +10,7 @@ import { TYPES } from "../../../shared/constants/tokens.ts";
 @injectable()
 export class GetUserBookingsUseCase implements IGetUserBookingsUseCase {
   constructor(
-    @inject(TYPES.AdminController)private readonly _bookingRepository: IBookingRepository
+    @inject(TYPES.BookingRepository)private readonly _bookingRepository: IBookingRepository
   ) {}
   async execute({ userId, params }: { userId: string; params: PaginationParams }): Promise<PaginatedResult<BookingEntity>> {
     return await this._bookingRepository.findByUserId(userId, params);
