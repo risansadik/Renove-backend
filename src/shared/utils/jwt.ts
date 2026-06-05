@@ -1,64 +1,64 @@
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 import { AUTH_CONFIG, type Role } from '../constants/index.js';
-import type { Response ,CookieOptions} from 'express';
+import type { Response, CookieOptions } from 'express';
 
 interface TokenPayload {
   id: string;
   email: string;
   role: Role;
-  iat ?: number;
-  exp ?: number;
+  iat?: number;
+  exp?: number;
 }
 
-export const generateTokens = (
-  payload: TokenPayload
-): { accessToken: string; refreshToken: string } => {
-  const accessToken = jwt.sign(payload, AUTH_CONFIG.ACCESS_TOKEN.SECRET, {
-    expiresIn: AUTH_CONFIG.ACCESS_TOKEN.EXPIRY as jwt.SignOptions["expiresIn"],
-  });
+export class AuthTokenService {
+  private readonly isProd: boolean;
 
-  const refreshToken = jwt.sign(payload, AUTH_CONFIG.REFRESH_TOKEN.SECRET, {
-    expiresIn: AUTH_CONFIG.REFRESH_TOKEN.EXPIRY as jwt.SignOptions["expiresIn"],
-  });
+  constructor() {
+    this.isProd = process.env.NODE_ENV === 'production';
+  }
 
-  return { accessToken, refreshToken };
-};
+  generateTokens(payload: TokenPayload): { accessToken: string; refreshToken: string } {
+    const accessToken = jwt.sign(payload, AUTH_CONFIG.ACCESS_TOKEN.SECRET, {
+      expiresIn: AUTH_CONFIG.ACCESS_TOKEN.EXPIRY as jwt.SignOptions['expiresIn'],
+    });
 
-export const verifyAccessToken = (token: string): TokenPayload => {
-  return jwt.verify(token, AUTH_CONFIG.ACCESS_TOKEN.SECRET) as TokenPayload;
-};
+    const refreshToken = jwt.sign(payload, AUTH_CONFIG.REFRESH_TOKEN.SECRET, {
+      expiresIn: AUTH_CONFIG.REFRESH_TOKEN.EXPIRY as jwt.SignOptions['expiresIn'],
+    });
 
-export const verifyRefreshToken = (token: string): TokenPayload => {
-  return jwt.verify(token, AUTH_CONFIG.REFRESH_TOKEN.SECRET) as TokenPayload;
-};
+    return { accessToken, refreshToken };
+  }
 
-export const setAuthCookies = (
-  res: Response,
-  accessToken: string,
-  refreshToken: string
-): void => {
-  const isProd = process.env.NODE_ENV === "production";
+  verifyAccessToken(token: string): TokenPayload {
+    return jwt.verify(token, AUTH_CONFIG.ACCESS_TOKEN.SECRET) as TokenPayload;
+  }
 
-  const cookieOptions:CookieOptions = {
-    httpOnly: true,
-    secure: isProd,
-    sameSite: isProd ? "strict" : "lax",
-  };
+  verifyRefreshToken(token: string): TokenPayload {
+    return jwt.verify(token, AUTH_CONFIG.REFRESH_TOKEN.SECRET) as TokenPayload;
+  }
 
-  res.cookie("accessToken", accessToken, {
-    ...cookieOptions,
-    maxAge: AUTH_CONFIG.ACCESS_TOKEN.MAX_AGE,
-  });
+  setAuthCookies(res: Response, accessToken: string, refreshToken: string): void {
+    const cookieOptions: CookieOptions = {
+      httpOnly: true,
+      secure: this.isProd,
+      sameSite: this.isProd ? 'strict' : 'lax',
+    };
 
-  res.cookie("refreshToken", refreshToken, {
-    ...cookieOptions,
-    maxAge: AUTH_CONFIG.REFRESH_TOKEN.MAX_AGE,
+    res.cookie('accessToken', accessToken, {
+      ...cookieOptions,
+      maxAge: AUTH_CONFIG.ACCESS_TOKEN.MAX_AGE,
+    });
 
-  });
-};
+    res.cookie('refreshToken', refreshToken, {
+      ...cookieOptions,
+      maxAge: AUTH_CONFIG.REFRESH_TOKEN.MAX_AGE,
+    });
+  }
 
-export const clearAuthCookies = (res:Response): void => {
-  res.clearCookie("accessToken");
-  res.clearCookie("refreshToken");
-};
+  clearAuthCookies(res: Response): void {
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
+  }
+}
 
+export const authTokenService = new AuthTokenService();
