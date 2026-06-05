@@ -1,7 +1,7 @@
 export const TYPES = {
   // Infrastructure / Drivers
   RedisClient: Symbol.for("RedisClient"),
-  
+
   // Repositories
   UserRepository: Symbol.for("IUserRepository"),
   OtpCacheRepository: Symbol.for("IOtpCacheRepository"),
@@ -55,6 +55,8 @@ export const TYPES = {
   DeleteAvailabilityRuleUseCase: Symbol.for("IDeleteAvailabilityRuleUseCase"),
   GetAvailableSlotsUseCase: Symbol.for("IGetAvailableSlotsUseCase"),
   GetTherapistRulesUseCase: Symbol.for("IGetTherapistRulesUseCase"),
+  LockSlotUseCase: Symbol.for("ILockSlotUseCase"),
+  UnlockSlotUseCase: Symbol.for("IUnlockSlotUseCase"),
 
   // Use Cases (Booking)
   CancelBookingUseCase: Symbol.for("ICancelBookingUseCase"),
