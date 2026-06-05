@@ -38,6 +38,8 @@ export interface ISlotDocument extends Document {
   startTime: Date;
   endTime: Date;
   status: SlotStatus;
+  lockedBy?: mongoose.Types.ObjectId | null;
+  lockExpiresAt?: Date | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -48,11 +50,13 @@ const SlotSchema = new Schema<ISlotDocument>(
     availabilityId: { type: Schema.Types.ObjectId, ref: "Availability", required: true },
     startTime: { type: Date, required: true },
     endTime: { type: Date, required: true },
-    status: { 
-      type: String, 
-      enum: ["AVAILABLE", "RESERVED", "BOOKED", "BLOCKED", "EXPIRED"], 
-      default: "AVAILABLE" 
+    status: {
+      type: String,
+      enum: ["AVAILABLE", "RESERVED", "BOOKED", "BLOCKED", "EXPIRED"],
+      default: "AVAILABLE"
     },
+    lockedBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
+    lockExpiresAt: { type: Date, default: null },
   },
   { timestamps: true }
 );

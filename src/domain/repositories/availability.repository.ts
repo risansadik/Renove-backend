@@ -15,4 +15,7 @@ export interface ISlotRepository {
   findAvailable(therapistId: string, startDate: Date, endDate: Date): Promise<TherapistSlotEntity[]>;
   findByTherapistIdAndDateRange(therapistId: string, startDate: Date, endDate: Date): Promise<TherapistSlotEntity[]>;
   deleteByAvailabilityId(availabilityId: string): Promise<void>;
+  lockSlot(slotId: string, userId: string, expiresAt: Date): Promise<boolean>;
+  unlockSlot(slotId: string, userId: string): Promise<void>;
+  releaseExpiredLocks(): Promise<void>;
 }

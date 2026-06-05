@@ -19,3 +19,7 @@ export type IGetTherapistRulesUseCase = IUseCase<string, TherapistAvailabilityEn
 export type IGetAvailableSlotsUseCase = IUseCase<{ therapistId: string; startDate: Date; endDate: Date }, TherapistSlotEntity[]>;
 
 export type IDeleteAvailabilityRuleUseCase = IUseCase<{ id: string; therapistId: string }, void>;
+
+export type ILockSlotUseCase = IUseCase<{ slotId: string; userId: string }, { lockExpiresAt: Date }>;
+
+export type IUnlockSlotUseCase = IUseCase<{ slotId: string; userId: string }, void>;

@@ -79,14 +79,19 @@ export class SlotRepository implements ISlotRepository {
   }
 
   async findAvailable(therapistId: string, startDate: Date, endDate: Date): Promise<TherapistSlotEntity[]> {
+    const now = new Date();
     const slots = await SlotModel.find({
       therapistId,
       status: "AVAILABLE",
-      startTime: { $gte: startDate, $lte: endDate }
+      startTime: { $gte: startDate, $lte: endDate },
+      $or: [
+        { lockedBy: null },
+        { lockExpiresAt: { $lte: now } }
+      ]
     }).sort({ startTime: 1 });
     return slots.map(s => this._toSlotEntity(s));
   }
-
+  
   async findByTherapistIdAndDateRange(therapistId: string, startDate: Date, endDate: Date): Promise<TherapistSlotEntity[]> {
     const slots = await SlotModel.find({
       therapistId,
@@ -98,5 +103,47 @@ export class SlotRepository implements ISlotRepository {
 
   async deleteByAvailabilityId(availabilityId: string): Promise<void> {
     await SlotModel.deleteMany({ availabilityId, status: "AVAILABLE" });
+  }
+
+
+  async lockSlot(slotId: string, userId: string, expiresAt: Date): Promise<boolean> {
+    const now = new Date();
+    const result = await SlotModel.findOneAndUpdate(
+      {
+        _id: slotId,
+        status: "AVAILABLE",
+        $or: [
+          { lockExpiresAt: null },
+          { lockExpiresAt: { $lte: now } }
+        ]
+      },
+      {
+        $set: {
+          lockedBy: userId,
+          lockExpiresAt: expiresAt
+        }
+      },
+      { new: true }
+    );
+    return !!result;
+  }
+
+  async unlockSlot(slotId: string, userId: string): Promise<void> {
+    await SlotModel.findOneAndUpdate(
+      { _id: slotId, lockedBy: userId },
+      { $set: { lockedBy: null, lockExpiresAt: null } }
+    );
+  }
+
+  async releaseExpiredLocks(): Promise<void> {
+    await SlotModel.updateMany(
+      {
+        status: "AVAILABLE",
+        lockExpiresAt: { $lte: new Date() }
+      },
+      {
+        $set: { lockedBy: null, lockExpiresAt: null }
+      }
+    );
   }
 }

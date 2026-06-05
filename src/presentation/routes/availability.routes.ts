@@ -13,5 +13,7 @@ router.post("/", authenticate, asyncHandler(controller.createRule));
 router.get("/my-rules", authenticate, asyncHandler(controller.getTherapistRules));
 router.delete("/:id", authenticate, asyncHandler(controller.deleteRule));
 router.get("/slots/:therapistId", asyncHandler(controller.getAvailableSlots));
+router.post("/slots/:slotId/lock", authenticate, asyncHandler(controller.lockSlot));
+router.post("/slots/:slotId/unlock", authenticate, asyncHandler(controller.unlockSlot));
 
 export default router;

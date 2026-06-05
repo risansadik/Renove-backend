@@ -5,6 +5,8 @@ import type {
   IDeleteAvailabilityRuleUseCase,
   IGetAvailableSlotsUseCase,
   IGetTherapistRulesUseCase,
+  ILockSlotUseCase,
+  IUnlockSlotUseCase,
 } from "../../application/interfaces/availability/IAvailabilityUseCase.ts";
 import { AvailabilityMapper } from "../../application/mappers/availability.mapper.ts";
 import { HttpStatus, MESSAGES } from "../../shared/constants/index.ts";
@@ -19,8 +21,10 @@ export class AvailabilityController {
     @inject(TYPES.CreateAvailabilityUseCase) private readonly _createAvailabilityUseCase: ICreateAvailabilityUseCase,
     @inject(TYPES.GetTherapistRulesUseCase) private readonly _getTherapistRulesUseCase: IGetTherapistRulesUseCase,
     @inject(TYPES.GetAvailableSlotsUseCase) private readonly _getAvailableSlotsUseCase: IGetAvailableSlotsUseCase,
-    @inject(TYPES.DeleteAvailabilityRuleUseCase) private readonly _deleteAvailabilityRuleUseCase: IDeleteAvailabilityRuleUseCase
-  ) {}
+    @inject(TYPES.DeleteAvailabilityRuleUseCase) private readonly _deleteAvailabilityRuleUseCase: IDeleteAvailabilityRuleUseCase,
+    @inject(TYPES.LockSlotUseCase) private readonly _lockSlotUseCase: ILockSlotUseCase,
+    @inject(TYPES.UnlockSlotUseCase) private readonly _unlockSlotUseCase: IUnlockSlotUseCase,
+  ) { }
 
   public createRule = async (req: Request, res: Response): Promise<void> => {
     const therapistId = (req as AuthenticatedRequest).user.id;
@@ -54,9 +58,23 @@ export class AvailabilityController {
   public deleteRule = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     const therapistId = (req as AuthenticatedRequest).user.id;
-    
+
     await this._deleteAvailabilityRuleUseCase.execute({ id, therapistId });
 
     res.json(ResponseModel.success(MESSAGES.AVAILABILITY.RULE_DELETED, null));
+  };
+
+  public lockSlot = async (req: Request, res: Response): Promise<void> => {
+    const userId = (req as AuthenticatedRequest).user.id;
+    const { slotId } = req.params;
+    const result = await this._lockSlotUseCase.execute({ slotId, userId });
+    res.json(ResponseModel.success("Slot reserved successfully", result));
+  };
+
+  public unlockSlot = async (req: Request, res: Response): Promise<void> => {
+    const userId = (req as AuthenticatedRequest).user.id;
+    const { slotId } = req.params;
+    await this._unlockSlotUseCase.execute({ slotId, userId });
+    res.json(ResponseModel.success("Slot released successfully", null));
   };
 }
