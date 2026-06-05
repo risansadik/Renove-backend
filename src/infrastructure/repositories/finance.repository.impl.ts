@@ -6,47 +6,53 @@ import { TransactionModel, WalletModel } from "../databases/schema/wallet.schema
 
 @injectable()
 export class FinanceRepository implements IFinanceRepository {
-  async getAdminFinanceStats(): Promise<AdminFinanceStats> {
-    const wallets = await WalletModel.find({}).lean();
-    const completedTransactions = await TransactionModel.find({
+  async getAdminFinanceStats(page: number, limit: number): Promise<AdminFinanceStats> {
+  const skip = (page - 1) * limit;
+
+  const [wallets, completedTransactions, refundedPayments, transactions, totalTransactions] = await Promise.all([
+    WalletModel.find({}).lean(),
+    TransactionModel.find({
       walletType: "TherapistWallet",
       status: "completed",
       type: "credit",
-    }).lean();
-    const refundedPayments = await PaymentModel.find({ status: "refunded" }).lean();
-    const transactions = await TransactionModel.find({}).sort({ createdAt: -1 }).limit(50).lean();
+    }).lean(),
+    PaymentModel.find({ status: "refunded" }).lean(),
+    TransactionModel.find({}).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
+    TransactionModel.countDocuments({}),
+  ]);
 
-    const totalTherapistEarnings = wallets.reduce(
-      (sum, wallet) => sum + (wallet.pendingBalance || 0) + (wallet.availableBalance || 0) + (wallet.withdrawnBalance || 0),
-      0
-    );
-    const totalPendingPayouts = wallets.reduce((sum, wallet) => sum + (wallet.pendingBalance || 0), 0);
-    const totalWithdrawn = wallets.reduce((sum, wallet) => sum + (wallet.withdrawnBalance || 0), 0);
-    const totalRevenue = completedTransactions.reduce((sum, transaction) => sum + (transaction.platformFee || 0), 0);
-    const totalRefunded = refundedPayments.reduce((sum, payment) => sum + (payment.refundAmount || 0), 0);
+  const totalTherapistEarnings = wallets.reduce(
+    (sum, wallet) => sum + (wallet.pendingBalance || 0) + (wallet.availableBalance || 0) + (wallet.withdrawnBalance || 0),
+    0
+  );
+  const totalPendingPayouts = wallets.reduce((sum, wallet) => sum + (wallet.pendingBalance || 0), 0);
+  const totalWithdrawn = wallets.reduce((sum, wallet) => sum + (wallet.withdrawnBalance || 0), 0);
+  const totalRevenue = completedTransactions.reduce((sum, t) => sum + (t.platformFee || 0), 0);
+  const totalRefunded = refundedPayments.reduce((sum, p) => sum + (p.refundAmount || 0), 0);
 
-    return {
-      totalRevenue: Number(totalRevenue.toFixed(2)),
-      totalTherapistEarnings: Number(totalTherapistEarnings.toFixed(2)),
-      totalPendingPayouts: Number(totalPendingPayouts.toFixed(2)),
-      totalWithdrawn: Number(totalWithdrawn.toFixed(2)),
-      totalRefunded: Number(totalRefunded.toFixed(2)),
-      transactions: transactions.map((transaction): TransactionEntity => ({
-        id: transaction._id.toString(),
-        walletId: transaction.walletId.toString(),
-        amount: transaction.amount,
-        type: transaction.type,
-        description: transaction.description,
-        status: transaction.status,
-        bookingId: transaction.bookingId?.toString(),
-        consultationFee: transaction.consultationFee,
-        commissionPercentage: transaction.commissionPercentage,
-        platformFee: transaction.platformFee,
-        totalPaid: transaction.totalPaid,
-        therapistEarnings: transaction.therapistEarnings,
-        refundAmount: transaction.refundAmount,
-        createdAt: transaction.createdAt,
-      })),
-    };
-  }
+  return {
+    totalRevenue: Number(totalRevenue.toFixed(2)),
+    totalTherapistEarnings: Number(totalTherapistEarnings.toFixed(2)),
+    totalPendingPayouts: Number(totalPendingPayouts.toFixed(2)),
+    totalWithdrawn: Number(totalWithdrawn.toFixed(2)),
+    totalRefunded: Number(totalRefunded.toFixed(2)),
+    totalTransactions,
+    transactions: transactions.map((transaction): TransactionEntity => ({
+      id: transaction._id.toString(),
+      walletId: transaction.walletId.toString(),
+      amount: transaction.amount,
+      type: transaction.type,
+      description: transaction.description,
+      status: transaction.status,
+      bookingId: transaction.bookingId?.toString(),
+      consultationFee: transaction.consultationFee,
+      commissionPercentage: transaction.commissionPercentage,
+      platformFee: transaction.platformFee,
+      totalPaid: transaction.totalPaid,
+      therapistEarnings: transaction.therapistEarnings,
+      refundAmount: transaction.refundAmount,
+      createdAt: transaction.createdAt,
+    })),
+  };
+}
 }

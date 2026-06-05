@@ -75,10 +75,18 @@ export class AdminController {
     res.json(ResponseModel.success(MESSAGES.ADMIN.THERAPIST_STATUS_UPDATED, result));
   };
 
-  public getFinanceStats = async (_req: Request, res: Response): Promise<void> => {
-    const stats = await this._getAdminFinanceStatsUC.execute();
-    res.json(ResponseModel.success(MESSAGES.ADMIN.FINANCE_STATS_FETCHED, stats));
-  };
+  public getFinanceStats = async (req: Request, res: Response): Promise<void> => {
+  const page = parseInt(req.query.page as string) || PAGINATION.DEFAULT_PAGE;
+  const limit = parseInt(req.query.limit as string) || PAGINATION.DEFAULT_LIMIT;
+  const stats = await this._getAdminFinanceStatsUC.execute({ page, limit });
+
+  res.json(ResponseModel.success(MESSAGES.ADMIN.FINANCE_STATS_FETCHED, stats, 200, {
+    total: stats.totalTransactions,
+    page,
+    limit,
+    totalPages: Math.ceil(stats.totalTransactions / limit),
+  }));
+};
 
   public updateCommission = async (req: Request, res: Response): Promise<void> => {
     const { commissionPercentage } = req.body;

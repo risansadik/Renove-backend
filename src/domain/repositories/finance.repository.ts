@@ -6,9 +6,10 @@ export interface AdminFinanceStats {
   totalPendingPayouts: number;
   totalWithdrawn: number;
   totalRefunded: number;
+  totalTransactions: number;
   transactions: TransactionEntity[];
 }
 
 export interface IFinanceRepository {
-  getAdminFinanceStats(): Promise<AdminFinanceStats>;
+  getAdminFinanceStats(page: number, limit: number): Promise<AdminFinanceStats>;
 }
