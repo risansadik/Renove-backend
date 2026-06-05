@@ -18,7 +18,7 @@ export interface IFinanceStatsResponse extends AdminFinanceStats {
   commissionPercentage: number;
 }
 
-export type IGetAdminFinanceStatsUseCase = IUseCase<void, IFinanceStatsResponse>;
+export type IGetAdminFinanceStatsUseCase = IUseCase<PaginationParams, IFinanceStatsResponse>;
 
 export type IUpdatePlatformSettingsUseCase = IUseCase<number, { success: boolean; message: string }>;
 

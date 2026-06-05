@@ -9,6 +9,7 @@ import type {
   IFinanceStatsResponse
 } from '../../../application/interfaces/admin/IAdminUseCase.ts'
 import { TYPES } from "../../../shared/constants/tokens.ts";
+import { PaginationParams } from "../../../domain/interfaces/pagination.ts";
 
 
 @injectable()
@@ -18,9 +19,9 @@ export class GetAdminFinanceStatsUseCase implements IGetAdminFinanceStatsUseCase
     @inject(TYPES.FinanceRepository) private readonly _financeRepo: IFinanceRepository
   ) { }
 
-  async execute(): Promise<IFinanceStatsResponse> {
+  async execute(params: PaginationParams): Promise<IFinanceStatsResponse> {
     const [financeStats, commissionPercentage] = await Promise.all([
-      this._financeRepo.getAdminFinanceStats(),
+      this._financeRepo.getAdminFinanceStats(params.page,params.limit),
       this._settingsRepo.getCommissionPercentage(),
     ]);
 
