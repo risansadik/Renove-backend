@@ -16,7 +16,9 @@ export const TYPES = {
   UserProgressRepository: Symbol.for("IUserProgressRepository"),
   WalletRepository: Symbol.for("WalletRepository"),
   LevelRepository: Symbol.for("ILevelRepository"),
-  CompleteLevelUseCase: Symbol.for("ICompleteLevelUseCase"),
+  ChatMessageRepository: Symbol.for("ChatMessageRepository"),
+
+  
 
   // External Services
   EmailService: Symbol.for("IEmailService"),
@@ -28,6 +30,7 @@ export const TYPES = {
   VectorStoreService: Symbol.for("IVectorStoreService"),
   SearchService: Symbol.for("ISearchService"),
   RagService: Symbol.for("IRagService"),
+  ChatService: Symbol.for("IChatService"),
   LlmClient: Symbol.for("LlmClient"),
   GeminiClient: Symbol.for("GeminiClient"),
   QdrantClient: Symbol.for("QdrantClient"),
@@ -50,6 +53,7 @@ export const TYPES = {
   AdminLoginUseCase: Symbol.for("IAdminLoginUseCase"),
   GenerateLevelsUseCase: Symbol.for("IGenerateLevelsUseCase"),
   GetUserLevelsUseCase: Symbol.for("IGetUserLevelsUseCase"),
+  CompleteLevelUseCase: Symbol.for("ICompleteLevelUseCase"),
 
   // Use Cases (Admin)
   AdminFinanceUseCase: Symbol.for("IAdminFinanceUseCase"),
@@ -107,6 +111,16 @@ export const TYPES = {
   LogMoodUseCase: Symbol.for("ILogMoodUseCase"),
   ToggleMissionUseCase: Symbol.for("IToggleMissionUseCase"),
 
+  SendMessageUseCase: Symbol.for("ISendMessageUseCase"),
+  GetSessionMessagesUseCase: Symbol.for("IGetSessionMessagesUseCase"),
+  GetSessionsUseCase: Symbol.for("IGetSessionUseCase"),
+  CreateSessionUseCase: Symbol.for("ICreateSessionUseCase"),
+  DeleteSessionUseCase: Symbol.for("IDeleteSessionUseCase"),
+
+
+
+
+
   // Controllers
   UserAuthController: Symbol.for("UserAuthController"),
   AdminController: Symbol.for("AdminController"),
@@ -119,4 +133,5 @@ export const TYPES = {
   UserDashboardController: Symbol.for("UserDashboardController"),
   WalletController: Symbol.for("WalletController"),
   LevelController: Symbol.for("LevelController"),
+  ChatController: Symbol.for("ChatController"),
 };

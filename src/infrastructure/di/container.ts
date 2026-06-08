@@ -10,6 +10,7 @@ import { registerPaymentModule } from "./modules/payment.module.ts";
 import { registerProfileModule } from "./modules/profile.module.ts";
 import { registerWalletModule } from "./modules/wallet.module.ts";
 import { registerLevelModule } from "./modules/level.module.ts";
+import { registerChatModule } from "./modules/chat.module.ts";
 
 const appContainer = new Container();
 
@@ -23,5 +24,6 @@ registerProfileModule(appContainer);
 registerDashboardModule(appContainer);
 registerWalletModule(appContainer);
 registerLevelModule(appContainer);
+registerChatModule(appContainer);
 
 export { appContainer };

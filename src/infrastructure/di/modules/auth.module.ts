@@ -1,5 +1,6 @@
 import type { Container } from "inversify";
 import type {
+  IAdminLoginUseCase,
   IForgotPasswordUseCase,
   IGoogleAuthUseCase,
   ILoginTherapistUseCase,
@@ -34,7 +35,7 @@ import {
 import { TYPES } from "../../../shared/constants/tokens.ts";
 
 export const registerAuthModule = (container: Container): void => {
-  container.bind(TYPES.AdminLoginUseCase).to(AdminLoginUseCase);
+  container.bind<IAdminLoginUseCase>(TYPES.AdminLoginUseCase).to(AdminLoginUseCase);
   container.bind<IForgotPasswordUseCase>(TYPES.ForgotPasswordUseCase).to(ForgotPasswordUseCase);
   container.bind<IGoogleAuthUseCase>(TYPES.GoogleAuthUseCase).to(GoogleAuthUseCase);
   container.bind<ILoginTherapistUseCase>(TYPES.LoginTherapistUseCase).to(LoginTherapistUseCase);

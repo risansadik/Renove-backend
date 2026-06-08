@@ -7,7 +7,7 @@ import { randomUUID } from "crypto";
 import { z } from "zod";
 
 import { TYPES } from "../../shared/constants/tokens.ts";
-import { LEVEL_DIFFICULTY, ADDICTION_SEVERITY } from "../../shared/constants/index.ts";
+import { LEVEL_DIFFICULTY } from "../../shared/constants/index.ts";
 import { InternalServerError } from "../../shared/utils/AppError.ts";
 
 import type { IRagService, RagInput, RawLevelPayload } from "../../application/interfaces/services/IRagService.ts";
