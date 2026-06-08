@@ -17,10 +17,7 @@ import type {
   IUpdateAdminProfileUseCase,
   IChangeAdminPasswordUseCase
 } from "../../application/interfaces/profile/IProfileUseCase.ts";
-
-// Assuming these follow your standardized interface structures as well
-interface IGetPendingTherapistUpdatesUseCase { execute(): Promise<any>; }
-interface IReviewTherapistProfileUseCase { execute(input: { therapistId: string; status: string; reason?: string }): Promise<any>; }
+import { IGetPendingTherapistUpdatesUseCase, IReviewTherapistProfileUseCase } from "../../application/interfaces/admin/IAdminUseCase.ts";
 
 @injectable()
 export class ProfileController {
