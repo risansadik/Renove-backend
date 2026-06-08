@@ -117,10 +117,18 @@ export class UserProgressRepository implements IUserProgressRepository {
     if (last) last.setHours(0, 0, 0, 0);
 
     if (!last || (today.getTime() - last.getTime()) > MS_IN_DAY) {
-      doc.streakDays = last && (today.getTime() - last.getTime()) === MS_IN_DAY 
-        ? doc.streakDays + 1 
+      doc.streakDays = last && (today.getTime() - last.getTime()) === MS_IN_DAY
+        ? doc.streakDays + 1
         : 1;
     }
+    doc.lastActivityDate = new Date();
+    await doc.save();
+  }
+
+  async addXp(userId: string, xp: number): Promise<void> {
+    const doc = await this._findOrCreateDocument(userId);
+    doc.xp += xp;
+    doc.level = computeLevel(doc.xp);
     doc.lastActivityDate = new Date();
     await doc.save();
   }

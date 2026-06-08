@@ -1,7 +1,7 @@
 import { injectable, inject } from "inversify";
 import { TYPES } from "../../../shared/constants/tokens.ts";
 import { AppError, NotFoundError } from "../../../shared/utils/AppError.ts";
-import { generateOtp } from "../../../shared/utils/otp.ts";
+import { otpService } from "../../../shared/utils/otp.ts";
 import { OTP_TTL_SECONDS } from "../../../shared/constants/index.ts";
 
 // Interfaces
@@ -22,7 +22,7 @@ export class ResendOtpUseCase implements IResendOtpUseCase {
   ) {}
 
   async execute({ dto, type = "user" }: { dto: ResendOtpDTO; type?: "user" | "therapist" }): Promise<void> {
-    const otp = generateOtp();
+    const otp = otpService.generate();
     let emailTargetName = "";
 
     if (type === "user") {

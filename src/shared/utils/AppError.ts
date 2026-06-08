@@ -41,3 +41,9 @@ export class ValidationError extends AppError {
     super(message, HttpStatus.BAD_REQUEST, details);
   }
 }
+
+export class InternalServerError extends AppError {
+  constructor(message = "Internal Server Error") {
+    super(message, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+}

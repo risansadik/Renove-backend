@@ -5,7 +5,7 @@ import type { IUserRepository } from "../../../domain/repositories/user.reposito
 import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
 import type { IOtpCacheRepository } from "../../../domain/repositories/otp-cache.repository.ts";
 import type { IEmailService } from "../../interfaces/services/IEmailService.ts";
-import { generateOtp } from "../../../shared/utils/otp.ts";
+import { otpService } from "../../../shared/utils/otp.ts";
 import { AppError, NotFoundError } from "../../../shared/utils/AppError.ts";
 import { OTP_TTL_SECONDS } from "../../../shared/constants/index.ts";
 import type { IForgotPasswordUseCase } from "../../interfaces/auth/IAuthUseCase.ts";
@@ -29,7 +29,7 @@ export class ForgotPasswordUseCase implements IForgotPasswordUseCase {
       if (!therapist) throw new NotFoundError("Therapist");
     }
 
-    const otp = generateOtp();
+    const otp = otpService.generate();
     await this._otpCacheRepo.setOtp(dto.email, otp, OTP_TTL_SECONDS);
     await this._emailService.sendPasswordResetOtp(dto.email, otp);
   }

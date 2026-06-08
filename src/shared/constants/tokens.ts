@@ -15,6 +15,8 @@ export const TYPES = {
   TherapistRepository: Symbol.for("ITherapistRepository"),
   UserProgressRepository: Symbol.for("IUserProgressRepository"),
   WalletRepository: Symbol.for("WalletRepository"),
+  LevelRepository: Symbol.for("ILevelRepository"),
+  CompleteLevelUseCase: Symbol.for("ICompleteLevelUseCase"),
 
   // External Services
   EmailService: Symbol.for("IEmailService"),
@@ -22,6 +24,15 @@ export const TYPES = {
   OtpGenerator: Symbol.for("IOtpGenerator"),
   PasswordHasher: Symbol.for("IPasswordHasher"),
   TokenService: Symbol.for("ITokenService"),
+  EmbeddingService: Symbol.for("IEmbeddingService"),
+  VectorStoreService: Symbol.for("IVectorStoreService"),
+  SearchService: Symbol.for("ISearchService"),
+  RagService: Symbol.for("IRagService"),
+  LlmClient: Symbol.for("LlmClient"),
+  GeminiClient: Symbol.for("GeminiClient"),
+  QdrantClient: Symbol.for("QdrantClient"),
+  SerperClient: Symbol.for("SerperClient"),
+
 
   // Use Cases (Auth)
   RegisterUserUseCase: Symbol.for("IRegisterUserUseCase"),
@@ -37,6 +48,8 @@ export const TYPES = {
   RegisterTherapistUseCase: Symbol.for("IRegisterTherapistUseCase"),
   VerifyTherapistOtpUseCase: Symbol.for("IVerifyTherapistOtpUseCase"),
   AdminLoginUseCase: Symbol.for("IAdminLoginUseCase"),
+  GenerateLevelsUseCase: Symbol.for("IGenerateLevelsUseCase"),
+  GetUserLevelsUseCase: Symbol.for("IGetUserLevelsUseCase"),
 
   // Use Cases (Admin)
   AdminFinanceUseCase: Symbol.for("IAdminFinanceUseCase"),
@@ -105,4 +118,5 @@ export const TYPES = {
   TherapistDashboardController: Symbol.for("TherapistDashboardController"),
   UserDashboardController: Symbol.for("UserDashboardController"),
   WalletController: Symbol.for("WalletController"),
+  LevelController: Symbol.for("LevelController"),
 };

@@ -84,4 +84,5 @@ export class UserRepository
   public async countByStatus(status: UserStatus): Promise<number> {
     return this.model.countDocuments({ status }).exec();
   }
+  
 }
