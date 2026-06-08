@@ -25,6 +25,8 @@ import {
 import { ROLES } from "../../shared/constants/index.ts";
 import { GenerateLevelsSchema } from "../../application/dto/level/level.dto.ts";
 import { LevelController } from "../controllers/level.controller.ts";
+import { ChatController } from "../controllers/chat.controller.ts";
+import { SendMessageSchema } from "../../application/dto/chat/chat.dto.ts";
 
 const router = Router();
 
@@ -32,6 +34,7 @@ const userAuthController = appContainer.get<UserAuthController>(TYPES.UserAuthCo
 const profileController = appContainer.get<ProfileController>(TYPES.ProfileController);
 const userDashboardController = appContainer.get<UserDashboardController>(TYPES.UserDashboardController);
 const levelController = appContainer.get<LevelController>(TYPES.LevelController);
+const chatController = appContainer.get<ChatController>(TYPES.ChatController);
 
 router.post("/register", validate(RegisterUserSchema), asyncHandler(userAuthController.register));
 router.post("/verify-otp", validate(VerifyOtpSchema), asyncHandler(userAuthController.verifyOtp));
@@ -47,6 +50,12 @@ router.post("/refresh-token", asyncHandler(userAuthController.refreshToken));
 router.post("/levels/generate", authenticate, authorize(ROLES.USER), validate(GenerateLevelsSchema), asyncHandler(levelController.generate));
 router.get("/levels", authenticate, authorize(ROLES.USER), asyncHandler(levelController.getLevels));
 router.patch("/levels/:levelId/complete", authenticate, authorize(ROLES.USER), asyncHandler(levelController.completeLevel));
+
+router.get("/chat/sessions", authenticate, authorize(ROLES.USER), asyncHandler(chatController.getSessions));
+router.post("/chat/sessions", authenticate, authorize(ROLES.USER), asyncHandler(chatController.createSession));
+router.delete("/chat/sessions/:sessionId", authenticate, authorize(ROLES.USER), asyncHandler(chatController.deleteSession));
+router.get("/chat/sessions/:sessionId/messages", authenticate, authorize(ROLES.USER), asyncHandler(chatController.getSessionMessages));
+router.post("/chat/message", authenticate, authorize(ROLES.USER), validate(SendMessageSchema), chatController.streamMessage);
 
 // ── Dashboard (protected) ────────────────────────────────
 router.get("/dashboard", authenticate, authorize(ROLES.USER), asyncHandler(userDashboardController.getDashboard));

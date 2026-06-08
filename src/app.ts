@@ -42,6 +42,7 @@ app.get("/health", (_req, res) => {
 
 
 app.use("/api/user/auth", userRoutes);
+app.use("/api/user", userRoutes);
 app.use("/api/therapist/auth", therapistRoutes);
 app.use("/api/therapist", therapistRoutes);
 app.use("/api/admin", adminRoutes);

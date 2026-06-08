@@ -213,3 +213,10 @@ export const ADDICTION_SEVERITY = {
 } as const;
 
 export type AddictionSeverity = (typeof ADDICTION_SEVERITY)[keyof typeof ADDICTION_SEVERITY];
+
+export const CHAT_ROLE = {
+  USER: "user",
+  ASSISTANT: "assistant",
+} as const;
+
+export type ChatRole = (typeof CHAT_ROLE)[keyof typeof CHAT_ROLE];
