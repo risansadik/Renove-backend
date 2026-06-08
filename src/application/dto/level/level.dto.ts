@@ -14,7 +14,12 @@ export const GenerateLevelsSchema = z.object({
     .array(z.string().min(1).max(50))
     .min(1, "At least one interest is required")
     .max(10, "Maximum 10 interests allowed"),
+  startLevel: z.number().int().min(1).default(1),
+  endLevel: z.number().int().min(1).default(5),
   regenerate: z.boolean().optional().default(false),
+}).refine((data) => data.endLevel >= data.startLevel, {
+  message: "endLevel must be greater than or equal to startLevel",
+  path: ["endLevel"],
 });
 
 export type GenerateLevelsDTO = z.infer<typeof GenerateLevelsSchema>;

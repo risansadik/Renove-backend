@@ -13,18 +13,39 @@ export class GenerateLevelsUseCase implements IGenerateLevelsUseCase {
   ) {}
 
   async execute({ userId, dto }: IGenerateLevelsInput): Promise<LevelEntity[]> {
-    if (!dto.regenerate) {
-      const existing = await this._levelRepo.findByUserId(userId);
-      if (existing.length > 0) return existing;
-    } else {
+    let existing = await this._levelRepo.findByUserId(userId);
+
+    if (dto.regenerate) {
       await this._levelRepo.deleteAllByUserId(userId);
+      existing = [];
+    } else {
+      const hasAllRequested = Array.from({ length: dto.endLevel - dto.startLevel + 1 }, (_, i) => i + dto.startLevel)
+        .every((lvl) => existing.some((e) => e.level === lvl));
+      if (hasAllRequested && existing.length > 0) {
+        return existing;
+      }
     }
+
+    const previousLevels = existing.map(l => ({
+      level: l.level,
+      world: l.world,
+      objective: l.objective,
+      target: l.target,
+      unit: l.unit,
+      xp: l.xp,
+      reward: l.reward,
+      difficulty: l.difficulty,
+      unlockRequirement: l.unlockRequirement
+    }));
 
     const rawLevels = await this._ragService.generateLevels({
       userId,
       addictionType: dto.addictionType,
       severity: dto.severity,
       interests: dto.interests,
+      startLevel: dto.startLevel,
+      endLevel: dto.endLevel,
+      previousLevels: previousLevels.length > 0 ? previousLevels : undefined,
     });
 
     const saved = await Promise.all(
@@ -37,6 +58,6 @@ export class GenerateLevelsUseCase implements IGenerateLevelsUseCase {
       )
     );
 
-    return saved;
+    return [...existing, ...saved].sort((a, b) => a.level - b.level);
   }
 }
