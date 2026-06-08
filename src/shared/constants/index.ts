@@ -87,7 +87,7 @@ export const HttpStatus = {
   FORBIDDEN: 403,
   NOT_FOUND: 404,
   CONFLICT: 409,
-  GONE : 410,
+  GONE: 410,
   INTERNAL_SERVER_ERROR: 500,
 } as const;
 
@@ -96,7 +96,7 @@ export const AUTH_CONFIG = {
   ACCESS_TOKEN: {
     SECRET: process.env.JWT_ACCESS_SECRET || "default_access_secret",
     EXPIRY: (process.env.JWT_ACCESS_EXPIRES_IN as string) || "15m",
-    MAX_AGE: 15 * 60 * 1000, 
+    MAX_AGE: 15 * 60 * 1000,
   },
   REFRESH_TOKEN: {
     SECRET: process.env.JWT_REFRESH_SECRET || "default_refresh_secret",
@@ -188,5 +188,28 @@ export const MESSAGES = {
   },
   COMMON: {
     INTERNAL_ERROR: "Internal server error",
-  }
+  },
+  LEVEL: {
+    GENERATED: "Your personalized journey has been generated",
+    FETCHED: "Levels fetched successfully",
+    REGENERATED: "Your journey has been regenerated",
+    ALREADY_EXISTS: "Journey already exists. Use regenerate to create a new one",
+    COMPLETED: "Level completed. XP awarded.",
+  },
 } as const;
+
+export const LEVEL_DIFFICULTY = {
+  EASY: "Easy",
+  MEDIUM: "Medium",
+  HARD: "Hard",
+} as const;
+
+export type LevelDifficulty = (typeof LEVEL_DIFFICULTY)[keyof typeof LEVEL_DIFFICULTY];
+
+export const ADDICTION_SEVERITY = {
+  MILD: "mild",
+  MODERATE: "moderate",
+  SEVERE: "severe",
+} as const;
+
+export type AddictionSeverity = (typeof ADDICTION_SEVERITY)[keyof typeof ADDICTION_SEVERITY];

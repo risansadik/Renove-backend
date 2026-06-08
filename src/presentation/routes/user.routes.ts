@@ -23,12 +23,15 @@ import {
   VerifyOtpSchema,
 } from "../../application/dto/auth/user.dto.ts";
 import { ROLES } from "../../shared/constants/index.ts";
+import { GenerateLevelsSchema } from "../../application/dto/level/level.dto.ts";
+import { LevelController } from "../controllers/level.controller.ts";
 
 const router = Router();
 
 const userAuthController = appContainer.get<UserAuthController>(TYPES.UserAuthController);
 const profileController = appContainer.get<ProfileController>(TYPES.ProfileController);
 const userDashboardController = appContainer.get<UserDashboardController>(TYPES.UserDashboardController);
+const levelController = appContainer.get<LevelController>(TYPES.LevelController);
 
 router.post("/register", validate(RegisterUserSchema), asyncHandler(userAuthController.register));
 router.post("/verify-otp", validate(VerifyOtpSchema), asyncHandler(userAuthController.verifyOtp));
@@ -41,6 +44,10 @@ router.post("/reset-password", validate(ResetPasswordSchema), asyncHandler(userA
 router.post("/logout", (req, res) => userAuthController.logout(req, res));
 router.post("/refresh-token", asyncHandler(userAuthController.refreshToken));
 
+router.post("/levels/generate", authenticate, authorize(ROLES.USER), validate(GenerateLevelsSchema), asyncHandler(levelController.generate));
+router.get("/levels", authenticate, authorize(ROLES.USER), asyncHandler(levelController.getLevels));
+router.patch("/levels/:levelId/complete", authenticate, authorize(ROLES.USER), asyncHandler(levelController.completeLevel));
+
 // ── Dashboard (protected) ────────────────────────────────
 router.get("/dashboard", authenticate, authorize(ROLES.USER), asyncHandler(userDashboardController.getDashboard));
 router.post("/mood", authenticate, authorize(ROLES.USER), asyncHandler(userDashboardController.logMood));
@@ -51,5 +58,7 @@ router.get("/therapists", authenticate, authorize(ROLES.USER), asyncHandler(user
 router.get("/profile", authenticate, authorize(ROLES.USER), asyncHandler(profileController.getUserProfile));
 router.patch("/profile", authenticate, authorize(ROLES.USER), upload.single("profileImage"), validate(UpdateUserProfileSchema), asyncHandler(profileController.updateUserProfile));
 router.post("/profile/password", authenticate, authorize(ROLES.USER), validate(ChangePasswordSchema), asyncHandler(profileController.changeUserPassword));
+
+
 
 export default router;

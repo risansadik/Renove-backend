@@ -13,7 +13,7 @@ import { TherapistMapper } from "../../application/mappers/therapist.mapper.ts";
 import type { TherapistEntity } from "../../domain/entities/Therapist.entity.ts";
 import { HttpStatus, MESSAGES } from "../../shared/constants/index.ts";
 import { TYPES } from "../../shared/constants/tokens.ts";
-import { setAuthCookies, clearAuthCookies } from "../../shared/utils/jwt.ts";
+import { authTokenService } from "../../shared/utils/jwt.ts";
 import type { S3File } from "../../shared/types/express.ts";
 import { ResponseModel } from "../../shared/utils/response-model.ts";
 
@@ -57,12 +57,12 @@ export class TherapistAuthController {
 
   public login = async (req: Request, res: Response): Promise<void> => {
     const { tokens, user } = await this._loginUC.execute(req.body);
-    setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
+    authTokenService.setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
     res.json(ResponseModel.success(MESSAGES.AUTH.LOGIN_SUCCESS, { therapist: TherapistMapper.toPublicDTO(user as TherapistEntity) }));
   };
 
   public logout = (_req: Request, res: Response): void => {
-    clearAuthCookies(res);
+    authTokenService.clearAuthCookies(res);
     res.json(ResponseModel.success(MESSAGES.AUTH.LOGOUT_SUCCESS, null));
   };
 

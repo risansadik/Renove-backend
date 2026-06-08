@@ -7,7 +7,7 @@ import type { Role } from "../../shared/constants/index.ts";
 import { THERAPIST_STATUS, USER_STATUS } from "../../shared/constants/index.ts";
 import type { AuthRequest } from "../../shared/types/express.ts";
 import { asyncHandler } from "./async-handler.middleware.ts";
-import { setAuthCookies } from "../../shared/utils/jwt.ts";
+import { authTokenService } from "../../shared/utils/jwt.ts";
 
 export type { AuthRequest };
 
@@ -51,7 +51,7 @@ export const createAuthMiddleware = ({
         role: refreshDecoded.role,
       });
 
-      setAuthCookies(res, newAccess, newRefresh);
+      authTokenService.setAuthCookies(res, newAccess, newRefresh);
       decoded = refreshDecoded;
     }
 

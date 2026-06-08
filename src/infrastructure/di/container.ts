@@ -9,6 +9,7 @@ import { registerInfrastructureModule } from "./modules/infrastructure.module.ts
 import { registerPaymentModule } from "./modules/payment.module.ts";
 import { registerProfileModule } from "./modules/profile.module.ts";
 import { registerWalletModule } from "./modules/wallet.module.ts";
+import { registerLevelModule } from "./modules/level.module.ts";
 
 const appContainer = new Container();
 
@@ -21,5 +22,6 @@ registerPaymentModule(appContainer);
 registerProfileModule(appContainer);
 registerDashboardModule(appContainer);
 registerWalletModule(appContainer);
+registerLevelModule(appContainer);
 
 export { appContainer };

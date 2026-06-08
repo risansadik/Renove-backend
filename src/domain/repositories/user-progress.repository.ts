@@ -6,4 +6,5 @@ export interface IUserProgressRepository {
   logMood(userId: string, mood: string): Promise<void>;
   toggleMission(userId: string, missionId: string): Promise<MissionEntity[]>;
   updateStreak(userId: string): Promise<void>;
+  addXp(userId: string, xp: number): Promise<void>;
 }

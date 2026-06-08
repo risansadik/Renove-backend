@@ -4,7 +4,7 @@ import { TYPES } from "../../shared/constants/tokens.ts";
 
 // Utilities & Mappers
 import { ResponseModel } from "../../shared/utils/response-model.ts";
-import { setAuthCookies, clearAuthCookies } from "../../shared/utils/jwt.ts";
+import { authTokenService } from "../../shared/utils/jwt.ts";
 import { HttpStatus, MESSAGES } from "../../shared/constants/index.ts";
 import { UserMapper } from "../../application/mappers/user.mapper.ts";
 
@@ -55,13 +55,13 @@ export class UserAuthController {
 
   public login = async (req: Request, res: Response): Promise<void> => {
     const { tokens, user } = await this._loginUC.execute(req.body);
-    setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
+    authTokenService.setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
     res.json(ResponseModel.success(MESSAGES.AUTH.LOGIN_SUCCESS, { user: UserMapper.toPublicDTO(user as UserEntity) }));
   };
 
   public googleAuth = async (req: Request, res: Response): Promise<void> => {
     const { tokens, user } = await this._googleAuthUC.execute({ idToken: req.body.idToken });
-    setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
+    authTokenService.setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
     res.json(ResponseModel.success(MESSAGES.AUTH.GOOGLE_SUCCESS, { user: UserMapper.toPublicDTO(user as UserEntity) }));
   };
 
@@ -81,14 +81,14 @@ export class UserAuthController {
   };
 
   public logout = (_req: Request, res: Response): void => {
-    clearAuthCookies(res);
+    authTokenService.clearAuthCookies(res);
     res.json(ResponseModel.success(MESSAGES.AUTH.LOGOUT_SUCCESS, null));
   };
 
   public refreshToken = async (req: Request, res: Response): Promise<void> => {
     const refreshToken = req.cookies?.refreshToken;
     const tokens = await this._refreshTokenUC.execute(refreshToken);
-    setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
+    authTokenService.setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
     res.json(ResponseModel.success(MESSAGES.AUTH.TOKEN_REFRESHED, null));
   };
 }

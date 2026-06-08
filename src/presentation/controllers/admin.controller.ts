@@ -11,7 +11,7 @@ import type {
 import type { IAdminLoginUseCase } from "../../application/interfaces/auth/IAuthUseCase.ts";
 import { PAGINATION, MESSAGES } from "../../shared/constants/index.ts";
 import { TYPES } from "../../shared/constants/tokens.ts";
-import { setAuthCookies, clearAuthCookies } from "../../shared/utils/jwt.ts";
+import { authTokenService } from "../../shared/utils/jwt.ts";
 import { ResponseModel } from "../../shared/utils/response-model.ts";
 
 @injectable()
@@ -28,12 +28,12 @@ export class AdminController {
 
   public login = async (req: Request, res: Response): Promise<void> => {
     const { tokens, user } = await this._adminLoginUC.execute(req.body);
-    setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
+    authTokenService.setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
     res.json(ResponseModel.success(MESSAGES.ADMIN.LOGIN_SUCCESS, { admin: user }));
   };
 
   public logout = (_req: Request, res: Response): void => {
-    clearAuthCookies(res);
+    authTokenService.clearAuthCookies(res);
     res.json(ResponseModel.success(MESSAGES.AUTH.LOGOUT_SUCCESS, null));
   };
 
