@@ -13,7 +13,7 @@ export class LlmClientProvider {
     }
 
     const config = {
-      model: process.env.LLM_MODEL_NAME,
+      model: process.env.LLM_MODEL_NAME || "openai/gpt-oss-120b:free",
       apiKey,
       configuration: {
         baseURL: process.env.LLM_BASE_URL,

@@ -5,6 +5,9 @@ export interface RagInput {
   addictionType: string;
   severity: string;
   interests: string[];
+  startLevel: number;
+  endLevel: number;
+  previousLevels?: RawLevelPayload[];
 }
 
 export type RawLevelPayload = Omit<

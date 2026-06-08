@@ -54,6 +54,36 @@ export class QdrantVectorStoreService implements IVectorStoreService {
             text: String(r.payload?.text ?? ""),
             vector: [],
             metadata: r.payload as Record<string, unknown>,
+            score: r.score,
         }));
+    }
+
+    async searchWithScores(
+        collectionName: string,
+        vector: number[],
+        topK: number,
+        scoreThreshold: number
+    ): Promise<VectorDocument[]> {
+        const results = await this._client.search(collectionName, {
+            vector,
+            limit: topK,
+            with_payload: true,
+            score_threshold: scoreThreshold,
+        });
+        return results.map((r) => ({
+            id: String(r.id),
+            text: String(r.payload?.text ?? ""),
+            vector: [],
+            metadata: r.payload as Record<string, unknown>,
+            score: r.score,
+        }));
+    }
+
+    async deleteByIds(collectionName: string, ids: string[]): Promise<void> {
+        if (ids.length === 0) return;
+        await this._client.delete(collectionName, {
+            wait: true,
+            points: ids,
+        });
     }
 }
