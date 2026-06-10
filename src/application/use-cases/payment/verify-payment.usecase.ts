@@ -7,10 +7,10 @@ import { BOOKING_STATUS, PAYMENT_STATUS, SLOT_STATUS, HttpStatus } from "../../.
 import { AppError } from "../../../shared/utils/AppError.ts";
 import { inject, injectable } from "inversify";
 import { TYPES } from "../../../shared/constants/tokens.ts";
-import { IVerifyPaymentInput } from "../../interfaces/payment/IPaymentUseCase.ts";
+import { IVerifyPaymentInput, IVerifyPaymentUseCase } from "../../interfaces/payment/IPaymentUseCase.ts";
 
 @injectable()
-export class VerifyPaymentUseCase {
+export class VerifyPaymentUseCase implements IVerifyPaymentUseCase{
   constructor(
     @inject(TYPES.PaymentRepository)private readonly _paymentRepo: IPaymentRepository,
     @inject(TYPES.BookingRepository)private readonly _bookingRepo: IBookingRepository,
