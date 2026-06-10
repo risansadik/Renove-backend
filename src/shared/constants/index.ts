@@ -220,3 +220,17 @@ export const CHAT_ROLE = {
 } as const;
 
 export type ChatRole = (typeof CHAT_ROLE)[keyof typeof CHAT_ROLE];
+
+
+export const CALL_EVENTS = {
+  CONNECTION: "connection",
+  DISCONNECT: "disconnect",
+  CALL_JOIN: "call:join",
+  CALL_OFFER: "call:offer",
+  CALL_ANSWER: "call:answer",
+  ICE_CANDIDATE: "call:ice-candidate",
+  CALL_LEAVE: "call:leave",
+  PEER_JOINED: "call:peer-joined",
+  PEER_LEFT: "call:peer-left",
+  MEDIA_STATE: "call:media-state",
+} as const;

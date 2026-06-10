@@ -45,12 +45,12 @@ export class PaymentRepositoryImpl implements IPaymentRepository {
   }
 
   async findByBookingId(bookingId: string): Promise<PaymentEntity | null> {
-    const doc = await PaymentModel.findOne({ bookingId, status: "paid" });
+    const doc = await PaymentModel.findOne({ bookingId, status: "paid" }).sort({ createdAt: -1 });
     return doc ? this._toEntity(doc) : null;
   }
 
   async findAnyByBookingId(bookingId: string): Promise<PaymentEntity | null> {
-    const doc = await PaymentModel.findOne({ bookingId });
+    const doc = await PaymentModel.findOne({ bookingId }).sort({ createdAt: -1 });
     return doc ? this._toEntity(doc) : null;
   }
 

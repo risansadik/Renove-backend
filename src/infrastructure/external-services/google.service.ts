@@ -27,7 +27,6 @@ export class GoogleService implements IGoogleService {
 
     const client = new OAuth2Client(GOOGLE_CONFIG.CLIENT_ID);
 
-    // If token is an OAuth2 Access Token (does not have JWT segments/dots, or starts with standard google access token prefix 'ya29.')
     const isAccessToken = !token.includes(".") || token.startsWith("ya29.");
 
     if (isAccessToken) {
