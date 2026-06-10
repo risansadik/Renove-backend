@@ -3,7 +3,7 @@
 import type { Container } from "inversify";
 import { TYPES } from "../../../shared/constants/tokens.ts";
 import { ChatMessageRepository } from "../../repositories/chat-message.repository.impl.ts";
-import { LangChainChatService } from "../../external-services/chat.service.ts";
+import { LangChainChatService } from "../../external-services/rag/chat.service.ts";
 import { CreateSessionUseCase, DeleteSessionUseCase, GetSessionMessagesUseCase, GetSessionsUseCase, SendMessageUseCase } from "../../../application/use-cases/chat/chat.usecase.ts";
 import { ChatController } from "../../../presentation/controllers/chat.controller.ts"
 import { IChatMessageRepository } from "../../../domain/repositories/chat-message.repository.ts";
