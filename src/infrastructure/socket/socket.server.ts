@@ -11,7 +11,6 @@ const getAllowedOrigins = (): string[] =>
 
 const registerCallHandlers = (
     socket: Socket,
-    io: SocketIOServer
 ): void => {
     socket.on(CALL_EVENTS.CALL_JOIN, (bookingId: string) => {
         socket.join(bookingId);
@@ -79,7 +78,7 @@ export class SocketServer {
 
         io.on(CALL_EVENTS.CONNECTION, (socket: Socket) => {
             logger.info(`Socket connected: ${socket.id}`);
-            registerCallHandlers(socket, io);
+            registerCallHandlers(socket);
 
             socket.on(CALL_EVENTS.DISCONNECT, () => {
                 logger.info(`Socket disconnected: ${socket.id}`);

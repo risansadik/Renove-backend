@@ -3,4 +3,3 @@ node_modules
 logs
 src/logs
 dist
-update_booking.ts

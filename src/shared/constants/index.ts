@@ -222,6 +222,14 @@ export const CHAT_ROLE = {
 export type ChatRole = (typeof CHAT_ROLE)[keyof typeof CHAT_ROLE];
 
 
+export const COLLECTION_NAME = "renove_recovery_knowledge";
+export const VECTOR_SIZE = 3072;
+export const TOP_K = 6;
+
+export const DOCUMENT_TTL_DAYS = 60;
+export const DOCUMENT_RETENTION_DAYS = 180;
+export const RELEVANCE_THRESHOLD = 0.7;
+
 export const CALL_EVENTS = {
   CONNECTION: "connection",
   DISCONNECT: "disconnect",
