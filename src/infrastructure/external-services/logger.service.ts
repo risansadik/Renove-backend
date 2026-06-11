@@ -1,8 +1,16 @@
 import winston from "winston";
+import { ILogger } from "../../application/interfaces/services/ILoggerService.ts";
+import { injectable } from "inversify";
 
 const { combine, timestamp, colorize, printf, errors } = winston.format;
 
-class Logger {
+const logFormat = printf(({ level, message, timestamp, stack }) => {
+  return `${timestamp} [${level}]: ${stack || message}`;
+});
+
+
+@injectable()
+export class Logger implements ILogger {
   private readonly instance: winston.Logger;
 
   constructor() {
@@ -38,9 +46,3 @@ class Logger {
     this.instance.error(message, meta);
   }
 }
-
-const logFormat = printf(({ level, message, timestamp, stack }) => {
-  return `${timestamp} [${level}]: ${stack || message}`;
-});
-
-export const logger = new Logger();

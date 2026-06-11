@@ -26,6 +26,8 @@ export const TYPES = {
   OtpGenerator: Symbol.for("IOtpGenerator"),
   PasswordHasher: Symbol.for("IPasswordHasher"),
   TokenService: Symbol.for("ITokenService"),
+  Logger: Symbol.for("ILogger"),
+  SocketServer: Symbol.for("SocketServer"),
   EmbeddingService: Symbol.for("IEmbeddingService"),
   VectorStoreService: Symbol.for("IVectorStoreService"),
   SearchService: Symbol.for("ISearchService"),

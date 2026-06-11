@@ -32,6 +32,8 @@ import { SettingsRepositoryImpl } from "../../repositories/settings.repository.i
 import { TherapistRepository } from "../../repositories/therapist.repository.impl.ts";
 import { UserProgressRepository } from "../../repositories/user-progress.repository.impl.ts";
 import { UserRepository } from "../../repositories/user.repository.impl.ts";
+import { ILogger } from "../../../application/interfaces/services/ILoggerService.ts";
+import { Logger } from "../../external-services/logger.service.ts";
 
 export const registerInfrastructureModule = (container: Container): void => {
   container.bind<Redis>(TYPES.RedisClient).toConstantValue(initRedis());
@@ -53,4 +55,5 @@ export const registerInfrastructureModule = (container: Container): void => {
   container.bind<IOtpGenerator>(TYPES.OtpGenerator).to(OtpGenerator).inSingletonScope();
   container.bind<IPasswordHasher>(TYPES.PasswordHasher).to(BcryptPasswordHasher).inSingletonScope();
   container.bind<ITokenService>(TYPES.TokenService).to(JwtTokenService).inSingletonScope();
+  container.bind<ILogger>(TYPES.Logger).to(Logger).inSingletonScope();
 };

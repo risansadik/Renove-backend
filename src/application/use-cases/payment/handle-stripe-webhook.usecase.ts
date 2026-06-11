@@ -3,12 +3,12 @@ import type { IBookingRepository } from "../../../domain/repositories/booking.re
 import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.ts";
 import type { ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
 import { BOOKING_STATUS, PAYMENT_STATUS, SLOT_STATUS } from "../../../shared/constants/index.ts";
-import { logger } from "../../../shared/utils/logger.ts";
 import Stripe from "stripe";
 import { IHandleStripeWebhookInput, IHandleStripeWebhookUseCase } from "../../interfaces/payment/IPaymentUseCase.ts";
 import { injectable,inject } from "inversify";
 import { TYPES } from "../../../shared/constants/tokens.ts";
 import { StripeHelper } from "../../../shared/utils/stripe.ts";
+import { ILogger } from "../../interfaces/services/ILoggerService.ts";
 
 @injectable()
 export class HandleStripeWebhookUseCase implements IHandleStripeWebhookUseCase{
@@ -16,13 +16,15 @@ export class HandleStripeWebhookUseCase implements IHandleStripeWebhookUseCase{
    @inject(TYPES.PaymentRepository) private _paymentRepo: IPaymentRepository,
    @inject(TYPES.BookingRepository) private _bookingRepo: IBookingRepository,
    @inject(TYPES.WalletRepository) private _walletRepo: IWalletRepository,
-   @inject(TYPES.SlotRepository) private _slotRepo: ISlotRepository
+   @inject(TYPES.SlotRepository) private _slotRepo: ISlotRepository,
+   @inject(TYPES.Logger) private readonly _logger: ILogger
+
   ) {}
 
   async execute({signature,rawBody} : IHandleStripeWebhookInput): Promise<void> {
 
     const event = StripeHelper.verifyWebhook(rawBody, signature);
-    logger.info(`Processing Stripe Webhook Event: ${event.type}`, { eventId: event.id });
+    this._logger.info(`Processing Stripe Webhook Event: ${event.type}`, { eventId: event.id });
 
     switch (event.type) {
       case "payment_intent.succeeded":
@@ -32,20 +34,20 @@ export class HandleStripeWebhookUseCase implements IHandleStripeWebhookUseCase{
         await this._handlePaymentFailed(event.data.object as Stripe.PaymentIntent);
         break;
       default:
-        logger.debug(`Unhandled Stripe event type: ${event.type}`);
+        this._logger.debug(`Unhandled Stripe event type: ${event.type}`);
     }
   }
 
   private async _handlePaymentSucceeded(intent: Stripe.PaymentIntent) {
     const payment = await this._paymentRepo.findByPaymentIntentId(intent.id);
     if (!payment) {
-      logger.error("Payment record not found for successful intent", { intentId: intent.id });
+      this._logger.error("Payment record not found for successful intent", { intentId: intent.id });
       return;
     }
 
     // Idempotency check: if already paid, skip
     if (payment.status === PAYMENT_STATUS.PAID) {
-      logger.info("Payment already processed as PAID", { paymentId: payment.id });
+      this._logger.info("Payment already processed as PAID", { paymentId: payment.id });
       return;
     }
 
@@ -87,7 +89,7 @@ export class HandleStripeWebhookUseCase implements IHandleStripeWebhookUseCase{
       });
     }
 
-    logger.info("Successfully processed payment success webhook", { 
+    this._logger.info("Successfully processed payment success webhook", { 
       paymentId: payment.id, 
       bookingId: payment.bookingId,
       therapistId: payment.therapistId
@@ -103,6 +105,6 @@ export class HandleStripeWebhookUseCase implements IHandleStripeWebhookUseCase{
     // Note: We don't necessarily release the slot here because the user might try again 
     // within their 15-minute window. Release happens via the cron/expiration job.
     
-    logger.warn("Processed payment failure webhook", { paymentId: payment.id });
+    this._logger.warn("Processed payment failure webhook", { paymentId: payment.id });
   }
 }

@@ -3,17 +3,18 @@ import type { ISlotRepository } from "../../../domain/repositories/availability.
 import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
 import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.ts";
 import { BOOKING_STATUS, SLOT_STATUS, PAYMENT_EXPIRY_MINUTES } from "../../../shared/constants/index.ts";
-import { logger } from "../../../shared/utils/logger.ts";
 import { IExpirePaymentUseCase } from "../../interfaces/payment/IPaymentUseCase.ts";
 import { injectable,inject } from "inversify";
 import { TYPES } from "../../../shared/constants/tokens.ts";
+import { ILogger } from "../../interfaces/services/ILoggerService.ts";
 
 @injectable()
 export class ExpirePaymentUseCase implements IExpirePaymentUseCase{
   constructor(
     @inject(TYPES.BookingRepository)private readonly _bookingRepo: IBookingRepository,
     @inject(TYPES.SlotRepository)private readonly _slotRepo: ISlotRepository,
-    @inject(TYPES.PaymentRepository)private readonly _paymentRepo: IPaymentRepository
+    @inject(TYPES.PaymentRepository)private readonly _paymentRepo: IPaymentRepository,
+    @inject(TYPES.Logger) private readonly _logger: ILogger
   ) {}
 
   async execute(): Promise<void> {
@@ -22,7 +23,7 @@ export class ExpirePaymentUseCase implements IExpirePaymentUseCase{
 
     if (overdueBookings.length === 0) return;
 
-    logger.info(`Found ${overdueBookings.length} overdue payments to expire.`);
+    this._logger.info(`Found ${overdueBookings.length} overdue payments to expire.`);
 
     const expirationJobs = overdueBookings
       .filter((booking) => Boolean(booking.id))
@@ -37,12 +38,12 @@ export class ExpirePaymentUseCase implements IExpirePaymentUseCase{
 
         await this._paymentRepo.failUnpaidByBookingId(bookingId);
 
-        logger.info(`Expired booking ${bookingId} and released slot ${slotId}`);
+        this._logger.info(`Expired booking ${bookingId} and released slot ${slotId}`);
       });
 
     const results = await Promise.allSettled(expirationJobs);
     results
       .filter((result) => result.status === "rejected")
-      .forEach((result) => logger.error("Failed to expire booking", { error: result.reason }));
+      .forEach((result) => this._logger.error("Failed to expire booking", { error: result.reason }));
   }
 }
