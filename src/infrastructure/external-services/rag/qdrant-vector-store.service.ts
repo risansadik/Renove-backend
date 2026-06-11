@@ -6,7 +6,7 @@ import { QdrantClientProvider } from "./providers/qdrant-client.provider.ts";
 import type {
     IVectorStoreService,
     VectorDocument,
-} from "../../../application/interfaces/services/IVectorStoreService.ts";
+} from "../../../application/interfaces/services/rag/IVectorStoreService.ts";
 
 @injectable()
 export class QdrantVectorStoreService implements IVectorStoreService {

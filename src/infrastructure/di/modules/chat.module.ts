@@ -7,7 +7,7 @@ import { LangChainChatService } from "../../external-services/rag/chat.service.t
 import { CreateSessionUseCase, DeleteSessionUseCase, GetSessionMessagesUseCase, GetSessionsUseCase, SendMessageUseCase } from "../../../application/use-cases/chat/chat.usecase.ts";
 import { ChatController } from "../../../presentation/controllers/chat.controller.ts"
 import { IChatMessageRepository } from "../../../domain/repositories/chat-message.repository.ts";
-import { IChatService } from "../../../application/interfaces/services/IChatService.ts";
+import { IChatService } from "../../../application/interfaces/services/rag/IChatService.ts";
 import {  ICreateSessionUseCase, IDeleteSessionUseCase, IGetSessionMessagesUseCase, IGetSessionsUseCase, ISendMessageUseCase } from "../../../application/interfaces/chat/IChatUseCase.ts";
 
 export const registerChatModule = (container: Container): void => {

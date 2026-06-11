@@ -8,10 +8,10 @@ import { SerperSearchService } from "../../external-services/rag/serper-search.s
 import { LangChainRagService } from "../../external-services/rag/langchain-rag.service.ts";
 import { LevelController } from "../../../presentation/controllers/level.controller.ts";
 import { ILevelRepository } from "../../../domain/repositories/level.repository.ts";
-import { IEmbeddingService } from "../../../application/interfaces/services/IEmbeddingService.ts";
-import { IVectorStoreService } from "../../../application/interfaces/services/IVectorStoreService.ts";
-import { ISearchService } from "../../../application/interfaces/services/ISearchService.ts";
-import { IRagService } from "../../../application/interfaces/services/IRagService.ts";
+import { IEmbeddingService } from "../../../application/interfaces/services/rag/IEmbeddingService.ts";
+import { IVectorStoreService } from "../../../application/interfaces/services/rag/IVectorStoreService.ts";
+import { ISearchService } from "../../../application/interfaces/services/rag/ISearchService.ts";
+import { IRagService } from "../../../application/interfaces/services/rag/IRagService.ts";
 import { ICompleteLevelUseCase, IGenerateLevelsUseCase, IGetUserLevelsUseCase } from "../../../application/interfaces/level/ILevelUseCase.ts";
 import { CompleteLevelUseCase, GenerateLevelsUseCase, GetUserLevelsUseCase } from '../../../application/use-cases/level/level.usecase.ts'
 import { LlmClientProvider } from "../../external-services/rag/providers/llm-client.provider.ts";

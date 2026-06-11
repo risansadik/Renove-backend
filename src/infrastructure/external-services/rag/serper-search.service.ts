@@ -5,7 +5,7 @@ import { SerperClientProvider } from "./providers/serper-client.provider.ts";
 import type {
   ISearchService,
   SearchResult,
-} from "../../../application/interfaces/services/ISearchService.ts";
+} from "../../../application/interfaces/services/rag/ISearchService.ts";
 
 interface SerperOrganicItem {
   title: string;

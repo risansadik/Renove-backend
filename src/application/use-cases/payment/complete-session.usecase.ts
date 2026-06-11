@@ -32,10 +32,31 @@ export class CompleteSessionUseCase implements ICompleteSessionUseCase {
       throw new AppError(`Only confirmed bookings can be completed. Current status: ${booking.status}`, HttpStatus.BAD_REQUEST);
     }
 
-    if (booking.slotId && typeof booking.slotId === 'object' && booking.slotId !== null) {
-      const sessionStartTime = (booking.slotId as { startTime?: string | Date }).startTime;
-      if (sessionStartTime && new Date() < new Date(sessionStartTime)) {
-        throw new AppError("Cannot complete a session that hasn't started yet", HttpStatus.BAD_REQUEST);
+    if (booking.slotId && typeof booking.slotId === "object" && booking.slotId !== null) {
+      const slot = booking.slotId as {
+        startTime?: string | Date;
+        endTime?: string | Date;
+      };
+
+      const now = Date.now();
+
+      if (slot.startTime && now < new Date(slot.startTime).getTime()) {
+        throw new AppError(
+          "Cannot complete a session that hasn't started yet",
+          HttpStatus.BAD_REQUEST
+        );
+      }
+
+      if (
+        slot.startTime &&
+        slot.endTime &&
+        now >= new Date(slot.startTime).getTime() &&
+        now <= new Date(slot.endTime).getTime()
+      ) {
+        throw new AppError(
+          "Session is currently ongoing",
+          HttpStatus.BAD_REQUEST
+        );
       }
     }
 
