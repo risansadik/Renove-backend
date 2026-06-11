@@ -2,11 +2,15 @@ import dns from "node:dns";
 import mongoose from "mongoose";
 import { HttpStatus } from "../../shared/constants/index.ts";
 import { AppError } from "../../shared/utils/AppError.ts";
-import { logger } from "../../shared/utils/logger.ts";
+import { appContainer } from "../di/container.ts";
+import { ILogger } from "../../application/interfaces/services/ILoggerService.ts";
+import { TYPES } from "../../shared/constants/tokens.ts";
 
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
 export const connectDB = async (): Promise<void> => {
+
+  const logger = appContainer.get<ILogger>(TYPES.Logger);
   const mongoUri = process.env.MONGO_URI;
   if (!mongoUri) throw new AppError("MONGO_URI is not defined", HttpStatus.INTERNAL_SERVER_ERROR);
 

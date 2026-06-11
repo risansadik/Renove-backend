@@ -1,9 +1,10 @@
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import nodemailer from "nodemailer";
 import { HttpStatus, MAIL_CONFIG } from "../../shared/constants/index.ts";
-import { logger } from "../../shared/utils/logger.ts";
 import type { IEmailService } from "../../application/interfaces/services/IEmailService.ts";
 import { AppError } from "../../shared/utils/AppError.ts";
+import { TYPES } from "../../shared/constants/tokens.ts";
+import { ILogger } from "../../application/interfaces/services/ILoggerService.ts";
 
 const transporter = nodemailer.createTransport({
   host: MAIL_CONFIG.HOST,
@@ -24,22 +25,25 @@ const emailLayout = (content: string) => `
   </div>
 `;
 
-// Private internal helper function
-const sendMail = async (to: string, subject: string, html: string): Promise<void> => {
-  await transporter.sendMail({
-    from: MAIL_CONFIG.FROM,
-    to,
-    subject,
-    html: emailLayout(html),
-  }).catch((error) => {
-    logger.error("Email send failed:", error);
-    throw new AppError("Failed to send email", HttpStatus.INTERNAL_SERVER_ERROR);
-  });
-};
 
 @injectable()
 export class EmailService implements IEmailService {
-  
+  constructor(
+    @inject(TYPES.Logger) private readonly _logger: ILogger,
+  ) { }
+
+  private async sendMail(to: string, subject: string, html: string): Promise<void> {
+    await transporter.sendMail({
+      from: MAIL_CONFIG.FROM,
+      to,
+      subject,
+      html: emailLayout(html),
+    }).catch((error) => {
+      this._logger.error("Email send failed:", error);
+      throw new AppError("Failed to send email", HttpStatus.INTERNAL_SERVER_ERROR);
+    });
+  };
+
   public async sendOtpEmail(email: string, otp: string, name: string): Promise<void> {
     const content = `
       <p>Hi <strong>${name}</strong>,</p>
@@ -47,7 +51,7 @@ export class EmailService implements IEmailService {
       <div style="font-size: 36px; font-weight: bold; letter-spacing: 8px; color: ${MAIL_CONFIG.BRAND_COLOR}; margin: 24px 0;">${otp}</div>
       <p>This code expires in <strong>5 minutes</strong>. Do not share it with anyone.</p>
     `;
-    await sendMail(email, `${MAIL_CONFIG.BRAND_NAME} - Verify Your Email`, content);
+    await this.sendMail(email, `${MAIL_CONFIG.BRAND_NAME} - Verify Your Email`, content);
   }
 
   public async sendPasswordResetOtp(email: string, otp: string): Promise<void> {
@@ -57,7 +61,7 @@ export class EmailService implements IEmailService {
       <div style="font-size: 36px; font-weight: bold; letter-spacing: 8px; color: ${MAIL_CONFIG.BRAND_COLOR}; margin: 24px 0;">${otp}</div>
       <p>This code expires in <strong>5 minutes</strong>.</p>
     `;
-    await sendMail(email, `${MAIL_CONFIG.BRAND_NAME} - Password Reset OTP`, content);
+    await this.sendMail(email, `${MAIL_CONFIG.BRAND_NAME} - Password Reset OTP`, content);
   }
 
   public async sendTherapistApprovalEmail(email: string, name: string): Promise<void> {
@@ -66,7 +70,7 @@ export class EmailService implements IEmailService {
       <p>Congratulations <strong>${name}</strong>!</p>
       <p>Your therapist application has been approved. You can now log in to your dashboard.</p>
     `;
-    await sendMail(email, `${MAIL_CONFIG.BRAND_NAME} - Application Approved`, content);
+    await this.sendMail(email, `${MAIL_CONFIG.BRAND_NAME} - Application Approved`, content);
   }
 
   public async sendTherapistRejectionEmail(email: string, name: string): Promise<void> {
@@ -75,6 +79,6 @@ export class EmailService implements IEmailService {
       <p>Hi <strong>${name}</strong>,</p>
       <p>Your therapist application was not approved at this time.</p>
     `;
-    await sendMail(email, `${MAIL_CONFIG.BRAND_NAME} - Application Update`, content);
+    await this.sendMail(email, `${MAIL_CONFIG.BRAND_NAME} - Application Update`, content);
   }
 }

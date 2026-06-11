@@ -2,10 +2,11 @@ import cron from "node-cron";
 import { appContainer } from "./di/container.ts";
 import { ExpirePaymentUseCase } from "../application/use-cases/payment/expire-payment.usecase.ts";
 import { TYPES } from "../shared/constants/tokens.ts";
-import { logger } from "../shared/utils/logger.ts";
+import { ILogger } from "../application/interfaces/services/ILoggerService.ts";
 
 export const initCronJobs = () => {
   const expirePaymentUC = appContainer.get<ExpirePaymentUseCase>(TYPES.ExpirePaymentUseCase);
+  const logger = appContainer.get<ILogger>(TYPES.Logger);
 
   // Run every minute
   cron.schedule("* * * * *", async () => {

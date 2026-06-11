@@ -3,10 +3,10 @@ import type { IWalletRepository } from "../../../domain/repositories/wallet.repo
 import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.ts";
 import { BOOKING_STATUS, HttpStatus } from "../../../shared/constants/index.ts";
 import { AppError } from "../../../shared/utils/AppError.ts";
-import { logger } from "../../../shared/utils/logger.ts";
 import { ICompleteSessionInput, ICompleteSessionUseCase } from "../../interfaces/payment/IPaymentUseCase.ts";
 import { inject, injectable } from "inversify";
 import { TYPES } from "../../../shared/constants/tokens.ts";
+import { ILogger } from "../../interfaces/services/ILoggerService.ts";
 
 @injectable()
 export class CompleteSessionUseCase implements ICompleteSessionUseCase {
@@ -14,6 +14,7 @@ export class CompleteSessionUseCase implements ICompleteSessionUseCase {
     @inject(TYPES.BookingRepository) private readonly _bookingRepo: IBookingRepository,
     @inject(TYPES.WalletRepository) private readonly _walletRepo: IWalletRepository,
     @inject(TYPES.PaymentRepository) private readonly _paymentRepo: IPaymentRepository,
+    @inject(TYPES.Logger) private readonly _logger: ILogger
   ) { }
 
   async execute({ bookingId, therapistId }: ICompleteSessionInput): Promise<{ success: boolean, message?: string }> {
@@ -67,7 +68,7 @@ export class CompleteSessionUseCase implements ICompleteSessionUseCase {
     const payment = await this._paymentRepo.findByBookingId(bookingId);
 
     if (!payment) {
-      logger.warn(`No PAID payment record found for booking ${bookingId} during completion. Funds will not be moved.`);
+      this._logger.warn(`No PAID payment record found for booking ${bookingId} during completion. Funds will not be moved.`);
       return { success: true, message: "Booking completed, but no payment record found for fund transfer." };
     }
 
@@ -98,7 +99,7 @@ export class CompleteSessionUseCase implements ICompleteSessionUseCase {
       }
     }
 
-    logger.info(`Session ${bookingId} completed. Moved ${feeToMove} to clinician ${bookingTherapistId} available balance.`);
+    this._logger.info(`Session ${bookingId} completed. Moved ${feeToMove} to clinician ${bookingTherapistId} available balance.`);
 
     return { success: true };
   }

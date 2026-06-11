@@ -3,8 +3,13 @@ import http from "http";
 import app from "./app.ts";
 import { connectDB } from "./infrastructure/databases/connect.ts";
 import { initCronJobs } from "./infrastructure/scheduler.ts";
-import { logger } from "./shared/utils/logger.ts";
-import { socketServer } from "./infrastructure/socket/socket.server.ts";
+import { ILogger } from "./application/interfaces/services/ILoggerService.ts";
+import { appContainer } from "./infrastructure/di/container.ts";
+import { TYPES } from "./shared/constants/tokens.ts";
+import { SocketServer } from "./infrastructure/socket/socket.server.ts";
+
+const logger = appContainer.get<ILogger>(TYPES.Logger);
+const socketServer = appContainer.get<SocketServer>(TYPES.SocketServer);
 
 const PORT = process.env.PORT ?? 5000;
 
