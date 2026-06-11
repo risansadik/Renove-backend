@@ -2,7 +2,7 @@ import { injectable, inject } from "inversify";
 import { TYPES } from "../../../shared/constants/tokens.ts";
 import { LlmClientProvider } from "./providers/llm-client.provider.ts";
 import { HumanMessage, AIMessage, SystemMessage } from "@langchain/core/messages";
-import type { IChatService, ChatTurn } from "../../../application/interfaces/services/IChatService.ts";
+import type { IChatService, ChatTurn } from "../../../application/interfaces/services/rag/IChatService.ts";
 import { ROLES } from "../../../shared/constants/index.ts";
 import { SYSTEM_PROMPT } from "./prompts/chat.prompt.ts";
 

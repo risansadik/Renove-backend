@@ -2,7 +2,7 @@ import { injectable, inject } from "inversify";
 import { TYPES } from "../../../shared/constants/tokens.ts";
 import type { IGenerateLevelsUseCase, IGenerateLevelsInput } from "../../interfaces/level/ILevelUseCase.ts";
 import type { ILevelRepository } from "../../../domain/repositories/level.repository.ts";
-import type { IRagService } from "../../interfaces/services/IRagService.ts";
+import type { IRagService } from "../../../application/interfaces/services/rag/IRagService.ts";
 import type { LevelEntity } from "../../../domain/entities/Level.entity.ts";
 
 @injectable()
