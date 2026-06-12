@@ -1,6 +1,6 @@
 import { inject, injectable } from "inversify";
 import { TYPES } from "../../../shared/constants/tokens.ts";
-import { IReportRepository } from "../../../domain/repositories/IReportRepository.ts";
+import { IReportRepository } from "../../../domain/repositories/report.repository.ts";
 import { IGetReportDetailsUseCase } from "../../interfaces/report/IReportUseCase.ts";
 import { ReportEntity } from "../../../domain/entities/Report.entity.ts";
 import { AppError } from "../../../shared/utils/AppError.ts";

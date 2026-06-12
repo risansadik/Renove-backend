@@ -4,6 +4,7 @@ import { TYPES } from "../../shared/constants/tokens.ts";
 import { UserAuthController } from "../controllers/user-auth.controller.ts";
 import { ProfileController } from "../controllers/profile.controller.ts";
 import { UserDashboardController } from "../controllers/user-dashboard.controller.ts";
+import { TherapistReviewController } from "../controllers/therapist-review.controller.ts";
 
 // Remaining Unchanged Controllers & Middlewares
 import { authenticate, authorize } from "../../infrastructure/di/middlewares.ts";
@@ -33,6 +34,7 @@ const router = Router();
 const userAuthController = appContainer.get<UserAuthController>(TYPES.UserAuthController);
 const profileController = appContainer.get<ProfileController>(TYPES.ProfileController);
 const userDashboardController = appContainer.get<UserDashboardController>(TYPES.UserDashboardController);
+const therapistReviewController = appContainer.get<TherapistReviewController>(TYPES.TherapistReviewController);
 const levelController = appContainer.get<LevelController>(TYPES.LevelController);
 const chatController = appContainer.get<ChatController>(TYPES.ChatController);
 
@@ -62,6 +64,8 @@ router.get("/dashboard", authenticate, authorize(ROLES.USER), asyncHandler(userD
 router.post("/mood", authenticate, authorize(ROLES.USER), asyncHandler(userDashboardController.logMood));
 router.patch("/missions/:missionId", authenticate, authorize(ROLES.USER), asyncHandler(userDashboardController.toggleMission));
 router.get("/therapists", authenticate, authorize(ROLES.USER), asyncHandler(userDashboardController.getApprovedTherapists));
+router.get("/therapists/:therapistId/review", authenticate, authorize(ROLES.USER), asyncHandler(therapistReviewController.getStatus));
+router.post("/therapists/:therapistId/review", authenticate, authorize(ROLES.USER), asyncHandler(therapistReviewController.rate));
 
 // ── Profile (protected) ──────────────────────────────────
 router.get("/profile", authenticate, authorize(ROLES.USER), asyncHandler(profileController.getUserProfile));

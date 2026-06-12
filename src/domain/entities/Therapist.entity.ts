@@ -20,6 +20,8 @@ export interface TherapistEntity {
   adminRejectionReason?: string;
   otp?: string;
   otpExpiry?: Date;
+  averageRating?: number;
+  totalRatings?: number;
   createdAt: Date;
   updatedAt: Date;
 }

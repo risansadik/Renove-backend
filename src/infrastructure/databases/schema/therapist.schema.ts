@@ -20,6 +20,8 @@ export interface ITherapistDocument extends Document {
   adminRejectionReason?: string;
   otp?: string;
   otpExpiry?: Date;
+  averageRating?: number;
+  totalRatings?: number;
   createdAt : Date;
   updatedAt : Date;
 }
@@ -50,6 +52,8 @@ const TherapistSchema = new Schema<ITherapistDocument>(
     adminRejectionReason: { type: String },
     otp: { type: String },
     otpExpiry: { type: Date },
+    averageRating: { type: Number, default: 0 },
+    totalRatings: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

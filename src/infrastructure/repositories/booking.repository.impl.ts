@@ -133,6 +133,16 @@ export class BookingRepositoryImpl implements IBookingRepository {
     }).exec();
   }
 
+  async hasUserCompletedSessionWithTherapist(userId: string, therapistId: string): Promise<boolean> {
+    const completedBooking = await BookingModel.exists({
+      userId,
+      therapistId,
+      status: "completed",
+    }).exec();
+
+    return Boolean(completedBooking);
+  }
+
   async findAwaitingPaymentOlderThan(threshold: Date): Promise<BookingEntity[]> {
     const docs = await BookingModel.find({
       status: "awaiting_payment",
