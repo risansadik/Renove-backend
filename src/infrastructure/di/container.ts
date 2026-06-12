@@ -11,7 +11,7 @@ import { registerProfileModule } from "./modules/profile.module.ts";
 import { registerWalletModule } from "./modules/wallet.module.ts";
 import { registerLevelModule } from "./modules/level.module.ts";
 import { registerChatModule } from "./modules/chat.module.ts";
-
+import { registerReportModule } from "./modules/report.module.ts";
 const appContainer = new Container();
 
 registerInfrastructureModule(appContainer);
@@ -25,5 +25,6 @@ registerDashboardModule(appContainer);
 registerWalletModule(appContainer);
 registerLevelModule(appContainer);
 registerChatModule(appContainer);
+registerReportModule(appContainer);
 
 export { appContainer };
