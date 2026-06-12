@@ -34,7 +34,12 @@ const storage = multerS3({
     file: Express.Multer.File,
     cb: (error: Error | null, key?: string) => void
   ) => {
-    const folder = file.fieldname === 'profileImage' ? 'renove/profiles' : 'renove/certifications';
+    const folder =
+      file.fieldname === 'profileImage'
+        ? 'renove/profiles'
+        : file.fieldname === 'attachments'
+        ? 'renove/attachments'
+        : 'renove/certifications';
     const timestamp = Date.now();
     const sanitizedName = file.originalname.split('.')[0].replace(/[^a-z0-9]/gi, '_');
     const extension = file.originalname.split('.').pop();

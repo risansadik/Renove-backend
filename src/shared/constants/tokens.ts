@@ -17,8 +17,7 @@ export const TYPES = {
   WalletRepository: Symbol.for("WalletRepository"),
   LevelRepository: Symbol.for("ILevelRepository"),
   ChatMessageRepository: Symbol.for("ChatMessageRepository"),
-
-  
+  ReportRepository: Symbol.for("IReportRepository"),
 
   // External Services
   EmailService: Symbol.for("IEmailService"),
@@ -119,9 +118,12 @@ export const TYPES = {
   CreateSessionUseCase: Symbol.for("ICreateSessionUseCase"),
   DeleteSessionUseCase: Symbol.for("IDeleteSessionUseCase"),
 
-
-
-
+  // Use Cases (Report)
+  CreateReportUseCase: Symbol.for("ICreateReportUseCase"),
+  GetMyReportsUseCase: Symbol.for("IGetMyReportsUseCase"),
+  GetReportDetailsUseCase: Symbol.for("IGetReportDetailsUseCase"),
+  AdminGetAllReportsUseCase: Symbol.for("IAdminGetAllReportsUseCase"),
+  AdminUpdateReportUseCase: Symbol.for("IAdminUpdateReportUseCase"),
 
   // Controllers
   UserAuthController: Symbol.for("UserAuthController"),
@@ -136,4 +138,5 @@ export const TYPES = {
   WalletController: Symbol.for("WalletController"),
   LevelController: Symbol.for("LevelController"),
   ChatController: Symbol.for("ChatController"),
+  ReportController: Symbol.for("ReportController"),
 };

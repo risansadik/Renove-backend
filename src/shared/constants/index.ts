@@ -78,6 +78,28 @@ export const SLOT_STATUS = {
 
 export type SlotStatus = (typeof SLOT_STATUS)[keyof typeof SLOT_STATUS];
 
+export const REPORT_STATUS = {
+  OPEN: "open",
+  IN_REVIEW: "in_review",
+  RESOLVED: "resolved",
+  REJECTED: "rejected",
+} as const;
+
+export type ReportStatus = (typeof REPORT_STATUS)[keyof typeof REPORT_STATUS];
+
+export const REPORT_CATEGORY = {
+  TECHNICAL_ISSUE: "Technical Issue",
+  PAYMENT_ISSUE: "Payment Issue",
+  SESSION_ISSUE: "Session Issue",
+  ACCOUNT_ISSUE: "Account Issue",
+  THERAPIST_COMPLAINT: "Therapist Complaint",
+  USER_COMPLAINT: "User Complaint",
+  FEATURE_REQUEST: "Feature Request",
+  OTHER: "Other",
+} as const;
+
+export type ReportCategory = (typeof REPORT_CATEGORY)[keyof typeof REPORT_CATEGORY];
+
 export const HttpStatus = {
   OK: 200,
   CREATED: 201,
@@ -195,6 +217,13 @@ export const MESSAGES = {
     REGENERATED: "Your journey has been regenerated",
     ALREADY_EXISTS: "Journey already exists. Use regenerate to create a new one",
     COMPLETED: "Level completed. XP awarded.",
+  },
+  REPORT: {
+    CREATED: "Report submitted successfully",
+    FETCHED: "Reports fetched successfully",
+    UPDATED: "Report status updated successfully",
+    NOTES_ADDED: "Admin notes added successfully",
+    NOT_FOUND: "Report not found",
   },
 } as const;
 
