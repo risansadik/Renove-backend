@@ -21,6 +21,7 @@ const profileController = appContainer.get<ProfileController>(TYPES.ProfileContr
 
 router.post("/login", validate(AdminLoginSchema), asyncHandler(adminController.login));
 router.post("/logout", authenticate, authorize(ROLES.ADMIN), adminController.logout);
+router.get("/dashboard", authenticate, authorize(ROLES.ADMIN), asyncHandler(adminController.getDashboard));
 
 router.get("/users", authenticate, authorize(ROLES.ADMIN), asyncHandler(adminController.getAllUsers));
 router.patch(

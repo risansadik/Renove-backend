@@ -87,4 +87,13 @@ export class ReportRepository implements IReportRepository {
     if (!report) return null;
     return this.mapToEntity(report);
   }
+
+  public async countByStatuses(statuses: ReportStatus[]): Promise<number> {
+    return ReportModel.countDocuments({ status: { $in: statuses } }).exec();
+  }
+
+  public async findRecent(limit: number): Promise<ReportEntity[]> {
+    const reports = await ReportModel.find({}).sort({ createdAt: -1 }).limit(limit).exec();
+    return reports.map(r => this.mapToEntity(r));
+  }
 }

@@ -14,4 +14,11 @@ export interface IBookingRepository {
   countByTherapistAndStatusBetween(therapistId: string, status: BookingStatus, start: Date, end: Date): Promise<number>;
   hasUserCompletedSessionWithTherapist(userId: string, therapistId: string): Promise<boolean>;
   findAwaitingPaymentOlderThan(threshold: Date): Promise<BookingEntity[]>;
+  countAll(): Promise<number>;
+  countBySlotStartTimeBetween(start: Date, end: Date): Promise<number>;
+  countByStatuses(statuses: BookingStatus[]): Promise<number>;
+  findRecentBookings(limit: number): Promise<BookingEntity[]>;
+  getTopTherapists(limit: number): Promise<Array<{ therapistId: string; name: string; completedSessions: number; averageRating: number; totalRatings: number }>>;
+  findBookingsCreatedAfter(date: Date): Promise<BookingEntity[]>;
+  getStatusDistribution(): Promise<Array<{ status: string; count: number }>>;
 }

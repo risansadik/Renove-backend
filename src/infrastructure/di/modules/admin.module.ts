@@ -5,6 +5,7 @@ import type {
   IUpdateTherapistStatusUseCase,
   IUpdateUserStatusUseCase,
   IGetAdminFinanceStatsUseCase,
+  IGetAdminDashboardUseCase,
   IUpdatePlatformSettingsUseCase,
   IGetPendingTherapistUpdatesUseCase,
   IReviewTherapistProfileUseCase
@@ -16,6 +17,7 @@ import {
   UpdateTherapistStatusUseCase,
   UpdateUserStatusUseCase,
   GetAdminFinanceStatsUseCase,
+  GetAdminDashboardUseCase,
   UpdatePlatformSettingsUseCase,
   GetPendingTherapistUpdatesUseCase,
   ReviewTherapistProfileUseCase
@@ -24,6 +26,7 @@ import { TYPES } from "../../../shared/constants/tokens.ts";
 
 export const registerAdminModule = (container: Container): void => {
   container.bind<IGetAdminFinanceStatsUseCase>(TYPES.AdminFinanceUseCase).to(GetAdminFinanceStatsUseCase);
+  container.bind<IGetAdminDashboardUseCase>(TYPES.GetAdminDashboardUseCase).to(GetAdminDashboardUseCase);
   container.bind<IGetAllTherapistsUseCase>(TYPES.GetAllTherapistsUseCase).to(GetAllTherapistsUseCase)
   container.bind<IGetAllUsersUseCase>(TYPES.GetAllUsersUseCase).to(GetAllUsersUseCase)
   container.bind<IGetPendingTherapistUpdatesUseCase>(TYPES.GetPendingTherapistUpdatesUseCase).to(GetPendingTherapistUpdatesUseCase);

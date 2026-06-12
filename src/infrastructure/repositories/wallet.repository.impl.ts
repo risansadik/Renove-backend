@@ -139,4 +139,14 @@ export class WalletRepositoryImpl implements IWalletRepository {
     const res = await TransactionModel.updateMany({ bookingId }, { status });
     return res.matchedCount > 0;
   }
+
+  async findRecentTransactions(limit: number): Promise<TransactionEntity[]> {
+    const docs = await TransactionModel.find({}).sort({ createdAt: -1 }).limit(limit).exec();
+    return docs.map(doc => this._toTransactionEntity(doc));
+  }
+
+  async findAllTherapistWallets(): Promise<TherapistWalletEntity[]> {
+    const docs = await WalletModel.find({}).exec();
+    return docs.map(doc => this._toTherapistEntity(doc));
+  }
 }

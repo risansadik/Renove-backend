@@ -7,4 +7,8 @@ export interface IUserRepository extends BaseRepository<UserEntity> {
   verifyUser(email: string): Promise<void>;
   updateStatus(id: string, status: UserEntity["status"]): Promise<void>;
   countByStatus(status: UserStatus): Promise<number>;
+  countAll(): Promise<number>;
+  countCreatedAfter(date: Date): Promise<number>;
+  countCreatedBetween(start: Date, end: Date): Promise<number>;
+  findRecent(limit: number): Promise<UserEntity[]>;
 }

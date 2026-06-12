@@ -19,4 +19,6 @@ export interface IWalletRepository {
   getTransactions(walletId: string, walletType: "TherapistWallet" | "UserWallet", params?: PaginationParams): Promise<PaginatedResult<TransactionEntity>>;
   createTransaction(transaction: Partial<TransactionEntity> & { walletType: string }): Promise<TransactionEntity>;
   updateTransactionStatusByBookingId(bookingId: string, status: "pending" | "completed" | "failed"): Promise<boolean>;
+  findRecentTransactions(limit: number): Promise<TransactionEntity[]>;
+  findAllTherapistWallets(): Promise<TherapistWalletEntity[]>;
 }

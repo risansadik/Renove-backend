@@ -59,6 +59,7 @@ export const TYPES = {
 
   // Use Cases (Admin)
   AdminFinanceUseCase: Symbol.for("IAdminFinanceUseCase"),
+  GetAdminDashboardUseCase: Symbol.for("IGetAdminDashboardUseCase"),
   AdminManagementUseCase: Symbol.for("IAdminManagementUseCase"),
   GetAllTherapistsUseCase: Symbol.for("IGetAllTherapistsUseCase"),
   GetAllUsersUseCase: Symbol.for("IGetAllUsersUseCase"),
