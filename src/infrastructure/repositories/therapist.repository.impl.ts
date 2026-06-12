@@ -144,4 +144,17 @@ export class TherapistRepository
       }
     );
   }
+
+  public async updateRatingSummary(
+    id: string,
+    summary: { averageRating: number; totalRatings: number }
+  ): Promise<TherapistEntity | null> {
+    const document = await this.model.findByIdAndUpdate(
+      id,
+      { $set: summary },
+      { new: true }
+    ).exec();
+
+    return document ? this.toEntity(document) : null;
+  }
 }

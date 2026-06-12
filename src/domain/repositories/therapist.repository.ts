@@ -22,4 +22,9 @@ export interface ITherapistRepository extends BaseRepository<TherapistEntity> {
     status: TherapistStatus,
     params?: PaginationParams
   ): Promise<PaginatedResult<TherapistEntity>>;
+
+  updateRatingSummary(
+    id: string,
+    summary: { averageRating: number; totalRatings: number }
+  ): Promise<TherapistEntity | null>;
 }

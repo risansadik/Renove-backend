@@ -8,6 +8,7 @@ import type { IOtpCacheRepository } from "../../../domain/repositories/otp-cache
 import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.ts";
 import type { ISettingsRepository } from "../../../domain/repositories/settings.repository.ts";
 import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
+import type { ITherapistReviewRepository } from "../../../domain/repositories/therapist-review.repository.ts";
 import type { IUserProgressRepository } from "../../../domain/repositories/user-progress.repository.ts";
 import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
 import type { IEmailService } from "../../../application/interfaces/services/IEmailService.ts";
@@ -30,6 +31,7 @@ import { PaymentRepositoryImpl } from "../../repositories/payment.repository.imp
 import { RedisOtpCacheRepository } from "../../repositories/redis-otp-cache.repository.impl.ts";
 import { SettingsRepositoryImpl } from "../../repositories/settings.repository.impl.ts";
 import { TherapistRepository } from "../../repositories/therapist.repository.impl.ts";
+import { TherapistReviewRepository } from "../../repositories/therapist-review.repository.impl.ts";
 import { UserProgressRepository } from "../../repositories/user-progress.repository.impl.ts";
 import { UserRepository } from "../../repositories/user.repository.impl.ts";
 import { ILogger } from "../../../application/interfaces/services/ILoggerService.ts";
@@ -48,6 +50,7 @@ export const registerInfrastructureModule = (container: Container): void => {
   container.bind<ISettingsRepository>(TYPES.SettingsRepository).to(SettingsRepositoryImpl).inSingletonScope();
   container.bind<ISlotRepository>(TYPES.SlotRepository).to(SlotRepository).inSingletonScope();
   container.bind<ITherapistRepository>(TYPES.TherapistRepository).to(TherapistRepository).inSingletonScope();
+  container.bind<ITherapistReviewRepository>(TYPES.TherapistReviewRepository).to(TherapistReviewRepository).inSingletonScope();
   container.bind<IUserProgressRepository>(TYPES.UserProgressRepository).to(UserProgressRepository).inSingletonScope();
   container.bind<IUserRepository>(TYPES.UserRepository).to(UserRepository).inSingletonScope();
 

@@ -1,8 +1,8 @@
 import { Container } from "inversify";
 import { TYPES } from "../../../shared/constants/tokens.ts";
 
-import { IReportRepository } from "../../../domain/repositories/IReportRepository.ts";
-import { ReportRepository } from "../../repositories/ReportRepository.ts";
+import { IReportRepository } from "../../../domain/repositories/report.repository.ts";
+import { ReportRepository } from "../../repositories/report-repository.impl.ts";
 
 import { ICreateReportUseCase, IGetMyReportsUseCase, IGetReportDetailsUseCase, IAdminGetAllReportsUseCase, IAdminUpdateReportUseCase } from "../../../application/interfaces/report/IReportUseCase.ts";
 import { CreateReportUseCase } from "../../../application/use-cases/report/CreateReportUseCase.ts";

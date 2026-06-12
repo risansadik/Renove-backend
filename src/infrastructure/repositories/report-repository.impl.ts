@@ -1,12 +1,12 @@
 import { injectable } from "inversify";
-import { IReportRepository } from "../../../domain/repositories/IReportRepository.ts";
-import { ReportEntity } from "../../../domain/entities/Report.entity.ts";
+import { IReportRepository } from "../../domain/repositories/report.repository.ts";
+import { ReportEntity } from "../../domain/entities/Report.entity.ts";
 import { ReportModel, IReportDocument } from "../databases/schema/report.schema.ts";
-import { ReportStatus } from "../../../shared/constants/index.ts";
+import { ReportStatus } from "../../shared/constants/index.ts";
 
 @injectable()
 export class ReportRepository implements IReportRepository {
-  
+
   private mapToEntity(doc: IReportDocument): ReportEntity {
     return {
       id: doc._id.toString(),
@@ -37,7 +37,7 @@ export class ReportRepository implements IReportRepository {
 
   public async findByReporter(reporterId: string, page: number, limit: number): Promise<{ data: ReportEntity[]; total: number }> {
     const skip = (page - 1) * limit;
-    
+
     const [reports, total] = await Promise.all([
       ReportModel.find({ reporterId }).sort({ createdAt: -1 }).skip(skip).limit(limit).exec(),
       ReportModel.countDocuments({ reporterId }).exec()
@@ -72,7 +72,7 @@ export class ReportRepository implements IReportRepository {
       { status },
       { new: true }
     ).exec();
-    
+
     if (!report) return null;
     return this.mapToEntity(report);
   }
@@ -83,7 +83,7 @@ export class ReportRepository implements IReportRepository {
       { adminNotes: note },
       { new: true }
     ).exec();
-    
+
     if (!report) return null;
     return this.mapToEntity(report);
   }

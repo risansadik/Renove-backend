@@ -12,5 +12,6 @@ export interface IBookingRepository {
   checkAvailability(therapistId: string, date: Date, slot: string): Promise<boolean>;
   countByUserAndStatus(userId: string, status: BookingStatus): Promise<number>;
   countByTherapistAndStatusBetween(therapistId: string, status: BookingStatus, start: Date, end: Date): Promise<number>;
+  hasUserCompletedSessionWithTherapist(userId: string, therapistId: string): Promise<boolean>;
   findAwaitingPaymentOlderThan(threshold: Date): Promise<BookingEntity[]>;
 }

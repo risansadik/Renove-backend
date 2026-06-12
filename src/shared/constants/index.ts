@@ -185,6 +185,10 @@ export const MESSAGES = {
     MISSION_UPDATED: "Mission updated",
     THERAPISTS_FETCHED: "Therapists fetched",
   },
+  REVIEW: {
+    STATUS_FETCHED: "Therapist review status fetched",
+    SAVED: "Therapist rating saved",
+  },
   ADMIN: {
     LOGIN_SUCCESS: "Admin login successful",
     USERS_FETCHED: "Users fetched",
