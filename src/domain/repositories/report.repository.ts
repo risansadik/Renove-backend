@@ -8,4 +8,6 @@ export interface IReportRepository {
   findAll(page: number, limit: number, filter?: { status?: ReportStatus; category?: string }): Promise<{ data: ReportEntity[]; total: number }>;
   updateStatus(id: string, status: ReportStatus): Promise<ReportEntity | null>;
   addAdminNote(id: string, note: string): Promise<ReportEntity | null>;
+  countByStatuses(statuses: ReportStatus[]): Promise<number>;
+  findRecent(limit: number): Promise<ReportEntity[]>;
 }

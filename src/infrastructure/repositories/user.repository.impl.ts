@@ -84,5 +84,21 @@ export class UserRepository
   public async countByStatus(status: UserStatus): Promise<number> {
     return this.model.countDocuments({ status }).exec();
   }
-  
+
+  public async countAll(): Promise<number> {
+    return this.model.countDocuments({}).exec();
+  }
+
+  public async countCreatedAfter(date: Date): Promise<number> {
+    return this.model.countDocuments({ createdAt: { $gte: date } }).exec();
+  }
+
+  public async countCreatedBetween(start: Date, end: Date): Promise<number> {
+    return this.model.countDocuments({ createdAt: { $gte: start, $lt: end } }).exec();
+  }
+
+  public async findRecent(limit: number): Promise<UserEntity[]> {
+    const docs = await this.model.find({}).sort({ createdAt: -1 }).limit(limit).exec();
+    return docs.map((doc) => this.toEntity(doc));
+  }
 }

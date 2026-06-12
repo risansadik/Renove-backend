@@ -157,4 +157,25 @@ export class TherapistRepository
 
     return document ? this.toEntity(document) : null;
   }
+
+  public async countAll(): Promise<number> {
+    return this.model.countDocuments({}).exec();
+  }
+
+  public async countByStatuses(statuses: TherapistStatus[]): Promise<number> {
+    return this.model.countDocuments({ status: { $in: statuses } }).exec();
+  }
+
+  public async countCreatedAfter(date: Date): Promise<number> {
+    return this.model.countDocuments({ createdAt: { $gte: date } }).exec();
+  }
+
+  public async countCreatedBetween(start: Date, end: Date): Promise<number> {
+    return this.model.countDocuments({ createdAt: { $gte: start, $lt: end } }).exec();
+  }
+
+  public async findRecent(limit: number): Promise<TherapistEntity[]> {
+    const docs = await this.model.find({}).sort({ createdAt: -1 }).limit(limit).exec();
+    return docs.map((doc) => this.toEntity(doc));
+  }
 }

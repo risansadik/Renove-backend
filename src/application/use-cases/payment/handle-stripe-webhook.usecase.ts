@@ -102,9 +102,6 @@ export class HandleStripeWebhookUseCase implements IHandleStripeWebhookUseCase{
 
     await this._paymentRepo.updateStatus(payment.id!, PAYMENT_STATUS.FAILED);
     
-    // Note: We don't necessarily release the slot here because the user might try again 
-    // within their 15-minute window. Release happens via the cron/expiration job.
-    
     this._logger.warn("Processed payment failure webhook", { paymentId: payment.id });
   }
 }

@@ -151,4 +151,66 @@ export class BookingRepositoryImpl implements IBookingRepository {
 
     return docs.map((doc) => this._toEntity(doc as unknown as IBookingRaw));
   }
+
+  async countAll(): Promise<number> {
+    return BookingModel.countDocuments({}).exec();
+  }
+
+  async countBySlotStartTimeBetween(start: Date, end: Date): Promise<number> {
+    return BookingModel.countDocuments({ "slotId.startTime": { $gte: start, $lte: end } }).exec();
+  }
+
+  async countByStatuses(statuses: BookingStatus[]): Promise<number> {
+    return BookingModel.countDocuments({ status: { $in: statuses } }).exec();
+  }
+
+  async findRecentBookings(limit: number): Promise<BookingEntity[]> {
+    const docs = await BookingModel.find({})
+      .sort({ updatedAt: -1 })
+      .limit(limit)
+      .populate("userId", "name")
+      .populate("therapistId", "name")
+      .lean()
+      .exec();
+    return docs.map((doc) => this._toEntity(doc as unknown as IBookingRaw));
+  }
+
+  async getTopTherapists(limit: number): Promise<Array<{ therapistId: string; name: string; completedSessions: number; averageRating: number; totalRatings: number }>> {
+    return BookingModel.aggregate([
+      { $match: { status: "completed" } },
+      { $group: { _id: "$therapistId", completedSessions: { $sum: 1 } } },
+      { $sort: { completedSessions: -1 } },
+      { $limit: limit },
+      {
+        $lookup: {
+          from: "therapists",
+          localField: "_id",
+          foreignField: "_id",
+          as: "therapist",
+        },
+      },
+      { $unwind: "$therapist" },
+      {
+        $project: {
+          therapistId: { $toString: "$_id" },
+          name: "$therapist.name",
+          completedSessions: 1,
+          averageRating: { $ifNull: ["$therapist.averageRating", 0] },
+          totalRatings: { $ifNull: ["$therapist.totalRatings", 0] },
+        },
+      },
+    ]).exec();
+  }
+
+  async findBookingsCreatedAfter(date: Date): Promise<BookingEntity[]> {
+    const docs = await BookingModel.find({ createdAt: { $gte: date } }).lean().exec();
+    return docs.map(doc => this._toEntity(doc as unknown as IBookingRaw));
+  }
+
+  async getStatusDistribution(): Promise<Array<{ status: string; count: number }>> {
+    const result = await BookingModel.aggregate([
+      { $group: { _id: "$status", count: { $sum: 1 } } },
+    ]).exec();
+    return result.map(item => ({ status: item._id, count: item.count }));
+  }
 }

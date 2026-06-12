@@ -27,4 +27,10 @@ export interface ITherapistRepository extends BaseRepository<TherapistEntity> {
     id: string,
     summary: { averageRating: number; totalRatings: number }
   ): Promise<TherapistEntity | null>;
+
+  countAll(): Promise<number>;
+  countByStatuses(statuses: TherapistStatus[]): Promise<number>;
+  countCreatedAfter(date: Date): Promise<number>;
+  countCreatedBetween(start: Date, end: Date): Promise<number>;
+  findRecent(limit: number): Promise<TherapistEntity[]>;
 }

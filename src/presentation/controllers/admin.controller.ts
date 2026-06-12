@@ -6,6 +6,7 @@ import type {
   IUpdateTherapistStatusUseCase,
   IUpdateUserStatusUseCase,
   IGetAdminFinanceStatsUseCase,
+  IGetAdminDashboardUseCase,
   IUpdatePlatformSettingsUseCase
 } from "../../application/interfaces/admin/IAdminUseCase.ts";
 import type { IAdminLoginUseCase } from "../../application/interfaces/auth/IAuthUseCase.ts";
@@ -23,6 +24,7 @@ export class AdminController {
     @inject(TYPES.GetAllTherapistsUseCase) private readonly _getAllTherapistsUC: IGetAllTherapistsUseCase,
     @inject(TYPES.UpdateTherapistStatusUseCase) private readonly _updateTherapistStatusUC: IUpdateTherapistStatusUseCase,
     @inject(TYPES.AdminFinanceUseCase) private readonly _getAdminFinanceStatsUC: IGetAdminFinanceStatsUseCase,
+    @inject(TYPES.GetAdminDashboardUseCase) private readonly _getAdminDashboardUC: IGetAdminDashboardUseCase,
     @inject(TYPES.UpdatePlatformSettingsUseCase) private readonly _updatePlatformSettingsUC: IUpdatePlatformSettingsUseCase
   ) {}
 
@@ -35,6 +37,11 @@ export class AdminController {
   public logout = (_req: Request, res: Response): void => {
     authTokenService.clearAuthCookies(res);
     res.json(ResponseModel.success(MESSAGES.AUTH.LOGOUT_SUCCESS, null));
+  };
+
+  public getDashboard = async (_req: Request, res: Response): Promise<void> => {
+    const dashboard = await this._getAdminDashboardUC.execute();
+    res.json(ResponseModel.success(MESSAGES.DASHBOARD.FETCHED, dashboard));
   };
 
   public getAllUsers = async (req: Request, res: Response): Promise<void> => {
