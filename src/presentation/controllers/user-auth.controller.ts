@@ -2,14 +2,10 @@ import { Request, Response } from "express";
 import { injectable, inject } from "inversify";
 import { TYPES } from "../../shared/constants/tokens.ts";
 
-// Utilities & Mappers
+// Utilities
 import { ResponseModel } from "../../shared/utils/response-model.ts";
 import { authTokenService } from "../../shared/utils/jwt.ts";
 import { HttpStatus, MESSAGES } from "../../shared/constants/index.ts";
-import { UserMapper } from "../../application/mappers/user.mapper.ts";
-
-// Entities
-import { UserEntity } from "../../domain/entities/User.entity.ts";
 
 // Use Case Interfaces
 import type { 
@@ -56,13 +52,13 @@ export class UserAuthController {
   public login = async (req: Request, res: Response): Promise<void> => {
     const { tokens, user } = await this._loginUC.execute(req.body);
     authTokenService.setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
-    res.json(ResponseModel.success(MESSAGES.AUTH.LOGIN_SUCCESS, { user: UserMapper.toPublicDTO(user as UserEntity) }));
+    res.json(ResponseModel.success(MESSAGES.AUTH.LOGIN_SUCCESS, { user }));
   };
 
   public googleAuth = async (req: Request, res: Response): Promise<void> => {
     const { tokens, user } = await this._googleAuthUC.execute({ idToken: req.body.idToken });
     authTokenService.setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
-    res.json(ResponseModel.success(MESSAGES.AUTH.GOOGLE_SUCCESS, { user: UserMapper.toPublicDTO(user as UserEntity) }));
+    res.json(ResponseModel.success(MESSAGES.AUTH.GOOGLE_SUCCESS, { user }));
   };
 
   public forgotPassword = async (req: Request, res: Response): Promise<void> => {

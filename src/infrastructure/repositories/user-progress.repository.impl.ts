@@ -3,7 +3,8 @@ import type { IUserProgressRepository } from "../../domain/repositories/user-pro
 import type { MissionEntity, UserProgressEntity } from "../../domain/entities/UserProgress.entity.ts";
 import { UserProgressModel } from "../databases/schema/user-progress.schema.ts";
 import { MS_IN_DAY } from "../../shared/constants/index.ts";
-import type { IUserProgressDocument, IMission } from "../databases/schema/user-progress.schema.ts";
+import type { IUserProgressDocument } from "../databases/schema/user-progress.schema.ts";
+import { UserProgressDbMapper } from "../mappers/user-progress.db-mapper.ts";
 
 const XP_PER_LEVEL = 500;
 
@@ -19,38 +20,6 @@ function computeStreak(doc: IUserProgressDocument): number {
   const diffDays = Math.floor(diffMs / MS_IN_DAY);
   if (diffDays <= 1) return doc.streakDays;
   return 0; // streak broken
-}
-
-function toEntity(doc: IUserProgressDocument): UserProgressEntity {
-  return {
-    id: doc._id.toString(),
-    userId: doc.userId.toString(),
-    xp: doc.xp,
-    level: doc.level,
-    streakDays: doc.streakDays,
-    totalSessionsDone: doc.totalSessionsDone,
-    missions: doc.missions.map((mission) => ({
-      id: mission.id,
-      label: mission.label,
-      done: mission.done,
-      xp: mission.xp,
-    })),
-    habits: doc.habits.map((habit) => ({
-      label: habit.label,
-      color: habit.color,
-      days: habit.days.map((day) => ({
-        date: day.date,
-        done: day.done,
-      })),
-    })),
-    moodLogs: doc.moodLogs.map((log) => ({
-      mood: log.mood,
-      loggedAt: log.loggedAt,
-    })),
-    lastActivityDate: doc.lastActivityDate,
-    createdAt: doc.createdAt,
-    updatedAt: doc.updatedAt,
-  };
 }
 
 @injectable()
@@ -71,7 +40,7 @@ export class UserProgressRepository implements IUserProgressRepository {
   }
 
   async findOrCreate(userId: string): Promise<UserProgressEntity> {
-    return toEntity(await this._findOrCreateDocument(userId));
+    return UserProgressDbMapper.toEntity(await this._findOrCreateDocument(userId));
   }
 
   async getDashboard(userId: string): Promise<UserProgressEntity> {
@@ -96,7 +65,7 @@ export class UserProgressRepository implements IUserProgressRepository {
   async toggleMission(userId: string, missionId: string): Promise<MissionEntity[]> {
     const doc = await this._findOrCreateDocument(userId);
     const mission = doc.missions.find((m) => m.id === missionId);
-    if (!mission) return doc.missions.map(toMissionEntity);
+    if (!mission) return doc.missions.map(UserProgressDbMapper.toMissionEntity);
     mission.done = !mission.done;
     if (mission.done) {
       doc.xp += mission.xp;
@@ -106,7 +75,7 @@ export class UserProgressRepository implements IUserProgressRepository {
     doc.level = computeLevel(doc.xp);
     doc.lastActivityDate = new Date();
     await doc.save();
-    return doc.missions.map(toMissionEntity);
+    return doc.missions.map(UserProgressDbMapper.toMissionEntity);
   }
 
   async updateStreak(userId: string): Promise<void> {
@@ -132,13 +101,4 @@ export class UserProgressRepository implements IUserProgressRepository {
     doc.lastActivityDate = new Date();
     await doc.save();
   }
-}
-
-function toMissionEntity(mission: IMission): MissionEntity {
-  return {
-    id: mission.id,
-    label: mission.label,
-    done: mission.done,
-    xp: mission.xp,
-  };
 }

@@ -5,6 +5,9 @@ import { TYPES } from "../../shared/constants/tokens.ts";
 import { PAGINATION, MESSAGES } from "../../shared/constants/index.ts";
 import { ResponseModel } from "../../shared/utils/response-model.ts";
 import type { AuthenticatedRequest } from "../../shared/types/express.ts";
+import { WalletMapper } from "../../application/mappers/wallet.mapper.ts";
+import type { TherapistWalletEntity } from "../../domain/entities/TherapistWallet.entity.ts";
+import type { UserWalletEntity } from "../../domain/entities/UserWallet.entity.ts";
 
 @injectable()
 export class WalletController {
@@ -15,13 +18,17 @@ export class WalletController {
     const page = parseInt(req.query.page as string) || PAGINATION.DEFAULT_PAGE;
     const limit = parseInt(req.query.limit as string) || PAGINATION.DEFAULT_LIMIT;
 
-    const result = await this._getWalletUC.execute({id, role,params: { page, limit }});
+    const result = await this._getWalletUC.execute({ id, role, params: { page, limit } });
     
     const totalPages = Math.ceil(result.transactions.total / limit);
 
+    const walletDTO = role === "therapist"
+      ? WalletMapper.toTherapistWalletDTO(result.wallet as TherapistWalletEntity)
+      : WalletMapper.toUserWalletDTO(result.wallet as UserWalletEntity);
+
     res.json(ResponseModel.success(MESSAGES.WALLET.FETCHED, {
-      wallet: result.wallet,
-      transactions: result.transactions.data
+      wallet: walletDTO,
+      transactions: WalletMapper.toTransactionDTOList(result.transactions.data)
     }, 200, {
       total: result.transactions.total,
       page,

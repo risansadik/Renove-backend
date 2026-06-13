@@ -10,13 +10,13 @@ import { injectable, inject } from "inversify";
 import { TYPES } from "../../../shared/constants/tokens.ts";
 
 @injectable()
-export class GetTherapistDashboardUseCase implements IGetTherapistDashboardUseCase{
+export class GetTherapistDashboardUseCase implements IGetTherapistDashboardUseCase {
   constructor(
     @inject(TYPES.TherapistRepository) private readonly _therapistRepo: ITherapistRepository,
     @inject(TYPES.WalletRepository) private readonly _walletRepo: IWalletRepository,
     @inject(TYPES.BookingRepository) private readonly _bookingRepo: IBookingRepository,
     @inject(TYPES.UserRepository) private readonly _userRepo: IUserRepository
-  ) {}
+  ) { }
 
   async execute(therapistId: string) {
     const today = new Date();
@@ -42,6 +42,8 @@ export class GetTherapistDashboardUseCase implements IGetTherapistDashboardUseCa
       joinedDaysAgo: Math.floor((Date.now() - new Date(therapist.createdAt).getTime()) / 86400000),
       sessionsToday,
       upcomingSessionsThisWeek: sessionsWeek,
+      averageRating: therapist.averageRating,
+      totalRatings: therapist.totalRatings,
       wallet: {
         pendingBalance: wallet?.pendingBalance ?? 0,
         availableBalance: wallet?.availableBalance ?? 0,

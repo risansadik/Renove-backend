@@ -9,8 +9,6 @@ import type {
   IVerifyOtpUseCase,
   IVerifyResetOtpUseCase,
 } from "../../application/interfaces/auth/IAuthUseCase.ts";
-import { TherapistMapper } from "../../application/mappers/therapist.mapper.ts";
-import type { TherapistEntity } from "../../domain/entities/Therapist.entity.ts";
 import { HttpStatus, MESSAGES } from "../../shared/constants/index.ts";
 import { TYPES } from "../../shared/constants/tokens.ts";
 import { authTokenService } from "../../shared/utils/jwt.ts";
@@ -58,7 +56,7 @@ export class TherapistAuthController {
   public login = async (req: Request, res: Response): Promise<void> => {
     const { tokens, user } = await this._loginUC.execute(req.body);
     authTokenService.setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
-    res.json(ResponseModel.success(MESSAGES.AUTH.LOGIN_SUCCESS, { therapist: TherapistMapper.toPublicDTO(user as TherapistEntity) }));
+    res.json(ResponseModel.success(MESSAGES.AUTH.LOGIN_SUCCESS, { therapist: user }));
   };
 
   public logout = (_req: Request, res: Response): void => {

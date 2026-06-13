@@ -6,14 +6,7 @@ import { PAGINATION } from "../../shared/constants/index.ts";
 export abstract class BaseRepository<T extends { id: string }, D extends Document> implements IBaseRepository<T> {
   constructor(protected readonly model: Model<D>) {}
 
-  protected toEntity(doc: D): T {
-    const obj = doc.toObject({ versionKey: false }) as Record<string, unknown>;
-    if (obj._id) {
-      obj.id = String(obj._id);
-      delete obj._id;
-    }
-    return obj as unknown as T;
-  }
+  protected abstract toEntity(doc: D): T;
 
   public async findById(id: string): Promise<T | null> {
     const document = await this.model.findById(id).exec();

@@ -18,8 +18,6 @@ export interface PublicTherapistDTO {
   isVerified: boolean;
   pendingUpdates?: TherapistEntity["pendingUpdates"];
   adminRejectionReason?: string;
-  averageRating?: number;
-  totalRatings?: number;
   createdAt: Date;
   updatedAt?: Date;
 }
@@ -43,8 +41,6 @@ export class TherapistMapper {
       profileImage: entity.profileImage,
       status: entity.status,
       isVerified: entity.isVerified,
-      averageRating: entity.averageRating,
-      totalRatings: entity.totalRatings,
       createdAt: entity.createdAt,
     };
   }

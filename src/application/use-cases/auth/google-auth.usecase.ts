@@ -6,6 +6,7 @@ import { AppError } from "../../../shared/utils/AppError.ts";
 import { HttpStatus, ROLES, USER_STATUS } from "../../../shared/constants/index.ts";
 import type { IGoogleAuthUseCase, ILoginResponse } from "../../interfaces/auth/IAuthUseCase.ts";
 import type { ITokenService } from "../../interfaces/services/ITokenService.ts";
+import { UserMapper } from "../../mappers/user.mapper.ts";
 
 @injectable()
 export class GoogleAuthUseCase implements IGoogleAuthUseCase {
@@ -38,6 +39,7 @@ export class GoogleAuthUseCase implements IGoogleAuthUseCase {
     }
 
     const tokens = this._tokenService.generateTokens({ id: user!.id, email: user!.email, role: ROLES.USER });
-    return { tokens, user: user! };
+    return { tokens, user: UserMapper.toPublicDTO(user!) };
   }
 }
+

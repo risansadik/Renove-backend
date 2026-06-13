@@ -13,6 +13,7 @@ import type {
     ICreateSessionUseCase,
     IDeleteSessionUseCase,
 } from "../../application/interfaces/chat/IChatUseCase.ts";
+import { ChatMapper } from "../../application/mappers/chat.mapper.ts";
 
 @injectable()
 export class ChatController {
@@ -26,12 +27,12 @@ export class ChatController {
 
     public getSessions = async (req: AuthRequest, res: Response): Promise<void> => {
         const sessions = await this._getSessionsUC.execute(req.user!.id);
-        res.status(HttpStatus.OK).json(ResponseModel.success("Sessions fetched", sessions));
+        res.status(HttpStatus.OK).json(ResponseModel.success("Sessions fetched", ChatMapper.toSessionDTOList(sessions)));
     };
 
     public createSession = async (req: AuthRequest, res: Response): Promise<void> => {
         const session = await this._createSessionUC.execute(req.user!.id);
-        res.status(HttpStatus.CREATED).json(ResponseModel.created("Session created", session));
+        res.status(HttpStatus.CREATED).json(ResponseModel.created("Session created", ChatMapper.toSessionDTO(session)));
     };
 
     public deleteSession = async (req: AuthRequest, res: Response): Promise<void> => {
@@ -43,7 +44,7 @@ export class ChatController {
     public getSessionMessages = async (req: AuthRequest, res: Response): Promise<void> => {
         const { sessionId } = req.params;
         const messages = await this._getSessionMessagesUC.execute({ userId: req.user!.id, sessionId });
-        res.status(HttpStatus.OK).json(ResponseModel.success("Messages fetched", messages));
+        res.status(HttpStatus.OK).json(ResponseModel.success("Messages fetched", ChatMapper.toMessageDTOList(messages)));
     };
 
     public streamMessage = async (req: AuthRequest, res: Response): Promise<void> => {
