@@ -29,6 +29,9 @@ export class TherapistReviewController {
       rating: Number(req.body.rating),
     });
 
-    res.status(HttpStatus.CREATED).json(ResponseModel.created(MESSAGES.REVIEW.SAVED, result));
+    res.status(HttpStatus.CREATED).json(ResponseModel.created(
+      MESSAGES.REVIEW.SAVED,
+      result
+    ));
   };
 }

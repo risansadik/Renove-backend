@@ -4,40 +4,13 @@ import type { BookingEntity } from "../../domain/entities/Booking.entity.ts";
 import type { BookingStatus } from "../../shared/constants/index.ts";
 import { BookingModel, type IBookingRaw } from "../databases/schema/booking.schema.ts";
 import { PaginationParams, PaginatedResult } from "../../domain/interfaces/pagination.ts";
+import { BookingDbMapper } from "../mappers/booking.db-mapper.ts";
 
 @injectable()
 export class BookingRepositoryImpl implements IBookingRepository {
-  private _toEntity(doc: IBookingRaw): BookingEntity {
-    return {
-      id: doc._id.toString(),
-      userId: typeof doc.userId === 'object' && doc.userId && "name" in doc.userId
-        ? { id: doc.userId._id.toString(), name: (doc.userId as { name: string }).name, email: (doc.userId as { email: string }).email }
-        : (doc.userId as { toString: () => string }).toString(),
-      therapistId: typeof doc.therapistId === 'object' && doc.therapistId && "name" in doc.therapistId
-        ? {
-          id: doc.therapistId._id.toString(),
-          name: (doc.therapistId as { name: string }).name,
-          consultationFee: (doc.therapistId as { consultationFee?: number }).consultationFee ?? 0
-        }
-        : (doc.therapistId as { toString: () => string }).toString(),
-      slotId: typeof doc.slotId === 'object' && doc.slotId && "startTime" in doc.slotId
-        ? { id: doc.slotId._id.toString(), startTime: (doc.slotId as { startTime: Date }).startTime, endTime: (doc.slotId as { endTime: Date }).endTime }
-        : (doc.slotId ? (doc.slotId as { toString: () => string }).toString() : ""),
-      type: doc.type,
-      status: doc.status,
-      note: doc.note,
-      rejectionReason: doc.rejectionReason,
-      cancelledBy: doc.cancelledBy?.toString(),
-      cancellationReason: doc.cancellationReason,
-      cancelledAt: doc.cancelledAt,
-      createdAt: doc.createdAt,
-      updatedAt: doc.updatedAt,
-    };
-  }
-
   async create(booking: Omit<BookingEntity, "id" | "createdAt" | "updatedAt">): Promise<BookingEntity> {
     const doc = await BookingModel.create(booking);
-    return this._toEntity(doc);
+    return BookingDbMapper.toEntity(doc);
   }
 
   async findById(id: string): Promise<BookingEntity | null> {
@@ -45,7 +18,7 @@ export class BookingRepositoryImpl implements IBookingRepository {
       .populate("userId", "name email")
       .populate("therapistId", "name consultationFee")
       .populate("slotId");
-    return doc ? this._toEntity(doc) : null;
+    return doc ? BookingDbMapper.toEntity(doc) : null;
   }
 
   async findByUserId(userId: string, params?: PaginationParams): Promise<PaginatedResult<BookingEntity>> {
@@ -53,7 +26,7 @@ export class BookingRepositoryImpl implements IBookingRepository {
       .populate("therapistId", "name consultationFee")
       .populate("slotId")
       .sort({ createdAt: -1 });
-    
+
     if (params) {
       query.skip((params.page - 1) * params.limit).limit(params.limit);
     }
@@ -64,7 +37,7 @@ export class BookingRepositoryImpl implements IBookingRepository {
     ]);
 
     return {
-      data: docs.map(doc => this._toEntity(doc as unknown as IBookingRaw)),
+      data: docs.map(doc => BookingDbMapper.toEntity(doc as unknown as IBookingRaw)),
       total
     };
   }
@@ -85,7 +58,7 @@ export class BookingRepositoryImpl implements IBookingRepository {
     ]);
 
     return {
-      data: docs.map(doc => this._toEntity(doc as unknown as IBookingRaw)),
+      data: docs.map(doc => BookingDbMapper.toEntity(doc as unknown as IBookingRaw)),
       total
     };
   }
@@ -96,7 +69,7 @@ export class BookingRepositoryImpl implements IBookingRepository {
       { status, rejectionReason },
       { new: true }
     );
-    return doc ? this._toEntity(doc) : null;
+    return doc ? BookingDbMapper.toEntity(doc) : null;
   }
 
   async update(id: string, data: Partial<BookingEntity>): Promise<BookingEntity | null> {
@@ -105,7 +78,7 @@ export class BookingRepositoryImpl implements IBookingRepository {
       { $set: data },
       { new: true }
     );
-    return doc ? this._toEntity(doc as unknown as IBookingRaw) : null;
+    return doc ? BookingDbMapper.toEntity(doc as unknown as IBookingRaw) : null;
   }
 
   async checkAvailability(therapistId: string, date: Date, slot: string): Promise<boolean> {
@@ -139,7 +112,6 @@ export class BookingRepositoryImpl implements IBookingRepository {
       therapistId,
       status: "completed",
     }).exec();
-
     return Boolean(completedBooking);
   }
 
@@ -148,8 +120,7 @@ export class BookingRepositoryImpl implements IBookingRepository {
       status: "awaiting_payment",
       updatedAt: { $lt: threshold },
     }).exec();
-
-    return docs.map((doc) => this._toEntity(doc as unknown as IBookingRaw));
+    return docs.map((doc) => BookingDbMapper.toEntity(doc as unknown as IBookingRaw));
   }
 
   async countAll(): Promise<number> {
@@ -172,7 +143,7 @@ export class BookingRepositoryImpl implements IBookingRepository {
       .populate("therapistId", "name")
       .lean()
       .exec();
-    return docs.map((doc) => this._toEntity(doc as unknown as IBookingRaw));
+    return docs.map((doc) => BookingDbMapper.toEntity(doc as unknown as IBookingRaw));
   }
 
   async getTopTherapists(limit: number): Promise<Array<{ therapistId: string; name: string; completedSessions: number; averageRating: number; totalRatings: number }>> {
@@ -204,7 +175,7 @@ export class BookingRepositoryImpl implements IBookingRepository {
 
   async findBookingsCreatedAfter(date: Date): Promise<BookingEntity[]> {
     const docs = await BookingModel.find({ createdAt: { $gte: date } }).lean().exec();
-    return docs.map(doc => this._toEntity(doc as unknown as IBookingRaw));
+    return docs.map(doc => BookingDbMapper.toEntity(doc as unknown as IBookingRaw));
   }
 
   async getStatusDistribution(): Promise<Array<{ status: string; count: number }>> {

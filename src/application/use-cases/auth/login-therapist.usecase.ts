@@ -7,6 +7,7 @@ import { HttpStatus, ROLES, THERAPIST_STATUS } from "../../../shared/constants/i
 import type { ILoginTherapistUseCase, ILoginResponse } from "../../interfaces/auth/IAuthUseCase.ts";
 import type { IPasswordHasher } from "../../interfaces/services/IPasswordHasher.ts";
 import type { ITokenService } from "../../interfaces/services/ITokenService.ts";
+import { TherapistMapper } from "../../mappers/therapist.mapper.ts";
 
 @injectable()
 export class LoginTherapistUseCase implements ILoginTherapistUseCase {
@@ -27,6 +28,6 @@ export class LoginTherapistUseCase implements ILoginTherapistUseCase {
     if (!isMatch) throw new UnauthorizedError("Invalid credentials");
 
     const tokens = this._tokenService.generateTokens({ id: therapist.id, email: therapist.email, role: ROLES.THERAPIST });
-    return { tokens, user: therapist };
+    return { tokens, user: TherapistMapper.toPublicDTO(therapist) };
   }
 }

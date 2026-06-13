@@ -7,6 +7,7 @@ import type { AdminEntity } from "../../domain/entities/Admin.entity.ts";
 
 import { AdminModel } from "../databases/schema/admin.schema.ts";
 import type { IAdminDocument } from "../databases/schema/admin.schema.ts";
+import { AdminDbMapper } from "../mappers/admin.db-mapper.ts";
 
 @injectable()
 export class AdminRepository
@@ -15,6 +16,10 @@ export class AdminRepository
 {
   constructor() {
     super(AdminModel);
+  }
+
+  protected toEntity(doc: IAdminDocument): AdminEntity {
+    return AdminDbMapper.toEntity(doc);
   }
 
   public async findByEmail(

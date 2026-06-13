@@ -16,17 +16,17 @@ export interface ITherapistDocument extends Document {
   profileImage?: string;
   status: TherapistStatus;
   isVerified: boolean;
+  averageRating: number;
+  totalRatings: number;
   pendingUpdates?: Record<string, unknown>;
   adminRejectionReason?: string;
   otp?: string;
   otpExpiry?: Date;
-  averageRating?: number;
-  totalRatings?: number;
-  createdAt : Date;
-  updatedAt : Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export type ITherapistRaw = Omit<ITherapistDocument, keyof mongoose.Document> & {_id : Types.ObjectId}
+export type ITherapistRaw = Omit<ITherapistDocument, keyof mongoose.Document> & { _id: Types.ObjectId }
 
 const TherapistSchema = new Schema<ITherapistDocument>(
   {
@@ -48,12 +48,12 @@ const TherapistSchema = new Schema<ITherapistDocument>(
       default: THERAPIST_STATUS.PENDING,
     },
     isVerified: { type: Boolean, default: false },
+    averageRating: { type: Number, default: 0 },
+    totalRatings: { type: Number, default: 0 },
     pendingUpdates: { type: Schema.Types.Mixed },
     adminRejectionReason: { type: String },
     otp: { type: String },
     otpExpiry: { type: Date },
-    averageRating: { type: Number, default: 0 },
-    totalRatings: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

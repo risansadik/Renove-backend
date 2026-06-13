@@ -1,14 +1,12 @@
 import { injectable } from "inversify";
-import type { Types } from "mongoose";
 import type { IChatMessageRepository } from "../../domain/repositories/chat-message.repository.ts";
 import type { ChatMessageEntity } from "../../domain/entities/ChatMessage.entity.ts";
 import type { ChatSessionEntity } from "../../domain/entities/ChatSession.entity.ts";
 import {
   ChatMessageModel,
   ChatSessionModel,
-  type IChatMessageDocument,
-  type IChatSessionDocument,
 } from "../databases/schema/chat-message.schema.ts";
+import { ChatDbMapper } from "../mappers/chat.db-mapper.ts";
 
 @injectable()
 export class ChatMessageRepository implements IChatMessageRepository {
@@ -16,7 +14,7 @@ export class ChatMessageRepository implements IChatMessageRepository {
 
   async createSession(userId: string, title: string): Promise<ChatSessionEntity> {
     const doc = await ChatSessionModel.create({ userId, title });
-    return this._toSessionEntity(doc);
+    return ChatDbMapper.toSessionEntity(doc);
   }
 
   async getSessions(userId: string): Promise<ChatSessionEntity[]> {
@@ -24,7 +22,7 @@ export class ChatMessageRepository implements IChatMessageRepository {
       .find({ userId })
       .sort({ createdAt: -1 })
       .exec();
-    return docs.map((d) => this._toSessionEntity(d));
+    return docs.map((d) => ChatDbMapper.toSessionEntity(d));
   }
 
   async deleteSession(userId: string, sessionId: string): Promise<void> {
@@ -38,7 +36,7 @@ export class ChatMessageRepository implements IChatMessageRepository {
     message: Omit<ChatMessageEntity, "id" | "createdAt">
   ): Promise<ChatMessageEntity> {
     const doc = await ChatMessageModel.create(message);
-    return this._toMessageEntity(doc);
+    return ChatDbMapper.toMessageEntity(doc);
   }
 
   async getSessionMessages(
@@ -51,28 +49,6 @@ export class ChatMessageRepository implements IChatMessageRepository {
       .sort({ createdAt: 1 })
       .limit(limit)
       .exec();
-    return docs.map((d) => this._toMessageEntity(d));
-  }
-
-  // ── Mappers ───────────────────────────────────────────
-
-  private _toSessionEntity(doc: IChatSessionDocument): ChatSessionEntity {
-    return {
-      id: (doc._id as Types.ObjectId).toString(),
-      userId: doc.userId,
-      title: doc.title,
-      createdAt: doc.createdAt,
-    };
-  }
-
-  private _toMessageEntity(doc: IChatMessageDocument): ChatMessageEntity {
-    return {
-      id: (doc._id as Types.ObjectId).toString(),
-      userId: doc.userId,
-      sessionId: doc.sessionId,
-      role: doc.role,
-      content: doc.content,
-      createdAt: doc.createdAt,
-    };
+    return docs.map((d) => ChatDbMapper.toMessageEntity(d));
   }
 }

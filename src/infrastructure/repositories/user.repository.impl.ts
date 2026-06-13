@@ -10,6 +10,7 @@ import { BaseRepository } from "./base-repository.impl.ts";
 
 import { UserModel } from "../databases/schema/user.schema.ts";
 import type { IUserDocument } from "../databases/schema/user.schema.ts";
+import { UserDbMapper } from "../mappers/user.db-mapper.ts";
 
 @injectable()
 export class UserRepository
@@ -17,6 +18,10 @@ export class UserRepository
   implements IUserRepository {
   constructor() {
     super(UserModel);
+  }
+
+  protected toEntity(doc: IUserDocument): UserEntity {
+    return UserDbMapper.toEntity(doc);
   }
 
   public async findByEmail(email: string): Promise<UserEntity | null> {

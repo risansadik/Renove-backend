@@ -11,6 +11,7 @@ import type {
   IAdminGetAllReportsUseCase,
   IAdminUpdateReportUseCase
 } from "../../application/interfaces/report/IReportUseCase.ts";
+import { ReportMapper } from "../../application/mappers/report.mapper.ts";
 
 @injectable()
 export class ReportController {
@@ -23,11 +24,9 @@ export class ReportController {
   ) { }
 
   public createReport = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
-    // req.user is set by the authenticate middleware for both users and therapists
     const reporterId = req.user.id;
     const reporterRole = req.user.role;
 
-    // multer-s3 stores the public S3 URL in `location`; fall back to `path` for local storage
     const attachments = req.files
       ? (req.files as (Express.Multer.File & S3File)[]).map((f) => f.location ?? f.path)
       : [];
@@ -39,7 +38,7 @@ export class ReportController {
       attachments
     });
 
-    res.status(HttpStatus.CREATED).json(ResponseModel.created(MESSAGES.REPORT.CREATED, data));
+    res.status(HttpStatus.CREATED).json(ResponseModel.created(MESSAGES.REPORT.CREATED, ReportMapper.toPublicDTO(data)));
   };
 
   public getMyReports = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
@@ -48,13 +47,16 @@ export class ReportController {
     const limit = parseInt(req.query.limit as string) || 10;
 
     const data = await this._getMyReportsUC.execute(reporterId, page, limit);
-    res.json(ResponseModel.success(MESSAGES.REPORT.FETCHED, data));
+    res.json(ResponseModel.success(MESSAGES.REPORT.FETCHED, {
+      data: ReportMapper.toPublicDTOList(data.data),
+      total: data.total
+    }));
   };
 
   public getReportDetails = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
     const { id } = req.params;
     const data = await this._getReportDetailsUC.execute(id);
-    res.json(ResponseModel.success(MESSAGES.REPORT.FETCHED, data));
+    res.json(ResponseModel.success(MESSAGES.REPORT.FETCHED, ReportMapper.toPublicDTO(data)));
   };
 
   public adminGetAllReports = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
@@ -67,20 +69,23 @@ export class ReportController {
     if (category) filter.category = category;
 
     const data = await this._adminGetAllReportsUC.execute(page, limit, filter);
-    res.json(ResponseModel.success(MESSAGES.REPORT.FETCHED, data));
+    res.json(ResponseModel.success(MESSAGES.REPORT.FETCHED, {
+      data: ReportMapper.toPublicDTOList(data.data),
+      total: data.total
+    }));
   };
 
   public adminUpdateReportStatus = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
     const { id } = req.params;
     const { status } = req.body;
     const data = await this._adminUpdateReportUC.updateStatus(id, status);
-    res.json(ResponseModel.success(MESSAGES.REPORT.UPDATED, data));
+    res.json(ResponseModel.success(MESSAGES.REPORT.UPDATED, data ? ReportMapper.toPublicDTO(data) : null));
   };
 
   public adminAddReportNote = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
     const { id } = req.params;
     const { adminNotes } = req.body;
     const data = await this._adminUpdateReportUC.addNotes(id, adminNotes);
-    res.json(ResponseModel.success(MESSAGES.REPORT.NOTES_ADDED, data));
+    res.json(ResponseModel.success(MESSAGES.REPORT.NOTES_ADDED, data ? ReportMapper.toPublicDTO(data) : null));
   };
 }

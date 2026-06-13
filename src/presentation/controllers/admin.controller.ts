@@ -14,6 +14,7 @@ import { PAGINATION, MESSAGES } from "../../shared/constants/index.ts";
 import { TYPES } from "../../shared/constants/tokens.ts";
 import { authTokenService } from "../../shared/utils/jwt.ts";
 import { ResponseModel } from "../../shared/utils/response-model.ts";
+import { WalletMapper } from "../../application/mappers/wallet.mapper.ts";
 
 @injectable()
 export class AdminController {
@@ -83,17 +84,22 @@ export class AdminController {
   };
 
   public getFinanceStats = async (req: Request, res: Response): Promise<void> => {
-  const page = parseInt(req.query.page as string) || PAGINATION.DEFAULT_PAGE;
-  const limit = parseInt(req.query.limit as string) || PAGINATION.DEFAULT_LIMIT;
-  const stats = await this._getAdminFinanceStatsUC.execute({ page, limit });
+    const page = parseInt(req.query.page as string) || PAGINATION.DEFAULT_PAGE;
+    const limit = parseInt(req.query.limit as string) || PAGINATION.DEFAULT_LIMIT;
+    const stats = await this._getAdminFinanceStatsUC.execute({ page, limit });
 
-  res.json(ResponseModel.success(MESSAGES.ADMIN.FINANCE_STATS_FETCHED, stats, 200, {
-    total: stats.totalTransactions,
-    page,
-    limit,
-    totalPages: Math.ceil(stats.totalTransactions / limit),
-  }));
-};
+    const responseData = {
+      ...stats,
+      transactions: WalletMapper.toTransactionDTOList(stats.transactions)
+    };
+
+    res.json(ResponseModel.success(MESSAGES.ADMIN.FINANCE_STATS_FETCHED, responseData, 200, {
+      total: stats.totalTransactions,
+      page,
+      limit,
+      totalPages: Math.ceil(stats.totalTransactions / limit),
+    }));
+  };
 
   public updateCommission = async (req: Request, res: Response): Promise<void> => {
     const { commissionPercentage } = req.body;

@@ -13,6 +13,8 @@ export interface ITherapistDashboardResponse {
   joinedDaysAgo: number;
   sessionsToday: number;
   upcomingSessionsThisWeek: number;
+  averageRating: number;
+  totalRatings: number;
   wallet: {
     pendingBalance: number;
     availableBalance: number;
@@ -35,7 +37,7 @@ export interface IUserDashboardResponse {
   streakDays: number;
   totalSessionsDone: number;
   pendingPayments: number;
-  missions: any[]; 
+  missions: any[];
   recentMoods: any[];
   habits: IUserHabitStats[];
   weekDays: string[];

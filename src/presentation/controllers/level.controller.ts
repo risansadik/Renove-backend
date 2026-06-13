@@ -9,6 +9,7 @@ import type {
   IGetUserLevelsUseCase,
   ICompleteLevelUseCase,
 } from "../../application/interfaces/level/ILevelUseCase.ts";
+import { LevelMapper } from "../../application/mappers/level.mapper.ts";
 
 @injectable()
 export class LevelController {
@@ -24,19 +25,19 @@ export class LevelController {
     const message = req.body.regenerate
       ? MESSAGES.LEVEL.REGENERATED
       : MESSAGES.LEVEL.GENERATED;
-    res.status(HttpStatus.CREATED).json(ResponseModel.success(message, levels));
+    res.status(HttpStatus.CREATED).json(ResponseModel.success(message, LevelMapper.toPublicDTOList(levels)));
   };
 
   public getLevels = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
     const userId = req.user.id;
     const levels = await this._getUC.execute(userId);
-    res.json(ResponseModel.success(MESSAGES.LEVEL.FETCHED, levels));
+    res.json(ResponseModel.success(MESSAGES.LEVEL.FETCHED, LevelMapper.toPublicDTOList(levels)));
   };
 
   public completeLevel = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
     const userId = req.user.id;
     const { levelId } = req.params;
     const level = await this._completeUC.execute({ userId, levelId });
-    res.json(ResponseModel.success(MESSAGES.LEVEL.COMPLETED, level));
+    res.json(ResponseModel.success(MESSAGES.LEVEL.COMPLETED, level ? LevelMapper.toPublicDTO(level) : null));
   };
 }

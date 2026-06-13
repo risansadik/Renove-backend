@@ -9,6 +9,7 @@ import { PAGINATION } from "../../shared/constants/index.ts";
 
 import { TherapistModel } from "../databases/schema/therapist.schema.ts";
 import type { ITherapistDocument } from "../databases/schema/therapist.schema.ts";
+import { TherapistDbMapper } from "../mappers/therapist.db-mapper.ts";
 
 import type {
   NestedPaginatedResult,
@@ -23,6 +24,10 @@ export class TherapistRepository
 {
   constructor() {
     super(TherapistModel);
+  }
+
+  protected toEntity(doc: ITherapistDocument): TherapistEntity {
+    return TherapistDbMapper.toEntity(doc);
   }
 
   public async findByEmail(
