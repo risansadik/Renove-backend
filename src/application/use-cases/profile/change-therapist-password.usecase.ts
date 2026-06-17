@@ -25,7 +25,7 @@ export class ChangeTherapistPasswordUseCase implements IChangeTherapistPasswordU
 
     const isMatch = await this._passwordHasher.compare(currentPasswordRaw, therapist.password);
     if (!isMatch) {
-      throw new AppError("Incorrect current password", HttpStatus.UNAUTHORIZED);
+      throw new AppError("Incorrect current password", HttpStatus.BAD_REQUEST);
     }
 
     const hashedPassword = await this._passwordHasher.hash(newPasswordRaw);
