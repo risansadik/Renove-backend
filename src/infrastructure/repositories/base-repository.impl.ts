@@ -41,11 +41,26 @@ export abstract class BaseRepository<T extends { id: string }, D extends Documen
   }
 
   public async update(id: string, data: Partial<T>): Promise<T | null> {
-    const updatedDocument = await this.model
-      .findByIdAndUpdate(id, { $set: data as Record<string, unknown> }, { new: true })
-      .exec();
-    return updatedDocument ? this.toEntity(updatedDocument) : null;
+  const setFields: Record<string, unknown> = {};
+  const unsetFields: Record<string, ""> = {};
+
+  for (const [key, value] of Object.entries(data as Record<string, unknown>)) {
+    if (value === undefined) {
+      unsetFields[key] = "";
+    } else {
+      setFields[key] = value;
+    }
   }
+
+  const updateQuery: Record<string, unknown> = {};
+  if (Object.keys(setFields).length > 0) updateQuery.$set = setFields;
+  if (Object.keys(unsetFields).length > 0) updateQuery.$unset = unsetFields;
+
+  const updatedDocument = await this.model
+    .findByIdAndUpdate(id, updateQuery, { new: true })
+    .exec();
+  return updatedDocument ? this.toEntity(updatedDocument) : null;
+}
 
   public async delete(id: string): Promise<boolean> {
     const result = await this.model.findByIdAndDelete(id).exec();

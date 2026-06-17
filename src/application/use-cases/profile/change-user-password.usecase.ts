@@ -29,7 +29,7 @@ export class ChangeUserPasswordUseCase implements IChangeUserPasswordUseCase{
 
     const isMatch = await this._passwordHasher.compare(currentPasswordRaw, user.password);
     if (!isMatch) {
-      throw new AppError("Incorrect current password", HttpStatus.UNAUTHORIZED);
+      throw new AppError("Incorrect current password", HttpStatus.BAD_REQUEST);
     }
 
     const hashedPassword = await this._passwordHasher.hash(newPasswordRaw);
