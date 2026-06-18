@@ -7,6 +7,7 @@ import { ICompleteSessionInput, ICompleteSessionUseCase } from "../../interfaces
 import { inject, injectable } from "inversify";
 import { TYPES } from "../../../shared/constants/tokens.ts";
 import { ILogger } from "../../interfaces/services/ILoggerService.ts";
+import type { IExtendTherapistChatWindowUseCase } from "../../interfaces/therapist-chat/ITherapistChatUseCase.ts";
 
 @injectable()
 export class CompleteSessionUseCase implements ICompleteSessionUseCase {
@@ -14,23 +15,37 @@ export class CompleteSessionUseCase implements ICompleteSessionUseCase {
     @inject(TYPES.BookingRepository) private readonly _bookingRepo: IBookingRepository,
     @inject(TYPES.WalletRepository) private readonly _walletRepo: IWalletRepository,
     @inject(TYPES.PaymentRepository) private readonly _paymentRepo: IPaymentRepository,
-    @inject(TYPES.Logger) private readonly _logger: ILogger
+    @inject(TYPES.Logger) private readonly _logger: ILogger,
+    @inject(TYPES.ExtendTherapistChatWindowUseCase) private readonly _extendChatWindowUC: IExtendTherapistChatWindowUseCase
   ) { }
 
-  async execute({ bookingId, therapistId }: ICompleteSessionInput): Promise<{ success: boolean, message?: string }> {
+  async execute({
+    bookingId,
+    therapistId,
+  }: ICompleteSessionInput): Promise<{ success: boolean; message?: string }> {
     const booking = await this._bookingRepo.findById(bookingId);
 
     if (!booking) {
       throw new AppError("Booking not found", HttpStatus.NOT_FOUND);
     }
 
-    const bookingTherapistId = typeof booking.therapistId === 'object' && booking.therapistId !== null ? (booking.therapistId as { id: string }).id : booking.therapistId as string;
+    const bookingTherapistId =
+      typeof booking.therapistId === "object" && booking.therapistId !== null
+        ? (booking.therapistId as { id: string }).id
+        : (booking.therapistId as string);
+
     if (bookingTherapistId !== therapistId) {
-      throw new AppError("Unauthorized: Only the assigned therapist can complete this session", HttpStatus.FORBIDDEN);
+      throw new AppError(
+        "Unauthorized: Only the assigned therapist can complete this session",
+        HttpStatus.FORBIDDEN
+      );
     }
 
     if (booking.status !== BOOKING_STATUS.CONFIRMED) {
-      throw new AppError(`Only confirmed bookings can be completed. Current status: ${booking.status}`, HttpStatus.BAD_REQUEST);
+      throw new AppError(
+        `Only confirmed bookings can be completed. Current status: ${booking.status}`,
+        HttpStatus.BAD_REQUEST
+      );
     }
 
     if (booking.slotId && typeof booking.slotId === "object" && booking.slotId !== null) {
@@ -54,30 +69,52 @@ export class CompleteSessionUseCase implements ICompleteSessionUseCase {
         now >= new Date(slot.startTime).getTime() &&
         now <= new Date(slot.endTime).getTime()
       ) {
-        throw new AppError(
-          "Session is currently ongoing",
-          HttpStatus.BAD_REQUEST
-        );
+        throw new AppError("Session is currently ongoing", HttpStatus.BAD_REQUEST);
       }
     }
 
     // 1. Update Booking Status to COMPLETED
     await this._bookingRepo.updateStatus(bookingId, BOOKING_STATUS.COMPLETED);
 
-    // 2. Find associated successful payment to get amount
+    // 2. Extract userId for chat window extension
+    const bookingUserId =
+      typeof booking.userId === "object" && booking.userId !== null
+        ? (booking.userId as { id: string }).id
+        : (booking.userId as string);
+
+    // 3. Extend (or open) the 5-day therapist chat window for this user-therapist pair
+    await this._extendChatWindowUC.execute({
+      userId: bookingUserId,
+      therapistId: bookingTherapistId,
+      bookingId,
+    });
+
+    this._logger.info(
+      `Chat window extended for user ${bookingUserId} <-> therapist ${bookingTherapistId} after session ${bookingId}`
+    );
+
+    // 4. Find associated successful payment to get amount
     const payment = await this._paymentRepo.findByBookingId(bookingId);
 
     if (!payment) {
-      this._logger.warn(`No PAID payment record found for booking ${bookingId} during completion. Funds will not be moved.`);
-      return { success: true, message: "Booking completed, but no payment record found for fund transfer." };
+      this._logger.warn(
+        `No PAID payment record found for booking ${bookingId} during completion. Funds will not be moved.`
+      );
+      return {
+        success: true,
+        message: "Booking completed, but no payment record found for fund transfer.",
+      };
     }
 
-    // 3. Move funds in Wallet
+    // 5. Move funds in Wallet
     const feeToMove = payment.consultationFee ?? payment.amount;
     await this._walletRepo.movePendingToAvailable(bookingTherapistId, feeToMove);
 
-    // 4. Update ledger transaction status to completed
-    const matched = await this._walletRepo.updateTransactionStatusByBookingId(bookingId, "completed");
+    // 6. Update ledger transaction status to completed
+    const matched = await this._walletRepo.updateTransactionStatusByBookingId(
+      bookingId,
+      "completed"
+    );
 
     if (!matched) {
       const wallet = await this._walletRepo.findByTherapistId(bookingTherapistId);
@@ -99,7 +136,9 @@ export class CompleteSessionUseCase implements ICompleteSessionUseCase {
       }
     }
 
-    this._logger.info(`Session ${bookingId} completed. Moved ${feeToMove} to clinician ${bookingTherapistId} available balance.`);
+    this._logger.info(
+      `Session ${bookingId} completed. Moved ${feeToMove} to clinician ${bookingTherapistId} available balance.`
+    );
 
     return { success: true };
   }

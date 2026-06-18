@@ -229,6 +229,12 @@ export const MESSAGES = {
     NOTES_ADDED: "Admin notes added successfully",
     NOT_FOUND: "Report not found",
   },
+  THERAPIST_CHAT: {
+  THREADS_FETCHED: "Chat threads fetched",
+  MESSAGES_FETCHED: "Messages fetched",
+  MESSAGE_SENT: "Message sent",
+  MARKED_READ: "Messages marked as read",
+}
 } as const;
 
 export const LEVEL_DIFFICULTY = {
@@ -275,3 +281,18 @@ export const CALL_EVENTS = {
   PEER_LEFT: "call:peer-left",
   MEDIA_STATE: "call:media-state",
 } as const;
+
+export type TherapistChatSenderRole = "user" | "therapist";
+
+export const CHAT_WINDOW_DAYS = 5;
+
+export const THERAPIST_CHAT_EVENTS = {
+  JOIN: "therapist-chat:join",
+  MESSAGE: "therapist-chat:message",
+  READ: "therapist-chat:read",
+  LEAVE: "therapist-chat:leave",
+  THREAD_UPDATED: "therapist-chat:thread-updated",
+} as const;
+ 
+export type TherapistChatEvent =
+  (typeof THERAPIST_CHAT_EVENTS)[keyof typeof THERAPIST_CHAT_EVENTS];
