@@ -2,7 +2,7 @@ import type { Response } from "express";
 import { injectable, inject } from "inversify";
 import { TYPES } from "../../shared/constants/tokens.ts";
 import { ResponseModel } from "../../shared/utils/response-model.ts";
-import { HttpStatus, MESSAGES } from "../../shared/constants/index.ts";
+import { HttpStatus, MESSAGES, ReportCategory, ReportStatus } from "../../shared/constants/index.ts";
 import type { AuthenticatedRequest, S3File } from "../../shared/types/express.ts";
 import type {
   ICreateReportUseCase,
@@ -59,14 +59,14 @@ export class ReportController {
     res.json(ResponseModel.success(MESSAGES.REPORT.FETCHED, ReportMapper.toPublicDTO(data)));
   };
 
-  public adminGetAllReports = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+ public adminGetAllReports = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
     const { status, category } = req.query;
 
-    const filter: any = {};
-    if (status) filter.status = status;
-    if (category) filter.category = category;
+    const filter: { status?: ReportStatus; category?: ReportCategory } = {};
+    if (status) filter.status = status as ReportStatus;
+    if (category) filter.category = category as ReportCategory;
 
     const data = await this._adminGetAllReportsUC.execute(page, limit, filter);
     res.json(ResponseModel.success(MESSAGES.REPORT.FETCHED, {
