@@ -16,7 +16,6 @@ import { ROLES } from "../../shared/constants/index.ts";
 const router = Router();
 const reportController = appContainer.get<ReportController>(TYPES.ReportController);
 
-// ── User / Therapist Routes ───────────────────────────────────────────────────
 
 router.post(
   "/",
@@ -32,7 +31,6 @@ router.get(
   asyncHandler(reportController.getMyReports)
 );
 
-// ── Admin Routes (must be declared before /:id to avoid conflict) ─────────────
 
 router.get(
   "/admin/all",
@@ -57,7 +55,6 @@ router.patch(
   asyncHandler(reportController.adminAddReportNote)
 );
 
-// ── Shared: detail by ID ──────────────────────────────────────────────────────
 
 router.get(
   "/:id",

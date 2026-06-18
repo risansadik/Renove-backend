@@ -10,18 +10,12 @@ const router = Router();
 const paymentController = appContainer.get<PaymentController>(TYPES.PaymentController);
 
 
-/**
- * PUBLIC ROUTES (Webhooks must be public and handle raw body)
- */
 router.post(
   "/webhook",
   express.raw({ type: "application/json" }),
   asyncHandler(paymentController.handleWebhook)
 );
 
-/**
- * PROTECTED ROUTES
- */
 router.post(
   "/create-intent",
   authenticate,

@@ -9,6 +9,7 @@ import availabilityRoutes from "./presentation/routes/availability.routes.ts";
 import paymentRoutes from "./presentation/routes/payment.routes.ts";
 import walletRoutes from "./presentation/routes/wallet.routes.ts";
 import reportRoutes from "./presentation/routes/report.routes.ts";
+import therapistChatRouter from "./presentation/routes/therapist-chat.routes.ts";
 import { errorHandler, notFoundHandler } from "./presentation/middlewares/error.middleware.ts";
 
 const app = express();
@@ -51,6 +52,7 @@ app.use("/api/bookings", bookingRoutes);
 app.use("/api/availability", availabilityRoutes);
 app.use("/api/wallet", walletRoutes);
 app.use("/api/reports", reportRoutes);
+app.use("/api/therapist-chat", therapistChatRouter);
 
 
 app.use(notFoundHandler);

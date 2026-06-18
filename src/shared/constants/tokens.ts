@@ -19,6 +19,7 @@ export const TYPES = {
   LevelRepository: Symbol.for("ILevelRepository"),
   ChatMessageRepository: Symbol.for("ChatMessageRepository"),
   ReportRepository: Symbol.for("IReportRepository"),
+  TherapistChatRepository: Symbol.for("ITherapistChatRepository"),
 
   // External Services
   EmailService: Symbol.for("IEmailService"),
@@ -129,6 +130,13 @@ export const TYPES = {
   AdminGetAllReportsUseCase: Symbol.for("IAdminGetAllReportsUseCase"),
   AdminUpdateReportUseCase: Symbol.for("IAdminUpdateReportUseCase"),
 
+  // Use Cases (TherapistChat)
+  ExtendTherapistChatWindowUseCase: Symbol.for("IExtendTherapistChatWindowUseCase"),
+  GetTherapistChatThreadsUseCase: Symbol.for("IGetTherapistChatThreadsUseCase"),
+  GetTherapistChatMessagesUseCase: Symbol.for("IGetTherapistChatMessagesUseCase"),
+  SendTherapistChatMessageUseCase: Symbol.for("ISendTherapistChatMessageUseCase"),
+  MarkTherapistChatAsReadUseCase: Symbol.for("IMarkTherapistChatAsReadUseCase"),
+
   // Controllers
   UserAuthController: Symbol.for("UserAuthController"),
   AdminController: Symbol.for("AdminController"),
@@ -144,4 +152,5 @@ export const TYPES = {
   LevelController: Symbol.for("LevelController"),
   ChatController: Symbol.for("ChatController"),
   ReportController: Symbol.for("ReportController"),
+  TherapistChatController: Symbol.for("TherapistChatController"),
 };
