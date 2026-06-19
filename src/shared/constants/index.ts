@@ -296,3 +296,9 @@ export const THERAPIST_CHAT_EVENTS = {
  
 export type TherapistChatEvent =
   (typeof THERAPIST_CHAT_EVENTS)[keyof typeof THERAPIST_CHAT_EVENTS];
+
+  export const NOTIFICATION_EVENTS = {
+  JOIN_ROOM: "notification:join",
+  LEAVE_ROOM: "notification:leave",
+  NEW_NOTIFICATION: "notification:new",
+} as const;

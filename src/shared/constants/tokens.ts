@@ -153,4 +153,11 @@ export const TYPES = {
   ChatController: Symbol.for("ChatController"),
   ReportController: Symbol.for("ReportController"),
   TherapistChatController: Symbol.for("TherapistChatController"),
+
+  NotificationRepository: Symbol.for("INotificationRepository"),
+  NotificationService: Symbol.for("INotificationService"),
+  GetNotificationsUseCase: Symbol.for("IGetNotificationsUseCase"),
+  MarkNotificationReadUseCase: Symbol.for("IMarkNotificationReadUseCase"),
+  MarkAllNotificationsReadUseCase: Symbol.for("IMarkAllNotificationsReadUseCase"),
+  NotificationController: Symbol.for("NotificationController"),
 };

@@ -2,6 +2,9 @@ import type { IBookingRepository } from "../../../domain/repositories/booking.re
 import type { ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
 import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.ts";
 import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.ts";
+import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
+import type { INotificationService } from "../../interfaces/services/INotificationService.ts";
 import type { BookingEntity } from "../../../domain/entities/Booking.entity.ts";
 import type { ICancelBookingUseCase, CancelBookingInput } from "../../interfaces/booking/IBookingUseCase.ts";
 import { BOOKING_STATUS, HttpStatus, PAYMENT_STATUS } from "../../../shared/constants/index.ts";
@@ -12,29 +15,40 @@ import { TYPES } from "../../../shared/constants/tokens.ts";
 @injectable()
 export class CancelBookingUseCase implements ICancelBookingUseCase {
   constructor(
-    @inject(TYPES.BookingRepository)private readonly _bookingRepo: IBookingRepository,
-    @inject(TYPES.SlotRepository)private    readonly _slotRepo: ISlotRepository,
-    @inject(TYPES.WalletRepository)private  readonly _walletRepo: IWalletRepository,
-    @inject(TYPES.PaymentRepository)private readonly _paymentRepo: IPaymentRepository
+    @inject(TYPES.BookingRepository) private readonly _bookingRepo: IBookingRepository,
+    @inject(TYPES.SlotRepository) private readonly _slotRepo: ISlotRepository,
+    @inject(TYPES.WalletRepository) private readonly _walletRepo: IWalletRepository,
+    @inject(TYPES.PaymentRepository) private readonly _paymentRepo: IPaymentRepository,
+    @inject(TYPES.UserRepository) private readonly _userRepo: IUserRepository,
+    @inject(TYPES.TherapistRepository) private readonly _therapistRepo: ITherapistRepository,
+    @inject(TYPES.NotificationService) private readonly _notificationService: INotificationService
   ) {}
 
-  async execute({ bookingId, cancelledBy, userIdOrTherapistId, reason }: CancelBookingInput): Promise<BookingEntity> {
+  async execute({
+    bookingId,
+    cancelledBy,
+    userIdOrTherapistId,
+    reason,
+  }: CancelBookingInput): Promise<BookingEntity> {
     const booking = await this._bookingRepo.findById(bookingId);
-    if (!booking) {
-      throw new NotFoundError("Booking");
-    }
+    if (!booking) throw new NotFoundError("Booking");
 
     if (booking.status === BOOKING_STATUS.CANCELLED) {
       throw new AppError("Booking is already cancelled", HttpStatus.BAD_REQUEST);
     }
-
     if (booking.status === BOOKING_STATUS.COMPLETED) {
       throw new AppError("Cannot cancel a completed session", HttpStatus.BAD_REQUEST);
     }
 
-    // Authorization checks
-    const bookingUserId = typeof booking.userId === "object" && booking.userId !== null ? (booking.userId as { id: string }).id : booking.userId as string;
-    const bookingTherapistId = typeof booking.therapistId === "object" && booking.therapistId !== null ? (booking.therapistId as { id: string }).id : booking.therapistId as string;
+    const bookingUserId =
+      typeof booking.userId === "object" && booking.userId !== null
+        ? (booking.userId as { id: string }).id
+        : (booking.userId as string);
+
+    const bookingTherapistId =
+      typeof booking.therapistId === "object" && booking.therapistId !== null
+        ? (booking.therapistId as { id: string }).id
+        : (booking.therapistId as string);
 
     if (cancelledBy === "user" && bookingUserId !== userIdOrTherapistId) {
       throw new ForbiddenError("Unauthorized: You do not own this booking");
@@ -44,59 +58,54 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
     }
 
     const slot = await this._slotRepo.findById(
-      typeof booking.slotId === "object" && booking.slotId !== null ? (booking.slotId as { id: string }).id : booking.slotId as string
+      typeof booking.slotId === "object" && booking.slotId !== null
+        ? (booking.slotId as { id: string }).id
+        : (booking.slotId as string)
     );
-    if (!slot) {
-      throw new NotFoundError("Associated slot");
-    }
+    if (!slot) throw new NotFoundError("Associated slot");
 
     const now = new Date();
     const startTime = new Date(slot.startTime);
 
-    // 1. Calculate Refund Policy if payment is PAID
+    // ── Refund Policy ─────────────────────────────────────────────────────────
     const payment = await this._paymentRepo.findByBookingId(bookingId);
     let refundPercent = 0;
-    
+
     if (payment && payment.status === PAYMENT_STATUS.PAID) {
       if (cancelledBy === "therapist") {
-        refundPercent = 1.0; // 100% refund if therapist cancels
+        refundPercent = 1.0;
       } else {
         const hoursDiff = (startTime.getTime() - now.getTime()) / (1000 * 60 * 60);
         if (hoursDiff > 24) {
-          refundPercent = 1.0; // > 24 hours: 100% refund
+          refundPercent = 1.0;
         } else if (hoursDiff >= 6) {
-          refundPercent = 0.5; // 6 to 24 hours: 50% refund
+          refundPercent = 0.5;
         } else {
-          refundPercent = 0.0; // < 6 hours: no refund
+          refundPercent = 0.0;
         }
       }
     }
 
-    // 2. Perform updates
-    // A. Reopen Slot only if session time has not passed
+    // ── Slot ──────────────────────────────────────────────────────────────────
     if (startTime.getTime() > now.getTime()) {
       await this._slotRepo.updateStatus(slot.id!, "AVAILABLE");
     }
 
-    // B. Handle payment refund status & wallet adjustment if payment was PAID
+    // ── Wallet / Payment ──────────────────────────────────────────────────────
     if (payment && payment.status === PAYMENT_STATUS.PAID) {
       const userRefundAmount = payment.amount * refundPercent;
       const therapistDeduction = (payment.consultationFee ?? payment.amount) * refundPercent;
 
-      // Update payment record to processed refund status
       await this._paymentRepo.updateStatus(payment.id!, PAYMENT_STATUS.REFUNDED, {
         refundStatus: "processed",
         refundAmount: userRefundAmount,
-        refundedAt: now
+        refundedAt: now,
       });
 
-      // Update original pending transaction status to failed
       await this._walletRepo.updateTransactionStatusByBookingId(bookingId, "failed");
 
-      // Deduct therapistDeduction from therapist pending wallet
       if (therapistDeduction > 0) {
         await this._walletRepo.addPendingBalance(bookingTherapistId, -therapistDeduction);
-
         const therapistWallet = await this._walletRepo.findByTherapistId(bookingTherapistId);
         if (therapistWallet) {
           await this._walletRepo.createTransaction({
@@ -106,7 +115,7 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
             type: "debit",
             description: `Deduction for cancelled session: ${bookingId}`,
             status: "completed",
-            bookingId: bookingId,
+            bookingId,
             consultationFee: payment.consultationFee ?? payment.amount,
             commissionPercentage: payment.commissionPercentage ?? 0,
             platformFee: payment.platformFee ?? 0,
@@ -117,13 +126,9 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
         }
       }
 
-      // Credit the patient's User Wallet
       if (userRefundAmount > 0) {
         let userWallet = await this._walletRepo.findByUserId(bookingUserId);
-        if (!userWallet) {
-          userWallet = await this._walletRepo.createUserWallet({ userId: bookingUserId });
-        }
-
+        if (!userWallet) userWallet = await this._walletRepo.createUserWallet({ userId: bookingUserId });
         await this._walletRepo.addUserBalance(bookingUserId, userRefundAmount);
         await this._walletRepo.createTransaction({
           walletId: userWallet.id!,
@@ -132,7 +137,7 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
           type: "credit",
           description: `Refund for cancelled session: ${bookingId}`,
           status: "completed",
-          bookingId: bookingId,
+          bookingId,
           consultationFee: payment.consultationFee ?? payment.amount,
           commissionPercentage: payment.commissionPercentage ?? 0,
           platformFee: payment.platformFee ?? 0,
@@ -141,23 +146,53 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
         });
       }
     } else if (booking.status === BOOKING_STATUS.AWAITING_PAYMENT) {
-      // If booking was awaiting payment, mark payment as FAILED if intent exists
       const unpaidPayment = await this._paymentRepo.findByBookingId(bookingId);
       if (unpaidPayment) {
         await this._paymentRepo.updateStatus(unpaidPayment.id!, PAYMENT_STATUS.FAILED);
       }
     }
 
-    // C. Update Booking Entity status & cancellation details
+    // ── Update Booking ────────────────────────────────────────────────────────
     const updatedBooking = await this._bookingRepo.update(bookingId, {
       status: BOOKING_STATUS.CANCELLED,
       cancelledBy: userIdOrTherapistId,
       cancellationReason: reason,
-      cancelledAt: now
+      cancelledAt: now,
     });
 
     if (!updatedBooking) {
       throw new AppError("Failed to update booking status", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    const [user, therapist] = await Promise.all([
+      this._userRepo.findById(bookingUserId),
+      this._therapistRepo.findById(bookingTherapistId),
+    ]);
+
+    const userName = user?.name ?? "The client";
+    const therapistName = therapist?.name ?? "The therapist";
+
+    if (cancelledBy === "user") {
+      await this._notificationService.createAndEmit({
+        recipientId: bookingTherapistId,
+        recipientRole: "therapist",
+        type: "booking_cancelled",
+        title: "Session Cancelled by Client",
+        message: reason
+          ? `${userName} cancelled their session. Reason: ${reason}`
+          : `${userName} has cancelled their session.`,
+        bookingId,
+      });
+    } else {
+      await this._notificationService.createAndEmit({
+        recipientId: bookingUserId,
+        recipientRole: "user",
+        type: "booking_cancelled",
+        title: "Session Cancelled by Therapist",
+        message: reason
+          ? `${therapistName} cancelled your session. Reason: ${reason}`
+          : `${therapistName} has cancelled your session.`,
+        bookingId,
+      });
     }
 
     return updatedBooking;
