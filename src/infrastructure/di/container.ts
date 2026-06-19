@@ -14,6 +14,7 @@ import { registerChatModule } from "./modules/chat.module.ts";
 import { registerReportModule } from "./modules/report.module.ts";
 import { registerReviewModule } from "./modules/review.module.ts";
 import { registerTherapistChatModule } from "./modules/therapist-chat.module.ts";
+import { registerNotificationModule } from "./modules/notification.module.ts";
 const appContainer = new Container();
 
 registerInfrastructureModule(appContainer);
@@ -30,5 +31,6 @@ registerChatModule(appContainer);
 registerReportModule(appContainer);
 registerReviewModule(appContainer);
 registerTherapistChatModule(appContainer);
+registerNotificationModule(appContainer);
 
 export { appContainer };
