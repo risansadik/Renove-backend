@@ -2,6 +2,8 @@ import type { IPaymentRepository } from "../../../domain/repositories/payment.re
 import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
 import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.ts";
 import type { ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
+import type { INotificationService } from "../../interfaces/services/INotificationService.ts";
 import { BOOKING_STATUS, PAYMENT_STATUS, SLOT_STATUS } from "../../../shared/constants/index.ts";
 import Stripe from "stripe";
 import { IHandleStripeWebhookInput, IHandleStripeWebhookUseCase } from "../../interfaces/payment/IPaymentUseCase.ts";
@@ -17,6 +19,8 @@ export class HandleStripeWebhookUseCase implements IHandleStripeWebhookUseCase{
    @inject(TYPES.BookingRepository) private _bookingRepo: IBookingRepository,
    @inject(TYPES.WalletRepository) private _walletRepo: IWalletRepository,
    @inject(TYPES.SlotRepository) private _slotRepo: ISlotRepository,
+   @inject(TYPES.TherapistRepository) private readonly _therapistRepo: ITherapistRepository,
+   @inject(TYPES.NotificationService) private readonly _notificationService: INotificationService,
    @inject(TYPES.Logger) private readonly _logger: ILogger
 
   ) {}
@@ -89,6 +93,21 @@ export class HandleStripeWebhookUseCase implements IHandleStripeWebhookUseCase{
       });
     }
 
+    // 6. Notify user of payment confirmation
+    const userId = typeof payment.userId === "object" && payment.userId !== null
+      ? (payment.userId as { id: string }).id
+      : (payment.userId as string);
+    const therapist = await this._therapistRepo.findById(payment.therapistId);
+    const therapistName = therapist?.name ?? "your therapist";
+    await this._notificationService.createAndEmit({
+      recipientId: userId,
+      recipientRole: "user",
+      type: "payment_confirmed",
+      title: "Payment Confirmed",
+      message: `Your payment was successful. Your session with ${therapistName} is now confirmed.`,
+      bookingId: payment.bookingId,
+    });
+
     this._logger.info("Successfully processed payment success webhook", { 
       paymentId: payment.id, 
       bookingId: payment.bookingId,
@@ -101,6 +120,19 @@ export class HandleStripeWebhookUseCase implements IHandleStripeWebhookUseCase{
     if (!payment) return;
 
     await this._paymentRepo.updateStatus(payment.id!, PAYMENT_STATUS.FAILED);
+
+    // Notify user of payment failure
+    const userId = typeof payment.userId === "object" && payment.userId !== null
+      ? (payment.userId as { id: string }).id
+      : (payment.userId as string);
+    await this._notificationService.createAndEmit({
+      recipientId: userId,
+      recipientRole: "user",
+      type: "payment_failed",
+      title: "Payment Failed",
+      message: "Your payment could not be processed. Please try again with a different payment method.",
+      bookingId: payment.bookingId,
+    });
     
     this._logger.warn("Processed payment failure webhook", { paymentId: payment.id });
   }
