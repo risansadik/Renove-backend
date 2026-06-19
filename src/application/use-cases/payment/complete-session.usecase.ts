@@ -1,6 +1,9 @@
 import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
 import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.ts";
 import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.ts";
+import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
+import type { INotificationService } from "../../interfaces/services/INotificationService.ts";
 import { BOOKING_STATUS, HttpStatus } from "../../../shared/constants/index.ts";
 import { AppError } from "../../../shared/utils/AppError.ts";
 import { ICompleteSessionInput, ICompleteSessionUseCase } from "../../interfaces/payment/IPaymentUseCase.ts";
@@ -15,6 +18,9 @@ export class CompleteSessionUseCase implements ICompleteSessionUseCase {
     @inject(TYPES.BookingRepository) private readonly _bookingRepo: IBookingRepository,
     @inject(TYPES.WalletRepository) private readonly _walletRepo: IWalletRepository,
     @inject(TYPES.PaymentRepository) private readonly _paymentRepo: IPaymentRepository,
+    @inject(TYPES.UserRepository) private readonly _userRepo: IUserRepository,
+    @inject(TYPES.TherapistRepository) private readonly _therapistRepo: ITherapistRepository,
+    @inject(TYPES.NotificationService) private readonly _notificationService: INotificationService,
     @inject(TYPES.Logger) private readonly _logger: ILogger,
     @inject(TYPES.ExtendTherapistChatWindowUseCase) private readonly _extendChatWindowUC: IExtendTherapistChatWindowUseCase
   ) { }
@@ -140,6 +146,34 @@ export class CompleteSessionUseCase implements ICompleteSessionUseCase {
       `Session ${bookingId} completed. Moved ${feeToMove} to clinician ${bookingTherapistId} available balance.`
     );
 
+    // 7. Notify both parties of session completion
+    const [user, therapist] = await Promise.all([
+      this._userRepo.findById(bookingUserId),
+      this._therapistRepo.findById(bookingTherapistId),
+    ]);
+
+    const userName = user?.name ?? "The client";
+    const therapistName = therapist?.name ?? "The therapist";
+
+    await Promise.all([
+      this._notificationService.createAndEmit({
+        recipientId: bookingUserId,
+        recipientRole: "user",
+        type: "booking_completed",
+        title: "Session Completed",
+        message: `Your session with ${therapistName} has been marked as completed.`,
+        bookingId,
+      }),
+      this._notificationService.createAndEmit({
+        recipientId: bookingTherapistId,
+        recipientRole: "therapist",
+        type: "booking_completed",
+        title: "Session Completed",
+        message: `Your session with ${userName} has been marked as completed.`,
+        bookingId,
+      }),
+    ]);
+
     return { success: true };
   }
-}
+}

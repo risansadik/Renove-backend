@@ -3,6 +3,8 @@ import type { IPaymentRepository } from "../../../domain/repositories/payment.re
 import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
 import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.ts";
 import type { ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
+import type { INotificationService } from "../../interfaces/services/INotificationService.ts";
 import { BOOKING_STATUS, PAYMENT_STATUS, SLOT_STATUS, HttpStatus } from "../../../shared/constants/index.ts";
 import { AppError } from "../../../shared/utils/AppError.ts";
 import { inject, injectable } from "inversify";
@@ -12,10 +14,12 @@ import { IVerifyPaymentInput, IVerifyPaymentUseCase } from "../../interfaces/pay
 @injectable()
 export class VerifyPaymentUseCase implements IVerifyPaymentUseCase{
   constructor(
-    @inject(TYPES.PaymentRepository)private readonly _paymentRepo: IPaymentRepository,
-    @inject(TYPES.BookingRepository)private readonly _bookingRepo: IBookingRepository,
-    @inject(TYPES.WalletRepository)private readonly _walletRepo: IWalletRepository,
-    @inject(TYPES.SlotRepository)private readonly _slotRepo: ISlotRepository
+    @inject(TYPES.PaymentRepository) private readonly _paymentRepo: IPaymentRepository,
+    @inject(TYPES.BookingRepository) private readonly _bookingRepo: IBookingRepository,
+    @inject(TYPES.WalletRepository) private readonly _walletRepo: IWalletRepository,
+    @inject(TYPES.SlotRepository) private readonly _slotRepo: ISlotRepository,
+    @inject(TYPES.TherapistRepository) private readonly _therapistRepo: ITherapistRepository,
+    @inject(TYPES.NotificationService) private readonly _notificationService: INotificationService
   ) {}
 
   async execute({bookingId, userId} : IVerifyPaymentInput) : Promise<{success?: boolean,alreadyProcessed?: boolean}>{
@@ -81,6 +85,18 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase{
         therapistEarnings: feeToCredit,
       });
     }
+
+    // Notify user of payment confirmation
+    const therapist = await this._therapistRepo.findById(anyPayment.therapistId);
+    const therapistName = therapist?.name ?? "your therapist";
+    await this._notificationService.createAndEmit({
+      recipientId: userId,
+      recipientRole: "user",
+      type: "payment_confirmed",
+      title: "Payment Confirmed",
+      message: `Your payment was successful. Your session with ${therapistName} is now confirmed.`,
+      bookingId,
+    });
 
     return { success: true };
   }

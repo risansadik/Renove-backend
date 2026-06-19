@@ -1,6 +1,7 @@
 import { inject, injectable } from "inversify";
 import { TYPES } from "../../../shared/constants/tokens.ts";
 import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
+import type { INotificationService } from "../../interfaces/services/INotificationService.ts";
 import { AppError } from "../../../shared/utils/AppError.ts";
 import { HttpStatus, THERAPIST_STATUS } from "../../../shared/constants/index.ts";
 import { TherapistMapper, PublicTherapistDTO } from "../../mappers/therapist.mapper.ts";
@@ -10,7 +11,8 @@ import type { IUpdateTherapistProfileUseCase, IUpdateTherapistProfileInput } fro
 @injectable()
 export class UpdateTherapistProfileUseCase implements IUpdateTherapistProfileUseCase {
   constructor(
-    @inject(TYPES.TherapistRepository) private readonly _therapistRepo: ITherapistRepository
+    @inject(TYPES.TherapistRepository) private readonly _therapistRepo: ITherapistRepository,
+    @inject(TYPES.NotificationService) private readonly _notificationService: INotificationService
   ) {}
 
   async execute({ therapistId, data }: IUpdateTherapistProfileInput): Promise<PublicTherapistDTO | null> {
@@ -35,6 +37,16 @@ export class UpdateTherapistProfileUseCase implements IUpdateTherapistProfileUse
     const updated = await this._therapistRepo.update(therapistId, updateData);
     if (!updated) return null;
 
+    if (hasProfessionalUpdates) {
+      await this._notificationService.createAndEmit({
+        recipientId: therapistId,
+        recipientRole: "therapist",
+        type: "profile_update_submitted",
+        title: "Profile Update Submitted",
+        message: "Your profile changes have been submitted and are pending admin review. You will be notified once reviewed.",
+      });
+    }
+
     return TherapistMapper.toProfileDTO(updated);
   }
-}
+}

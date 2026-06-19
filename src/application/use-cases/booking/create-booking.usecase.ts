@@ -1,5 +1,6 @@
 import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
 import type { ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
+import type { INotificationService } from "../../interfaces/services/INotificationService.ts";
 import type { BookingEntity } from "../../../domain/entities/Booking.entity.ts";
 import type { CreateBookingInput, ICreateBookingUseCase } from "../../interfaces/booking/IBookingUseCase.ts";
 import { HttpStatus } from "../../../shared/constants/index.ts";
@@ -12,7 +13,8 @@ import { TYPES } from "../../../shared/constants/tokens.ts";
 export class CreateBookingUseCase implements ICreateBookingUseCase {
   constructor(
     @inject(TYPES.BookingRepository) private readonly _bookingRepository: IBookingRepository,
-    @inject(TYPES.SlotRepository) private readonly _slotRepository: ISlotRepository
+    @inject(TYPES.SlotRepository) private readonly _slotRepository: ISlotRepository,
+    @inject(TYPES.NotificationService) private readonly _notificationService: INotificationService
   ) { }
 
   async execute({ userId, data }: { userId: string; data: CreateBookingInput }): Promise<BookingEntity> {
@@ -29,7 +31,7 @@ export class CreateBookingUseCase implements ICreateBookingUseCase {
 
     await this._slotRepository.updateStatus(data.slotId, "RESERVED");
 
-    return this._bookingRepository.create({
+    const booking = await this._bookingRepository.create({
       userId,
       therapistId: data.therapistId,
       slotId: data.slotId,
@@ -40,5 +42,16 @@ export class CreateBookingUseCase implements ICreateBookingUseCase {
       await this._slotRepository.updateStatus(data.slotId, "AVAILABLE");
       throw err;
     });
+
+    await this._notificationService.createAndEmit({
+      recipientId: data.therapistId,
+      recipientRole: "therapist",
+      type: "booking_request",
+      title: "New Booking Request",
+      message: "You have received a new session booking request awaiting your confirmation.",
+      bookingId: booking.id,
+    });
+
+    return booking;
   }
 }
