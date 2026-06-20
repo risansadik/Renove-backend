@@ -8,6 +8,7 @@ export class TherapistReviewDbMapper {
       userId: doc.userId.toString(),
       therapistId: doc.therapistId.toString(),
       rating: doc.rating,
+      comment: doc.comment,
       createdAt: doc.createdAt,
       updatedAt: doc.updatedAt,
     };

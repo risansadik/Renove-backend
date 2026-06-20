@@ -66,6 +66,7 @@ router.patch("/missions/:missionId", authenticate, authorize(ROLES.USER), asyncH
 router.get("/therapists", authenticate, authorize(ROLES.USER), asyncHandler(userDashboardController.getApprovedTherapists));
 router.get("/therapists/:therapistId/review", authenticate, authorize(ROLES.USER), asyncHandler(therapistReviewController.getStatus));
 router.post("/therapists/:therapistId/review", authenticate, authorize(ROLES.USER), asyncHandler(therapistReviewController.rate));
+router.get("/therapists/:therapistId/reviews", authenticate, authorize(ROLES.USER), asyncHandler(therapistReviewController.getReviews));
 
 // ── Profile (protected) ──────────────────────────────────
 router.get("/profile", authenticate, authorize(ROLES.USER), asyncHandler(profileController.getUserProfile));
