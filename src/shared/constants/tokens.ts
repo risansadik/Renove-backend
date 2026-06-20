@@ -15,6 +15,8 @@ export const TYPES = {
   TherapistRepository: Symbol.for("ITherapistRepository"),
   TherapistReviewRepository: Symbol.for("ITherapistReviewRepository"),
   UserProgressRepository: Symbol.for("IUserProgressRepository"),
+  UserJournalRepository: Symbol.for("IUserJournalRepository"),
+  UserGoalRepository: Symbol.for("IUserGoalRepository"),
   WalletRepository: Symbol.for("WalletRepository"),
   LevelRepository: Symbol.for("ILevelRepository"),
   ChatMessageRepository: Symbol.for("ChatMessageRepository"),
@@ -118,6 +120,17 @@ export const TYPES = {
   GetTherapistReviewStatusUseCase: Symbol.for("IGetTherapistReviewStatusUseCase"),
   RateTherapistUseCase: Symbol.for("IRateTherapistUseCase"),
 
+  // Use Cases (Journal)
+  GetUserJournalsUseCase: Symbol.for("IGetUserJournalsUseCase"),
+  CreateJournalUseCase: Symbol.for("ICreateJournalUseCase"),
+  DeleteJournalUseCase: Symbol.for("IDeleteJournalUseCase"),
+
+  // Use Cases (Goal)
+  GetUserGoalsUseCase: Symbol.for("IGetUserGoalsUseCase"),
+  CreateGoalUseCase: Symbol.for("ICreateGoalUseCase"),
+  ToggleGoalUseCase: Symbol.for("IToggleGoalUseCase"),
+  DeleteGoalUseCase: Symbol.for("IDeleteGoalUseCase"),
+
   SendMessageUseCase: Symbol.for("ISendMessageUseCase"),
   GetSessionMessagesUseCase: Symbol.for("IGetSessionMessagesUseCase"),
   GetSessionsUseCase: Symbol.for("IGetSessionUseCase"),
@@ -154,6 +167,7 @@ export const TYPES = {
   ChatController: Symbol.for("ChatController"),
   ReportController: Symbol.for("ReportController"),
   TherapistChatController: Symbol.for("TherapistChatController"),
+  UserProgressController: Symbol.for("UserProgressController"),
 
   NotificationRepository: Symbol.for("INotificationRepository"),
   NotificationService: Symbol.for("INotificationService"),
