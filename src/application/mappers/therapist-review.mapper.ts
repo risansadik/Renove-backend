@@ -1,10 +1,11 @@
-import type { TherapistReviewEntity } from "../../domain/entities/TherapistReview.entity.ts";
+import { TherapistReviewEntity } from "../../domain/entities/TherapistReview.entity.ts";
 
 export interface PublicTherapistReviewDTO {
   id?: string;
   userId: string;
   therapistId: string;
   rating: number;
+  comment?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -16,6 +17,7 @@ export class TherapistReviewMapper {
       userId: entity.userId,
       therapistId: entity.therapistId,
       rating: entity.rating,
+      comment: entity.comment,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
     };

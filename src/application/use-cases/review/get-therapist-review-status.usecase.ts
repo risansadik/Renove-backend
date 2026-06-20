@@ -9,7 +9,7 @@ export class GetTherapistReviewStatusUseCase implements IGetTherapistReviewStatu
   constructor(
     @inject(TYPES.BookingRepository) private readonly _bookingRepo: IBookingRepository,
     @inject(TYPES.TherapistReviewRepository) private readonly _reviewRepo: ITherapistReviewRepository
-  ) {}
+  ) { }
 
   async execute({ userId, therapistId }: { userId: string; therapistId: string }) {
     const [canReview, review] = await Promise.all([
@@ -20,6 +20,7 @@ export class GetTherapistReviewStatusUseCase implements IGetTherapistReviewStatu
     return {
       canReview,
       userRating: review?.rating ?? null,
+      userComment: review?.comment ?? null,
     };
   }
 }

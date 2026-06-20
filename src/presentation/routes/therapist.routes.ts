@@ -22,11 +22,13 @@ import {
   VerifyOtpSchema,
 } from "../../application/dto/auth/user.dto.ts";
 import { ROLES } from "../../shared/constants/index.ts";
+import { TherapistReviewController } from "../controllers/therapist-review.controller.ts";
 
 const router = Router();
 const therapistAuthController = appContainer.get<TherapistAuthController>(TYPES.TherapistAuthController);
 const profileController = appContainer.get<ProfileController>(TYPES.ProfileController);
 const therapistDashboardController = appContainer.get<TherapistDashboardController>(TYPES.TherapistDashboardController);
+const therapistReviewController = appContainer.get<TherapistReviewController>(TYPES.TherapistReviewController);
 
 // ── Auth (public) ───────────────────────────────────────
 router.post(
@@ -49,6 +51,7 @@ router.post("/logout", therapistAuthController.logout);
 
 // ── Dashboard (protected) ───────────────────────────────
 router.get("/dashboard", authenticate, authorize(ROLES.THERAPIST), asyncHandler(therapistDashboardController.getDashboard));
+router.get("/reviews", authenticate, authorize(ROLES.THERAPIST), asyncHandler(therapistReviewController.getOwnReviews));
 
 // ── Profile (protected) ───────────────────────────────
 router.get("/profile", authenticate, authorize(ROLES.THERAPIST), asyncHandler(profileController.getTherapistProfile));

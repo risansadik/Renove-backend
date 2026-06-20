@@ -69,6 +69,7 @@ export const TYPES = {
   UpdateTherapistStatusUseCase: Symbol.for("IUpdateTherapistStatusUseCase"),
   UpdateUserStatusUseCase: Symbol.for("IUpdateUserStatusUseCase"),
   UpdatePlatformSettingsUseCase: Symbol.for("IUpdatePlatformSettingsUseCase"),
+  GetTherapistReviewsUseCase: Symbol.for("IGetTherapistReviewsUseCase"),
 
   // Use Cases (Availability)
   AvailabilityOperationsUseCase: Symbol.for("IAvailabilityOperationsUseCase"),

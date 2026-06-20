@@ -302,3 +302,5 @@ export type TherapistChatEvent =
   LEAVE_ROOM: "notification:leave",
   NEW_NOTIFICATION: "notification:new",
 } as const;
+
+export const REVIEWS_LIMIT = 10;
