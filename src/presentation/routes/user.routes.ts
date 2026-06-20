@@ -5,6 +5,7 @@ import { UserAuthController } from "../controllers/user-auth.controller.ts";
 import { ProfileController } from "../controllers/profile.controller.ts";
 import { UserDashboardController } from "../controllers/user-dashboard.controller.ts";
 import { TherapistReviewController } from "../controllers/therapist-review.controller.ts";
+import { UserProgressController } from "../controllers/user-progress.controller.ts";
 
 // Remaining Unchanged Controllers & Middlewares
 import { authenticate, authorize } from "../../infrastructure/di/middlewares.ts";
@@ -37,6 +38,7 @@ const userDashboardController = appContainer.get<UserDashboardController>(TYPES.
 const therapistReviewController = appContainer.get<TherapistReviewController>(TYPES.TherapistReviewController);
 const levelController = appContainer.get<LevelController>(TYPES.LevelController);
 const chatController = appContainer.get<ChatController>(TYPES.ChatController);
+const userProgressController = appContainer.get<UserProgressController>(TYPES.UserProgressController);
 
 router.post("/register", validate(RegisterUserSchema), asyncHandler(userAuthController.register));
 router.post("/verify-otp", validate(VerifyOtpSchema), asyncHandler(userAuthController.verifyOtp));
@@ -73,6 +75,16 @@ router.get("/profile", authenticate, authorize(ROLES.USER), asyncHandler(profile
 router.patch("/profile", authenticate, authorize(ROLES.USER), upload.single("profileImage"), validate(UpdateUserProfileSchema), asyncHandler(profileController.updateUserProfile));
 router.post("/profile/password", authenticate, authorize(ROLES.USER), validate(ChangePasswordSchema), asyncHandler(profileController.changeUserPassword));
 
+// ── User Progress — Journals ────────────────────────────────
+router.get("/progress/journals", authenticate, authorize(ROLES.USER), asyncHandler(userProgressController.getJournals));
+router.post("/progress/journals", authenticate, authorize(ROLES.USER), asyncHandler(userProgressController.createJournal));
+router.delete("/progress/journals/:journalId", authenticate, authorize(ROLES.USER), asyncHandler(userProgressController.deleteJournal));
+
+// ── User Progress — Goals ───────────────────────────────────
+router.get("/progress/goals", authenticate, authorize(ROLES.USER), asyncHandler(userProgressController.getGoals));
+router.post("/progress/goals", authenticate, authorize(ROLES.USER), asyncHandler(userProgressController.createGoal));
+router.patch("/progress/goals/:goalId/toggle", authenticate, authorize(ROLES.USER), asyncHandler(userProgressController.toggleGoal));
+router.delete("/progress/goals/:goalId", authenticate, authorize(ROLES.USER), asyncHandler(userProgressController.deleteGoal));
 
 
 export default router;

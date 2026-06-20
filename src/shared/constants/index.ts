@@ -234,7 +234,16 @@ export const MESSAGES = {
   MESSAGES_FETCHED: "Messages fetched",
   MESSAGE_SENT: "Message sent",
   MARKED_READ: "Messages marked as read",
-}
+  },
+  USER_PROGRESS: {
+    JOURNALS_FETCHED: "Journals fetched successfully",
+    JOURNAL_CREATED: "Journal entry created successfully",
+    JOURNAL_DELETED: "Journal entry deleted successfully",
+    GOALS_FETCHED: "Goals fetched successfully",
+    GOAL_CREATED: "Goal created successfully",
+    GOAL_UPDATED: "Goal updated successfully",
+    GOAL_DELETED: "Goal deleted successfully",
+  },
 } as const;
 
 export const LEVEL_DIFFICULTY = {
