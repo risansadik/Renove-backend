@@ -10,7 +10,6 @@ export const validate = (schema: ZodSchema) => {
         field: e.path.join("."),
         message: e.message,
       }));
-      console.log("VALIDATION FAILED:", { errors, body: req.body });
       return next(new ValidationError("Validation failed", errors));
     }
     req.body = result.data;

@@ -79,11 +79,9 @@ export class CreateAvailabilityUseCase implements ICreateAvailabilityUseCase {
       status: "AVAILABLE" as const
     }));
 
-    console.log(`[DEBUG] Generated ${slotEntities.length} slots for therapist ${data.therapistId}`);
 
     if (slotEntities.length > 0) {
       await this._slotRepo.createMany(slotEntities);
-      console.log(`[DEBUG] Successfully persisted slots`);
     }
 
     return availability;

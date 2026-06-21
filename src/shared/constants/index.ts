@@ -118,12 +118,12 @@ export const AUTH_CONFIG = {
   ACCESS_TOKEN: {
     SECRET: process.env.JWT_ACCESS_SECRET || "default_access_secret",
     EXPIRY: (process.env.JWT_ACCESS_EXPIRES_IN as string) || "15m",
-    MAX_AGE: 15 * 60 * 1000,
+    MAX_AGE: Number(process.env.ACCESS_TOKEN_MAX_AGE)
   },
   REFRESH_TOKEN: {
     SECRET: process.env.JWT_REFRESH_SECRET || "default_refresh_secret",
     EXPIRY: (process.env.JWT_REFRESH_EXPIRES_IN as string) || "7d",
-    MAX_AGE: 7 * 24 * 60 * 60 * 1000,
+    MAX_AGE: Number(process.env.REFRESH_TOKEN_MAX_AGE)
   },
 } as const;
 
