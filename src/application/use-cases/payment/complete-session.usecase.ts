@@ -1,16 +1,16 @@
-import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
-import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.ts";
-import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.ts";
-import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
-import type { INotificationService } from "../../interfaces/services/INotificationService.ts";
-import { BOOKING_STATUS, HttpStatus } from "../../../shared/constants/index.ts";
-import { AppError } from "../../../shared/utils/AppError.ts";
-import { ICompleteSessionInput, ICompleteSessionUseCase } from "../../interfaces/payment/IPaymentUseCase.ts";
+import type { IBookingRepository } from "../../../domain/repositories/booking.repository";
+import type { IWalletRepository } from "../../../domain/repositories/wallet.repository";
+import type { IPaymentRepository } from "../../../domain/repositories/payment.repository";
+import type { IUserRepository } from "../../../domain/repositories/user.repository";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository";
+import type { INotificationService } from "../../interfaces/services/INotificationService";
+import { BOOKING_STATUS, HttpStatus } from "../../../shared/constants/index";
+import { AppError } from "../../../shared/utils/AppError";
+import { ICompleteSessionInput, ICompleteSessionUseCase } from "../../interfaces/payment/IPaymentUseCase";
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { ILogger } from "../../interfaces/services/ILoggerService.ts";
-import type { IExtendTherapistChatWindowUseCase } from "../../interfaces/therapist-chat/ITherapistChatUseCase.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { ILogger } from "../../interfaces/services/ILoggerService";
+import type { IExtendTherapistChatWindowUseCase } from "../../interfaces/therapist-chat/ITherapistChatUseCase";
 
 @injectable()
 export class CompleteSessionUseCase implements ICompleteSessionUseCase {
@@ -176,4 +176,4 @@ export class CompleteSessionUseCase implements ICompleteSessionUseCase {
 
     return { success: true };
   }
-}
+}

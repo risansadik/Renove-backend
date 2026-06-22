@@ -1,12 +1,12 @@
-import type { IAvailabilityRepository, ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
-import { SlotGenerator } from "../../../shared/utils/slot-generator.ts";
+import type { IAvailabilityRepository, ISlotRepository } from "../../../domain/repositories/availability.repository";
+import { SlotGenerator } from "../../../shared/utils/slot-generator";
 import { addDays, startOfDay } from "date-fns";
-import { AppError } from "../../../shared/utils/AppError.ts";
-import { HttpStatus } from "../../../shared/constants/index.ts";
+import { AppError } from "../../../shared/utils/AppError";
+import { HttpStatus } from "../../../shared/constants/index";
 
-import type { CreateAvailabilityDTO, ICreateAvailabilityUseCase } from "../../interfaces/availability/IAvailabilityUseCase.ts";
+import type { CreateAvailabilityDTO, ICreateAvailabilityUseCase } from "../../interfaces/availability/IAvailabilityUseCase";
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
+import { TYPES } from "../../../shared/constants/tokens";
 
 
 @injectable()

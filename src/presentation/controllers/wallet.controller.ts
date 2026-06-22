@@ -1,13 +1,13 @@
 import type { Request, Response } from "express";
 import { injectable, inject } from "inversify";
-import type { IGetWalletUseCase } from "../../application/interfaces/wallet/IWalletUseCase.ts";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import { PAGINATION, MESSAGES } from "../../shared/constants/index.ts";
-import { ResponseModel } from "../../shared/utils/response-model.ts";
-import type { AuthenticatedRequest } from "../../shared/types/express.ts";
-import { WalletMapper } from "../../application/mappers/wallet.mapper.ts";
-import type { TherapistWalletEntity } from "../../domain/entities/TherapistWallet.entity.ts";
-import type { UserWalletEntity } from "../../domain/entities/UserWallet.entity.ts";
+import type { IGetWalletUseCase } from "../../application/interfaces/wallet/IWalletUseCase";
+import { TYPES } from "../../shared/constants/tokens";
+import { PAGINATION, MESSAGES } from "../../shared/constants/index";
+import { ResponseModel } from "../../shared/utils/response-model";
+import type { AuthenticatedRequest } from "../../shared/types/express";
+import { WalletMapper } from "../../application/mappers/wallet.mapper";
+import type { TherapistWalletEntity } from "../../domain/entities/TherapistWallet.entity";
+import type { UserWalletEntity } from "../../domain/entities/UserWallet.entity";
 
 @injectable()
 export class WalletController {

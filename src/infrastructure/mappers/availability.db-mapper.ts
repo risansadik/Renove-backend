@@ -1,5 +1,5 @@
-import type { IAvailabilityDocument, ISlotDocument } from "../databases/schema/availability.schema.ts";
-import type { TherapistAvailabilityEntity, TherapistSlotEntity } from "../../domain/entities/TherapistAvailability.entity.ts";
+import type { IAvailabilityDocument, ISlotDocument } from "../databases/schema/availability.schema";
+import type { TherapistAvailabilityEntity, TherapistSlotEntity } from "../../domain/entities/TherapistAvailability.entity";
 
 export class AvailabilityDbMapper {
   static toAvailabilityEntity(doc: IAvailabilityDocument): TherapistAvailabilityEntity {

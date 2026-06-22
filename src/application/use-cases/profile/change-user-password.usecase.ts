@@ -1,10 +1,10 @@
-import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
-import { AppError } from "../../../shared/utils/AppError.ts";
-import { HttpStatus } from "../../../shared/constants/index.ts";
-import type { IPasswordHasher } from "../../interfaces/services/IPasswordHasher.ts";
+import type { IUserRepository } from "../../../domain/repositories/user.repository";
+import { AppError } from "../../../shared/utils/AppError";
+import { HttpStatus } from "../../../shared/constants/index";
+import type { IPasswordHasher } from "../../interfaces/services/IPasswordHasher";
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { IChangePasswordInput, IChangeUserPasswordUseCase } from "../../interfaces/profile/IProfileUseCase.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import { IChangePasswordInput, IChangeUserPasswordUseCase } from "../../interfaces/profile/IProfileUseCase";
 
 @injectable()
 export class ChangeUserPasswordUseCase implements IChangeUserPasswordUseCase{

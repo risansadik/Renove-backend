@@ -1,15 +1,15 @@
-import { stripe } from "../../../shared/utils/stripe.ts";
-import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.ts";
-import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
-import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.ts";
-import type { ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
-import type { INotificationService } from "../../interfaces/services/INotificationService.ts";
-import { BOOKING_STATUS, PAYMENT_STATUS, SLOT_STATUS, HttpStatus } from "../../../shared/constants/index.ts";
-import { AppError } from "../../../shared/utils/AppError.ts";
+import { stripe } from "../../../shared/utils/stripe";
+import type { IPaymentRepository } from "../../../domain/repositories/payment.repository";
+import type { IBookingRepository } from "../../../domain/repositories/booking.repository";
+import type { IWalletRepository } from "../../../domain/repositories/wallet.repository";
+import type { ISlotRepository } from "../../../domain/repositories/availability.repository";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository";
+import type { INotificationService } from "../../interfaces/services/INotificationService";
+import { BOOKING_STATUS, PAYMENT_STATUS, SLOT_STATUS, HttpStatus } from "../../../shared/constants/index";
+import { AppError } from "../../../shared/utils/AppError";
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { IVerifyPaymentInput, IVerifyPaymentUseCase } from "../../interfaces/payment/IPaymentUseCase.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import { IVerifyPaymentInput, IVerifyPaymentUseCase } from "../../interfaces/payment/IPaymentUseCase";
 
 @injectable()
 export class VerifyPaymentUseCase implements IVerifyPaymentUseCase{

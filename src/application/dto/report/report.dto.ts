@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { REPORT_CATEGORY, REPORT_STATUS } from "../../../shared/constants/index.ts";
+import { REPORT_CATEGORY, REPORT_STATUS } from "../../../shared/constants/index";
 
 export const CreateReportSchema = z.object({
   category: z.nativeEnum(REPORT_CATEGORY, {

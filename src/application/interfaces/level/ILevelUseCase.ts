@@ -1,6 +1,6 @@
-import type { IUseCase } from "../IUseCase.ts";
-import type { LevelEntity } from "../../../domain/entities/Level.entity.ts";
-import type { GenerateLevelsDTO } from "../../dto/level/level.dto.ts";
+import type { IUseCase } from "../IUseCase";
+import type { LevelEntity } from "../../../domain/entities/Level.entity";
+import type { GenerateLevelsDTO } from "../../dto/level/level.dto";
 
 export interface IGenerateLevelsInput {
     userId: string;

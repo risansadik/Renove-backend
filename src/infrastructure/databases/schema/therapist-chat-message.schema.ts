@@ -1,5 +1,5 @@
 import mongoose, { Schema, type Document, type Types } from "mongoose";
-import type { TherapistChatSenderRole } from "../../../shared/constants/index.ts";
+import type { TherapistChatSenderRole } from "../../../shared/constants/index";
 
 export interface ITherapistChatMessageDocument extends Document {
   threadId: Types.ObjectId;

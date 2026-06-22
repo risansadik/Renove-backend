@@ -1,9 +1,9 @@
 import { injectable } from "inversify";
-import { IReportRepository } from "../../domain/repositories/report.repository.ts";
-import { ReportEntity } from "../../domain/entities/Report.entity.ts";
-import { ReportModel } from "../databases/schema/report.schema.ts";
-import { ReportStatus } from "../../shared/constants/index.ts";
-import { ReportDbMapper } from "../mappers/report.db-mapper.ts";
+import { IReportRepository } from "../../domain/repositories/report.repository";
+import { ReportEntity } from "../../domain/entities/Report.entity";
+import { ReportModel } from "../databases/schema/report.schema";
+import { ReportStatus } from "../../shared/constants/index";
+import { ReportDbMapper } from "../mappers/report.db-mapper";
 
 @injectable()
 export class ReportRepository implements IReportRepository {

@@ -1,7 +1,7 @@
 import { injectable, inject } from "inversify";
 import { Redis } from "ioredis"; // This is both the class and the TypeScript type
-import { TYPES } from "../../shared/constants/tokens.ts"
-import type { IOtpCacheRepository } from "../../domain/repositories/otp-cache.repository.ts";
+import { TYPES } from "../../shared/constants/tokens"
+import type { IOtpCacheRepository } from "../../domain/repositories/otp-cache.repository";
 
 @injectable()
 export class RedisOtpCacheRepository implements IOtpCacheRepository {

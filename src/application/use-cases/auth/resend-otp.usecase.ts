@@ -1,16 +1,16 @@
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { AppError, NotFoundError } from "../../../shared/utils/AppError.ts";
-import { otpService } from "../../../shared/utils/otp.ts";
-import { OTP_TTL_SECONDS } from "../../../shared/constants/index.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import { AppError, NotFoundError } from "../../../shared/utils/AppError";
+import { otpService } from "../../../shared/utils/otp";
+import { OTP_TTL_SECONDS } from "../../../shared/constants/index";
 
 // Interfaces
-import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
-import type { IOtpCacheRepository } from "../../../domain/repositories/otp-cache.repository.ts";
-import type { IEmailService } from "../../interfaces/services/IEmailService.ts";
-import type { IResendOtpUseCase } from "../../interfaces/auth/IAuthUseCase.ts";
-import type { ResendOtpDTO } from "../../dto/auth/user.dto.ts";
+import type { IUserRepository } from "../../../domain/repositories/user.repository";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository";
+import type { IOtpCacheRepository } from "../../../domain/repositories/otp-cache.repository";
+import type { IEmailService } from "../../interfaces/services/IEmailService";
+import type { IResendOtpUseCase } from "../../interfaces/auth/IAuthUseCase";
+import type { ResendOtpDTO } from "../../dto/auth/user.dto";
 
 @injectable()
 export class ResendOtpUseCase implements IResendOtpUseCase {

@@ -1,4 +1,4 @@
-import type { ReportCategory, ReportStatus, Role } from "../../shared/constants/index.ts";
+import type { ReportCategory, ReportStatus, Role } from "../../shared/constants/index";
 
 export interface ReportEntity {
   id: string;

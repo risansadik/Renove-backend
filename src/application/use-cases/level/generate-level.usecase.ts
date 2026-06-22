@@ -1,9 +1,9 @@
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import type { IGenerateLevelsUseCase, IGenerateLevelsInput } from "../../interfaces/level/ILevelUseCase.ts";
-import type { ILevelRepository } from "../../../domain/repositories/level.repository.ts";
-import type { IRagService } from "../../../application/interfaces/services/rag/IRagService.ts";
-import type { LevelEntity } from "../../../domain/entities/Level.entity.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { IGenerateLevelsUseCase, IGenerateLevelsInput } from "../../interfaces/level/ILevelUseCase";
+import type { ILevelRepository } from "../../../domain/repositories/level.repository";
+import type { IRagService } from "../../../application/interfaces/services/rag/IRagService";
+import type { LevelEntity } from "../../../domain/entities/Level.entity";
 
 @injectable()
 export class GenerateLevelsUseCase implements IGenerateLevelsUseCase {

@@ -1,13 +1,13 @@
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
-import type { LoginTherapistDTO } from "../../dto/auth/therapist.dto.ts";
-import { AppError, NotFoundError, UnauthorizedError } from "../../../shared/utils/AppError.ts";
-import { HttpStatus, ROLES, THERAPIST_STATUS } from "../../../shared/constants/index.ts";
-import type { ILoginTherapistUseCase, ILoginResponse } from "../../interfaces/auth/IAuthUseCase.ts";
-import type { IPasswordHasher } from "../../interfaces/services/IPasswordHasher.ts";
-import type { ITokenService } from "../../interfaces/services/ITokenService.ts";
-import { TherapistMapper } from "../../mappers/therapist.mapper.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository";
+import type { LoginTherapistDTO } from "../../dto/auth/therapist.dto";
+import { AppError, NotFoundError, UnauthorizedError } from "../../../shared/utils/AppError";
+import { HttpStatus, ROLES, THERAPIST_STATUS } from "../../../shared/constants/index";
+import type { ILoginTherapistUseCase, ILoginResponse } from "../../interfaces/auth/IAuthUseCase";
+import type { IPasswordHasher } from "../../interfaces/services/IPasswordHasher";
+import type { ITokenService } from "../../interfaces/services/ITokenService";
+import { TherapistMapper } from "../../mappers/therapist.mapper";
 
 @injectable()
 export class LoginTherapistUseCase implements ILoginTherapistUseCase {

@@ -1,5 +1,5 @@
-import type { IUserDocument } from "../databases/schema/user.schema.ts";
-import type { UserEntity } from "../../domain/entities/User.entity.ts";
+import type { IUserDocument } from "../databases/schema/user.schema";
+import type { UserEntity } from "../../domain/entities/User.entity";
 
 export class UserDbMapper {
   static toEntity(doc: IUserDocument): UserEntity {

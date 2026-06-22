@@ -1,10 +1,10 @@
 import { injectable } from "inversify";
-import type { IBookingRepository } from "../../domain/repositories/booking.repository.ts";
-import type { BookingEntity } from "../../domain/entities/Booking.entity.ts";
-import type { BookingStatus } from "../../shared/constants/index.ts";
-import { BookingModel, type IBookingRaw } from "../databases/schema/booking.schema.ts";
-import { PaginationParams, PaginatedResult } from "../../domain/interfaces/pagination.ts";
-import { BookingDbMapper } from "../mappers/booking.db-mapper.ts";
+import type { IBookingRepository } from "../../domain/repositories/booking.repository";
+import type { BookingEntity } from "../../domain/entities/Booking.entity";
+import type { BookingStatus } from "../../shared/constants/index";
+import { BookingModel, type IBookingRaw } from "../databases/schema/booking.schema";
+import { PaginationParams, PaginatedResult } from "../../domain/interfaces/pagination";
+import { BookingDbMapper } from "../mappers/booking.db-mapper";
 
 @injectable()
 export class BookingRepositoryImpl implements IBookingRepository {

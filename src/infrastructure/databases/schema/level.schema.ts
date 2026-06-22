@@ -1,5 +1,5 @@
 import mongoose, { Schema, type Document, type Types } from "mongoose";
-import { LEVEL_DIFFICULTY } from "../../../shared/constants/index.ts";
+import { LEVEL_DIFFICULTY } from "../../../shared/constants/index";
 
 export interface ILevelDocument extends Document {
   _id: Types.ObjectId;

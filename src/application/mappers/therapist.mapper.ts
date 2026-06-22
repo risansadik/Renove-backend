@@ -1,5 +1,5 @@
-import type { TherapistEntity } from "../../domain/entities/Therapist.entity.ts";
-import type { TherapistStatus } from "../../shared/constants/index.ts";
+import type { TherapistEntity } from "../../domain/entities/Therapist.entity";
+import type { TherapistStatus } from "../../shared/constants/index";
 
 export interface PublicTherapistDTO {
   id: string;

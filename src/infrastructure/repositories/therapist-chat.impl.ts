@@ -1,17 +1,17 @@
 import { injectable } from "inversify";
-import type { ITherapistChatRepository } from "../../domain/repositories/therapist-chat.repository.ts";
-import type { TherapistChatThreadEntity } from "../../domain/entities/TherapistChatThread.entity.ts";
-import type { TherapistChatMessageEntity } from "../../domain/entities/TherapistChatMessage.entity.ts";
-import type { PaginationParams, PaginatedResult } from "../../domain/interfaces/pagination.ts";
+import type { ITherapistChatRepository } from "../../domain/repositories/therapist-chat.repository";
+import type { TherapistChatThreadEntity } from "../../domain/entities/TherapistChatThread.entity";
+import type { TherapistChatMessageEntity } from "../../domain/entities/TherapistChatMessage.entity";
+import type { PaginationParams, PaginatedResult } from "../../domain/interfaces/pagination";
 import {
   TherapistChatThreadModel,
   type ITherapistChatThreadRaw,
-} from "../databases/schema/therapist-chat-thread.schema.ts";
+} from "../databases/schema/therapist-chat-thread.schema";
 import {
   TherapistChatMessageModel,
   type ITherapistChatMessageRaw,
-} from "../databases/schema/therapist-chat-message.schema.ts";
-import { TherapistChatDbMapper } from "../mappers/therapist-chat.db-mapper.ts";
+} from "../databases/schema/therapist-chat-message.schema";
+import { TherapistChatDbMapper } from "../mappers/therapist-chat.db-mapper";
 
 @injectable()
 export class TherapistChatRepositoryImpl implements ITherapistChatRepository {

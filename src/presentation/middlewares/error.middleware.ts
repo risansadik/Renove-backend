@@ -1,10 +1,10 @@
 import type { Request, Response, NextFunction } from "express";
-import { AppError } from "../../shared/utils/AppError.ts";
-import { ResponseModel } from "../../shared/utils/response-model.ts";
-import { HttpStatus } from "../../shared/constants/index.ts";
-import { appContainer } from "../../infrastructure/di/container.ts";
-import { ILogger } from "../../application/interfaces/services/ILoggerService.ts";
-import { TYPES } from "../../shared/constants/tokens.ts";
+import { AppError } from "../../shared/utils/AppError";
+import { ResponseModel } from "../../shared/utils/response-model";
+import { HttpStatus } from "../../shared/constants/index";
+import { appContainer } from "../../infrastructure/di/container";
+import { ILogger } from "../../application/interfaces/services/ILoggerService";
+import { TYPES } from "../../shared/constants/tokens";
 
 
 const logger = appContainer.get<ILogger>(TYPES.Logger);

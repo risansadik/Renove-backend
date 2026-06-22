@@ -1,12 +1,12 @@
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { IReportRepository } from "../../../domain/repositories/report.repository.ts";
-import { IAdminUpdateReportUseCase } from "../../interfaces/report/IReportUseCase.ts";
-import { ReportEntity } from "../../../domain/entities/Report.entity.ts";
-import { AppError } from "../../../shared/utils/AppError.ts";
-import { HttpStatus, MESSAGES, REPORT_STATUS, ReportStatus } from "../../../shared/constants/index.ts";
-import type { INotificationService } from "../../interfaces/services/INotificationService.ts";
-import type { NotificationRecipientRole } from "../../../domain/entities/Notification.entity.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { IReportRepository } from "../../../domain/repositories/report.repository";
+import { IAdminUpdateReportUseCase } from "../../interfaces/report/IReportUseCase";
+import { ReportEntity } from "../../../domain/entities/Report.entity";
+import { AppError } from "../../../shared/utils/AppError";
+import { HttpStatus, MESSAGES, REPORT_STATUS, ReportStatus } from "../../../shared/constants/index";
+import type { INotificationService } from "../../interfaces/services/INotificationService";
+import type { NotificationRecipientRole } from "../../../domain/entities/Notification.entity";
 
 @injectable()
 export class AdminUpdateReportUseCase implements IAdminUpdateReportUseCase {

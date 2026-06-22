@@ -1,8 +1,8 @@
 import { injectable } from "inversify";
-import type { IUserGoalRepository } from "../../domain/repositories/user-goal.repository.ts";
-import type { UserGoalEntity } from "../../domain/entities/UserGoal.entity.ts";
-import { UserGoalModel } from "../databases/schema/user-goal.schema.ts";
-import { UserGoalDbMapper } from "../mappers/user-goal.db-mapper.ts";
+import type { IUserGoalRepository } from "../../domain/repositories/user-goal.repository";
+import type { UserGoalEntity } from "../../domain/entities/UserGoal.entity";
+import { UserGoalModel } from "../databases/schema/user-goal.schema";
+import { UserGoalDbMapper } from "../mappers/user-goal.db-mapper";
 
 @injectable()
 export class UserGoalRepository implements IUserGoalRepository {

@@ -1,7 +1,7 @@
-import { IUserProgressRepository } from "../../../domain/repositories/user-progress.repository.ts";
-import { IToggleMissionUseCase } from "../../interfaces/dashboard/IDashboardUseCase.ts";
+import type { IUserProgressRepository } from "../../../domain/repositories/user-progress.repository";
+import { IToggleMissionUseCase } from "../../interfaces/dashboard/IDashboardUseCase";
 import { injectable,inject } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
+import { TYPES } from "../../../shared/constants/tokens";
 
 @injectable()
 export class ToggleMissionUseCase implements IToggleMissionUseCase{

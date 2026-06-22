@@ -1,7 +1,7 @@
-import type { IWalletDocument, IUserWalletDocument, ITransactionDocument } from "../databases/schema/wallet.schema.ts";
-import type { TherapistWalletEntity } from "../../domain/entities/TherapistWallet.entity.ts";
-import type { UserWalletEntity } from "../../domain/entities/UserWallet.entity.ts";
-import type { TransactionEntity } from "../../domain/entities/Transaction.entity.ts";
+import type { IWalletDocument, IUserWalletDocument, ITransactionDocument } from "../databases/schema/wallet.schema";
+import type { TherapistWalletEntity } from "../../domain/entities/TherapistWallet.entity";
+import type { UserWalletEntity } from "../../domain/entities/UserWallet.entity";
+import type { TransactionEntity } from "../../domain/entities/Transaction.entity";
 
 export class WalletDbMapper {
   static toTherapistEntity(doc: IWalletDocument): TherapistWalletEntity {

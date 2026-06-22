@@ -1,5 +1,5 @@
-import type { IAdminDocument } from "../databases/schema/admin.schema.ts";
-import type { AdminEntity } from "../../domain/entities/Admin.entity.ts";
+import type { IAdminDocument } from "../databases/schema/admin.schema";
+import type { AdminEntity } from "../../domain/entities/Admin.entity";
 
 export class AdminDbMapper {
   static toEntity(doc: IAdminDocument): AdminEntity {

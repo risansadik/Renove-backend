@@ -1,4 +1,4 @@
-import type { AdminEntity } from "../../domain/entities/Admin.entity.ts";
+import type { AdminEntity } from "../../domain/entities/Admin.entity";
 
 export interface PublicAdminDTO {
   id: string;

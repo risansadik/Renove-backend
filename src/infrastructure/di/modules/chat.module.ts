@@ -1,14 +1,14 @@
 // src/infrastructure/di/modules/chat.module.ts
 
 import type { Container } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { ChatMessageRepository } from "../../repositories/chat-message.repository.impl.ts";
-import { LangChainChatService } from "../../external-services/rag/chat.service.ts";
-import { CreateSessionUseCase, DeleteSessionUseCase, GetSessionMessagesUseCase, GetSessionsUseCase, SendMessageUseCase } from "../../../application/use-cases/chat/chat.usecase.ts";
-import { ChatController } from "../../../presentation/controllers/chat.controller.ts"
-import { IChatMessageRepository } from "../../../domain/repositories/chat-message.repository.ts";
-import { IChatService } from "../../../application/interfaces/services/rag/IChatService.ts";
-import {  ICreateSessionUseCase, IDeleteSessionUseCase, IGetSessionMessagesUseCase, IGetSessionsUseCase, ISendMessageUseCase } from "../../../application/interfaces/chat/IChatUseCase.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import { ChatMessageRepository } from "../../repositories/chat-message.repository.impl";
+import { LangChainChatService } from "../../external-services/rag/chat.service";
+import { CreateSessionUseCase, DeleteSessionUseCase, GetSessionMessagesUseCase, GetSessionsUseCase, SendMessageUseCase } from "../../../application/use-cases/chat/chat.usecase";
+import { ChatController } from "../../../presentation/controllers/chat.controller"
+import { IChatMessageRepository } from "../../../domain/repositories/chat-message.repository";
+import { IChatService } from "../../../application/interfaces/services/rag/IChatService";
+import {  ICreateSessionUseCase, IDeleteSessionUseCase, IGetSessionMessagesUseCase, IGetSessionsUseCase, ISendMessageUseCase } from "../../../application/interfaces/chat/IChatUseCase";
 
 export const registerChatModule = (container: Container): void => {
     container.bind<IChatMessageRepository>(TYPES.ChatMessageRepository).to(ChatMessageRepository).inSingletonScope();

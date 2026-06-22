@@ -1,10 +1,8 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "allowImportingTsExtensions": true,
-    "noEmit":true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "lib": ["ES2022"],
@@ -22,11 +20,11 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "paths": {
-      "@domain/*": ["./domain/*"],
-      "@application/*": ["./application/*"],
-      "@infrastructure/*": ["./infrastructure/*"],
-      "@presentation/*": ["./presentation/*"],
-      "@shared/*": ["./shared/*"]
+      "@domain/*": ["./src/domain/*"],
+      "@application/*": ["./src/application/*"],
+      "@infrastructure/*": ["./src/infrastructure/*"],
+      "@presentation/*": ["./src/presentation/*"],
+      "@shared/*": ["./src/shared/*"]
     }
   },
   "include": ["src/**/*", "src/test-jwt.ts", "src/test-google.ts"],

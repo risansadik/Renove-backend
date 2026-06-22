@@ -1,10 +1,10 @@
 import type { Response } from "express";
 import { inject, injectable } from "inversify";
-import type { IGetTherapistReviewStatusUseCase, IGetTherapistReviewsUseCase, IRateTherapistUseCase } from "../../application/interfaces/review/IReviewUseCase.ts";
-import { HttpStatus, MESSAGES } from "../../shared/constants/index.ts";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import type { AuthRequest } from "../../shared/types/express.ts";
-import { ResponseModel } from "../../shared/utils/response-model.ts";
+import type { IGetTherapistReviewStatusUseCase, IGetTherapistReviewsUseCase, IRateTherapistUseCase } from "../../application/interfaces/review/IReviewUseCase";
+import { HttpStatus, MESSAGES } from "../../shared/constants/index";
+import { TYPES } from "../../shared/constants/tokens";
+import type { AuthRequest } from "../../shared/types/express";
+import { ResponseModel } from "../../shared/utils/response-model";
 
 @injectable()
 export class TherapistReviewController {

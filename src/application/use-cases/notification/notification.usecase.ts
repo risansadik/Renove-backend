@@ -1,7 +1,7 @@
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import type { INotificationRepository } from "../../../domain/repositories/notification.repository.ts";
-import type { NotificationEntity } from "../../../domain/entities/Notification.entity.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { INotificationRepository } from "../../../domain/repositories/notification.repository";
+import type { NotificationEntity } from "../../../domain/entities/Notification.entity";
 import type {
   IGetNotificationsUseCase,
   IGetNotificationsInput,
@@ -9,7 +9,7 @@ import type {
   IMarkReadInput,
   IMarkAllNotificationsReadUseCase,
   IMarkAllReadInput,
-} from "../../interfaces/notification/INotificationUseCase.ts";
+} from "../../interfaces/notification/INotificationUseCase";
 
 @injectable()
 export class GetNotificationsUseCase implements IGetNotificationsUseCase {

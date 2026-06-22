@@ -1,5 +1,5 @@
-import type { IUserProgressDocument, IMission } from "../databases/schema/user-progress.schema.ts";
-import type { UserProgressEntity, MissionEntity } from "../../domain/entities/UserProgress.entity.ts";
+import type { IUserProgressDocument, IMission } from "../databases/schema/user-progress.schema";
+import type { UserProgressEntity, MissionEntity } from "../../domain/entities/UserProgress.entity";
 
 export class UserProgressDbMapper {
   static toEntity(doc: IUserProgressDocument): UserProgressEntity {

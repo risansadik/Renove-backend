@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { THERAPIST_STATUS, USER_STATUS } from "../../../shared/constants/index.ts";
+import { THERAPIST_STATUS, USER_STATUS } from "../../../shared/constants/index";
 
 export const AdminLoginSchema = z.object({
   email: z.string().email(),

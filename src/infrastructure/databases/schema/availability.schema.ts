@@ -1,5 +1,5 @@
 import mongoose, { Schema, type Document, type Types } from "mongoose";
-import type { SlotStatus } from "../../../domain/entities/TherapistAvailability.entity.ts";
+import type { SlotStatus } from "../../../domain/entities/TherapistAvailability.entity";
 
 export interface IAvailabilityDocument extends Document {
   therapistId: Types.ObjectId;

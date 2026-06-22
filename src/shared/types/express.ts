@@ -1,5 +1,5 @@
 import type { Request } from "express";
-import type { Role } from "../constants/index.ts";
+import type { Role } from "../constants/index";
 
 export interface AuthenticatedRequest extends Request {
   user: {

@@ -6,7 +6,7 @@ import type {
   ILogMoodUseCase,
   IToggleMissionUseCase,
   IGetUserDashboardUseCase
-} from '../../../application/interfaces/dashboard/IDashboardUseCase.ts'
+} from '../../../application/interfaces/dashboard/IDashboardUseCase'
 
 import {
   GetApprovedTherapistsUseCase,
@@ -14,10 +14,10 @@ import {
   LogMoodUseCase,
   ToggleMissionUseCase,
   GetTherapistDashboardUseCase
-} from '../../../application/use-cases/dashboard/dashboard.usecase.ts'
-import { TherapistDashboardController } from "../../../presentation/controllers/therapist-dashboard.controller.ts";
-import { UserDashboardController } from "../../../presentation/controllers/user-dashboard.controller.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
+} from '../../../application/use-cases/dashboard/dashboard.usecase'
+import { TherapistDashboardController } from "../../../presentation/controllers/therapist-dashboard.controller";
+import { UserDashboardController } from "../../../presentation/controllers/user-dashboard.controller";
+import { TYPES } from "../../../shared/constants/tokens";
 
 export const registerDashboardModule = (container: Container): void => {
   container.bind<IGetApprovedTherapistsUseCase>(TYPES.GetApprovedTherapistsUseCase).to(GetApprovedTherapistsUseCase);

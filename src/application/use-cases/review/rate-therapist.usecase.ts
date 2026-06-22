@@ -1,13 +1,13 @@
 import { inject, injectable } from "inversify";
-import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
-import type { ITherapistReviewRepository } from "../../../domain/repositories/therapist-review.repository.ts";
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
-import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
-import type { INotificationService } from "../../interfaces/services/INotificationService.ts";
-import { HttpStatus } from "../../../shared/constants/index.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { AppError, NotFoundError } from "../../../shared/utils/AppError.ts";
-import type { IRateTherapistUseCase } from "../../interfaces/review/IReviewUseCase.ts";
+import type { IBookingRepository } from "../../../domain/repositories/booking.repository";
+import type { ITherapistReviewRepository } from "../../../domain/repositories/therapist-review.repository";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository";
+import type { IUserRepository } from "../../../domain/repositories/user.repository";
+import type { INotificationService } from "../../interfaces/services/INotificationService";
+import { HttpStatus } from "../../../shared/constants/index";
+import { TYPES } from "../../../shared/constants/tokens";
+import { AppError, NotFoundError } from "../../../shared/utils/AppError";
+import type { IRateTherapistUseCase } from "../../interfaces/review/IReviewUseCase";
 
 @injectable()
 export class RateTherapistUseCase implements IRateTherapistUseCase {

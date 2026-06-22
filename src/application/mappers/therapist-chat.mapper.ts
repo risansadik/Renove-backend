@@ -1,5 +1,5 @@
-import type { TherapistChatThreadEntity } from "../../domain/entities/TherapistChatThread.entity.ts";
-import type { TherapistChatMessageEntity } from "../../domain/entities/TherapistChatMessage.entity.ts";
+import type { TherapistChatThreadEntity } from "../../domain/entities/TherapistChatThread.entity";
+import type { TherapistChatMessageEntity } from "../../domain/entities/TherapistChatMessage.entity";
 
 export interface PublicTherapistChatThreadDTO {
   id?: string;

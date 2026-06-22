@@ -1,5 +1,5 @@
-import type { NotificationEntity } from "../../../domain/entities/Notification.entity.ts";
-import type { NotificationRecipientRole, NotificationType } from "../../../domain/entities/Notification.entity.ts";
+import type { NotificationEntity } from "../../../domain/entities/Notification.entity";
+import type { NotificationRecipientRole, NotificationType } from "../../../domain/entities/Notification.entity";
 
 export interface ICreateNotificationInput {
   recipientId: string;

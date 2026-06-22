@@ -1,11 +1,10 @@
-// src/infrastructure/external-services/serper-search.service.ts
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { SerperClientProvider } from "./providers/serper-client.provider.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import { SerperClientProvider } from "./providers/serper-client.provider";
 import type {
   ISearchService,
   SearchResult,
-} from "../../../application/interfaces/services/rag/ISearchService.ts";
+} from "../../../application/interfaces/services/rag/ISearchService";
 
 interface SerperOrganicItem {
   title: string;

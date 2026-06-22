@@ -1,19 +1,19 @@
 import { Router } from "express";
-import { appContainer } from "../../infrastructure/di/container.ts";
-import { AdminController } from "../controllers/admin.controller.ts";
-import { ProfileController } from "../controllers/profile.controller.ts";
-import { authenticate, authorize } from "../../infrastructure/di/middlewares.ts";
-import { validate } from "../middlewares/validate.middleware.ts";
-import { upload } from "../middlewares/upload.middleware.ts";
-import { asyncHandler } from "../middlewares/async-handler.middleware.ts";
-import { UpdateAdminProfileSchema, ChangePasswordSchema, ReviewTherapistUpdateSchema } from "../../application/dto/profile/profile.dto.ts";
+import { appContainer } from "../../infrastructure/di/container";
+import { AdminController } from "../controllers/admin.controller";
+import { ProfileController } from "../controllers/profile.controller";
+import { authenticate, authorize } from "../../infrastructure/di/middlewares";
+import { validate } from "../middlewares/validate.middleware";
+import { upload } from "../middlewares/upload.middleware";
+import { asyncHandler } from "../middlewares/async-handler.middleware";
+import { UpdateAdminProfileSchema, ChangePasswordSchema, ReviewTherapistUpdateSchema } from "../../application/dto/profile/profile.dto";
 import {
   AdminLoginSchema,
   UpdateTherapistStatusSchema,
   UpdateUserStatusSchema,
-} from "../../application/dto/auth/admin.dto.ts";
-import { ROLES } from "../../shared/constants/index.ts";
-import { TYPES } from "../../shared/constants/tokens.ts";
+} from "../../application/dto/auth/admin.dto";
+import { ROLES } from "../../shared/constants/index";
+import { TYPES } from "../../shared/constants/tokens";
 
 const router = Router();
 const adminController = appContainer.get<AdminController>(TYPES.AdminController);

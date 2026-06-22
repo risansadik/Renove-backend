@@ -1,11 +1,11 @@
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
-import type { IOtpCacheRepository } from "../../../domain/repositories/otp-cache.repository.ts";
-import type { VerifyTherapistOtpDTO } from "../../dto/auth/therapist.dto.ts";
-import { AppError, NotFoundError } from "../../../shared/utils/AppError.ts";
-import { HttpStatus } from "../../../shared/constants/index.ts";
-import type { IVerifyOtpUseCase } from "../../interfaces/auth/IAuthUseCase.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository";
+import type { IOtpCacheRepository } from "../../../domain/repositories/otp-cache.repository";
+import type { VerifyTherapistOtpDTO } from "../../dto/auth/therapist.dto";
+import { AppError, NotFoundError } from "../../../shared/utils/AppError";
+import { HttpStatus } from "../../../shared/constants/index";
+import type { IVerifyOtpUseCase } from "../../interfaces/auth/IAuthUseCase";
 
 @injectable()
 export class VerifyTherapistOtpUseCase implements IVerifyOtpUseCase {

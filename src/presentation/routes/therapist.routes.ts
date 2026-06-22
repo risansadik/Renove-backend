@@ -1,28 +1,28 @@
 import { Router } from "express";
-import { appContainer } from "../../infrastructure/di/container.ts";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import { TherapistAuthController } from "../controllers/therapist-auth-controller.ts";
-import { ProfileController } from "../controllers/profile.controller.ts";
-import { TherapistDashboardController } from "../controllers/therapist-dashboard.controller.ts";
-import { upload } from "../middlewares/upload.middleware.ts";
-import { authenticate, authorize } from "../../infrastructure/di/middlewares.ts";
-import { validate } from "../middlewares/validate.middleware.ts";
-import { asyncHandler } from "../middlewares/async-handler.middleware.ts";
-import { normalizeArrayFields } from "../middlewares/form-normalizer.middleware.ts";
-import { UpdateTherapistProfileSchema, ChangePasswordSchema } from "../../application/dto/profile/profile.dto.ts";
+import { appContainer } from "../../infrastructure/di/container";
+import { TYPES } from "../../shared/constants/tokens";
+import { TherapistAuthController } from "../controllers/therapist-auth-controller";
+import { ProfileController } from "../controllers/profile.controller";
+import { TherapistDashboardController } from "../controllers/therapist-dashboard.controller";
+import { upload } from "../middlewares/upload.middleware";
+import { authenticate, authorize } from "../../infrastructure/di/middlewares";
+import { validate } from "../middlewares/validate.middleware";
+import { asyncHandler } from "../middlewares/async-handler.middleware";
+import { normalizeArrayFields } from "../middlewares/form-normalizer.middleware";
+import { UpdateTherapistProfileSchema, ChangePasswordSchema } from "../../application/dto/profile/profile.dto";
 import {
   LoginTherapistSchema,
   RegisterTherapistSchema,
   ResendTherapistOtpSchema,
   VerifyTherapistOtpSchema,
-} from "../../application/dto/auth/therapist.dto.ts";
+} from "../../application/dto/auth/therapist.dto";
 import {
   ForgotPasswordSchema,
   ResetPasswordSchema,
   VerifyOtpSchema,
-} from "../../application/dto/auth/user.dto.ts";
-import { ROLES } from "../../shared/constants/index.ts";
-import { TherapistReviewController } from "../controllers/therapist-review.controller.ts";
+} from "../../application/dto/auth/user.dto";
+import { ROLES } from "../../shared/constants/index";
+import { TherapistReviewController } from "../controllers/therapist-review.controller";
 
 const router = Router();
 const therapistAuthController = appContainer.get<TherapistAuthController>(TYPES.TherapistAuthController);

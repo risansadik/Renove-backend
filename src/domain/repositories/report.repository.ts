@@ -1,5 +1,5 @@
-import { ReportEntity } from "../entities/Report.entity.ts";
-import { ReportStatus } from "../../shared/constants/index.ts";
+import { ReportEntity } from "../entities/Report.entity";
+import { ReportStatus } from "../../shared/constants/index";
 
 export interface IReportRepository {
   create(report: Omit<ReportEntity, "id" | "createdAt" | "updatedAt">): Promise<ReportEntity>;

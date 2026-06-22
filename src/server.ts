@@ -1,12 +1,12 @@
 import "dotenv/config";
 import http from "http";
-import app from "./app.ts";
-import { connectDB } from "./infrastructure/databases/connect.ts";
-import { initCronJobs } from "./infrastructure/scheduler.ts";
-import { ILogger } from "./application/interfaces/services/ILoggerService.ts";
-import { appContainer } from "./infrastructure/di/container.ts";
-import { TYPES } from "./shared/constants/tokens.ts";
-import { SocketServer } from "./infrastructure/socket/socket.server.ts";
+import app from "./app";
+import { connectDB } from "./infrastructure/databases/connect";
+import { initCronJobs } from "./infrastructure/scheduler";
+import { ILogger } from "./application/interfaces/services/ILoggerService";
+import { appContainer } from "./infrastructure/di/container";
+import { TYPES } from "./shared/constants/tokens";
+import { SocketServer } from "./infrastructure/socket/socket.server";
 
 const logger = appContainer.get<ILogger>(TYPES.Logger);
 const socketServer = appContainer.get<SocketServer>(TYPES.SocketServer);

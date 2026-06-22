@@ -1,7 +1,7 @@
 import { Model, Document } from "mongoose";
-import { BaseRepository as IBaseRepository } from "../../domain/repositories/base.repository.ts";
-import { PaginationParams, NestedPaginatedResult } from "../../domain/interfaces/pagination.ts";
-import { PAGINATION } from "../../shared/constants/index.ts";
+import { BaseRepository as IBaseRepository } from "../../domain/repositories/base.repository";
+import { PaginationParams, NestedPaginatedResult } from "../../domain/interfaces/pagination";
+import { PAGINATION } from "../../shared/constants/index";
 
 export abstract class BaseRepository<T extends { id: string }, D extends Document> implements IBaseRepository<T> {
   constructor(protected readonly model: Model<D>) {}

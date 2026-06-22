@@ -1,9 +1,9 @@
 import { injectable } from "inversify";
-import { BaseRepository } from "./base-repository.impl.ts";
-import type { ILevelRepository } from "../../domain/repositories/level.repository.ts";
-import type { LevelEntity } from "../../domain/entities/Level.entity.ts";
-import { LevelModel, type ILevelDocument } from "../databases/schema/level.schema.ts";
-import { LevelDbMapper } from "../mappers/level.db-mapper.ts";
+import { BaseRepository } from "./base-repository.impl";
+import type { ILevelRepository } from "../../domain/repositories/level.repository";
+import type { LevelEntity } from "../../domain/entities/Level.entity";
+import { LevelModel, type ILevelDocument } from "../databases/schema/level.schema";
+import { LevelDbMapper } from "../mappers/level.db-mapper";
 
 @injectable()
 export class LevelRepository

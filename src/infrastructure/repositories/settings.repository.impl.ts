@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
-import type { ISettingsRepository } from "../../domain/repositories/settings.repository.ts";
-import { SettingsModel } from "../databases/schema/settings.schema.ts";
+import type { ISettingsRepository } from "../../domain/repositories/settings.repository";
+import { SettingsModel } from "../databases/schema/settings.schema";
 
 @injectable()
 export class SettingsRepositoryImpl implements ISettingsRepository {

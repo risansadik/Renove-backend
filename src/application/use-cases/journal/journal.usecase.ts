@@ -1,13 +1,13 @@
 import { inject, injectable } from "inversify";
-import type { IUserJournalRepository } from "../../../domain/repositories/user-journal.repository.ts";
-import type { UserJournalEntity } from "../../../domain/entities/UserJournal.entity.ts";
+import type { IUserJournalRepository } from "../../../domain/repositories/user-journal.repository";
+import type { UserJournalEntity } from "../../../domain/entities/UserJournal.entity";
 import type {
   IGetUserJournalsUseCase,
   ICreateJournalUseCase,
   IDeleteJournalUseCase,
-} from "../../interfaces/journal/IJournalUseCase.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { NotFoundError } from "../../../shared/utils/AppError.ts";
+} from "../../interfaces/journal/IJournalUseCase";
+import { TYPES } from "../../../shared/constants/tokens";
+import { NotFoundError } from "../../../shared/utils/AppError";
 
 @injectable()
 export class GetUserJournalsUseCase implements IGetUserJournalsUseCase {

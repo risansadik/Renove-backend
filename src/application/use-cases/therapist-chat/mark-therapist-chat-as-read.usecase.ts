@@ -1,9 +1,9 @@
 import { inject, injectable } from "inversify";
-import { IMarkTherapistChatAsReadUseCase, MarkTherapistChatAsReadInput } from "../../interfaces/therapist-chat/ITherapistChatUseCase.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { ITherapistChatRepository } from "../../../domain/repositories/therapist-chat.repository.ts";
-import { AppError } from "../../../shared/utils/AppError.ts";
-import { HttpStatus } from "../../../shared/constants/index.ts";
+import { IMarkTherapistChatAsReadUseCase, MarkTherapistChatAsReadInput } from "../../interfaces/therapist-chat/ITherapistChatUseCase";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { ITherapistChatRepository } from "../../../domain/repositories/therapist-chat.repository";
+import { AppError } from "../../../shared/utils/AppError";
+import { HttpStatus } from "../../../shared/constants/index";
 
 @injectable()
 export class MarkTherapistChatAsReadUseCase implements IMarkTherapistChatAsReadUseCase {

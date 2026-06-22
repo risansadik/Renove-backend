@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ADDICTION_SEVERITY } from "../../../shared/constants/index.ts";
+import { ADDICTION_SEVERITY } from "../../../shared/constants/index";
 
 export const GenerateLevelsSchema = z.object({
   addictionType: z

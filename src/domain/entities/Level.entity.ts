@@ -1,4 +1,4 @@
-import type { LevelDifficulty } from "../../shared/constants/index.ts";
+import type { LevelDifficulty } from "../../shared/constants/index";
 
 export interface LevelEntity {
   id: string;

@@ -1,5 +1,5 @@
-import type { TherapistAvailabilityEntity, TherapistSlotEntity } from "../../../domain/entities/TherapistAvailability.entity.ts";
-import type { IUseCase } from "../IUseCase.ts";
+import type { TherapistAvailabilityEntity, TherapistSlotEntity } from "../../../domain/entities/TherapistAvailability.entity";
+import type { IUseCase } from "../IUseCase";
 
 export interface CreateAvailabilityDTO {
   therapistId: string;

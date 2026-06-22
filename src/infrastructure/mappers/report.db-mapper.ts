@@ -1,5 +1,5 @@
-import type { IReportDocument } from "../databases/schema/report.schema.ts";
-import type { ReportEntity } from "../../domain/entities/Report.entity.ts";
+import type { IReportDocument } from "../databases/schema/report.schema";
+import type { ReportEntity } from "../../domain/entities/Report.entity";
 
 export class ReportDbMapper {
   static toEntity(doc: IReportDocument): ReportEntity {

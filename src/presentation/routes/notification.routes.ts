@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { appContainer } from "../../infrastructure/di/container.ts";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import { NotificationController } from "../controllers/notification.controller.ts";
-import { authenticate } from "../../infrastructure/di/middlewares.ts";
-import { asyncHandler } from "../middlewares/async-handler.middleware.ts";
+import { appContainer } from "../../infrastructure/di/container";
+import { TYPES } from "../../shared/constants/tokens";
+import { NotificationController } from "../controllers/notification.controller";
+import { authenticate } from "../../infrastructure/di/middlewares";
+import { asyncHandler } from "../middlewares/async-handler.middleware";
 
 const router = Router();
 

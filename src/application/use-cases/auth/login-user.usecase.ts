@@ -1,13 +1,13 @@
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
-import type { LoginUserDTO } from "../../dto/auth/user.dto.ts";
-import { AppError, NotFoundError, UnauthorizedError } from "../../../shared/utils/AppError.ts";
-import { HttpStatus, ROLES, USER_STATUS } from "../../../shared/constants/index.ts";
-import type { ILoginUserUseCase, ILoginResponse } from "../../interfaces/auth/IAuthUseCase.ts";
-import type { IPasswordHasher } from "../../interfaces/services/IPasswordHasher.ts";
-import type { ITokenService } from "../../interfaces/services/ITokenService.ts";
-import { UserMapper } from "../../mappers/user.mapper.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { IUserRepository } from "../../../domain/repositories/user.repository";
+import type { LoginUserDTO } from "../../dto/auth/user.dto";
+import { AppError, NotFoundError, UnauthorizedError } from "../../../shared/utils/AppError";
+import { HttpStatus, ROLES, USER_STATUS } from "../../../shared/constants/index";
+import type { ILoginUserUseCase, ILoginResponse } from "../../interfaces/auth/IAuthUseCase";
+import type { IPasswordHasher } from "../../interfaces/services/IPasswordHasher";
+import type { ITokenService } from "../../interfaces/services/ITokenService";
+import { UserMapper } from "../../mappers/user.mapper";
 
 @injectable()
 export class LoginUserUseCase implements ILoginUserUseCase {

@@ -1,5 +1,5 @@
-import type { IUserJournalDocument } from "../databases/schema/user-journal.schema.ts";
-import type { UserJournalEntity } from "../../domain/entities/UserJournal.entity.ts";
+import type { IUserJournalDocument } from "../databases/schema/user-journal.schema";
+import type { UserJournalEntity } from "../../domain/entities/UserJournal.entity";
 
 export class UserJournalDbMapper {
   static toEntity(doc: IUserJournalDocument): UserJournalEntity {

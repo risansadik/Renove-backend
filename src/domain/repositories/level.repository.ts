@@ -1,5 +1,5 @@
-import type { BaseRepository } from "./base.repository.ts";
-import type { LevelEntity } from "../entities/Level.entity.ts";
+import type { BaseRepository } from "./base.repository";
+import type { LevelEntity } from "../entities/Level.entity";
 
 export interface ILevelRepository extends BaseRepository<LevelEntity> {
   findByUserId(userId: string): Promise<LevelEntity[]>;

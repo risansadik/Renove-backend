@@ -6,13 +6,13 @@ import type {
   IGetTherapistBookingsUseCase,
   IGetUserBookingsUseCase,
   IUpdateBookingStatusUseCase,
-} from "../../application/interfaces/booking/IBookingUseCase.ts";
-import { BookingMapper } from "../../application/mappers/booking.mapper.ts";
-import { HttpStatus, PAGINATION, MESSAGES } from "../../shared/constants/index.ts";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import type { AuthenticatedRequest } from "../../shared/types/express.ts";
-import { NotFoundError } from "../../shared/utils/AppError.ts";
-import { ResponseModel } from "../../shared/utils/response-model.ts";
+} from "../../application/interfaces/booking/IBookingUseCase";
+import { BookingMapper } from "../../application/mappers/booking.mapper";
+import { HttpStatus, PAGINATION, MESSAGES } from "../../shared/constants/index";
+import { TYPES } from "../../shared/constants/tokens";
+import type { AuthenticatedRequest } from "../../shared/types/express";
+import { NotFoundError } from "../../shared/utils/AppError";
+import { ResponseModel } from "../../shared/utils/response-model";
 
 @injectable()
 export class BookingController {

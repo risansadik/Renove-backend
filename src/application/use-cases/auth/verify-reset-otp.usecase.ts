@@ -1,14 +1,14 @@
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import type { VerifyOtpDTO } from "../../dto/auth/user.dto.ts";
-import { AppError, NotFoundError } from "../../../shared/utils/AppError.ts";
-import { HttpStatus } from "../../../shared/constants/index.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { VerifyOtpDTO } from "../../dto/auth/user.dto";
+import { AppError, NotFoundError } from "../../../shared/utils/AppError";
+import { HttpStatus } from "../../../shared/constants/index";
 
 // Interfaces
-import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
-import type { IOtpCacheRepository } from "../../../domain/repositories/otp-cache.repository.ts";
-import type { IVerifyResetOtpUseCase } from "../../interfaces/auth/IAuthUseCase.ts";
+import type { IUserRepository } from "../../../domain/repositories/user.repository";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository";
+import type { IOtpCacheRepository } from "../../../domain/repositories/otp-cache.repository";
+import type { IVerifyResetOtpUseCase } from "../../interfaces/auth/IAuthUseCase";
 
 @injectable()
 export class VerifyResetOtpUseCase implements IVerifyResetOtpUseCase {

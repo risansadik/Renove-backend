@@ -1,16 +1,16 @@
 import { injectable } from "inversify";
-import type { IWalletRepository } from "../../domain/repositories/wallet.repository.ts";
-import type { TherapistWalletEntity } from "../../domain/entities/TherapistWallet.entity.ts";
-import type { UserWalletEntity } from "../../domain/entities/UserWallet.entity.ts";
-import type { TransactionEntity } from "../../domain/entities/Transaction.entity.ts";
+import type { IWalletRepository } from "../../domain/repositories/wallet.repository";
+import type { TherapistWalletEntity } from "../../domain/entities/TherapistWallet.entity";
+import type { UserWalletEntity } from "../../domain/entities/UserWallet.entity";
+import type { TransactionEntity } from "../../domain/entities/Transaction.entity";
 import {
   WalletModel,
   UserWalletModel,
   TransactionModel,
   type ITransactionDocument
-} from "../databases/schema/wallet.schema.ts";
-import { PaginationParams, PaginatedResult } from "../../domain/interfaces/pagination.ts";
-import { WalletDbMapper } from "../mappers/wallet.db-mapper.ts";
+} from "../databases/schema/wallet.schema";
+import { PaginationParams, PaginatedResult } from "../../domain/interfaces/pagination";
+import { WalletDbMapper } from "../mappers/wallet.db-mapper";
 
 @injectable()
 export class WalletRepositoryImpl implements IWalletRepository {

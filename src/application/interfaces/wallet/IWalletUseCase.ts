@@ -1,9 +1,9 @@
-import type { PaginationParams } from "../../../domain/interfaces/pagination.ts";
-import type { PaginatedResult } from "../../../domain/interfaces/pagination.ts";
-import type { TherapistWalletEntity } from "../../../domain/entities/TherapistWallet.entity.ts";
-import type { TransactionEntity } from "../../../domain/entities/Transaction.entity.ts";
-import type { UserWalletEntity } from "../../../domain/entities/UserWallet.entity.ts";
-import { IUseCase } from "../IUseCase.ts";
+import type { PaginationParams } from "../../../domain/interfaces/pagination";
+import type { PaginatedResult } from "../../../domain/interfaces/pagination";
+import type { TherapistWalletEntity } from "../../../domain/entities/TherapistWallet.entity";
+import type { TransactionEntity } from "../../../domain/entities/Transaction.entity";
+import type { UserWalletEntity } from "../../../domain/entities/UserWallet.entity";
+import { IUseCase } from "../IUseCase";
 
 export interface WalletResult {
   wallet: TherapistWalletEntity | UserWalletEntity;

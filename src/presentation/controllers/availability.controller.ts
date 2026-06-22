@@ -7,13 +7,13 @@ import type {
   IGetTherapistRulesUseCase,
   ILockSlotUseCase,
   IUnlockSlotUseCase,
-} from "../../application/interfaces/availability/IAvailabilityUseCase.ts";
-import { AvailabilityMapper } from "../../application/mappers/availability.mapper.ts";
-import { HttpStatus, MESSAGES } from "../../shared/constants/index.ts";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import type { AuthenticatedRequest } from "../../shared/types/express.ts";
-import { AppError } from "../../shared/utils/AppError.ts";
-import { ResponseModel } from "../../shared/utils/response-model.ts";
+} from "../../application/interfaces/availability/IAvailabilityUseCase";
+import { AvailabilityMapper } from "../../application/mappers/availability.mapper";
+import { HttpStatus, MESSAGES } from "../../shared/constants/index";
+import { TYPES } from "../../shared/constants/tokens";
+import type { AuthenticatedRequest } from "../../shared/types/express";
+import { AppError } from "../../shared/utils/AppError";
+import { ResponseModel } from "../../shared/utils/response-model";
 
 @injectable()
 export class AvailabilityController {

@@ -1,4 +1,3 @@
-// src/infrastructure/external-services/qdrant-client.provider.ts
 import { injectable } from "inversify";
 import { QdrantClient } from "@qdrant/js-client-rest";
 

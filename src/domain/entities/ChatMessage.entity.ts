@@ -1,4 +1,4 @@
-import type { ChatRole } from "../../shared/constants/index.ts";
+import type { ChatRole } from "../../shared/constants/index";
 
 export interface ChatMessageEntity {
   id: string;

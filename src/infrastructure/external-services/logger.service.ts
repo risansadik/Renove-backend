@@ -1,5 +1,5 @@
 import winston from "winston";
-import { ILogger } from "../../application/interfaces/services/ILoggerService.ts";
+import { ILogger } from "../../application/interfaces/services/ILoggerService";
 import { injectable } from "inversify";
 
 const { combine, timestamp, colorize, printf, errors } = winston.format;

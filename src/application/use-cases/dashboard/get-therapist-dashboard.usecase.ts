@@ -1,13 +1,13 @@
 import { endOfDay, endOfWeek, startOfDay, startOfWeek } from "date-fns";
-import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
-import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
-import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.ts";
-import { BOOKING_STATUS, USER_STATUS } from "../../../shared/constants/index.ts";
-import { NotFoundError } from "../../../shared/utils/AppError.ts";
-import { IGetTherapistDashboardUseCase } from "../../interfaces/dashboard/IDashboardUseCase.ts";
+import type { IBookingRepository } from "../../../domain/repositories/booking.repository";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository";
+import type { IUserRepository } from "../../../domain/repositories/user.repository";
+import type { IWalletRepository } from "../../../domain/repositories/wallet.repository";
+import { BOOKING_STATUS, USER_STATUS } from "../../../shared/constants/index";
+import { NotFoundError } from "../../../shared/utils/AppError";
+import { IGetTherapistDashboardUseCase } from "../../interfaces/dashboard/IDashboardUseCase";
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
+import { TYPES } from "../../../shared/constants/tokens";
 
 @injectable()
 export class GetTherapistDashboardUseCase implements IGetTherapistDashboardUseCase {

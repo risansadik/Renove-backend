@@ -1,11 +1,11 @@
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
-import type { INotificationService } from "../../interfaces/services/INotificationService.ts";
-import { AppError } from "../../../shared/utils/AppError.ts";
-import { HttpStatus, THERAPIST_STATUS } from "../../../shared/constants/index.ts";
-import { PublicTherapistDTO, TherapistMapper } from "../../mappers/therapist.mapper.ts";
-import { IReviewTherapistInput, IReviewTherapistProfileUseCase } from "../../interfaces/admin/IAdminUseCase.ts";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository";
+import type { INotificationService } from "../../interfaces/services/INotificationService";
+import { AppError } from "../../../shared/utils/AppError";
+import { HttpStatus, THERAPIST_STATUS } from "../../../shared/constants/index";
+import { PublicTherapistDTO, TherapistMapper } from "../../mappers/therapist.mapper";
+import { IReviewTherapistInput, IReviewTherapistProfileUseCase } from "../../interfaces/admin/IAdminUseCase";
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
+import { TYPES } from "../../../shared/constants/tokens";
 
 @injectable()
 export class ReviewTherapistProfileUseCase implements IReviewTherapistProfileUseCase {

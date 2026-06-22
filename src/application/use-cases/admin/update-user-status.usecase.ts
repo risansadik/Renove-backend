@@ -1,11 +1,11 @@
-import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
-import type { UpdateUserStatusDTO } from "../../dto/auth/admin.dto.ts";
-import type { INotificationService } from "../../interfaces/services/INotificationService.ts";
-import { NotFoundError } from "../../../shared/utils/AppError.ts";
+import type { IUserRepository } from "../../../domain/repositories/user.repository";
+import type { UpdateUserStatusDTO } from "../../dto/auth/admin.dto";
+import type { INotificationService } from "../../interfaces/services/INotificationService";
+import { NotFoundError } from "../../../shared/utils/AppError";
 
-import type { IUpdateUserStatusUseCase } from "../../interfaces/admin/IAdminUseCase.ts";
+import type { IUpdateUserStatusUseCase } from "../../interfaces/admin/IAdminUseCase";
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
+import { TYPES } from "../../../shared/constants/tokens";
 
 @injectable()
 export class UpdateUserStatusUseCase implements IUpdateUserStatusUseCase {

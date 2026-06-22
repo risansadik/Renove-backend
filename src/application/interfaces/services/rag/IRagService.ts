@@ -1,4 +1,4 @@
-import type { LevelEntity } from "../../../../domain/entities/Level.entity.ts";
+import type { LevelEntity } from "../../../../domain/entities/Level.entity";
 
 export interface RagInput {
   userId: string;

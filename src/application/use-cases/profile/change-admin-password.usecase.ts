@@ -1,10 +1,10 @@
-import type { IAdminRepository } from "../../../domain/repositories/admin.repository.ts";
-import { AppError } from "../../../shared/utils/AppError.ts";
-import { HttpStatus } from "../../../shared/constants/index.ts";
-import type { IPasswordHasher } from "../../interfaces/services/IPasswordHasher.ts";
+import type { IAdminRepository } from "../../../domain/repositories/admin.repository";
+import { AppError } from "../../../shared/utils/AppError";
+import { HttpStatus } from "../../../shared/constants/index";
+import type { IPasswordHasher } from "../../interfaces/services/IPasswordHasher";
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { IChangeAdminPasswordUseCase, IChangePasswordInput } from "../../interfaces/profile/IProfileUseCase.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import { IChangeAdminPasswordUseCase, IChangePasswordInput } from "../../interfaces/profile/IProfileUseCase";
 
 @injectable()
 export class ChangeAdminPasswordUseCase implements IChangeAdminPasswordUseCase{

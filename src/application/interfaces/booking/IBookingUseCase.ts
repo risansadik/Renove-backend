@@ -1,6 +1,6 @@
-import type { BookingEntity } from "../../../domain/entities/Booking.entity.ts";
-import type { IUseCase } from "../IUseCase.ts";
-import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination.ts";
+import type { BookingEntity } from "../../../domain/entities/Booking.entity";
+import type { IUseCase } from "../IUseCase";
+import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination";
 
 export interface CreateBookingInput {
   therapistId: string;

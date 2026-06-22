@@ -1,4 +1,4 @@
-import type { TherapistAvailabilityEntity, TherapistSlotEntity } from "../../domain/entities/TherapistAvailability.entity.ts";
+import type { TherapistAvailabilityEntity, TherapistSlotEntity } from "../../domain/entities/TherapistAvailability.entity";
 
 export interface AvailabilityRuleDTO {
   id?: string;

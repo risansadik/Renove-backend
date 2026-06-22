@@ -1,8 +1,8 @@
 import { inject, injectable } from "inversify";
-import { IGetSessionsUseCase } from "../../interfaces/chat/IChatUseCase.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { IChatMessageRepository } from "../../../domain/repositories/chat-message.repository.ts";
-import { ChatSessionEntity } from "../../../domain/entities/ChatSession.entity.ts";
+import { IGetSessionsUseCase } from "../../interfaces/chat/IChatUseCase";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { IChatMessageRepository } from "../../../domain/repositories/chat-message.repository";
+import { ChatSessionEntity } from "../../../domain/entities/ChatSession.entity";
 
 @injectable()
 export class GetSessionsUseCase implements IGetSessionsUseCase {

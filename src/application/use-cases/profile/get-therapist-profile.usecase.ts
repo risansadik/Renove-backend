@@ -1,10 +1,10 @@
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
-import { AppError } from "../../../shared/utils/AppError.ts";
-import { HttpStatus } from "../../../shared/constants/index.ts";
-import { TherapistMapper, PublicTherapistDTO } from "../../mappers/therapist.mapper.ts";
-import type { IGetTherapistProfileUseCase } from "../../interfaces/profile/IProfileUseCase.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository";
+import { AppError } from "../../../shared/utils/AppError";
+import { HttpStatus } from "../../../shared/constants/index";
+import { TherapistMapper, PublicTherapistDTO } from "../../mappers/therapist.mapper";
+import type { IGetTherapistProfileUseCase } from "../../interfaces/profile/IProfileUseCase";
 
 @injectable()
 export class GetTherapistProfileUseCase implements IGetTherapistProfileUseCase {

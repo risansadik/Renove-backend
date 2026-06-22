@@ -1,9 +1,9 @@
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import type { ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
-import type { ILockSlotUseCase } from "../../interfaces/availability/IAvailabilityUseCase.ts";
-import { AppError, NotFoundError } from "../../../shared/utils/AppError.ts";
-import { HttpStatus } from "../../../shared/constants/index.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { ISlotRepository } from "../../../domain/repositories/availability.repository";
+import type { ILockSlotUseCase } from "../../interfaces/availability/IAvailabilityUseCase";
+import { AppError, NotFoundError } from "../../../shared/utils/AppError";
+import { HttpStatus } from "../../../shared/constants/index";
 
 const LOCK_DURATION_MINUTES = 10;
 

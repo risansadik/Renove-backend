@@ -1,8 +1,8 @@
 import type { Container } from "inversify";
-import type { IGetTherapistReviewStatusUseCase, IGetTherapistReviewsUseCase, IRateTherapistUseCase } from "../../../application/interfaces/review/IReviewUseCase.ts";
-import { GetTherapistReviewStatusUseCase, GetTherapistReviewsUseCase, RateTherapistUseCase } from "../../../application/use-cases/review/review.usecase.ts";
-import { TherapistReviewController } from "../../../presentation/controllers/therapist-review.controller.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
+import type { IGetTherapistReviewStatusUseCase, IGetTherapistReviewsUseCase, IRateTherapistUseCase } from "../../../application/interfaces/review/IReviewUseCase";
+import { GetTherapistReviewStatusUseCase, GetTherapistReviewsUseCase, RateTherapistUseCase } from "../../../application/use-cases/review/review.usecase";
+import { TherapistReviewController } from "../../../presentation/controllers/therapist-review.controller";
+import { TYPES } from "../../../shared/constants/tokens";
 
 export const registerReviewModule = (container: Container): void => {
   container.bind<IGetTherapistReviewStatusUseCase>(TYPES.GetTherapistReviewStatusUseCase).to(GetTherapistReviewStatusUseCase);

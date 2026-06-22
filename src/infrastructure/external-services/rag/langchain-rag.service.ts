@@ -5,17 +5,17 @@ import { RunnableSequence } from "@langchain/core/runnables";
 import { createHash } from "crypto";
 import { z } from "zod";
 
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { COLLECTION_NAME, DOCUMENT_TTL_DAYS, RELEVANCE_THRESHOLD, TOP_K, VECTOR_SIZE } from "../../../shared/constants/index.ts";
-import { InternalServerError } from "../../../shared/utils/AppError.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import { COLLECTION_NAME, DOCUMENT_TTL_DAYS, RELEVANCE_THRESHOLD, TOP_K, VECTOR_SIZE } from "../../../shared/constants/index";
+import { InternalServerError } from "../../../shared/utils/AppError";
 
-import type { IRagService, RagInput, RawLevelPayload } from "../../../application/interfaces/services/rag/IRagService.ts";
-import type { IEmbeddingService } from "../../../application/interfaces/services/rag/IEmbeddingService.ts";
-import type { IVectorStoreService, VectorDocument } from "../../../application/interfaces/services/rag/IVectorStoreService.ts";
-import type { ISearchService } from "../../../application/interfaces/services/rag/ISearchService.ts";
-import { LlmClientProvider } from "./providers/llm-client.provider.ts";
-import { RawLevelSchema } from "./schema/level.schema.ts";
-import { LEVEL_PROMPT } from "./prompts/level.prompt.ts";
+import type { IRagService, RagInput, RawLevelPayload } from "../../../application/interfaces/services/rag/IRagService";
+import type { IEmbeddingService } from "../../../application/interfaces/services/rag/IEmbeddingService";
+import type { IVectorStoreService, VectorDocument } from "../../../application/interfaces/services/rag/IVectorStoreService";
+import type { ISearchService } from "../../../application/interfaces/services/rag/ISearchService";
+import { LlmClientProvider } from "./providers/llm-client.provider";
+import { RawLevelSchema } from "./schema/level.schema";
+import { LEVEL_PROMPT } from "./prompts/level.prompt";
 
 @injectable()
 export class LangChainRagService implements IRagService {

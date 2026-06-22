@@ -1,9 +1,9 @@
 import { inject, injectable } from "inversify";
-import { ExtendTherapistChatWindowInput, IExtendTherapistChatWindowUseCase } from "../../interfaces/therapist-chat/ITherapistChatUseCase.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { ITherapistChatRepository } from "../../../domain/repositories/therapist-chat.repository.ts";
-import { TherapistChatThreadEntity } from "../../../domain/entities/TherapistChatThread.entity.ts";
-import { CHAT_WINDOW_DAYS, MS_IN_DAY } from "../../../shared/constants/index.ts";
+import { ExtendTherapistChatWindowInput, IExtendTherapistChatWindowUseCase } from "../../interfaces/therapist-chat/ITherapistChatUseCase";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { ITherapistChatRepository } from "../../../domain/repositories/therapist-chat.repository";
+import { TherapistChatThreadEntity } from "../../../domain/entities/TherapistChatThread.entity";
+import { CHAT_WINDOW_DAYS, MS_IN_DAY } from "../../../shared/constants/index";
 
 @injectable()
 export class ExtendTherapistChatWindowUseCase implements IExtendTherapistChatWindowUseCase {

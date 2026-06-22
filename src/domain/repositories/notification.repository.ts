@@ -1,4 +1,4 @@
-import type { NotificationEntity, NotificationRecipientRole } from "../entities/Notification.entity.ts";
+import type { NotificationEntity, NotificationRecipientRole } from "../entities/Notification.entity";
 
 export interface INotificationRepository {
   create(data: Omit<NotificationEntity, "id" | "createdAt" | "updatedAt">): Promise<NotificationEntity>;

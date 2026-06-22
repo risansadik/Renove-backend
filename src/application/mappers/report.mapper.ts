@@ -1,5 +1,5 @@
-import type { ReportEntity } from "../../domain/entities/Report.entity.ts";
-import type { ReportCategory, ReportStatus, Role } from "../../shared/constants/index.ts";
+import type { ReportEntity } from "../../domain/entities/Report.entity";
+import type { ReportCategory, ReportStatus, Role } from "../../shared/constants/index";
 
 export interface PublicReportDTO {
   id: string;

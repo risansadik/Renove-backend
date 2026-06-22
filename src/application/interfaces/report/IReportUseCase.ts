@@ -1,6 +1,6 @@
-import { ReportEntity } from "../../../domain/entities/Report.entity.ts";
-import { CreateReportDTO } from "../../dto/report/report.dto.ts";
-import { ReportStatus, Role } from "../../../shared/constants/index.ts";
+import { ReportEntity } from "../../../domain/entities/Report.entity";
+import { CreateReportDTO } from "../../dto/report/report.dto";
+import { ReportStatus, Role } from "../../../shared/constants/index";
 
 export interface ICreateReportUseCase {
   execute(data: CreateReportDTO & { reporterId: string; reporterRole: Role; attachments: string[] }): Promise<ReportEntity>;

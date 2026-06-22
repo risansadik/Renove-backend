@@ -1,20 +1,20 @@
 import type { Response } from "express";
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import type { AuthRequest } from "../../shared/types/express.ts";
-import { ResponseModel } from "../../shared/utils/response-model.ts";
-import { MESSAGES } from "../../shared/constants/index.ts";
+import { TYPES } from "../../shared/constants/tokens";
+import type { AuthRequest } from "../../shared/types/express";
+import { ResponseModel } from "../../shared/utils/response-model";
+import { MESSAGES } from "../../shared/constants/index";
 import type {
   IGetUserJournalsUseCase,
   ICreateJournalUseCase,
   IDeleteJournalUseCase,
-} from "../../application/interfaces/journal/IJournalUseCase.ts";
+} from "../../application/interfaces/journal/IJournalUseCase";
 import type {
   IGetUserGoalsUseCase,
   ICreateGoalUseCase,
   IToggleGoalUseCase,
   IDeleteGoalUseCase,
-} from "../../application/interfaces/goal/IGoalUseCase.ts";
+} from "../../application/interfaces/goal/IGoalUseCase";
 
 @injectable()
 export class UserProgressController {

@@ -1,10 +1,10 @@
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.ts";
-import type { TransactionEntity } from "../../../domain/entities/Transaction.entity.ts";
-import { ROLES } from "../../../shared/constants/index.ts";
-import type { PaginatedResult } from "../../../domain/interfaces/pagination.ts";
-import type { IGetWalletUseCase, IGetWalletInput, WalletResult } from "../../interfaces/wallet/IWalletUseCase.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { IWalletRepository } from "../../../domain/repositories/wallet.repository";
+import type { TransactionEntity } from "../../../domain/entities/Transaction.entity";
+import { ROLES } from "../../../shared/constants/index";
+import type { PaginatedResult } from "../../../domain/interfaces/pagination";
+import type { IGetWalletUseCase, IGetWalletInput, WalletResult } from "../../interfaces/wallet/IWalletUseCase";
 
 @injectable()
 export class GetWalletUseCase implements IGetWalletUseCase {

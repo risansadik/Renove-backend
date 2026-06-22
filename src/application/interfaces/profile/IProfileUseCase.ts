@@ -1,8 +1,8 @@
-import type { IUseCase } from "../IUseCase.ts";
-import type { UpdateAdminProfileDto } from "../../use-cases/profile/update-admin-profile.usecase.ts";
-import type { PublicAdminDTO } from "../../mappers/admin.mapper.ts";
-import type { PublicTherapistDTO } from "../../mappers/therapist.mapper.ts";
-import type { PublicUserDTO } from "../../mappers/user.mapper.ts";
+import type { IUseCase } from "../IUseCase";
+import type { UpdateAdminProfileDto } from "../../use-cases/profile/update-admin-profile.usecase";
+import type { PublicAdminDTO } from "../../mappers/admin.mapper";
+import type { PublicTherapistDTO } from "../../mappers/therapist.mapper";
+import type { PublicUserDTO } from "../../mappers/user.mapper";
 
 export interface UpdateUserProfileDto {
   name?: string;

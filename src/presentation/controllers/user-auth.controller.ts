@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../shared/constants/tokens.ts";
+import { TYPES } from "../../shared/constants/tokens";
 
 // Utilities
-import { ResponseModel } from "../../shared/utils/response-model.ts";
-import { authTokenService } from "../../shared/utils/jwt.ts";
-import { HttpStatus, MESSAGES } from "../../shared/constants/index.ts";
+import { ResponseModel } from "../../shared/utils/response-model";
+import { authTokenService } from "../../shared/utils/jwt";
+import { HttpStatus, MESSAGES } from "../../shared/constants/index";
 
 // Use Case Interfaces
 import type { 
@@ -18,7 +18,7 @@ import type {
   IResetPasswordUseCase, 
   IVerifyResetOtpUseCase, 
   IRefreshTokenUseCase 
-} from "../../application/interfaces/auth/IAuthUseCase.ts";
+} from "../../application/interfaces/auth/IAuthUseCase";
 
 @injectable()
 export class UserAuthController {

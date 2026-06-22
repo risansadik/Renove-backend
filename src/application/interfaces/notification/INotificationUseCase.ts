@@ -1,5 +1,5 @@
-import type { IUseCase } from "../IUseCase.ts";
-import type { NotificationEntity, NotificationRecipientRole } from "../../../domain/entities/Notification.entity.ts";
+import type { IUseCase } from "../IUseCase";
+import type { NotificationEntity, NotificationRecipientRole } from "../../../domain/entities/Notification.entity";
 
 export interface IGetNotificationsInput {
   recipientId: string;

@@ -1,10 +1,10 @@
 import dns from "node:dns";
 import mongoose from "mongoose";
-import { HttpStatus } from "../../shared/constants/index.ts";
-import { AppError } from "../../shared/utils/AppError.ts";
-import { appContainer } from "../di/container.ts";
-import { ILogger } from "../../application/interfaces/services/ILoggerService.ts";
-import { TYPES } from "../../shared/constants/tokens.ts";
+import { HttpStatus } from "../../shared/constants/index";
+import { AppError } from "../../shared/utils/AppError";
+import { appContainer } from "../di/container";
+import { ILogger } from "../../application/interfaces/services/ILoggerService";
+import { TYPES } from "../../shared/constants/tokens";
 
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
 

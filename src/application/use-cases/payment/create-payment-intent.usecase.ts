@@ -1,13 +1,13 @@
-import { StripeHelper } from "../../../shared/utils/stripe.ts";
-import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.ts";
-import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
-import type { ISettingsRepository } from "../../../domain/repositories/settings.repository.ts";
-import { BOOKING_STATUS, PAYMENT_STATUS, HttpStatus } from "../../../shared/constants/index.ts";
-import { AppError } from "../../../shared/utils/AppError.ts";
-import { ICreatePaymentIntentInput, ICreatePaymentIntentUseCase } from "../../interfaces/payment/IPaymentUseCase.ts";
+import { StripeHelper } from "../../../shared/utils/stripe";
+import type { IPaymentRepository } from "../../../domain/repositories/payment.repository";
+import type { IBookingRepository } from "../../../domain/repositories/booking.repository";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository";
+import type { ISettingsRepository } from "../../../domain/repositories/settings.repository";
+import { BOOKING_STATUS, PAYMENT_STATUS, HttpStatus } from "../../../shared/constants/index";
+import { AppError } from "../../../shared/utils/AppError";
+import { ICreatePaymentIntentInput, ICreatePaymentIntentUseCase } from "../../interfaces/payment/IPaymentUseCase";
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
+import { TYPES } from "../../../shared/constants/tokens";
 
 @injectable()
 export class CreatePaymentIntentUseCase implements ICreatePaymentIntentUseCase {

@@ -1,17 +1,17 @@
 import type { Response } from "express";
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import { ResponseModel } from "../../shared/utils/response-model.ts";
-import { HttpStatus, MESSAGES, ReportCategory, ReportStatus } from "../../shared/constants/index.ts";
-import type { AuthenticatedRequest, S3File } from "../../shared/types/express.ts";
+import { TYPES } from "../../shared/constants/tokens";
+import { ResponseModel } from "../../shared/utils/response-model";
+import { HttpStatus, MESSAGES, ReportCategory, ReportStatus } from "../../shared/constants/index";
+import type { AuthenticatedRequest, S3File } from "../../shared/types/express";
 import type {
   ICreateReportUseCase,
   IGetMyReportsUseCase,
   IGetReportDetailsUseCase,
   IAdminGetAllReportsUseCase,
   IAdminUpdateReportUseCase
-} from "../../application/interfaces/report/IReportUseCase.ts";
-import { ReportMapper } from "../../application/mappers/report.mapper.ts";
+} from "../../application/interfaces/report/IReportUseCase";
+import { ReportMapper } from "../../application/mappers/report.mapper";
 
 @injectable()
 export class ReportController {

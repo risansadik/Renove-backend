@@ -1,4 +1,4 @@
-import { TherapistReviewEntity } from "../../domain/entities/TherapistReview.entity.ts";
+import { TherapistReviewEntity } from "../../domain/entities/TherapistReview.entity";
 
 export interface PublicTherapistReviewDTO {
   id?: string;

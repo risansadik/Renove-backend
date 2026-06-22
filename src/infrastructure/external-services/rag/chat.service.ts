@@ -1,10 +1,10 @@
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { LlmClientProvider } from "./providers/llm-client.provider.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import { LlmClientProvider } from "./providers/llm-client.provider";
 import { HumanMessage, AIMessage, SystemMessage } from "@langchain/core/messages";
-import type { IChatService, ChatTurn } from "../../../application/interfaces/services/rag/IChatService.ts";
-import { ROLES } from "../../../shared/constants/index.ts";
-import { SYSTEM_PROMPT } from "./prompts/chat.prompt.ts";
+import type { IChatService, ChatTurn } from "../../../application/interfaces/services/rag/IChatService";
+import { ROLES } from "../../../shared/constants/index";
+import { SYSTEM_PROMPT } from "./prompts/chat.prompt";
 
 @injectable()
 export class LangChainChatService implements IChatService {

@@ -1,5 +1,5 @@
 import mongoose, { Schema, type Document, type Types } from "mongoose";
-import type { NotificationType, NotificationRecipientRole } from "../../../domain/entities/Notification.entity.ts";
+import type { NotificationType, NotificationRecipientRole } from "../../../domain/entities/Notification.entity";
 
 export interface INotificationDocument extends Document {
   recipientId: Types.ObjectId;

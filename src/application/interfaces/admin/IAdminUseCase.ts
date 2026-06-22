@@ -1,10 +1,10 @@
-import type { IUseCase } from "../IUseCase.ts";
-import type { PublicUserDTO } from "../../mappers/user.mapper.ts";
-import type { PublicTherapistDTO } from "../../mappers/therapist.mapper.ts";
-import type { UpdateUserStatusDTO, UpdateTherapistStatusDTO } from "../../dto/auth/admin.dto.ts";
-import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination.ts";
-import { AdminFinanceStats } from "../../../domain/repositories/finance.repository.ts";
-import { THERAPIST_STATUS } from "../../../shared/constants/index.ts";
+import type { IUseCase } from "../IUseCase";
+import type { PublicUserDTO } from "../../mappers/user.mapper";
+import type { PublicTherapistDTO } from "../../mappers/therapist.mapper";
+import type { UpdateUserStatusDTO, UpdateTherapistStatusDTO } from "../../dto/auth/admin.dto";
+import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination";
+import { AdminFinanceStats } from "../../../domain/repositories/finance.repository";
+import { THERAPIST_STATUS } from "../../../shared/constants/index";
 
 export type IGetAllUsersUseCase = IUseCase<PaginationParams, PaginatedResult<PublicUserDTO>>;
 

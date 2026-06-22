@@ -1,10 +1,10 @@
 import express, { Router } from "express";
-import { appContainer } from "../../infrastructure/di/container.ts";
-import { PaymentController } from "../controllers/payment.controller.ts";
-import { authenticate, authorize } from "../../infrastructure/di/middlewares.ts";
-import { ROLES } from "../../shared/constants/index.ts";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import { asyncHandler } from "../middlewares/async-handler.middleware.ts";
+import { appContainer } from "../../infrastructure/di/container";
+import { PaymentController } from "../controllers/payment.controller";
+import { authenticate, authorize } from "../../infrastructure/di/middlewares";
+import { ROLES } from "../../shared/constants/index";
+import { TYPES } from "../../shared/constants/tokens";
+import { asyncHandler } from "../middlewares/async-handler.middleware";
 
 const router = Router();
 const paymentController = appContainer.get<PaymentController>(TYPES.PaymentController);

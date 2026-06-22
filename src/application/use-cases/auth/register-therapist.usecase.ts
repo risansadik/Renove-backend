@@ -1,16 +1,16 @@
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { ConflictError } from "../../../shared/utils/AppError.ts";
-import { THERAPIST_STATUS, OTP_TTL_SECONDS, MESSAGES } from "../../../shared/constants/index.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import { ConflictError } from "../../../shared/utils/AppError";
+import { THERAPIST_STATUS, OTP_TTL_SECONDS, MESSAGES } from "../../../shared/constants/index";
 
 // Interfaces
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
-import type { IOtpCacheRepository } from "../../../domain/repositories/otp-cache.repository.ts";
-import type { IEmailService } from "../../interfaces/services/IEmailService.ts";
-import type { IOtpGenerator } from "../../interfaces/services/IOtpGenerator.ts";
-import type { IPasswordHasher } from "../../interfaces/services/IPasswordHasher.ts";
-import type { IRegisterTherapistUseCase, IRegisterResponse } from "../../interfaces/auth/IAuthUseCase.ts";
-import type { RegisterTherapistDTO } from "../../dto/auth/therapist.dto.ts";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository";
+import type { IOtpCacheRepository } from "../../../domain/repositories/otp-cache.repository";
+import type { IEmailService } from "../../interfaces/services/IEmailService";
+import type { IOtpGenerator } from "../../interfaces/services/IOtpGenerator";
+import type { IPasswordHasher } from "../../interfaces/services/IPasswordHasher";
+import type { IRegisterTherapistUseCase, IRegisterResponse } from "../../interfaces/auth/IAuthUseCase";
+import type { RegisterTherapistDTO } from "../../dto/auth/therapist.dto";
 
 @injectable()
 export class RegisterTherapistUseCase implements IRegisterTherapistUseCase {

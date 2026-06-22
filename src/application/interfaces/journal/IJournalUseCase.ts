@@ -1,5 +1,5 @@
-import type { UserJournalEntity } from "../../../domain/entities/UserJournal.entity.ts";
-import type { IUseCase } from "../IUseCase.ts";
+import type { UserJournalEntity } from "../../../domain/entities/UserJournal.entity";
+import type { IUseCase } from "../IUseCase";
 
 export type IGetUserJournalsUseCase = IUseCase<string, UserJournalEntity[]>;
 

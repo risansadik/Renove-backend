@@ -1,10 +1,10 @@
 // src/infrastructure/external-services/gemini-embedding.service.ts
 import { injectable, inject } from "inversify";
 import { GoogleGenerativeAI, TaskType } from "@google/generative-ai";
-import { IEmbeddingService } from "../../../application/interfaces/services/rag/IEmbeddingService.ts";
-import { GeminiClientProvider } from "./providers/gemini-client.provider.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { ROLES } from "../../../shared/constants/index.ts";
+import { IEmbeddingService } from "../../../application/interfaces/services/rag/IEmbeddingService";
+import { GeminiClientProvider } from "./providers/gemini-client.provider";
+import { TYPES } from "../../../shared/constants/tokens";
+import { ROLES } from "../../../shared/constants/index";
 
 @injectable()
 export class GeminiEmbeddingService implements IEmbeddingService {

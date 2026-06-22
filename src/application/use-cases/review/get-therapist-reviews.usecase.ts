@@ -1,9 +1,9 @@
 import { inject, injectable } from "inversify";
-import type { PublicReviewItem } from "../../../domain/entities/TherapistReview.entity.ts";
-import type { ITherapistReviewRepository } from "../../../domain/repositories/therapist-review.repository.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import type { IGetTherapistReviewsUseCase } from "../../interfaces/review/IReviewUseCase.ts";
-import { REVIEWS_LIMIT } from "../../../shared/constants/index.ts";
+import type { PublicReviewItem } from "../../../domain/entities/TherapistReview.entity";
+import type { ITherapistReviewRepository } from "../../../domain/repositories/therapist-review.repository";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { IGetTherapistReviewsUseCase } from "../../interfaces/review/IReviewUseCase";
+import { REVIEWS_LIMIT } from "../../../shared/constants/index";
 
 @injectable()
 export class GetTherapistReviewsUseCase implements IGetTherapistReviewsUseCase {

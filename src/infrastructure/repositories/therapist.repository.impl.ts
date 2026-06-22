@@ -1,21 +1,21 @@
 import { injectable } from "inversify";
 
-import { BaseRepository } from "./base-repository.impl.ts";
+import { BaseRepository } from "./base-repository.impl";
 
-import type { ITherapistRepository } from "../../domain/repositories/therapist.repository.ts";
-import type { TherapistEntity } from "../../domain/entities/Therapist.entity.ts";
-import type { TherapistStatus } from "../../shared/constants/index.ts";
-import { PAGINATION } from "../../shared/constants/index.ts";
+import type { ITherapistRepository } from "../../domain/repositories/therapist.repository";
+import type { TherapistEntity } from "../../domain/entities/Therapist.entity";
+import type { TherapistStatus } from "../../shared/constants/index";
+import { PAGINATION } from "../../shared/constants/index";
 
-import { TherapistModel } from "../databases/schema/therapist.schema.ts";
-import type { ITherapistDocument } from "../databases/schema/therapist.schema.ts";
-import { TherapistDbMapper } from "../mappers/therapist.db-mapper.ts";
+import { TherapistModel } from "../databases/schema/therapist.schema";
+import type { ITherapistDocument } from "../databases/schema/therapist.schema";
+import { TherapistDbMapper } from "../mappers/therapist.db-mapper";
 
 import type {
   NestedPaginatedResult,
   PaginationParams,
   PaginatedResult,
-} from "../../domain/interfaces/pagination.ts";
+} from "../../domain/interfaces/pagination";
 
 @injectable()
 export class TherapistRepository

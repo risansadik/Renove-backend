@@ -1,4 +1,4 @@
-import type { TherapistReviewEntity, PublicReviewItem } from "../entities/TherapistReview.entity.ts";
+import type { TherapistReviewEntity, PublicReviewItem } from "../entities/TherapistReview.entity";
 
 export interface ITherapistReviewRepository {
   upsert(review: Omit<TherapistReviewEntity, "id" | "createdAt" | "updatedAt">): Promise<TherapistReviewEntity>;

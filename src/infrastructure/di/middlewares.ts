@@ -1,9 +1,9 @@
-import type { ITherapistRepository } from "../../domain/repositories/therapist.repository.ts";
-import type { IUserRepository } from "../../domain/repositories/user.repository.ts";
-import type { ITokenService } from "../../application/interfaces/services/ITokenService.ts";
-import { createAuthMiddleware } from "../../presentation/middlewares/auth.middleware.ts";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import { appContainer } from "./container.ts";
+import type { ITherapistRepository } from "../../domain/repositories/therapist.repository";
+import type { IUserRepository } from "../../domain/repositories/user.repository";
+import type { ITokenService } from "../../application/interfaces/services/ITokenService";
+import { createAuthMiddleware } from "../../presentation/middlewares/auth.middleware";
+import { TYPES } from "../../shared/constants/tokens";
+import { appContainer } from "./container";
 
 const authMiddleware = createAuthMiddleware({
   tokenService: appContainer.get<ITokenService>(TYPES.TokenService),

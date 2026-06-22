@@ -1,4 +1,4 @@
-import type { MissionEntity, UserProgressEntity } from "../entities/UserProgress.entity.ts";
+import type { MissionEntity, UserProgressEntity } from "../entities/UserProgress.entity";
 
 export interface IUserProgressRepository {
   findOrCreate(userId: string): Promise<UserProgressEntity>;
