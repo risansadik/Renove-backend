@@ -1,5 +1,5 @@
-import type { ChatMessageEntity } from "../entities/ChatMessage.entity.ts";
-import type { ChatSessionEntity } from "../entities/ChatSession.entity.ts";
+import type { ChatMessageEntity } from "../entities/ChatMessage.entity";
+import type { ChatSessionEntity } from "../entities/ChatSession.entity";
 
 export interface IChatMessageRepository {
   // Sessions

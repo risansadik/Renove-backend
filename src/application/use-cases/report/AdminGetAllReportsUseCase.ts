@@ -1,9 +1,9 @@
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { IReportRepository } from "../../../domain/repositories/report.repository.ts";
-import { IAdminGetAllReportsUseCase } from "../../interfaces/report/IReportUseCase.ts";
-import { ReportEntity } from "../../../domain/entities/Report.entity.ts";
-import { ReportStatus } from "../../../shared/constants/index.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { IReportRepository } from "../../../domain/repositories/report.repository";
+import { IAdminGetAllReportsUseCase } from "../../interfaces/report/IReportUseCase";
+import { ReportEntity } from "../../../domain/entities/Report.entity";
+import { ReportStatus } from "../../../shared/constants/index";
 
 @injectable()
 export class AdminGetAllReportsUseCase implements IAdminGetAllReportsUseCase {

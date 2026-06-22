@@ -1,13 +1,13 @@
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { AppError, NotFoundError } from "../../../shared/utils/AppError.ts";
-import { HttpStatus } from "../../../shared/constants/index.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import { AppError, NotFoundError } from "../../../shared/utils/AppError";
+import { HttpStatus } from "../../../shared/constants/index";
 
 // Interfaces
-import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
-import type { IOtpCacheRepository } from "../../../domain/repositories/otp-cache.repository.ts";
-import type { IVerifyOtpUseCase } from "../../interfaces/auth/IAuthUseCase.ts";
-import type { VerifyOtpDTO } from "../../dto/auth/user.dto.ts";
+import type { IUserRepository } from "../../../domain/repositories/user.repository";
+import type { IOtpCacheRepository } from "../../../domain/repositories/otp-cache.repository";
+import type { IVerifyOtpUseCase } from "../../interfaces/auth/IAuthUseCase";
+import type { VerifyOtpDTO } from "../../dto/auth/user.dto";
 
 @injectable()
 export class VerifyOtpUseCase implements IVerifyOtpUseCase {

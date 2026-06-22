@@ -8,13 +8,13 @@ import type {
   IGetAdminFinanceStatsUseCase,
   IGetAdminDashboardUseCase,
   IUpdatePlatformSettingsUseCase
-} from "../../application/interfaces/admin/IAdminUseCase.ts";
-import type { IAdminLoginUseCase } from "../../application/interfaces/auth/IAuthUseCase.ts";
-import { PAGINATION, MESSAGES } from "../../shared/constants/index.ts";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import { authTokenService } from "../../shared/utils/jwt.ts";
-import { ResponseModel } from "../../shared/utils/response-model.ts";
-import { WalletMapper } from "../../application/mappers/wallet.mapper.ts";
+} from "../../application/interfaces/admin/IAdminUseCase";
+import type { IAdminLoginUseCase } from "../../application/interfaces/auth/IAuthUseCase";
+import { PAGINATION, MESSAGES } from "../../shared/constants/index";
+import { TYPES } from "../../shared/constants/tokens";
+import { authTokenService } from "../../shared/utils/jwt";
+import { ResponseModel } from "../../shared/utils/response-model";
+import { WalletMapper } from "../../application/mappers/wallet.mapper";
 
 @injectable()
 export class AdminController {

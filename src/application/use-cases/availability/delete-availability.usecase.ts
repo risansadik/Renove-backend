@@ -1,8 +1,8 @@
 import { inject, injectable } from "inversify";
-import { IAvailabilityRepository, ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
-import { ForbiddenError, NotFoundError } from "../../../shared/utils/AppError.ts";
-import { IDeleteAvailabilityRuleUseCase } from "../../interfaces/availability/IAvailabilityUseCase.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
+import { type IAvailabilityRepository, type ISlotRepository } from "../../../domain/repositories/availability.repository";
+import { ForbiddenError, NotFoundError } from "../../../shared/utils/AppError";
+import { IDeleteAvailabilityRuleUseCase } from "../../interfaces/availability/IAvailabilityUseCase";
+import { TYPES } from "../../../shared/constants/tokens";
 
 @injectable()
 export class DeleteAvailabilityRuleUseCase implements IDeleteAvailabilityRuleUseCase {

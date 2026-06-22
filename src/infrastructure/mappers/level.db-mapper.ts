@@ -1,5 +1,5 @@
-import type { ILevelDocument } from "../databases/schema/level.schema.ts";
-import type { LevelEntity } from "../../domain/entities/Level.entity.ts";
+import type { ILevelDocument } from "../databases/schema/level.schema";
+import type { LevelEntity } from "../../domain/entities/Level.entity";
 
 export class LevelDbMapper {
   static toEntity(doc: ILevelDocument): LevelEntity {

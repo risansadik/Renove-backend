@@ -1,10 +1,10 @@
 import { inject, injectable } from "inversify";
-import { ISendTherapistChatMessageUseCase, SendTherapistChatMessageInput } from "../../interfaces/therapist-chat/ITherapistChatUseCase.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { ITherapistChatRepository } from "../../../domain/repositories/therapist-chat.repository.ts";
-import { TherapistChatMessageEntity } from "../../../domain/entities/TherapistChatMessage.entity.ts";
-import { HttpStatus } from "../../../shared/constants/index.ts";
-import { AppError } from "../../../shared/utils/AppError.ts";
+import { ISendTherapistChatMessageUseCase, SendTherapistChatMessageInput } from "../../interfaces/therapist-chat/ITherapistChatUseCase";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { ITherapistChatRepository } from "../../../domain/repositories/therapist-chat.repository";
+import { TherapistChatMessageEntity } from "../../../domain/entities/TherapistChatMessage.entity";
+import { HttpStatus } from "../../../shared/constants/index";
+import { AppError } from "../../../shared/utils/AppError";
 
 @injectable()
 export class SendTherapistChatMessageUseCase implements ISendTherapistChatMessageUseCase {

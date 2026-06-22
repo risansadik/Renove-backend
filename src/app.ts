@@ -1,17 +1,17 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import userRoutes from "./presentation/routes/user.routes.ts";
-import therapistRoutes from "./presentation/routes/therapist.routes.ts";
-import adminRoutes from "./presentation/routes/admin.routes.ts";
-import bookingRoutes from "./presentation/routes/booking.routes.ts";
-import availabilityRoutes from "./presentation/routes/availability.routes.ts";
-import paymentRoutes from "./presentation/routes/payment.routes.ts";
-import walletRoutes from "./presentation/routes/wallet.routes.ts";
-import reportRoutes from "./presentation/routes/report.routes.ts";
-import therapistChatRouter from "./presentation/routes/therapist-chat.routes.ts";
-import notificationRoutes from "./presentation/routes/notification.routes.ts"
-import { errorHandler, notFoundHandler } from "./presentation/middlewares/error.middleware.ts";
+import userRoutes from "./presentation/routes/user.routes";
+import therapistRoutes from "./presentation/routes/therapist.routes";
+import adminRoutes from "./presentation/routes/admin.routes";
+import bookingRoutes from "./presentation/routes/booking.routes";
+import availabilityRoutes from "./presentation/routes/availability.routes";
+import paymentRoutes from "./presentation/routes/payment.routes";
+import walletRoutes from "./presentation/routes/wallet.routes";
+import reportRoutes from "./presentation/routes/report.routes";
+import therapistChatRouter from "./presentation/routes/therapist-chat.routes";
+import notificationRoutes from "./presentation/routes/notification.routes"
+import { errorHandler, notFoundHandler } from "./presentation/middlewares/error.middleware";
 
 const app = express();
 

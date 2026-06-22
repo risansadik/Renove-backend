@@ -4,7 +4,7 @@ import multerS3 from "multer-s3";
 import dotenv from "dotenv";
 import type { Request } from "express";
 import type { FileFilterCallback } from "multer";
-import { MAX_FILE_SIZE, S3_CONFIG } from "../../shared/constants/index.ts";
+import { MAX_FILE_SIZE, S3_CONFIG } from "../../shared/constants/index";
 
 dotenv.config();
 

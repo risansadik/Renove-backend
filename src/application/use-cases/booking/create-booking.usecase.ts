@@ -1,12 +1,12 @@
-import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
-import type { ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
-import type { INotificationService } from "../../interfaces/services/INotificationService.ts";
-import type { BookingEntity } from "../../../domain/entities/Booking.entity.ts";
-import type { CreateBookingInput, ICreateBookingUseCase } from "../../interfaces/booking/IBookingUseCase.ts";
-import { HttpStatus } from "../../../shared/constants/index.ts";
-import { AppError, NotFoundError } from "../../../shared/utils/AppError.ts";
+import type { IBookingRepository } from "../../../domain/repositories/booking.repository";
+import type { ISlotRepository } from "../../../domain/repositories/availability.repository";
+import type { INotificationService } from "../../interfaces/services/INotificationService";
+import type { BookingEntity } from "../../../domain/entities/Booking.entity";
+import type { CreateBookingInput, ICreateBookingUseCase } from "../../interfaces/booking/IBookingUseCase";
+import { HttpStatus } from "../../../shared/constants/index";
+import { AppError, NotFoundError } from "../../../shared/utils/AppError";
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
+import { TYPES } from "../../../shared/constants/tokens";
 
 
 @injectable()

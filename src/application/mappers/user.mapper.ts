@@ -1,5 +1,5 @@
-import type { UserEntity } from "../../domain/entities/User.entity.ts";
-import type { UserStatus } from "../../shared/constants/index.ts";
+import type { UserEntity } from "../../domain/entities/User.entity";
+import type { UserStatus } from "../../shared/constants/index";
 
 export interface PublicUserDTO {
   id: string;

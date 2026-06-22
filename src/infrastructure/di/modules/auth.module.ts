@@ -12,10 +12,10 @@ import type {
   IResetPasswordUseCase,
   IVerifyOtpUseCase,
   IVerifyResetOtpUseCase,
-} from "../../../application/interfaces/auth/IAuthUseCase.ts";
-import { AdminController } from "../../../presentation/controllers/admin.controller.ts";
-import { TherapistAuthController } from "../../../presentation/controllers/therapist-auth-controller.ts";
-import { UserAuthController } from "../../../presentation/controllers/user-auth.controller.ts";
+} from "../../../application/interfaces/auth/IAuthUseCase";
+import { AdminController } from "../../../presentation/controllers/admin.controller";
+import { TherapistAuthController } from "../../../presentation/controllers/therapist-auth-controller";
+import { UserAuthController } from "../../../presentation/controllers/user-auth.controller";
 
 import {
   AdminLoginUseCase,
@@ -31,8 +31,8 @@ import {
   VerifyOtpUseCase,
   VerifyResetOtpUseCase,
   VerifyTherapistOtpUseCase
-} from '../../../application/use-cases/auth/auth.usecase.ts'
-import { TYPES } from "../../../shared/constants/tokens.ts";
+} from '../../../application/use-cases/auth/auth.usecase'
+import { TYPES } from "../../../shared/constants/tokens";
 
 export const registerAuthModule = (container: Container): void => {
   container.bind<IAdminLoginUseCase>(TYPES.AdminLoginUseCase).to(AdminLoginUseCase);

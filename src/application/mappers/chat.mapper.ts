@@ -1,6 +1,6 @@
-import type { ChatSessionEntity } from "../../domain/entities/ChatSession.entity.ts";
-import type { ChatMessageEntity } from "../../domain/entities/ChatMessage.entity.ts";
-import type { ChatRole } from "../../shared/constants/index.ts";
+import type { ChatSessionEntity } from "../../domain/entities/ChatSession.entity";
+import type { ChatMessageEntity } from "../../domain/entities/ChatMessage.entity";
+import type { ChatRole } from "../../shared/constants/index";
 
 export interface PublicChatSessionDTO {
   id: string;

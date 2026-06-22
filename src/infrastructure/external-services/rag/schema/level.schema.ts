@@ -1,5 +1,5 @@
 import z from "zod";
-import { LEVEL_DIFFICULTY } from "../../../../shared/constants/index.ts";
+import { LEVEL_DIFFICULTY } from "../../../../shared/constants/index";
 
 export const RawLevelSchema = z.object({
     level: z.number(),

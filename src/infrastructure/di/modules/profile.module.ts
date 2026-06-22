@@ -1,6 +1,6 @@
 import type { Container } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { ProfileController } from "../../../presentation/controllers/profile.controller.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import { ProfileController } from "../../../presentation/controllers/profile.controller";
 
 
 import type {
@@ -13,7 +13,7 @@ import type {
   IUpdateAdminProfileUseCase,
   IUpdateTherapistProfileUseCase,
   IUpdateUserProfileUseCase,
-} from "../../../application/interfaces/profile/IProfileUseCase.ts";
+} from "../../../application/interfaces/profile/IProfileUseCase";
 
 import {
   ChangeAdminPasswordUseCase,
@@ -25,7 +25,7 @@ import {
   UpdateAdminProfileUseCase,
   UpdateTherapistProfileUseCase,
   UpdateUserProfileUseCase,
-} from "../../../application/use-cases/profile/profile.usecase.ts";
+} from "../../../application/use-cases/profile/profile.usecase";
 
 export const registerProfileModule = (container: Container): void => {
 

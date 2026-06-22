@@ -3,26 +3,26 @@ import type {
   IGetUserJournalsUseCase,
   ICreateJournalUseCase,
   IDeleteJournalUseCase,
-} from "../../../application/interfaces/journal/IJournalUseCase.ts";
+} from "../../../application/interfaces/journal/IJournalUseCase";
 import type {
   IGetUserGoalsUseCase,
   ICreateGoalUseCase,
   IToggleGoalUseCase,
   IDeleteGoalUseCase,
-} from "../../../application/interfaces/goal/IGoalUseCase.ts";
+} from "../../../application/interfaces/goal/IGoalUseCase";
 import {
   GetUserJournalsUseCase,
   CreateJournalUseCase,
   DeleteJournalUseCase,
-} from "../../../application/use-cases/journal/journal.usecase.ts";
+} from "../../../application/use-cases/journal/journal.usecase";
 import {
   GetUserGoalsUseCase,
   CreateGoalUseCase,
   ToggleGoalUseCase,
   DeleteGoalUseCase,
-} from "../../../application/use-cases/goal/goal.usecase.ts";
-import { UserProgressController } from "../../../presentation/controllers/user-progress.controller.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
+} from "../../../application/use-cases/goal/goal.usecase";
+import { UserProgressController } from "../../../presentation/controllers/user-progress.controller";
+import { TYPES } from "../../../shared/constants/tokens";
 
 export const registerUserProgressModule = (container: Container): void => {
   // Use Cases — Journals

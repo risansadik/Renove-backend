@@ -1,16 +1,16 @@
 import type { Request, Response } from "express";
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import { HttpStatus, MESSAGES, PAGINATION } from "../../shared/constants/index.ts";
-import { ResponseModel } from "../../shared/utils/response-model.ts";
-import type { AuthenticatedRequest } from "../../shared/types/express.ts";
+import { TYPES } from "../../shared/constants/tokens";
+import { HttpStatus, MESSAGES, PAGINATION } from "../../shared/constants/index";
+import { ResponseModel } from "../../shared/utils/response-model";
+import type { AuthenticatedRequest } from "../../shared/types/express";
 import type {
   IGetTherapistChatThreadsUseCase,
   IGetTherapistChatMessagesUseCase,
   ISendTherapistChatMessageUseCase,
   IMarkTherapistChatAsReadUseCase,
-} from "../../application/interfaces/therapist-chat/ITherapistChatUseCase.ts";
-import { TherapistChatMapper } from "../../application/mappers/therapist-chat.mapper.ts";
+} from "../../application/interfaces/therapist-chat/ITherapistChatUseCase";
+import { TherapistChatMapper } from "../../application/mappers/therapist-chat.mapper";
 
 @injectable()
 export class TherapistChatController {

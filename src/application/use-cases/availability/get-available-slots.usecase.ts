@@ -1,8 +1,8 @@
 import { inject, injectable } from "inversify";
-import { ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
-import { IGetAvailableSlotsUseCase } from "../../interfaces/availability/IAvailabilityUseCase.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { TherapistSlotEntity } from "../../../domain/entities/TherapistAvailability.entity.ts";
+import type { ISlotRepository } from "../../../domain/repositories/availability.repository";
+import { IGetAvailableSlotsUseCase } from "../../interfaces/availability/IAvailabilityUseCase";
+import { TYPES } from "../../../shared/constants/tokens";
+import { TherapistSlotEntity } from "../../../domain/entities/TherapistAvailability.entity";
 
 @injectable()
 export class GetAvailableSlotsUseCase implements IGetAvailableSlotsUseCase {

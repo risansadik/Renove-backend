@@ -1,8 +1,8 @@
 import { injectable } from "inversify";
-import type { AdminFinanceStats, IFinanceRepository } from "../../domain/repositories/finance.repository.ts";
-import { PaymentModel } from "../databases/schema/payment.schema.ts";
-import { TransactionModel, WalletModel, type ITransactionDocument } from "../databases/schema/wallet.schema.ts";
-import { WalletDbMapper } from "../mappers/wallet.db-mapper.ts";
+import type { AdminFinanceStats, IFinanceRepository } from "../../domain/repositories/finance.repository";
+import { PaymentModel } from "../databases/schema/payment.schema";
+import { TransactionModel, WalletModel, type ITransactionDocument } from "../databases/schema/wallet.schema";
+import { WalletDbMapper } from "../mappers/wallet.db-mapper";
 
 @injectable()
 export class FinanceRepository implements IFinanceRepository {

@@ -1,8 +1,8 @@
 import { injectable } from "inversify";
 import { OAuth2Client } from "google-auth-library";
-import { AppError } from "../../shared/utils/AppError.ts";
-import { GOOGLE_CONFIG, HttpStatus } from "../../shared/constants/index.ts";
-import type { IGoogleService } from "../../application/interfaces/services/IGoogleService.ts";
+import { AppError } from "../../shared/utils/AppError";
+import { GOOGLE_CONFIG, HttpStatus } from "../../shared/constants/index";
+import type { IGoogleService } from "../../application/interfaces/services/IGoogleService";
 
 export interface GoogleUserPayload {
   email: string;

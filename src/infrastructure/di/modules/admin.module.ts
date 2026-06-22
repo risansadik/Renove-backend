@@ -9,7 +9,7 @@ import type {
   IUpdatePlatformSettingsUseCase,
   IGetPendingTherapistUpdatesUseCase,
   IReviewTherapistProfileUseCase
-} from "../../../application/interfaces/admin/IAdminUseCase.ts";
+} from "../../../application/interfaces/admin/IAdminUseCase";
 
 import {
   GetAllTherapistsUseCase,
@@ -21,8 +21,8 @@ import {
   UpdatePlatformSettingsUseCase,
   GetPendingTherapistUpdatesUseCase,
   ReviewTherapistProfileUseCase
-} from '../../../application/use-cases/admin/admin.usecase.ts'
-import { TYPES } from "../../../shared/constants/tokens.ts";
+} from '../../../application/use-cases/admin/admin.usecase'
+import { TYPES } from "../../../shared/constants/tokens";
 
 export const registerAdminModule = (container: Container): void => {
   container.bind<IGetAdminFinanceStatsUseCase>(TYPES.AdminFinanceUseCase).to(GetAdminFinanceStatsUseCase);

@@ -1,12 +1,12 @@
 import {  Response } from "express";
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import { ResponseModel } from "../../shared/utils/response-model.ts";
-import type { IGetNotificationsUseCase } from "../../application/interfaces/notification/INotificationUseCase.ts";
-import type { IMarkNotificationReadUseCase } from "../../application/interfaces/notification/INotificationUseCase.ts";
-import type { IMarkAllNotificationsReadUseCase } from "../../application/interfaces/notification/INotificationUseCase.ts";
-import type { NotificationRecipientRole } from "../../domain/entities/Notification.entity.ts";
-import { AuthenticatedRequest } from "../../shared/types/express.ts";
+import { TYPES } from "../../shared/constants/tokens";
+import { ResponseModel } from "../../shared/utils/response-model";
+import type { IGetNotificationsUseCase } from "../../application/interfaces/notification/INotificationUseCase";
+import type { IMarkNotificationReadUseCase } from "../../application/interfaces/notification/INotificationUseCase";
+import type { IMarkAllNotificationsReadUseCase } from "../../application/interfaces/notification/INotificationUseCase";
+import type { NotificationRecipientRole } from "../../domain/entities/Notification.entity";
+import { AuthenticatedRequest } from "../../shared/types/express";
 
 @injectable()
 export class NotificationController {

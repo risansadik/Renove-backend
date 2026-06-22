@@ -6,7 +6,7 @@ import {
   type IDeleteAvailabilityRuleUseCase,
   type IGetAvailableSlotsUseCase,
   type IGetTherapistRulesUseCase,
-} from "../../../application/interfaces/availability/IAvailabilityUseCase.ts";
+} from "../../../application/interfaces/availability/IAvailabilityUseCase";
 import {
   CreateAvailabilityUseCase,
   DeleteAvailabilityRuleUseCase,
@@ -15,10 +15,10 @@ import {
   LockSlotUseCase,
   UnlockSlotUseCase,
 }
-  from '../../../application/use-cases/availability/availability.usecase.ts'
+  from '../../../application/use-cases/availability/availability.usecase'
 
-import { AvailabilityController } from "../../../presentation/controllers/availability.controller.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
+import { AvailabilityController } from "../../../presentation/controllers/availability.controller";
+import { TYPES } from "../../../shared/constants/tokens";
 
 export const registerAvailabilityModule = (container: Container): void => {
   container.bind<ICreateAvailabilityUseCase>(TYPES.CreateAvailabilityUseCase).to(CreateAvailabilityUseCase);

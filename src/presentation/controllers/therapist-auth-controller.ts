@@ -8,12 +8,12 @@ import type {
   IResetPasswordUseCase,
   IVerifyOtpUseCase,
   IVerifyResetOtpUseCase,
-} from "../../application/interfaces/auth/IAuthUseCase.ts";
-import { HttpStatus, MESSAGES } from "../../shared/constants/index.ts";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import { authTokenService } from "../../shared/utils/jwt.ts";
-import type { S3File } from "../../shared/types/express.ts";
-import { ResponseModel } from "../../shared/utils/response-model.ts";
+} from "../../application/interfaces/auth/IAuthUseCase";
+import { HttpStatus, MESSAGES } from "../../shared/constants/index";
+import { TYPES } from "../../shared/constants/tokens";
+import { authTokenService } from "../../shared/utils/jwt";
+import type { S3File } from "../../shared/types/express";
+import { ResponseModel } from "../../shared/utils/response-model";
 
 @injectable()
 export class TherapistAuthController {

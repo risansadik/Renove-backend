@@ -1,10 +1,10 @@
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { UnauthorizedError } from "../../../shared/utils/AppError.ts";
-import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
-import { ROLES } from "../../../shared/constants/index.ts";
-import type { ITokenService } from "../../interfaces/services/ITokenService.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import { UnauthorizedError } from "../../../shared/utils/AppError";
+import type { IUserRepository } from "../../../domain/repositories/user.repository";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository";
+import { ROLES } from "../../../shared/constants/index";
+import type { ITokenService } from "../../interfaces/services/ITokenService";
 
 @injectable()
 export class RefreshTokenUseCase {

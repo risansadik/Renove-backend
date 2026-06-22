@@ -1,17 +1,17 @@
 import { Router } from "express";
-import { appContainer } from "../../infrastructure/di/container.ts";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import { ReportController } from "../controllers/report.controller.ts";
-import { authenticate, authorize } from "../../infrastructure/di/middlewares.ts";
-import { validate } from "../middlewares/validate.middleware.ts";
-import { upload } from "../middlewares/upload.middleware.ts";
-import { asyncHandler } from "../middlewares/async-handler.middleware.ts";
+import { appContainer } from "../../infrastructure/di/container";
+import { TYPES } from "../../shared/constants/tokens";
+import { ReportController } from "../controllers/report.controller";
+import { authenticate, authorize } from "../../infrastructure/di/middlewares";
+import { validate } from "../middlewares/validate.middleware";
+import { upload } from "../middlewares/upload.middleware";
+import { asyncHandler } from "../middlewares/async-handler.middleware";
 import { 
   CreateReportSchema, 
   UpdateReportStatusSchema, 
   AddReportNoteSchema 
-} from "../../application/dto/report/report.dto.ts";
-import { ROLES } from "../../shared/constants/index.ts";
+} from "../../application/dto/report/report.dto";
+import { ROLES } from "../../shared/constants/index";
 
 const router = Router();
 const reportController = appContainer.get<ReportController>(TYPES.ReportController);

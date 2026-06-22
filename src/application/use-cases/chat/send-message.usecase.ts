@@ -1,11 +1,11 @@
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import type { IChatService, ChatTurn } from "../../interfaces/services/rag/IChatService.ts";
-import type { IChatMessageRepository } from "../../../domain/repositories/chat-message.repository.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { IChatService, ChatTurn } from "../../interfaces/services/rag/IChatService";
+import type { IChatMessageRepository } from "../../../domain/repositories/chat-message.repository";
 import type {
   ISendMessageUseCase,
   ISendMessageInput,
-} from "../../interfaces/chat/IChatUseCase.ts";
+} from "../../interfaces/chat/IChatUseCase";
 
 @injectable()
 export class SendMessageUseCase implements ISendMessageUseCase {

@@ -1,4 +1,4 @@
-import type { IUseCase } from "../IUseCase.ts";
+import type { IUseCase } from "../IUseCase";
 
 
 export interface ICreatePaymentIntentInput {

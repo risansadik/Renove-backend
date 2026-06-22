@@ -1,7 +1,7 @@
 import { injectable,inject } from "inversify";
-import { IUserProgressRepository } from "../../../domain/repositories/user-progress.repository.ts";
-import { ILogMoodUseCase } from "../../interfaces/dashboard/IDashboardUseCase.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
+import type { IUserProgressRepository } from "../../../domain/repositories/user-progress.repository";
+import { ILogMoodUseCase } from "../../interfaces/dashboard/IDashboardUseCase";
+import { TYPES } from "../../../shared/constants/tokens";
 
 @injectable()
 export class LogMoodUseCase implements ILogMoodUseCase{

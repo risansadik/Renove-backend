@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
-import { IDeleteSessionUseCase } from "../../interfaces/chat/IChatUseCase.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { IChatMessageRepository } from "../../../domain/repositories/chat-message.repository.ts";
+import { IDeleteSessionUseCase } from "../../interfaces/chat/IChatUseCase";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { IChatMessageRepository } from "../../../domain/repositories/chat-message.repository";
 
 @injectable()
 export class DeleteSessionUseCase implements IDeleteSessionUseCase {

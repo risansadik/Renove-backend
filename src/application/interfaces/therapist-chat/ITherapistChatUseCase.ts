@@ -1,7 +1,7 @@
-import type { TherapistChatThreadEntity } from "../../../domain/entities/TherapistChatThread.entity.ts";
-import type { TherapistChatMessageEntity } from "../../../domain/entities/TherapistChatMessage.entity.ts";
-import type { IUseCase } from "../IUseCase.ts";
-import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination.ts";
+import type { TherapistChatThreadEntity } from "../../../domain/entities/TherapistChatThread.entity";
+import type { TherapistChatMessageEntity } from "../../../domain/entities/TherapistChatMessage.entity";
+import type { IUseCase } from "../IUseCase";
+import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination";
 
 export interface ExtendTherapistChatWindowInput {
   userId: string;

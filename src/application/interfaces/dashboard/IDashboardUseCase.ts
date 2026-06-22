@@ -1,8 +1,8 @@
-import type { IUseCase } from "../IUseCase.ts";
-import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination.ts";
-import type { PublicTherapistDTO } from "../../mappers/therapist.mapper.ts";
-import type { TherapistStatus } from "../../../shared/constants/index.ts";
-import { MissionEntity, MoodLogEntity } from "../../../domain/entities/UserProgress.entity.ts";
+import type { IUseCase } from "../IUseCase";
+import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination";
+import type { PublicTherapistDTO } from "../../mappers/therapist.mapper";
+import type { TherapistStatus } from "../../../shared/constants/index";
+import { MissionEntity, MoodLogEntity } from "../../../domain/entities/UserProgress.entity";
 
 export interface ITherapistDashboardResponse {
   therapistName: string;

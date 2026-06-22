@@ -1,13 +1,13 @@
 import { subDays, startOfDay, endOfDay, startOfMonth, subMonths, format } from "date-fns";
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { BOOKING_STATUS, REPORT_STATUS, THERAPIST_STATUS } from "../../../shared/constants/index.ts";
-import type { IGetAdminDashboardUseCase, IAdminDashboardResponse } from "../../interfaces/admin/IAdminUseCase.ts";
-import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
-import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
-import type { IReportRepository } from "../../../domain/repositories/report.repository.ts";
-import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import { BOOKING_STATUS, REPORT_STATUS, THERAPIST_STATUS } from "../../../shared/constants/index";
+import type { IGetAdminDashboardUseCase, IAdminDashboardResponse } from "../../interfaces/admin/IAdminUseCase";
+import type { IUserRepository } from "../../../domain/repositories/user.repository";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository";
+import type { IBookingRepository } from "../../../domain/repositories/booking.repository";
+import type { IReportRepository } from "../../../domain/repositories/report.repository";
+import type { IWalletRepository } from "../../../domain/repositories/wallet.repository";
 
 const roundMoney = (value: number) => Number(value.toFixed(2));
 

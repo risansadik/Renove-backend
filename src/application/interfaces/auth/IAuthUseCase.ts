@@ -1,10 +1,10 @@
-import type { IUseCase } from "../IUseCase.ts";
-import type { LoginUserDTO, RegisterUserDTO, VerifyOtpDTO, ResendOtpDTO, ForgotPasswordDTO, ResetPasswordDTO } from "../../dto/auth/user.dto.ts";
-import type { LoginTherapistDTO, RegisterTherapistDTO } from "../../dto/auth/therapist.dto.ts";
-import type { AdminLoginDTO } from "../../dto/auth/admin.dto.ts";
-import type { UserEntity } from "../../../domain/entities/User.entity.ts";
-import type { TherapistEntity } from "../../../domain/entities/Therapist.entity.ts";
-import type { AdminMapper } from "../../mappers/admin.mapper.ts";
+import type { IUseCase } from "../IUseCase";
+import type { LoginUserDTO, RegisterUserDTO, VerifyOtpDTO, ResendOtpDTO, ForgotPasswordDTO, ResetPasswordDTO } from "../../dto/auth/user.dto";
+import type { LoginTherapistDTO, RegisterTherapistDTO } from "../../dto/auth/therapist.dto";
+import type { AdminLoginDTO } from "../../dto/auth/admin.dto";
+import type { UserEntity } from "../../../domain/entities/User.entity";
+import type { TherapistEntity } from "../../../domain/entities/Therapist.entity";
+import type { AdminMapper } from "../../mappers/admin.mapper";
 
 type PublicAdminDTO = ReturnType<typeof AdminMapper.toPublicDTO>;
 

@@ -1,5 +1,5 @@
-import type { ITherapistDocument } from "../databases/schema/therapist.schema.ts";
-import type { TherapistEntity } from "../../domain/entities/Therapist.entity.ts";
+import type { ITherapistDocument } from "../databases/schema/therapist.schema";
+import type { TherapistEntity } from "../../domain/entities/Therapist.entity";
 
 export class TherapistDbMapper {
   static toEntity(doc: ITherapistDocument): TherapistEntity {

@@ -1,10 +1,10 @@
 import type { Response } from "express";
 import { injectable, inject } from "inversify";
-import { PAGINATION, MESSAGES } from "../../shared/constants/index.ts";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import type { AuthRequest } from "../../shared/types/express.ts";
-import { ResponseModel } from "../../shared/utils/response-model.ts";
-import { IGetApprovedTherapistsUseCase, IGetUserDashboardUseCase, ILogMoodUseCase, IToggleMissionUseCase } from "../../application/interfaces/dashboard/IDashboardUseCase.ts";
+import { PAGINATION, MESSAGES } from "../../shared/constants/index";
+import { TYPES } from "../../shared/constants/tokens";
+import type { AuthRequest } from "../../shared/types/express";
+import { ResponseModel } from "../../shared/utils/response-model";
+import type { IGetApprovedTherapistsUseCase, IGetUserDashboardUseCase, ILogMoodUseCase, IToggleMissionUseCase } from "../../application/interfaces/dashboard/IDashboardUseCase";
 
 @injectable()
 export class UserDashboardController {

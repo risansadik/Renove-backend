@@ -1,7 +1,7 @@
-import type { ITherapistChatThreadRaw } from "../databases/schema/therapist-chat-thread.schema.ts";
-import type { ITherapistChatMessageRaw } from "../databases/schema/therapist-chat-message.schema.ts";
-import type { TherapistChatThreadEntity } from "../../domain/entities/TherapistChatThread.entity.ts";
-import type { TherapistChatMessageEntity } from "../../domain/entities/TherapistChatMessage.entity.ts";
+import type { ITherapistChatThreadRaw } from "../databases/schema/therapist-chat-thread.schema";
+import type { ITherapistChatMessageRaw } from "../databases/schema/therapist-chat-message.schema";
+import type { TherapistChatThreadEntity } from "../../domain/entities/TherapistChatThread.entity";
+import type { TherapistChatMessageEntity } from "../../domain/entities/TherapistChatMessage.entity";
 
 export class TherapistChatDbMapper {
   static toThreadEntity(doc: ITherapistChatThreadRaw): TherapistChatThreadEntity {

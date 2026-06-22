@@ -1,8 +1,8 @@
 import { injectable } from "inversify";
-import type { IPaymentRepository } from "../../domain/repositories/payment.repository.ts";
-import type { PaymentEntity } from "../../domain/entities/Payment.entity.ts";
-import { PaymentModel } from "../databases/schema/payment.schema.ts";
-import { PaymentDbMapper } from "../mappers/payment.db-mapper.ts";
+import type { IPaymentRepository } from "../../domain/repositories/payment.repository";
+import type { PaymentEntity } from "../../domain/entities/Payment.entity";
+import { PaymentModel } from "../databases/schema/payment.schema";
+import { PaymentDbMapper } from "../mappers/payment.db-mapper";
 
 @injectable()
 export class PaymentRepositoryImpl implements IPaymentRepository {

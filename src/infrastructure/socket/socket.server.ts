@@ -1,10 +1,10 @@
 import { Server as HttpServer } from "http";
 import { Server as SocketIOServer, type Socket } from "socket.io";
-import { CALL_EVENTS, NOTIFICATION_EVENTS, THERAPIST_CHAT_EVENTS } from "../../shared/constants/index.ts";
+import { CALL_EVENTS, NOTIFICATION_EVENTS, THERAPIST_CHAT_EVENTS } from "../../shared/constants/index";
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import { ILogger } from "../../application/interfaces/services/ILoggerService.ts";
-import { NotificationEntity } from "../../domain/entities/Notification.entity.ts";
+import { TYPES } from "../../shared/constants/tokens";
+import type { ILogger } from "../../application/interfaces/services/ILoggerService";
+import { NotificationEntity } from "../../domain/entities/Notification.entity";
 
 const getAllowedOrigins = (): string[] =>
     (process.env.CLIENT_URL ?? "http://localhost:5173")

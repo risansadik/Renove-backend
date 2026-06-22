@@ -1,12 +1,12 @@
 import { injectable } from "inversify";
-import type { IChatMessageRepository } from "../../domain/repositories/chat-message.repository.ts";
-import type { ChatMessageEntity } from "../../domain/entities/ChatMessage.entity.ts";
-import type { ChatSessionEntity } from "../../domain/entities/ChatSession.entity.ts";
+import type { IChatMessageRepository } from "../../domain/repositories/chat-message.repository";
+import type { ChatMessageEntity } from "../../domain/entities/ChatMessage.entity";
+import type { ChatSessionEntity } from "../../domain/entities/ChatSession.entity";
 import {
   ChatMessageModel,
   ChatSessionModel,
-} from "../databases/schema/chat-message.schema.ts";
-import { ChatDbMapper } from "../mappers/chat.db-mapper.ts";
+} from "../databases/schema/chat-message.schema";
+import { ChatDbMapper } from "../mappers/chat.db-mapper";
 
 @injectable()
 export class ChatMessageRepository implements IChatMessageRepository {

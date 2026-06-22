@@ -1,4 +1,3 @@
-// src/infrastructure/external-services/serper-client.provider.ts
 import { injectable } from "inversify";
 
 @injectable()

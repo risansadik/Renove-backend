@@ -1,5 +1,5 @@
-import type { UserGoalEntity } from "../../../domain/entities/UserGoal.entity.ts";
-import type { IUseCase } from "../IUseCase.ts";
+import type { UserGoalEntity } from "../../../domain/entities/UserGoal.entity";
+import type { IUseCase } from "../IUseCase";
 
 export type IGetUserGoalsUseCase = IUseCase<string, UserGoalEntity[]>;
 

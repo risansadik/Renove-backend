@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
-import type { AuthTokens, ITokenService, TokenPayload } from "../../application/interfaces/services/ITokenService.ts";
-import { authTokenService } from "../../shared/utils/jwt.ts";
+import type { AuthTokens, ITokenService, TokenPayload } from "../../application/interfaces/services/ITokenService";
+import { authTokenService } from "../../shared/utils/jwt";
 
 @injectable()
 export class JwtTokenService implements ITokenService {

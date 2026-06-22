@@ -1,20 +1,20 @@
 import type { Container } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { NotificationRepository } from "../../repositories/notification.repository.impl.ts";
-import type { INotificationRepository } from "../../../domain/repositories/notification.repository.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import { NotificationRepository } from "../../repositories/notification.repository.impl";
+import type { INotificationRepository } from "../../../domain/repositories/notification.repository";
 import {
   GetNotificationsUseCase,
   MarkNotificationReadUseCase,
   MarkAllNotificationsReadUseCase,
-} from "../../../application/use-cases/notification/notification.usecase.ts";
+} from "../../../application/use-cases/notification/notification.usecase";
 import type {
   IGetNotificationsUseCase,
   IMarkNotificationReadUseCase,
   IMarkAllNotificationsReadUseCase,
-} from "../../../application/interfaces/notification/INotificationUseCase.ts";
-import { NotificationService } from "../../external-services/notification.service.ts";
-import type { INotificationService } from "../../../application/interfaces/services/INotificationService.ts";
-import { NotificationController } from "../../../presentation/controllers/notification.controller.ts";
+} from "../../../application/interfaces/notification/INotificationUseCase";
+import { NotificationService } from "../../external-services/notification.service";
+import type { INotificationService } from "../../../application/interfaces/services/INotificationService";
+import { NotificationController } from "../../../presentation/controllers/notification.controller";
 
 export const registerNotificationModule = (container: Container): void => {
   container

@@ -1,4 +1,4 @@
-import type { UserGoalEntity } from "../entities/UserGoal.entity.ts";
+import type { UserGoalEntity } from "../entities/UserGoal.entity";
 
 export interface IUserGoalRepository {
   findAllByUser(userId: string): Promise<UserGoalEntity[]>;

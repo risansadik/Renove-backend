@@ -1,8 +1,8 @@
 import cron from "node-cron";
-import { appContainer } from "./di/container.ts";
-import { ExpirePaymentUseCase } from "../application/use-cases/payment/expire-payment.usecase.ts";
-import { TYPES } from "../shared/constants/tokens.ts";
-import { ILogger } from "../application/interfaces/services/ILoggerService.ts";
+import { appContainer } from "./di/container";
+import { ExpirePaymentUseCase } from "../application/use-cases/payment/expire-payment.usecase";
+import { TYPES } from "../shared/constants/tokens";
+import { ILogger } from "../application/interfaces/services/ILoggerService";
 
 export const initCronJobs = () => {
   const expirePaymentUC = appContainer.get<ExpirePaymentUseCase>(TYPES.ExpirePaymentUseCase);

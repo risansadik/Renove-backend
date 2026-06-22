@@ -1,10 +1,10 @@
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
-import { AppError } from "../../../shared/utils/AppError.ts";
-import { HttpStatus } from "../../../shared/constants/index.ts";
-import { UserMapper, PublicUserDTO } from "../../mappers/user.mapper.ts";
-import type { IUpdateUserProfileUseCase, IUpdateUserProfileInput } from "../../interfaces/profile/IProfileUseCase.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { IUserRepository } from "../../../domain/repositories/user.repository";
+import { AppError } from "../../../shared/utils/AppError";
+import { HttpStatus } from "../../../shared/constants/index";
+import { UserMapper, PublicUserDTO } from "../../mappers/user.mapper";
+import type { IUpdateUserProfileUseCase, IUpdateUserProfileInput } from "../../interfaces/profile/IProfileUseCase";
 
 @injectable()
 export class UpdateUserProfileUseCase implements IUpdateUserProfileUseCase {

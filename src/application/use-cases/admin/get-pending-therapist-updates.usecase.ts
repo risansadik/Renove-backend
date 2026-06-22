@@ -1,9 +1,9 @@
 import { inject, injectable } from "inversify";
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
-import { THERAPIST_STATUS } from "../../../shared/constants/index.ts";
-import { IGetPendingTherapistUpdatesUseCase } from "../../interfaces/admin/IAdminUseCase.ts";
-import { PublicTherapistDTO, TherapistMapper } from "../../mappers/therapist.mapper.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository";
+import { THERAPIST_STATUS } from "../../../shared/constants/index";
+import { IGetPendingTherapistUpdatesUseCase } from "../../interfaces/admin/IAdminUseCase";
+import { PublicTherapistDTO, TherapistMapper } from "../../mappers/therapist.mapper";
+import { TYPES } from "../../../shared/constants/tokens";
 
 @injectable()
 export class GetPendingTherapistUpdatesUseCase implements IGetPendingTherapistUpdatesUseCase{

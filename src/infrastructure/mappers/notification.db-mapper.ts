@@ -1,5 +1,5 @@
-import type { INotificationDocument } from "../databases/schema/notification.schema.ts";
-import type { NotificationEntity } from "../../domain/entities/Notification.entity.ts";
+import type { INotificationDocument } from "../databases/schema/notification.schema";
+import type { NotificationEntity } from "../../domain/entities/Notification.entity";
 
 export class NotificationDbMapper {
   static toEntity(doc: INotificationDocument): NotificationEntity {

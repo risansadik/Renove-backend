@@ -1,4 +1,4 @@
-import type { Role } from "../../../shared/constants/index.ts";
+import type { Role } from "../../../shared/constants/index";
 
 export interface TokenPayload {
   id: string;

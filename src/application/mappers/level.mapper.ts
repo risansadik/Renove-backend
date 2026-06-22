@@ -1,5 +1,5 @@
-import type { LevelEntity } from "../../domain/entities/Level.entity.ts";
-import type { LevelDifficulty } from "../../shared/constants/index.ts";
+import type { LevelEntity } from "../../domain/entities/Level.entity";
+import type { LevelDifficulty } from "../../shared/constants/index";
 
 export interface PublicLevelDTO {
   id: string;

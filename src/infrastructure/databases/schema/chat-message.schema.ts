@@ -1,5 +1,5 @@
 import mongoose, { Schema, type Types, type Document } from "mongoose";
-import { CHAT_ROLE, type ChatRole } from "../../../shared/constants/index.ts";
+import { CHAT_ROLE, type ChatRole } from "../../../shared/constants/index";
 
 // ── Session ─────
 export interface IChatSessionDocument extends Document {

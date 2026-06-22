@@ -1,11 +1,11 @@
 import { inject, injectable } from "inversify";
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
-import { TherapistMapper } from "../../mappers/therapist.mapper.ts";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository";
+import { TherapistMapper } from "../../mappers/therapist.mapper";
 
-import type { IGetAllTherapistsUseCase } from "../../interfaces/admin/IAdminUseCase.ts";
-import type { PublicTherapistDTO } from "../../mappers/therapist.mapper.ts";
-import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
+import type { IGetAllTherapistsUseCase } from "../../interfaces/admin/IAdminUseCase";
+import type { PublicTherapistDTO } from "../../mappers/therapist.mapper";
+import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination";
+import { TYPES } from "../../../shared/constants/tokens";
 
 
 @injectable()

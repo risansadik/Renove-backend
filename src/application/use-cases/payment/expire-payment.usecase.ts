@@ -1,12 +1,12 @@
 import { subMinutes } from "date-fns";
-import type { ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
-import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
-import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.ts";
-import { BOOKING_STATUS, SLOT_STATUS, PAYMENT_EXPIRY_MINUTES } from "../../../shared/constants/index.ts";
-import { IExpirePaymentUseCase } from "../../interfaces/payment/IPaymentUseCase.ts";
+import type { ISlotRepository } from "../../../domain/repositories/availability.repository";
+import type { IBookingRepository } from "../../../domain/repositories/booking.repository";
+import type { IPaymentRepository } from "../../../domain/repositories/payment.repository";
+import { BOOKING_STATUS, SLOT_STATUS, PAYMENT_EXPIRY_MINUTES } from "../../../shared/constants/index";
+import { IExpirePaymentUseCase } from "../../interfaces/payment/IPaymentUseCase";
 import { injectable,inject } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { ILogger } from "../../interfaces/services/ILoggerService.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { ILogger } from "../../interfaces/services/ILoggerService";
 
 @injectable()
 export class ExpirePaymentUseCase implements IExpirePaymentUseCase{

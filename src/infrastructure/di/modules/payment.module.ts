@@ -5,7 +5,7 @@ import {
   IHandleStripeWebhookUseCase,
   IExpirePaymentUseCase,
   IVerifyPaymentUseCase,
-} from "../../../application/interfaces/payment/IPaymentUseCase.ts"
+} from "../../../application/interfaces/payment/IPaymentUseCase"
 
 
 import {
@@ -14,10 +14,10 @@ import {
   HandleStripeWebhookUseCase,
   ExpirePaymentUseCase,
   VerifyPaymentUseCase
-} from '../../../application/use-cases/payment/payment.usecase.ts'
+} from '../../../application/use-cases/payment/payment.usecase'
 
-import { PaymentController } from "../../../presentation/controllers/payment.controller.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
+import { PaymentController } from "../../../presentation/controllers/payment.controller";
+import { TYPES } from "../../../shared/constants/tokens";
 
 export const registerPaymentModule = (container: Container): void => {
   container.bind<ICompleteSessionUseCase>(TYPES.CompleteSessionUseCase).to(CompleteSessionUseCase)

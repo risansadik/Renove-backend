@@ -1,8 +1,8 @@
 import { inject, injectable } from "inversify";
-import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
-import type { ITherapistReviewRepository } from "../../../domain/repositories/therapist-review.repository.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import type { IGetTherapistReviewStatusUseCase } from "../../interfaces/review/IReviewUseCase.ts";
+import type { IBookingRepository } from "../../../domain/repositories/booking.repository";
+import type { ITherapistReviewRepository } from "../../../domain/repositories/therapist-review.repository";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { IGetTherapistReviewStatusUseCase } from "../../interfaces/review/IReviewUseCase";
 
 @injectable()
 export class GetTherapistReviewStatusUseCase implements IGetTherapistReviewStatusUseCase {

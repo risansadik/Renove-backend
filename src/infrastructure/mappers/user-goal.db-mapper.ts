@@ -1,5 +1,5 @@
-import type { IUserGoalDocument } from "../databases/schema/user-goal.schema.ts";
-import type { UserGoalEntity } from "../../domain/entities/UserGoal.entity.ts";
+import type { IUserGoalDocument } from "../databases/schema/user-goal.schema";
+import type { UserGoalEntity } from "../../domain/entities/UserGoal.entity";
 
 export class UserGoalDbMapper {
   static toEntity(doc: IUserGoalDocument): UserGoalEntity {

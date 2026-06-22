@@ -1,8 +1,8 @@
 import { injectable } from "inversify";
-import type {INotificationRepository } from "../../domain/repositories/notification.repository.ts"
-import type { NotificationEntity, NotificationRecipientRole } from "../../domain/entities/Notification.entity.ts";
-import { NotificationModel } from "../databases/schema/notification.schema.ts";
-import { NotificationDbMapper } from "../mappers/notification.db-mapper.ts";
+import type {INotificationRepository } from "../../domain/repositories/notification.repository"
+import type { NotificationEntity, NotificationRecipientRole } from "../../domain/entities/Notification.entity";
+import { NotificationModel } from "../databases/schema/notification.schema";
+import { NotificationDbMapper } from "../mappers/notification.db-mapper";
 
 @injectable()
 export class NotificationRepository implements INotificationRepository {

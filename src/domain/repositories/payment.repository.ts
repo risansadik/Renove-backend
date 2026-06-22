@@ -1,4 +1,4 @@
-import type { PaymentEntity } from "../entities/Payment.entity.ts";
+import type { PaymentEntity } from "../entities/Payment.entity";
 
 export interface IPaymentRepository {
   create(payment: Partial<PaymentEntity>): Promise<PaymentEntity>;

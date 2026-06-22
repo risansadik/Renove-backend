@@ -1,10 +1,10 @@
 import { injectable } from "inversify";
-import type { IUserProgressRepository } from "../../domain/repositories/user-progress.repository.ts";
-import type { MissionEntity, UserProgressEntity } from "../../domain/entities/UserProgress.entity.ts";
-import { UserProgressModel } from "../databases/schema/user-progress.schema.ts";
-import { MS_IN_DAY } from "../../shared/constants/index.ts";
-import type { IUserProgressDocument } from "../databases/schema/user-progress.schema.ts";
-import { UserProgressDbMapper } from "../mappers/user-progress.db-mapper.ts";
+import type { IUserProgressRepository } from "../../domain/repositories/user-progress.repository";
+import type { MissionEntity, UserProgressEntity } from "../../domain/entities/UserProgress.entity";
+import { UserProgressModel } from "../databases/schema/user-progress.schema";
+import { MS_IN_DAY } from "../../shared/constants/index";
+import type { IUserProgressDocument } from "../databases/schema/user-progress.schema";
+import { UserProgressDbMapper } from "../mappers/user-progress.db-mapper";
 
 const XP_PER_LEVEL = 500;
 

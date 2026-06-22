@@ -1,6 +1,6 @@
-import type { TherapistChatThreadEntity } from "../entities/TherapistChatThread.entity.ts";
-import type { TherapistChatMessageEntity } from "../entities/TherapistChatMessage.entity.ts";
-import { PaginationParams, PaginatedResult } from "../interfaces/pagination.ts";
+import type { TherapistChatThreadEntity } from "../entities/TherapistChatThread.entity";
+import type { TherapistChatMessageEntity } from "../entities/TherapistChatMessage.entity";
+import { PaginationParams, PaginatedResult } from "../interfaces/pagination";
 
 export interface ITherapistChatRepository {
   // Thread operations

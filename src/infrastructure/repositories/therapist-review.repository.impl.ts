@@ -1,9 +1,9 @@
 import { injectable } from "inversify";
 import { Types } from "mongoose";
-import type { PublicReviewItem, TherapistReviewEntity } from "../../domain/entities/TherapistReview.entity.ts";
-import type { ITherapistReviewRepository } from "../../domain/repositories/therapist-review.repository.ts";
-import { TherapistReviewModel } from "../databases/schema/therapist-review.schema.ts";
-import { TherapistReviewDbMapper } from "../mappers/therapist-review.db-mapper.ts";
+import type { PublicReviewItem, TherapistReviewEntity } from "../../domain/entities/TherapistReview.entity";
+import type { ITherapistReviewRepository } from "../../domain/repositories/therapist-review.repository";
+import { TherapistReviewModel } from "../databases/schema/therapist-review.schema";
+import { TherapistReviewDbMapper } from "../mappers/therapist-review.db-mapper";
 
 @injectable()
 export class TherapistReviewRepository implements ITherapistReviewRepository {

@@ -1,5 +1,5 @@
-import { PublicReviewItem } from "../../../domain/entities/TherapistReview.entity.ts";
-import type { IUseCase } from "../IUseCase.ts";
+import { PublicReviewItem } from "../../../domain/entities/TherapistReview.entity";
+import type { IUseCase } from "../IUseCase";
 
 export interface TherapistReviewStatus {
   canReview: boolean;

@@ -1,14 +1,14 @@
 import { inject, injectable } from "inversify";
-import type { IUserGoalRepository } from "../../../domain/repositories/user-goal.repository.ts";
-import type { UserGoalEntity } from "../../../domain/entities/UserGoal.entity.ts";
+import type { IUserGoalRepository } from "../../../domain/repositories/user-goal.repository";
+import type { UserGoalEntity } from "../../../domain/entities/UserGoal.entity";
 import type {
   IGetUserGoalsUseCase,
   ICreateGoalUseCase,
   IToggleGoalUseCase,
   IDeleteGoalUseCase,
-} from "../../interfaces/goal/IGoalUseCase.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { NotFoundError } from "../../../shared/utils/AppError.ts";
+} from "../../interfaces/goal/IGoalUseCase";
+import { TYPES } from "../../../shared/constants/tokens";
+import { NotFoundError } from "../../../shared/utils/AppError";
 
 @injectable()
 export class GetUserGoalsUseCase implements IGetUserGoalsUseCase {

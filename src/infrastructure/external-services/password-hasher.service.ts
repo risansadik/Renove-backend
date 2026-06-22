@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import bcrypt from "bcryptjs";
-import type { IPasswordHasher } from "../../application/interfaces/services/IPasswordHasher.ts";
-import { BCRYPT_ROUNDS } from "../../shared/constants/index.ts";
+import type { IPasswordHasher } from "../../application/interfaces/services/IPasswordHasher";
+import { BCRYPT_ROUNDS } from "../../shared/constants/index";
 
 @injectable()
 export class BcryptPasswordHasher implements IPasswordHasher {

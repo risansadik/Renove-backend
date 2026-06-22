@@ -1,15 +1,15 @@
-import type { AuthenticatedRequest } from "../../shared/types/express.ts";
+import type { AuthenticatedRequest } from "../../shared/types/express";
 import { injectable, inject } from "inversify";
 import type { Response } from "express";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import { ResponseModel } from "../../shared/utils/response-model.ts";
-import { HttpStatus, MESSAGES } from "../../shared/constants/index.ts";
+import { TYPES } from "../../shared/constants/tokens";
+import { ResponseModel } from "../../shared/utils/response-model";
+import { HttpStatus, MESSAGES } from "../../shared/constants/index";
 import type {
   IGenerateLevelsUseCase,
   IGetUserLevelsUseCase,
   ICompleteLevelUseCase,
-} from "../../application/interfaces/level/ILevelUseCase.ts";
-import { LevelMapper } from "../../application/mappers/level.mapper.ts";
+} from "../../application/interfaces/level/ILevelUseCase";
+import { LevelMapper } from "../../application/mappers/level.mapper";
 
 @injectable()
 export class LevelController {

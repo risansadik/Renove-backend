@@ -1,4 +1,4 @@
-import type { TransactionEntity } from "../entities/Transaction.entity.ts";
+import type { TransactionEntity } from "../entities/Transaction.entity";
 
 export interface AdminFinanceStats {
   totalRevenue: number;

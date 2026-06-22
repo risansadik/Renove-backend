@@ -5,7 +5,7 @@ import type {
   IGetTherapistBookingsUseCase,
   IGetUserBookingsUseCase,
   IUpdateBookingStatusUseCase,
-} from "../../../application/interfaces/booking/IBookingUseCase.ts";
+} from "../../../application/interfaces/booking/IBookingUseCase";
 
 import {
   CancelBookingUseCase,
@@ -14,10 +14,10 @@ import {
   GetUserBookingsUseCase,
   UpdateBookingStatusUseCase,
 
-} from '../../../application/use-cases/booking/booking.usecase.ts'
+} from '../../../application/use-cases/booking/booking.usecase'
 
-import { BookingController } from "../../../presentation/controllers/booking.controller.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
+import { BookingController } from "../../../presentation/controllers/booking.controller";
+import { TYPES } from "../../../shared/constants/tokens";
 
 export const registerBookingModule = (container: Container): void => {
   container.bind<ICancelBookingUseCase>(TYPES.CancelBookingUseCase).to(CancelBookingUseCase)

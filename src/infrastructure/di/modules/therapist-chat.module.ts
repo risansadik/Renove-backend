@@ -1,22 +1,22 @@
 import type { Container } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import type { ITherapistChatRepository } from "../../../domain/repositories/therapist-chat.repository.ts";
-import { TherapistChatRepositoryImpl } from "../../repositories/therapist-chat.impl.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { ITherapistChatRepository } from "../../../domain/repositories/therapist-chat.repository";
+import { TherapistChatRepositoryImpl } from "../../repositories/therapist-chat.impl";
 import type {
     IExtendTherapistChatWindowUseCase,
     IGetTherapistChatThreadsUseCase,
     IGetTherapistChatMessagesUseCase,
     ISendTherapistChatMessageUseCase,
     IMarkTherapistChatAsReadUseCase,
-} from "../../../application/interfaces/therapist-chat/ITherapistChatUseCase.ts";
+} from "../../../application/interfaces/therapist-chat/ITherapistChatUseCase";
 import {
     ExtendTherapistChatWindowUseCase,
     GetTherapistChatThreadsUseCase,
     GetTherapistChatMessagesUseCase,
     SendTherapistChatMessageUseCase,
     MarkTherapistChatAsReadUseCase,
-} from "../../../application/use-cases/therapist-chat/therapist-chat.usecase.ts";
-import { TherapistChatController } from "../../../presentation/controllers/therapist-chat.controller.ts";
+} from "../../../application/use-cases/therapist-chat/therapist-chat.usecase";
+import { TherapistChatController } from "../../../presentation/controllers/therapist-chat.controller";
 
 export const registerTherapistChatModule = (container: Container): void => {
     container.bind<ITherapistChatRepository>(TYPES.TherapistChatRepository).to(TherapistChatRepositoryImpl);

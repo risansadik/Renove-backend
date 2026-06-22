@@ -1,10 +1,10 @@
-import type { IAdminRepository } from "../../../domain/repositories/admin.repository.ts";
-import { AppError } from "../../../shared/utils/AppError.ts";
-import { HttpStatus } from "../../../shared/constants/index.ts";
-import { AdminMapper, PublicAdminDTO } from "../../mappers/admin.mapper.ts";
-import { IGetAdminProfileUseCase } from "../../interfaces/profile/IProfileUseCase.ts";
+import type { IAdminRepository } from "../../../domain/repositories/admin.repository";
+import { AppError } from "../../../shared/utils/AppError";
+import { HttpStatus } from "../../../shared/constants/index";
+import { AdminMapper, PublicAdminDTO } from "../../mappers/admin.mapper";
+import { IGetAdminProfileUseCase } from "../../interfaces/profile/IProfileUseCase";
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
+import { TYPES } from "../../../shared/constants/tokens";
 
 @injectable()
 export class GetAdminProfileUseCase implements IGetAdminProfileUseCase{

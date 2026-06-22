@@ -1,15 +1,15 @@
 import { inject, injectable } from "inversify";
-import type { IFinanceRepository } from "../../../domain/repositories/finance.repository.ts";
-import type { ISettingsRepository } from "../../../domain/repositories/settings.repository.ts";
-import { HttpStatus } from "../../../shared/constants/index.ts";
-import { AppError } from "../../../shared/utils/AppError.ts";
+import type { IFinanceRepository } from "../../../domain/repositories/finance.repository";
+import type { ISettingsRepository } from "../../../domain/repositories/settings.repository";
+import { HttpStatus } from "../../../shared/constants/index";
+import { AppError } from "../../../shared/utils/AppError";
 import type {
   IGetAdminFinanceStatsUseCase,
   IUpdatePlatformSettingsUseCase,
   IFinanceStatsResponse
-} from '../../../application/interfaces/admin/IAdminUseCase.ts'
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { PaginationParams } from "../../../domain/interfaces/pagination.ts";
+} from '../../../application/interfaces/admin/IAdminUseCase'
+import { TYPES } from "../../../shared/constants/tokens";
+import { PaginationParams } from "../../../domain/interfaces/pagination";
 
 
 @injectable()

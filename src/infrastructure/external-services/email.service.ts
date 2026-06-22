@@ -1,10 +1,10 @@
 import { inject, injectable } from "inversify";
 import nodemailer from "nodemailer";
-import { HttpStatus, MAIL_CONFIG } from "../../shared/constants/index.ts";
-import type { IEmailService } from "../../application/interfaces/services/IEmailService.ts";
-import { AppError } from "../../shared/utils/AppError.ts";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import { ILogger } from "../../application/interfaces/services/ILoggerService.ts";
+import { HttpStatus, MAIL_CONFIG } from "../../shared/constants/index";
+import type { IEmailService } from "../../application/interfaces/services/IEmailService";
+import { AppError } from "../../shared/utils/AppError";
+import { TYPES } from "../../shared/constants/tokens";
+import type { ILogger } from "../../application/interfaces/services/ILoggerService";
 
 const transporter = nodemailer.createTransport({
   host: MAIL_CONFIG.HOST,

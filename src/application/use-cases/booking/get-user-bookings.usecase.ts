@@ -1,10 +1,10 @@
-import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
-import type { BookingEntity } from "../../../domain/entities/Booking.entity.ts";
-import type { IGetUserBookingsUseCase } from "../../interfaces/booking/IBookingUseCase.ts";
+import type { IBookingRepository } from "../../../domain/repositories/booking.repository";
+import type { BookingEntity } from "../../../domain/entities/Booking.entity";
+import type { IGetUserBookingsUseCase } from "../../interfaces/booking/IBookingUseCase";
 
-import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination.ts";
+import type { PaginationParams, PaginatedResult } from "../../../domain/interfaces/pagination";
 import { injectable,inject } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
+import { TYPES } from "../../../shared/constants/tokens";
 
 
 @injectable()

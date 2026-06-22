@@ -1,17 +1,17 @@
 import { Container } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
+import { TYPES } from "../../../shared/constants/tokens";
 
-import { IReportRepository } from "../../../domain/repositories/report.repository.ts";
-import { ReportRepository } from "../../repositories/report-repository.impl.ts";
+import { IReportRepository } from "../../../domain/repositories/report.repository";
+import { ReportRepository } from "../../repositories/report-repository.impl";
 
-import { ICreateReportUseCase, IGetMyReportsUseCase, IGetReportDetailsUseCase, IAdminGetAllReportsUseCase, IAdminUpdateReportUseCase } from "../../../application/interfaces/report/IReportUseCase.ts";
-import { CreateReportUseCase } from "../../../application/use-cases/report/CreateReportUseCase.ts";
-import { GetMyReportsUseCase } from "../../../application/use-cases/report/GetMyReportsUseCase.ts";
-import { GetReportDetailsUseCase } from "../../../application/use-cases/report/GetReportDetailsUseCase.ts";
-import { AdminGetAllReportsUseCase } from "../../../application/use-cases/report/AdminGetAllReportsUseCase.ts";
-import { AdminUpdateReportUseCase } from "../../../application/use-cases/report/AdminUpdateReportUseCase.ts";
+import { ICreateReportUseCase, IGetMyReportsUseCase, IGetReportDetailsUseCase, IAdminGetAllReportsUseCase, IAdminUpdateReportUseCase } from "../../../application/interfaces/report/IReportUseCase";
+import { CreateReportUseCase } from "../../../application/use-cases/report/CreateReportUseCase";
+import { GetMyReportsUseCase } from "../../../application/use-cases/report/GetMyReportsUseCase";
+import { GetReportDetailsUseCase } from "../../../application/use-cases/report/GetReportDetailsUseCase";
+import { AdminGetAllReportsUseCase } from "../../../application/use-cases/report/AdminGetAllReportsUseCase";
+import { AdminUpdateReportUseCase } from "../../../application/use-cases/report/AdminUpdateReportUseCase";
 
-import { ReportController } from "../../../presentation/controllers/report.controller.ts";
+import { ReportController } from "../../../presentation/controllers/report.controller";
 
 export const registerReportModule = (container: Container): void => {
   // Repositories

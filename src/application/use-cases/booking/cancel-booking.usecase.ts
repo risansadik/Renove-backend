@@ -1,16 +1,16 @@
-import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
-import type { ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
-import type { IWalletRepository } from "../../../domain/repositories/wallet.repository.ts";
-import type { IPaymentRepository } from "../../../domain/repositories/payment.repository.ts";
-import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
-import type { INotificationService } from "../../interfaces/services/INotificationService.ts";
-import type { BookingEntity } from "../../../domain/entities/Booking.entity.ts";
-import type { ICancelBookingUseCase, CancelBookingInput } from "../../interfaces/booking/IBookingUseCase.ts";
-import { BOOKING_STATUS, HttpStatus, PAYMENT_STATUS } from "../../../shared/constants/index.ts";
-import { AppError, ForbiddenError, NotFoundError } from "../../../shared/utils/AppError.ts";
+import type { IBookingRepository } from "../../../domain/repositories/booking.repository";
+import type { ISlotRepository } from "../../../domain/repositories/availability.repository";
+import type { IWalletRepository } from "../../../domain/repositories/wallet.repository";
+import type { IPaymentRepository } from "../../../domain/repositories/payment.repository";
+import type { IUserRepository } from "../../../domain/repositories/user.repository";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository";
+import type { INotificationService } from "../../interfaces/services/INotificationService";
+import type { BookingEntity } from "../../../domain/entities/Booking.entity";
+import type { ICancelBookingUseCase, CancelBookingInput } from "../../interfaces/booking/IBookingUseCase";
+import { BOOKING_STATUS, HttpStatus, PAYMENT_STATUS } from "../../../shared/constants/index";
+import { AppError, ForbiddenError, NotFoundError } from "../../../shared/utils/AppError";
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
+import { TYPES } from "../../../shared/constants/tokens";
 
 @injectable()
 export class CancelBookingUseCase implements ICancelBookingUseCase {

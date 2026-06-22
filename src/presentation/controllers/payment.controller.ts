@@ -1,10 +1,10 @@
 import type { Response } from "express";
 import { injectable, inject } from "inversify";
-import { ResponseModel } from "../../shared/utils/response-model.ts";
-import type { AuthRequest } from "../../shared/types/express.ts";
-import { MESSAGES } from "../../shared/constants/index.ts";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import { ICompleteSessionUseCase, ICreatePaymentIntentUseCase, IHandleStripeWebhookUseCase, IVerifyPaymentUseCase } from "../../application/interfaces/payment/IPaymentUseCase.ts";
+import { ResponseModel } from "../../shared/utils/response-model";
+import type { AuthRequest } from "../../shared/types/express";
+import { MESSAGES } from "../../shared/constants/index";
+import { TYPES } from "../../shared/constants/tokens";
+import { type ICompleteSessionUseCase, type ICreatePaymentIntentUseCase, type IHandleStripeWebhookUseCase, type IVerifyPaymentUseCase } from "../../application/interfaces/payment/IPaymentUseCase";
 
 @injectable()
 export class PaymentController {

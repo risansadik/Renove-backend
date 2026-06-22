@@ -1,4 +1,4 @@
-import { TherapistChatSenderRole } from "../../shared/constants/index.ts";
+import { TherapistChatSenderRole } from "../../shared/constants/index";
 
 export interface TherapistChatMessageEntity {
   id?: string;

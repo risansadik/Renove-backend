@@ -1,9 +1,9 @@
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import { ICreateNotificationInput, INotificationService } from "../../application/interfaces/services/INotificationService.ts";
-import { INotificationRepository } from "../../domain/repositories/notification.repository.ts";
-import { SocketServer } from "../socket/socket.server.ts";
-import { NotificationEntity } from "../../domain/entities/Notification.entity.ts";
+import { TYPES } from "../../shared/constants/tokens";
+import { ICreateNotificationInput, INotificationService } from "../../application/interfaces/services/INotificationService";
+import type { INotificationRepository } from "../../domain/repositories/notification.repository.js";
+import { SocketServer } from "../socket/socket.server";
+import { NotificationEntity } from "../../domain/entities/Notification.entity";
 
 @injectable()
 export class NotificationService implements INotificationService {

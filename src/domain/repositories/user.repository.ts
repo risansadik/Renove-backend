@@ -1,6 +1,6 @@
-import type { BaseRepository } from "./base.repository.ts";
-import type { UserEntity } from "../entities/User.entity.ts";
-import type { UserStatus } from "../../shared/constants/index.ts";
+import type { BaseRepository } from "./base.repository";
+import type { UserEntity } from "../entities/User.entity";
+import type { UserStatus } from "../../shared/constants/index";
 
 export interface IUserRepository extends BaseRepository<UserEntity> {
   findByEmail(email: string): Promise<UserEntity | null>;

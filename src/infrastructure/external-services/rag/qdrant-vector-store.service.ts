@@ -1,12 +1,11 @@
-// src/infrastructure/external-services/qdrant-vector-store.service.ts
 import { injectable, inject } from "inversify";
 import { QdrantClient } from "@qdrant/js-client-rest";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { QdrantClientProvider } from "./providers/qdrant-client.provider.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import { QdrantClientProvider } from "./providers/qdrant-client.provider";
 import type {
     IVectorStoreService,
     VectorDocument,
-} from "../../../application/interfaces/services/rag/IVectorStoreService.ts";
+} from "../../../application/interfaces/services/rag/IVectorStoreService";
 
 @injectable()
 export class QdrantVectorStoreService implements IVectorStoreService {

@@ -1,9 +1,9 @@
 import type { Response } from "express";
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import type { AuthRequest } from "../../shared/types/express.ts";
-import { ResponseModel } from "../../shared/utils/response-model.ts";
-import { IGetTherapistDashboardUseCase } from "../../application/interfaces/dashboard/IDashboardUseCase.ts";
+import { TYPES } from "../../shared/constants/tokens";
+import type { AuthRequest } from "../../shared/types/express";
+import { ResponseModel } from "../../shared/utils/response-model";
+import type { IGetTherapistDashboardUseCase } from "../../application/interfaces/dashboard/IDashboardUseCase";
 
 @injectable()
 export class TherapistDashboardController {

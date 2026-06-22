@@ -1,10 +1,10 @@
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import type { IAdminRepository } from "../../../domain/repositories/admin.repository.ts";
-import { AppError } from "../../../shared/utils/AppError.ts";
-import { HttpStatus } from "../../../shared/constants/index.ts";
-import { AdminMapper, PublicAdminDTO } from "../../mappers/admin.mapper.ts";
-import type { IUpdateAdminProfileUseCase, IUpdateAdminProfileInput } from "../../interfaces/profile/IProfileUseCase.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { IAdminRepository } from "../../../domain/repositories/admin.repository";
+import { AppError } from "../../../shared/utils/AppError";
+import { HttpStatus } from "../../../shared/constants/index";
+import { AdminMapper, PublicAdminDTO } from "../../mappers/admin.mapper";
+import type { IUpdateAdminProfileUseCase, IUpdateAdminProfileInput } from "../../interfaces/profile/IProfileUseCase";
 
 export interface UpdateAdminProfileDto {
   name?: string;

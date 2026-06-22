@@ -1,8 +1,8 @@
 import { injectable } from "inversify";
-import { AvailabilityModel, SlotModel } from "../databases/schema/availability.schema.ts";
-import type { IAvailabilityRepository, ISlotRepository } from "../../domain/repositories/availability.repository.ts";
-import type { TherapistAvailabilityEntity, TherapistSlotEntity, SlotStatus } from "../../domain/entities/TherapistAvailability.entity.ts";
-import { AvailabilityDbMapper } from "../mappers/availability.db-mapper.ts";
+import { AvailabilityModel, SlotModel } from "../databases/schema/availability.schema";
+import type { IAvailabilityRepository, ISlotRepository } from "../../domain/repositories/availability.repository";
+import type { TherapistAvailabilityEntity, TherapistSlotEntity, SlotStatus } from "../../domain/entities/TherapistAvailability.entity";
+import { AvailabilityDbMapper } from "../mappers/availability.db-mapper";
 
 @injectable()
 export class AvailabilityRepository implements IAvailabilityRepository {

@@ -1,8 +1,8 @@
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { IReportRepository } from "../../../domain/repositories/report.repository.ts";
-import { IGetMyReportsUseCase } from "../../interfaces/report/IReportUseCase.ts";
-import { ReportEntity } from "../../../domain/entities/Report.entity.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { IReportRepository } from "../../../domain/repositories/report.repository";
+import { IGetMyReportsUseCase } from "../../interfaces/report/IReportUseCase";
+import { ReportEntity } from "../../../domain/entities/Report.entity";
 
 @injectable()
 export class GetMyReportsUseCase implements IGetMyReportsUseCase {

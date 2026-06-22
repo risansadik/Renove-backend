@@ -1,8 +1,8 @@
 import { injectable } from "inversify";
-import type { IUserJournalRepository } from "../../domain/repositories/user-journal.repository.ts";
-import type { UserJournalEntity } from "../../domain/entities/UserJournal.entity.ts";
-import { UserJournalModel } from "../databases/schema/user-journal.schema.ts";
-import { UserJournalDbMapper } from "../mappers/user-journal.db-mapper.ts";
+import type { IUserJournalRepository } from "../../domain/repositories/user-journal.repository";
+import type { UserJournalEntity } from "../../domain/entities/UserJournal.entity";
+import { UserJournalModel } from "../databases/schema/user-journal.schema";
+import { UserJournalDbMapper } from "../mappers/user-journal.db-mapper";
 
 @injectable()
 export class UserJournalRepository implements IUserJournalRepository {

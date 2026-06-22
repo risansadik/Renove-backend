@@ -1,10 +1,10 @@
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { NotFoundError } from "../../../shared/utils/AppError.ts";
-import type { ICompleteLevelUseCase, ICompleteLevelInput } from "../../interfaces/level/ILevelUseCase.ts";
-import type { ILevelRepository } from "../../../domain/repositories/level.repository.ts";
-import type { IUserProgressRepository } from "../../../domain/repositories/user-progress.repository.ts";
-import type { LevelEntity } from "../../../domain/entities/Level.entity.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import { NotFoundError } from "../../../shared/utils/AppError";
+import type { ICompleteLevelUseCase, ICompleteLevelInput } from "../../interfaces/level/ILevelUseCase";
+import type { ILevelRepository } from "../../../domain/repositories/level.repository";
+import type { IUserProgressRepository } from "../../../domain/repositories/user-progress.repository";
+import type { LevelEntity } from "../../../domain/entities/Level.entity";
 
 @injectable()
 export class CompleteLevelUseCase implements ICompleteLevelUseCase {

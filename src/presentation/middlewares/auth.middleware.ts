@@ -1,13 +1,13 @@
 import type { Response, NextFunction } from "express";
-import type { ITherapistRepository } from "../../domain/repositories/therapist.repository.ts";
-import type { IUserRepository } from "../../domain/repositories/user.repository.ts";
-import type { ITokenService } from "../../application/interfaces/services/ITokenService.ts";
-import { UnauthorizedError, ForbiddenError } from "../../shared/utils/AppError.ts";
-import type { Role } from "../../shared/constants/index.ts";
-import { THERAPIST_STATUS, USER_STATUS } from "../../shared/constants/index.ts";
-import type { AuthRequest } from "../../shared/types/express.ts";
-import { asyncHandler } from "./async-handler.middleware.ts";
-import { authTokenService } from "../../shared/utils/jwt.ts";
+import type { ITherapistRepository } from "../../domain/repositories/therapist.repository";
+import type { IUserRepository } from "../../domain/repositories/user.repository";
+import type { ITokenService } from "../../application/interfaces/services/ITokenService";
+import { UnauthorizedError, ForbiddenError } from "../../shared/utils/AppError";
+import type { Role } from "../../shared/constants/index";
+import { THERAPIST_STATUS, USER_STATUS } from "../../shared/constants/index";
+import type { AuthRequest } from "../../shared/types/express";
+import { asyncHandler } from "./async-handler.middleware";
+import { authTokenService } from "../../shared/utils/jwt";
 
 export type { AuthRequest };
 

@@ -1,7 +1,7 @@
 import type { Types } from "mongoose";
-import type { IChatSessionDocument, IChatMessageDocument } from "../databases/schema/chat-message.schema.ts";
-import type { ChatSessionEntity } from "../../domain/entities/ChatSession.entity.ts";
-import type { ChatMessageEntity } from "../../domain/entities/ChatMessage.entity.ts";
+import type { IChatSessionDocument, IChatMessageDocument } from "../databases/schema/chat-message.schema";
+import type { ChatSessionEntity } from "../../domain/entities/ChatSession.entity";
+import type { ChatMessageEntity } from "../../domain/entities/ChatMessage.entity";
 
 export class ChatDbMapper {
   static toSessionEntity(doc: IChatSessionDocument): ChatSessionEntity {

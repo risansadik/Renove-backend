@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { ReportEntity } from "../../../domain/entities/Report.entity.ts";
-import { REPORT_STATUS, REPORT_CATEGORY, ROLES } from "../../../shared/constants/index.ts";
+import { ReportEntity } from "../../../domain/entities/Report.entity";
+import { REPORT_STATUS, REPORT_CATEGORY, ROLES } from "../../../shared/constants/index";
 
 export interface IReportDocument extends Omit<ReportEntity, "id">, Document {}
 

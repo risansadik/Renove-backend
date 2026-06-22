@@ -1,16 +1,16 @@
 import { injectable } from "inversify";
 
-import type { IUserRepository } from "../../domain/repositories/user.repository.ts";
-import type { UserEntity } from "../../domain/entities/User.entity.ts";
-import type { UserStatus } from "../../shared/constants/index.ts";
-import type { NestedPaginatedResult, PaginationParams } from "../../domain/interfaces/pagination.ts";
-import { PAGINATION } from "../../shared/constants/index.ts";
+import type { IUserRepository } from "../../domain/repositories/user.repository";
+import type { UserEntity } from "../../domain/entities/User.entity";
+import type { UserStatus } from "../../shared/constants/index";
+import type { NestedPaginatedResult, PaginationParams } from "../../domain/interfaces/pagination";
+import { PAGINATION } from "../../shared/constants/index";
 
-import { BaseRepository } from "./base-repository.impl.ts";
+import { BaseRepository } from "./base-repository.impl";
 
-import { UserModel } from "../databases/schema/user.schema.ts";
-import type { IUserDocument } from "../databases/schema/user.schema.ts";
-import { UserDbMapper } from "../mappers/user.db-mapper.ts";
+import { UserModel } from "../databases/schema/user.schema";
+import type { IUserDocument } from "../databases/schema/user.schema";
+import { UserDbMapper } from "../mappers/user.db-mapper";
 
 @injectable()
 export class UserRepository

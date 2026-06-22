@@ -1,19 +1,17 @@
-// src/presentation/controllers/chat.controller.ts
-
 import { Response } from "express";
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import { ResponseModel } from "../../shared/utils/response-model.ts";
-import { HttpStatus } from "../../shared/constants/index.ts";
-import type { AuthRequest } from "../../shared/types/express.ts";
+import { TYPES } from "../../shared/constants/tokens";
+import { ResponseModel } from "../../shared/utils/response-model";
+import { HttpStatus } from "../../shared/constants/index";
+import type { AuthRequest } from "../../shared/types/express";
 import type {
     ISendMessageUseCase,
     IGetSessionMessagesUseCase,
     IGetSessionsUseCase,
     ICreateSessionUseCase,
     IDeleteSessionUseCase,
-} from "../../application/interfaces/chat/IChatUseCase.ts";
-import { ChatMapper } from "../../application/mappers/chat.mapper.ts";
+} from "../../application/interfaces/chat/IChatUseCase";
+import { ChatMapper } from "../../application/mappers/chat.mapper";
 
 @injectable()
 export class ChatController {

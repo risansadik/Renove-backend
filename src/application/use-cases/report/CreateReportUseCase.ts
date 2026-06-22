@@ -1,10 +1,10 @@
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { IReportRepository } from "../../../domain/repositories/report.repository.ts";
-import { ICreateReportUseCase } from "../../interfaces/report/IReportUseCase.ts";
-import { ReportEntity } from "../../../domain/entities/Report.entity.ts";
-import { CreateReportDTO } from "../../dto/report/report.dto.ts";
-import { REPORT_STATUS, Role } from "../../../shared/constants/index.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { IReportRepository } from "../../../domain/repositories/report.repository";
+import { ICreateReportUseCase } from "../../interfaces/report/IReportUseCase";
+import { ReportEntity } from "../../../domain/entities/Report.entity";
+import { CreateReportDTO } from "../../dto/report/report.dto";
+import { REPORT_STATUS, Role } from "../../../shared/constants/index";
 
 @injectable()
 export class CreateReportUseCase implements ICreateReportUseCase {

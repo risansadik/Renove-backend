@@ -1,16 +1,16 @@
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { ConflictError } from "../../../shared/utils/AppError.ts";
-import { USER_STATUS, OTP_TTL_SECONDS, MESSAGES } from "../../../shared/constants/index.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import { ConflictError } from "../../../shared/utils/AppError";
+import { USER_STATUS, OTP_TTL_SECONDS, MESSAGES } from "../../../shared/constants/index";
 
 // Interfaces
-import type { IUserRepository } from "../../../domain/repositories/user.repository.ts";
-import type { IOtpCacheRepository } from "../../../domain/repositories/otp-cache.repository.ts";
-import type { IEmailService } from "../../interfaces/services/IEmailService.ts";
-import type { IOtpGenerator } from "../../interfaces/services/IOtpGenerator.ts";
-import type { IPasswordHasher } from "../../interfaces/services/IPasswordHasher.ts";
-import type { IRegisterUserUseCase, IRegisterResponse } from "../../interfaces/auth/IAuthUseCase.ts";
-import type { RegisterUserDTO } from "../../dto/auth/user.dto.ts";
+import type { IUserRepository } from "../../../domain/repositories/user.repository";
+import type { IOtpCacheRepository } from "../../../domain/repositories/otp-cache.repository";
+import type { IEmailService } from "../../interfaces/services/IEmailService";
+import type { IOtpGenerator } from "../../interfaces/services/IOtpGenerator";
+import type { IPasswordHasher } from "../../interfaces/services/IPasswordHasher";
+import type { IRegisterUserUseCase, IRegisterResponse } from "../../interfaces/auth/IAuthUseCase";
+import type { RegisterUserDTO } from "../../dto/auth/user.dto";
 
 @injectable()
 export class RegisterUserUseCase implements IRegisterUserUseCase {

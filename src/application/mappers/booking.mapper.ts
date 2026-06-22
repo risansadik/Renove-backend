@@ -1,5 +1,5 @@
-import type { BookingEntity, SessionType } from "../../domain/entities/Booking.entity.ts";
-import type { BookingStatus } from "../../shared/constants/index.ts";
+import type { BookingEntity, SessionType } from "../../domain/entities/Booking.entity";
+import type { BookingStatus } from "../../shared/constants/index";
 
 export interface PublicBookingDTO {
   id?: string;

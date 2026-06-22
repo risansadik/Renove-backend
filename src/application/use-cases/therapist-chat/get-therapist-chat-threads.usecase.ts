@@ -1,9 +1,9 @@
 import { inject, injectable } from "inversify";
-import { GetTherapistChatThreadsInput, IGetTherapistChatThreadsUseCase } from "../../interfaces/therapist-chat/ITherapistChatUseCase.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { ITherapistChatRepository } from "../../../domain/repositories/therapist-chat.repository.ts";
-import { PaginatedResult } from "../../../domain/interfaces/pagination.ts";
-import { TherapistChatThreadEntity } from "../../../domain/entities/TherapistChatThread.entity.ts";
+import { GetTherapistChatThreadsInput, IGetTherapistChatThreadsUseCase } from "../../interfaces/therapist-chat/ITherapistChatUseCase";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { ITherapistChatRepository } from "../../../domain/repositories/therapist-chat.repository";
+import { PaginatedResult } from "../../../domain/interfaces/pagination";
+import { TherapistChatThreadEntity } from "../../../domain/entities/TherapistChatThread.entity";
 
 @injectable()
 export class GetTherapistChatThreadsUseCase implements IGetTherapistChatThreadsUseCase {

@@ -1,4 +1,4 @@
-import type { UserJournalEntity } from "../entities/UserJournal.entity.ts";
+import type { UserJournalEntity } from "../entities/UserJournal.entity";
 
 export interface IUserJournalRepository {
   findAllByUser(userId: string): Promise<UserJournalEntity[]>;

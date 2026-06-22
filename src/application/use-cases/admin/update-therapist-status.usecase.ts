@@ -1,13 +1,13 @@
 import { injectable, inject } from "inversify";
-import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository.ts";
-import type { UpdateTherapistStatusDTO } from "../../dto/auth/admin.dto.ts";
-import type { IEmailService } from "../../interfaces/services/IEmailService.ts";
-import type { INotificationService } from "../../interfaces/services/INotificationService.ts";
-import { THERAPIST_STATUS } from "../../../shared/constants/index.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import { NotFoundError } from "../../../shared/utils/AppError.ts";
+import type { ITherapistRepository } from "../../../domain/repositories/therapist.repository";
+import type { UpdateTherapistStatusDTO } from "../../dto/auth/admin.dto";
+import type { IEmailService } from "../../interfaces/services/IEmailService";
+import type { INotificationService } from "../../interfaces/services/INotificationService";
+import { THERAPIST_STATUS } from "../../../shared/constants/index";
+import { TYPES } from "../../../shared/constants/tokens";
+import { NotFoundError } from "../../../shared/utils/AppError";
 
-import type { IUpdateTherapistStatusUseCase } from "../../interfaces/admin/IAdminUseCase.ts";
+import type { IUpdateTherapistStatusUseCase } from "../../interfaces/admin/IAdminUseCase";
 
 @injectable()
 export class UpdateTherapistStatusUseCase implements IUpdateTherapistStatusUseCase {

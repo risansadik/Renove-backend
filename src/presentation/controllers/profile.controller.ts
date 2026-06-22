@@ -1,9 +1,9 @@
 import type { Response } from "express";
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../shared/constants/tokens.ts";
-import { MESSAGES } from "../../shared/constants/index.ts";
-import type { AuthRequest, S3File } from "../../shared/types/express.ts";
-import { ResponseModel } from "../../shared/utils/response-model.ts";
+import { TYPES } from "../../shared/constants/tokens";
+import { MESSAGES } from "../../shared/constants/index";
+import type { AuthRequest, S3File } from "../../shared/types/express";
+import { ResponseModel } from "../../shared/utils/response-model";
 
 // 1. Dependency Inversion: Reference application interface contracts
 import type {
@@ -16,8 +16,8 @@ import type {
   IGetAdminProfileUseCase,
   IUpdateAdminProfileUseCase,
   IChangeAdminPasswordUseCase
-} from "../../application/interfaces/profile/IProfileUseCase.ts";
-import { IGetPendingTherapistUpdatesUseCase, IReviewTherapistProfileUseCase } from "../../application/interfaces/admin/IAdminUseCase.ts";
+} from "../../application/interfaces/profile/IProfileUseCase";
+import type { IGetPendingTherapistUpdatesUseCase, IReviewTherapistProfileUseCase } from "../../application/interfaces/admin/IAdminUseCase";
 
 @injectable()
 export class ProfileController {

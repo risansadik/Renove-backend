@@ -1,9 +1,9 @@
 import { inject, injectable } from "inversify";
-import type { IBookingRepository } from "../../../domain/repositories/booking.repository.ts";
-import type { IUserProgressRepository } from "../../../domain/repositories/user-progress.repository.ts";
-import { BOOKING_STATUS } from "../../../shared/constants/index.ts";
-import { IGetUserDashboardUseCase, IUserDashboardResponse } from "../../interfaces/dashboard/IDashboardUseCase.ts";
-import { TYPES } from "../../../shared/constants/tokens.ts";
+import type { IBookingRepository } from "../../../domain/repositories/booking.repository";
+import type { IUserProgressRepository } from "../../../domain/repositories/user-progress.repository";
+import { BOOKING_STATUS } from "../../../shared/constants/index";
+import { IGetUserDashboardUseCase, IUserDashboardResponse } from "../../interfaces/dashboard/IDashboardUseCase";
+import { TYPES } from "../../../shared/constants/tokens";
 
 const XP_PER_LEVEL = 500;
 

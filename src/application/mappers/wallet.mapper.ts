@@ -1,6 +1,6 @@
-import type { TherapistWalletEntity } from "../../domain/entities/TherapistWallet.entity.ts";
-import type { UserWalletEntity } from "../../domain/entities/UserWallet.entity.ts";
-import type { TransactionEntity } from "../../domain/entities/Transaction.entity.ts";
+import type { TherapistWalletEntity } from "../../domain/entities/TherapistWallet.entity";
+import type { UserWalletEntity } from "../../domain/entities/UserWallet.entity";
+import type { TransactionEntity } from "../../domain/entities/Transaction.entity";
 
 export interface PublicTherapistWalletDTO {
   id?: string;

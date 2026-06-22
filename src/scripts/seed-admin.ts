@@ -2,8 +2,8 @@ import "dotenv/config";
 import dns from "node:dns";
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
-import { AdminModel } from "../infrastructure/databases/schema/admin.schema.ts";
-import { BCRYPT_ROUNDS } from "../shared/constants/index.ts";
+import { AdminModel } from "../infrastructure/databases/schema/admin.schema";
+import { BCRYPT_ROUNDS } from "../shared/constants/index";
 
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
 

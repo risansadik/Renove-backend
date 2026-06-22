@@ -1,5 +1,5 @@
-import type { IBookingRaw } from "../databases/schema/booking.schema.ts";
-import type { BookingEntity } from "../../domain/entities/Booking.entity.ts";
+import type { IBookingRaw } from "../databases/schema/booking.schema";
+import type { BookingEntity } from "../../domain/entities/Booking.entity";
 
 export class BookingDbMapper {
   static toEntity(doc: IBookingRaw): BookingEntity {

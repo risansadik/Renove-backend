@@ -1,13 +1,13 @@
 import { injectable } from "inversify";
 
-import { BaseRepository } from "./base-repository.impl.ts";
+import { BaseRepository } from "./base-repository.impl";
 
-import type { IAdminRepository } from "../../domain/repositories/admin.repository.ts";
-import type { AdminEntity } from "../../domain/entities/Admin.entity.ts";
+import type { IAdminRepository } from "../../domain/repositories/admin.repository";
+import type { AdminEntity } from "../../domain/entities/Admin.entity";
 
-import { AdminModel } from "../databases/schema/admin.schema.ts";
-import type { IAdminDocument } from "../databases/schema/admin.schema.ts";
-import { AdminDbMapper } from "../mappers/admin.db-mapper.ts";
+import { AdminModel } from "../databases/schema/admin.schema";
+import type { IAdminDocument } from "../databases/schema/admin.schema";
+import { AdminDbMapper } from "../mappers/admin.db-mapper";
 
 @injectable()
 export class AdminRepository

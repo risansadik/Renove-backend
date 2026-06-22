@@ -1,7 +1,7 @@
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../../shared/constants/tokens.ts";
-import type { ISlotRepository } from "../../../domain/repositories/availability.repository.ts";
-import type { IUnlockSlotUseCase } from "../../interfaces/availability/IAvailabilityUseCase.ts";
+import { TYPES } from "../../../shared/constants/tokens";
+import type { ISlotRepository } from "../../../domain/repositories/availability.repository";
+import type { IUnlockSlotUseCase } from "../../interfaces/availability/IAvailabilityUseCase";
 
 @injectable()
 export class UnlockSlotUseCase implements IUnlockSlotUseCase {

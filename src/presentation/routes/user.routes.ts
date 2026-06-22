@@ -1,20 +1,20 @@
 import { Router } from "express";
-import { appContainer } from "../../infrastructure/di/container.ts"; // Import your standalone container
-import { TYPES } from "../../shared/constants/tokens.ts";
-import { UserAuthController } from "../controllers/user-auth.controller.ts";
-import { ProfileController } from "../controllers/profile.controller.ts";
-import { UserDashboardController } from "../controllers/user-dashboard.controller.ts";
-import { TherapistReviewController } from "../controllers/therapist-review.controller.ts";
-import { UserProgressController } from "../controllers/user-progress.controller.ts";
+import { appContainer } from "../../infrastructure/di/container"; // Import your standalone container
+import { TYPES } from "../../shared/constants/tokens";
+import { UserAuthController } from "../controllers/user-auth.controller";
+import { ProfileController } from "../controllers/profile.controller";
+import { UserDashboardController } from "../controllers/user-dashboard.controller";
+import { TherapistReviewController } from "../controllers/therapist-review.controller";
+import { UserProgressController } from "../controllers/user-progress.controller";
 
 // Remaining Unchanged Controllers & Middlewares
-import { authenticate, authorize } from "../../infrastructure/di/middlewares.ts";
-import { validate } from "../middlewares/validate.middleware.ts";
-import { upload } from "../middlewares/upload.middleware.ts";
-import { asyncHandler } from "../middlewares/async-handler.middleware.ts";
+import { authenticate, authorize } from "../../infrastructure/di/middlewares";
+import { validate } from "../middlewares/validate.middleware";
+import { upload } from "../middlewares/upload.middleware";
+import { asyncHandler } from "../middlewares/async-handler.middleware";
 
 // DTOs & Constants
-import { UpdateUserProfileSchema, ChangePasswordSchema } from "../../application/dto/profile/profile.dto.ts";
+import { UpdateUserProfileSchema, ChangePasswordSchema } from "../../application/dto/profile/profile.dto";
 import {
   ForgotPasswordSchema,
   GoogleAuthSchema,
@@ -23,12 +23,12 @@ import {
   ResendOtpSchema,
   ResetPasswordSchema,
   VerifyOtpSchema,
-} from "../../application/dto/auth/user.dto.ts";
-import { ROLES } from "../../shared/constants/index.ts";
-import { GenerateLevelsSchema } from "../../application/dto/level/level.dto.ts";
-import { LevelController } from "../controllers/level.controller.ts";
-import { ChatController } from "../controllers/chat.controller.ts";
-import { SendMessageSchema } from "../../application/dto/chat/chat.dto.ts";
+} from "../../application/dto/auth/user.dto";
+import { ROLES } from "../../shared/constants/index";
+import { GenerateLevelsSchema } from "../../application/dto/level/level.dto";
+import { LevelController } from "../controllers/level.controller";
+import { ChatController } from "../controllers/chat.controller";
+import { SendMessageSchema } from "../../application/dto/chat/chat.dto";
 
 const router = Router();
 

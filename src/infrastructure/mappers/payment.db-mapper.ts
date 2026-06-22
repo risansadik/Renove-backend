@@ -1,5 +1,5 @@
-import type { IPaymentDocument } from "../databases/schema/payment.schema.ts";
-import type { PaymentEntity } from "../../domain/entities/Payment.entity.ts";
+import type { IPaymentDocument } from "../databases/schema/payment.schema";
+import type { PaymentEntity } from "../../domain/entities/Payment.entity";
 
 export class PaymentDbMapper {
   static toEntity(doc: IPaymentDocument): PaymentEntity {
