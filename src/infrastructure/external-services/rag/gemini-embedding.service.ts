@@ -1,4 +1,3 @@
-// src/infrastructure/external-services/gemini-embedding.service.ts
 import { injectable, inject } from "inversify";
 import { GoogleGenerativeAI, TaskType } from "@google/generative-ai";
 import { IEmbeddingService } from "../../../application/interfaces/services/rag/IEmbeddingService";
