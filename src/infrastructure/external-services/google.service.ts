@@ -25,20 +25,25 @@ export class GoogleService implements IGoogleService {
       throw new AppError("Google Client ID is not configured", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    const client = new OAuth2Client(GOOGLE_CONFIG.CLIENT_ID);
-
     const isAccessToken = !token.includes(".") || token.startsWith("ya29.");
 
     if (isAccessToken) {
-      client.setCredentials({ access_token: token });
-      const response = await client.request<GoogleUserInfo>({
-        url: "https://www.googleapis.com/oauth2/v3/userinfo",
+      const response = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }).catch((error) => {
         console.error("Google access token verification error details:", error);
         throw new AppError("Failed to verify Google access token", HttpStatus.UNAUTHORIZED);
       });
 
-      const payload = response.data;
+      if (!response.ok) {
+        console.error("Google userinfo failed with status:", response.status);
+        throw new AppError("Failed to verify Google access token", HttpStatus.UNAUTHORIZED);
+      }
+
+      const payload = await response.json() as GoogleUserInfo;
+
       if (!payload?.email || !payload?.name || !payload?.sub) {
         throw new AppError("Invalid Google token: Missing profile information", HttpStatus.UNAUTHORIZED);
       }
@@ -51,13 +56,15 @@ export class GoogleService implements IGoogleService {
       };
     }
 
+    const client = new OAuth2Client(GOOGLE_CONFIG.CLIENT_ID);
+
     const ticket = await client.verifyIdToken({
-        idToken: token,
-        audience: GOOGLE_CONFIG.CLIENT_ID,
-      }).catch((error) => {
-        console.error("Google ID token verification error details:", error);
-        throw new AppError("Failed to verify Google token", HttpStatus.UNAUTHORIZED);
-      });
+      idToken: token,
+      audience: GOOGLE_CONFIG.CLIENT_ID,
+    }).catch((error) => {
+      console.error("Google ID token verification error details:", error);
+      throw new AppError("Failed to verify Google token", HttpStatus.UNAUTHORIZED);
+    });
 
     const payload = ticket.getPayload();
 
