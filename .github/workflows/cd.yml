@@ -18,10 +18,14 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
+          envs: DOPPLER_TOKEN
           script: |
+            export DOPPLER_TOKEN=${{ secrets.DOPPLER_TOKEN }}
             cd ${{ secrets.EC2_APP_DIR }}
             git fetch origin
             git reset --hard origin/main
             npm ci
             npm run build
             pm2 restart renove-backend --update-env
+        env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
