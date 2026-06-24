@@ -22,7 +22,8 @@ export default defineConfig({
         'ioredis',
         'redis',
         'mongoose',
-        'bcryptjs'
+        'bcryptjs',
+        'winston-loki',        // add this
+        'winston-transport'
     ],
-    noExternal: ['winston-loki'],
 });
