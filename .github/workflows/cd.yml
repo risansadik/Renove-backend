@@ -20,7 +20,8 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd ${{ secrets.EC2_APP_DIR }}
-            git pull origin main
+            git fetch origin
+            git reset --hard origin/main
             npm ci
             npm run build
             pm2 restart renove-backend --update-env
