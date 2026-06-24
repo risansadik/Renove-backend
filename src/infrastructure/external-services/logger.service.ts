@@ -92,7 +92,7 @@ export class Logger implements ILogger {
     }
 
     this.instance = winston.createLogger({
-      level: process.env.NODE_ENV === "production" ? "warn" : "debug",
+     level: process.env.NODE_ENV === "production" ? "info" : "debug",
       transports,
     });
   }
