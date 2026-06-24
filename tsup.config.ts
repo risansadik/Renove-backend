@@ -23,7 +23,7 @@ export default defineConfig({
         'redis',
         'mongoose',
         'bcryptjs',
-        'winston-loki',        // add this
+        'winston-loki',       
         'winston-transport'
     ],
 });
