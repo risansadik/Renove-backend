@@ -26,7 +26,7 @@ class LokiHttpTransport extends TransportStream {
     this.labels = opts.labels;
   }
 
-  log(info: any, callback: () => void): void {
+  log(info: { level: string; message: string; stack?: string }, callback: () => void): void {
     const stream = {
       stream: { ...this.labels, level: info.level },
       values: [[`${Date.now() * 1_000_000}`, info.stack || info.message]],
