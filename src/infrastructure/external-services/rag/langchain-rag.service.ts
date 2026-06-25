@@ -1,7 +1,4 @@
 import { injectable, inject } from "inversify";
-import { ChatOpenAI } from "@langchain/openai";
-import { StringOutputParser } from "@langchain/core/output_parsers";
-import { RunnableSequence } from "@langchain/core/runnables";
 import { createHash } from "crypto";
 import { z } from "zod";
 
@@ -19,16 +16,12 @@ import { LEVEL_PROMPT } from "./prompts/level.prompt";
 
 @injectable()
 export class LangChainRagService implements IRagService {
-    private readonly _llm: ChatOpenAI;
-
     constructor(
         @inject(TYPES.EmbeddingService) private readonly _embedding: IEmbeddingService,
         @inject(TYPES.VectorStoreService) private readonly _vectorStore: IVectorStoreService,
         @inject(TYPES.SearchService) private readonly _search: ISearchService,
         @inject(TYPES.LlmClient) private readonly _llmProvider: LlmClientProvider
-    ) {
-        this._llm = this._llmProvider.getClient();
-    }
+    ) {}
 
     async generateLevels(input: RagInput): Promise<RawLevelPayload[]> {
         await this._vectorStore.ensureCollection(COLLECTION_NAME, VECTOR_SIZE);
@@ -57,13 +50,7 @@ export class LangChainRagService implements IRagService {
             ? `\nPREVIOUS LEVELS CONTEXT (Do NOT regenerate these, just continue from them):\n${JSON.stringify(input.previousLevels, null, 2)}\n`
             : "";
 
-        const chain = RunnableSequence.from([
-            LEVEL_PROMPT,
-            this._llm,
-            new StringOutputParser(),
-        ]);
-
-        const raw = await chain.invoke({
+        const raw = await this._llmProvider.invokeWithFallback(LEVEL_PROMPT, {
             addictionType: input.addictionType,
             severity: input.severity,
             interests: input.interests.join(", "),

@@ -313,3 +313,23 @@ export type TherapistChatEvent =
 } as const;
 
 export const REVIEWS_LIMIT = 10;
+
+export const TRANSIENT_STATUS_CODES = new Set([429, 502, 503, 504]);
+
+export const NON_TRANSIENT_STATUS_CODES = new Set([400, 401, 403]);
+
+export const TRANSIENT_ERROR_KEYWORDS = [
+  "429",
+  "rate limit",
+  "too many requests",
+  "capacity",
+  "overloaded",
+  "timeout",
+  "service unavailable",
+  "529",
+] as const;
+
+export const TRANSIENT_ERROR_NAME_KEYWORDS = [
+  "ratelimit",
+  "rate_limit",
+] as const;
