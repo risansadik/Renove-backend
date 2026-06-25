@@ -91,6 +91,11 @@ export class LlmClientProvider {
       try {
         const formatted: string = await prompt.format(variables);
         const response = await client.invoke(formatted);
+
+        if (!response) {
+          throw new Error(`Model "${model}" returned empty response.`);
+        }
+
         const content = response.content;
 
         const text =
