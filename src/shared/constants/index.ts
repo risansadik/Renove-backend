@@ -314,7 +314,7 @@ export type TherapistChatEvent =
 
 export const REVIEWS_LIMIT = 10;
 
-export const TRANSIENT_STATUS_CODES = new Set([429, 502, 503, 504]);
+export const TRANSIENT_STATUS_CODES = new Set([429, 404, 502, 503, 504]);
 
 export const NON_TRANSIENT_STATUS_CODES = new Set([400, 401, 403]);
 
