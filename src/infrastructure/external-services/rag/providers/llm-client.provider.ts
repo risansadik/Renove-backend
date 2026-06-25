@@ -78,6 +78,7 @@ export class LlmClientProvider {
         model,
         apiKey,
         temperature: 0.75,
+        maxRetries: 0,
         configuration: {
           baseURL: process.env.LLM_BASE_URL,
           defaultHeaders: {
