@@ -12,6 +12,6 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ["dist/", "node_modules/", "uploads/"],
+    ignores: ["dist/", "node_modules/", "uploads/", "commitlint.config.cjs"],
   }
 );
