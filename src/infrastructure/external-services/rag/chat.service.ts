@@ -8,14 +8,9 @@ import { SYSTEM_PROMPT } from "./prompts/chat.prompt";
 
 @injectable()
 export class LangChainChatService implements IChatService {
-  private readonly _llm;
-
   constructor(
     @inject(TYPES.LlmClient) private readonly _llmProvider: LlmClientProvider
-  ) {
-
-    this._llm = this._llmProvider.getStreamingClient();
-  }
+  ) {}
 
   async streamReply(
     _userId: string,
@@ -31,18 +26,6 @@ export class LangChainChatService implements IChatService {
       new HumanMessage(userMessage),
     ];
 
-    let fullText = "";
-
-    const stream = await this._llm.stream(messages);
-
-    for await (const chunk of stream) {
-      const token = typeof chunk.content === "string" ? chunk.content : "";
-      if (token) {
-        fullText += token;
-        onToken(token);
-      }
-    }
-
-    return fullText;
+    return this._llmProvider.streamWithFallback(messages, onToken);
   }
 }

@@ -126,4 +126,58 @@ export class LlmClientProvider {
 
     throw lastError ?? new Error("[LlmClientProvider] All fallback models exhausted.");
   }
+
+  public async streamWithFallback(
+    messages: Parameters<ChatOpenAI["stream"]>[0],
+    onToken: (token: string) => void
+  ): Promise<string> {
+    const apiKey = process.env.OPENROUTER_API_KEY!;
+    let lastError: unknown;
+
+    for (const model of FREE_MODELS) {
+      const client = new ChatOpenAI({
+        model,
+        apiKey,
+        temperature: 0.75,
+        streaming: true,
+        maxRetries: 0,
+        configuration: {
+          baseURL: process.env.LLM_BASE_URL,
+          defaultHeaders: {
+            "HTTP-Referer": process.env.APP_URL ?? "http://localhost:5000",
+            "X-Title": "reNove",
+          },
+        },
+      });
+
+      let fullText = "";
+
+      try {
+        const stream = await client.stream(messages);
+
+        for await (const chunk of stream) {
+          const token = typeof chunk.content === "string" ? chunk.content : "";
+          if (token) {
+            fullText += token;
+            onToken(token);
+          }
+        }
+
+        console.info(`[LlmClientProvider] Streaming success with model: ${model}`);
+        return fullText;
+      } catch (err: unknown) {
+        if (isTransientError(err) && fullText === "") {
+          console.warn(
+            `[LlmClientProvider] Transient streaming error on model "${model}", trying next. Error: ${err instanceof Error ? err.message : String(err)
+            }`
+          );
+          lastError = err;
+          continue;
+        }
+        throw err;
+      }
+    }
+
+    throw lastError ?? new Error("[LlmClientProvider] All fallback models exhausted (streaming).");
+  }
 }
