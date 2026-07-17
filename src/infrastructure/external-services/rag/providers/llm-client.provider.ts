@@ -1,9 +1,10 @@
 import { injectable } from "inversify";
-import { ChatOpenAI } from "@langchain/openai";
+import { GoogleGenerativeAI, Content } from "@google/generative-ai";
 import { PromptTemplate } from "@langchain/core/prompts";
+import { BaseMessage } from "@langchain/core/messages";
 import { NON_TRANSIENT_STATUS_CODES, TRANSIENT_ERROR_KEYWORDS, TRANSIENT_ERROR_NAME_KEYWORDS, TRANSIENT_STATUS_CODES } from "@shared/constants";
 
-const PRIMARY_MODEL = process.env.LLM_MODEL_NAME || "openai/gpt-4o-mini:free";
+const PRIMARY_MODEL = process.env.LLM_MODEL_NAME || "gemini-2.5-flash";
 
 const FALLBACK_MODELS: string[] = (process.env.LLM_FALLBACK_MODELS ?? "")
   .split(",")
@@ -31,83 +32,56 @@ function isTransientError(err: unknown): boolean {
   );
 }
 
-@injectable()
-export class LlmClientProvider {
-  private readonly _client: ChatOpenAI;
-  private readonly _streamingClient: ChatOpenAI;
+function toGeminiContents(messages: BaseMessage[]): { systemInstruction?: string; contents: Content[] } {
+  let systemInstruction: string | undefined;
+  const contents: Content[] = [];
 
-  constructor() {
-    const apiKey = process.env.OPENROUTER_API_KEY;
-    if (!apiKey) {
-      throw new Error("CRITICAL: OPENROUTER_API_KEY environment variable is missing.");
+  for (const m of messages) {
+    const type = m._getType();
+    const text = typeof m.content === "string" ? m.content : String(m.content);
+
+    if (type === "system") {
+      systemInstruction = text;
+      continue;
     }
 
-    const config = {
-      model: FREE_MODELS[0],
-      apiKey,
-      configuration: {
-        baseURL: process.env.LLM_BASE_URL,
-        defaultHeaders: {
-          "HTTP-Referer": process.env.APP_URL ?? "http://localhost:5000",
-          "X-Title": "reNove",
-        },
-      },
-    };
-
-    this._client = new ChatOpenAI({ ...config, temperature: 0.75 });
-    this._streamingClient = new ChatOpenAI({ ...config, temperature: 0.75, streaming: true });
+    contents.push({
+      role: type === "ai" ? "model" : "user",
+      parts: [{ text }],
+    });
   }
 
-  public getClient(): ChatOpenAI {
-    return this._client;
-  }
+  return { systemInstruction, contents };
+}
 
-  public getStreamingClient(): ChatOpenAI {
-    return this._streamingClient;
+@injectable()
+export class LlmClientProvider {
+  private readonly _client: GoogleGenerativeAI;
+
+  constructor() {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      throw new Error("CRITICAL: GEMINI_API_KEY environment variable is missing.");
+    }
+    this._client = new GoogleGenerativeAI(apiKey);
   }
 
   public async invokeWithFallback(
     prompt: PromptTemplate,
     variables: Record<string, unknown>
   ): Promise<string> {
-    const apiKey = process.env.OPENROUTER_API_KEY!;
     let lastError: unknown;
 
     for (const model of FREE_MODELS) {
-      const client = new ChatOpenAI({
-        model,
-        apiKey,
-        temperature: 0.75,
-        maxRetries: 0,
-        configuration: {
-          baseURL: process.env.LLM_BASE_URL,
-          defaultHeaders: {
-            "HTTP-Referer": process.env.APP_URL ?? "http://localhost:5000",
-            "X-Title": "reNove",
-          },
-        },
-      });
-
       try {
         const formatted: string = await prompt.format(variables);
-        const response = await client.invoke(formatted);
+        const genModel = this._client.getGenerativeModel({ model });
+        const result = await genModel.generateContent(formatted);
 
-        if (!response) {
+        const text = result.response.text();
+        if (!text) {
           throw new Error(`Model "${model}" returned empty response.`);
         }
-
-        const content = response.content;
-
-        const text =
-          typeof content === "string"
-            ? content
-            : Array.isArray(content)
-              ? content
-                .map((c) =>
-                  typeof c === "string" ? c : (c as { text?: string }).text ?? ""
-                )
-                .join("")
-              : String(content);
 
         console.info(`[LlmClientProvider] Success with model: ${model}`);
         return text;
@@ -128,35 +102,25 @@ export class LlmClientProvider {
   }
 
   public async streamWithFallback(
-    messages: Parameters<ChatOpenAI["stream"]>[0],
+    messages: BaseMessage[],
     onToken: (token: string) => void
   ): Promise<string> {
-    const apiKey = process.env.OPENROUTER_API_KEY!;
     let lastError: unknown;
+    const { systemInstruction, contents } = toGeminiContents(messages);
 
     for (const model of FREE_MODELS) {
-      const client = new ChatOpenAI({
-        model,
-        apiKey,
-        temperature: 0.75,
-        streaming: true,
-        maxRetries: 0,
-        configuration: {
-          baseURL: process.env.LLM_BASE_URL,
-          defaultHeaders: {
-            "HTTP-Referer": process.env.APP_URL ?? "http://localhost:5000",
-            "X-Title": "reNove",
-          },
-        },
-      });
-
       let fullText = "";
 
       try {
-        const stream = await client.stream(messages);
+        const genModel = this._client.getGenerativeModel({
+          model,
+          ...(systemInstruction ? { systemInstruction } : {}),
+        });
 
-        for await (const chunk of stream) {
-          const token = typeof chunk.content === "string" ? chunk.content : "";
+        const result = await genModel.generateContentStream({ contents });
+
+        for await (const chunk of result.stream) {
+          const token = chunk.text();
           if (token) {
             fullText += token;
             onToken(token);

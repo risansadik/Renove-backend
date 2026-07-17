@@ -18,7 +18,6 @@
     "@emnapi/wasi-threads": "^1.2.2",
     "@google/generative-ai": "^0.24.1",
     "@langchain/core": "^1.1.48",
-    "@langchain/openai": "^1.4.7",
     "@qdrant/js-client-rest": "^1.18.0",
     "@types/node-cron": "^3.0.11",
     "bcryptjs": "^2.4.3",
