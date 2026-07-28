@@ -42,3 +42,6 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Build Production Docker Image
+        run: docker build -f Dockerfile.prod -t renove-backend:test .
