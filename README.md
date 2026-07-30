@@ -1,152 +1,111 @@
 <div align="center">
   <img src="https://via.placeholder.com/150x150.png?text=reNove+Logo" alt="reNove Logo" width="150" />
-  <h1>reNove - AI-Powered Addiction Recovery Platform</h1>
-  <p><em>Empowering recovery through highly personalized AI level generation, certified therapy, and robust progress tracking.</em></p>
+  <h1>reNove</h1>
+  <p><em>An AI-Native, Personalized Addiction Recovery Platform</em></p>
   
   [![React](https://img.shields.io/badge/React-19-blue.svg)](https://reactjs.org/)
   [![Node.js](https://img.shields.io/badge/Node.js-Express-green.svg)](https://nodejs.org/)
   [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
-  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+  [![Clean Architecture](https://img.shields.io/badge/Architecture-Clean-orange.svg)]()
 </div>
 
 <hr />
 
-## 🌟 The Core Differentiator: AI-Generated Personalized Recovery Levels
+## 🚀 Overview
 
-Compared to conventional addiction recovery platforms, reNove takes a fundamentally different approach to personalization. Most existing solutions provide a fixed recovery curriculum where every user with the same addiction type follows an identical sequence of lessons, tasks, or milestones regardless of their individual circumstances. While users may be able to track progress or consult a therapist, the recovery content itself typically remains static. 
+**reNove** is a full-stack, enterprise-grade healthcare platform designed to modernize the addiction recovery journey. By intersecting advanced Artificial Intelligence with certified human therapy, reNove solves a critical flaw in traditional recovery programs: the "one-size-fits-all" approach. 
 
-**In contrast, reNove uses AI to generate a personalized recovery journey from the very start.**
-
-The core of reNove is its **AI-powered level generation system**, which creates a customized recovery path for each user instead of assigning a one-size-fits-all plan. During onboarding, the platform collects three critical pieces of information: 
-1. The user's addiction type.
-2. Addiction severity.
-3. Personal interests and hobbies.
-
-Using these inputs, the AI engine generates a structured sequence of recovery "levels" tailored to the individual's exact situation. Each level is dynamically populated with:
-- Personalized daily objectives
-- Recovery-focused activities and actionable tasks
-- Educational guidance and motivational challenges
-- Custom topics aligned with the user’s personal interests to make the experience engaging and relatable.
-
-By generating levels that resonate with the individual's unique circumstances and interests, reNove delivers a highly relevant, interactive experience designed to encourage consistent participation and foster long-term habit change.
+Built with **TypeScript, React 19, and Node.js** utilizing strict **Clean Architecture**, this platform features real-time WebRTC telehealth, sophisticated generative AI prompt engineering via LangChain, and seamless financial operations through Stripe.
 
 ---
 
-## 🎯 Crystal Clear Feature Breakdown by Role
+## 🧠 Core Innovation: AI-Driven Journey Generation
 
-### 👤 User (Patient) Experience
-- **Dynamic Recovery Journey:** An AI-generated sequence of progression levels tailored specifically to your addiction profile, severity, and personal interests.
-- **AI-Powered Recovery Companion:** 24/7 conversational support built with **Google Generative AI**, **LangChain**, and **Qdrant** (Vector Database for RAG). It offers contextual, personalized guidance and immediate coping strategies in moments of craving or distress.
-- **Interactive Progress Tracking:** Monitor daily progress, complete journals, track specific goals, and advance through your personalized recovery levels, visualized beautifully with Chart.js.
-- **Therapist Discovery & Intelligent Booking:** Browse a curated directory of verified therapists, view transparent ratings/reviews, and book sessions via an intelligent slot-locking mechanism that prevents double-booking.
-- **WebRTC Video Sessions:** Secure, high-quality, real-time 1-on-1 video consultations right in your browser—no external software needed.
-- **Real-Time Chat & Notifications:** Real-time Socket.io messaging with your therapist and instant notifications for booking approvals, reminders, and alerts.
-- **Wallet & Secure Payments:** Integrated Stripe payment gateway for seamless session payments and automated wallet top-ups.
-- **Issue Reporting System:** An integrated ticketing system to securely report platform or user issues to administrators.
+Unlike conventional platforms that provide static, linear curricula for all patients, reNove leverages generative AI to construct dynamic, highly personalized recovery pipelines. 
 
-### 🩺 Therapist Experience
-- **Dynamic Availability Management:** Granular control over your working hours and schedule, with real-time syncing to the user booking portal.
-- **Pre-Session Patient Insights:** Review patient progress, notes, journals, and their current AI-generated recovery level *before* the session begins.
-- **Seamless Session Management:** Conduct secure WebRTC video calls and rely on automated session state management (scheduled, active, completed, cancelled).
-- **Financial Dashboard:** A dedicated wallet to track total earnings, view session-by-session revenue, and manage automated Stripe payouts directly to your bank account.
-- **Direct Patient Messaging:** Secure real-time chat for follow-ups, accountability, and support between scheduled sessions.
-- **Professional Profile Customization:** Build a compelling public profile with specializations, experience, and verified credentials to attract the right patients.
+Upon onboarding, a proprietary algorithm ingests the user's specific addiction profile, clinical severity metrics, and personal hobbies. This data is fed into a **Retrieval-Augmented Generation (RAG)** system powered by **Google Generative AI**, **LangChain**, and **Qdrant (Vector DB)** to instantaneously architect a tailored sequence of "Recovery Levels." 
 
-### 🛡️ Administrator Experience
-- **Centralized Command Center:** A bird’s eye view of all platform metrics—user growth, active sessions, and revenue statistics.
-- **Verification Pipeline:** Review, approve, or reject new therapist applications based on their uploaded credentials and background checks.
-- **Moderation & Reports Engine:** Handle user/therapist disputes, review flagged content, and maintain platform safety and integrity through a dedicated moderation dashboard.
-- **Financial Oversight:** Monitor platform-wide transactions, therapist payouts, and platform commissions with paginated, easily digestible data tables.
+Every generated level encompasses:
+- **Contextual Objectives:** Daily actionable tasks aligned with the user’s exact psychological state.
+- **Interest-Based Integration:** Cognitive behavioral techniques woven into topics the user genuinely cares about, drastically increasing long-term engagement and retention.
+- **Adaptive Milestones:** Real-time recalibration of the user's progression based on journal sentiment and milestone completions.
 
 ---
 
-## 🛠️ Technology Stack & Architecture
+## ✨ Platform Features by Role
 
-### Frontend (Client-Side)
-- **Core Framework:** React 19 (via Vite)
-- **Language:** TypeScript
-- **State Management:** Zustand (Global State) & React Query
-- **Styling:** Tailwind CSS + Framer Motion (for fluid micro-animations and transitions)
-- **Routing:** React Router v7
-- **Forms & Validation:** React Hook Form + Zod
-- **Real-Time Engine:** Socket.io-Client, WebRTC (Simple-Peer/Native)
-- **Data Visualization:** Chart.js + react-chartjs-2
+### 👤 Patient Portal
+- **Algorithmic Therapist Matching:** Browse a curated directory of verified practitioners with intelligent slot-locking logic to prevent double-booking.
+- **WebRTC Telehealth:** Native, secure, low-latency 1-on-1 video consultations integrated directly into the browser.
+- **24/7 AI Companion:** A conversational agent utilizing context-aware vector search to provide immediate, tailored coping strategies during moments of distress.
+- **Comprehensive Progression Dashboard:** Beautiful, interactive metrics (via Chart.js) visualizing journal consistency, goal attainment, and leveling progress.
+- **Frictionless Payments:** Integrated Stripe vaulting for automated wallet top-ups and immediate session reservations.
 
-### Backend (Server-Side)
-- **Core Environment:** Node.js + Express
-- **Language:** TypeScript
-- **Architecture Standard:** **Clean Architecture** (Domain, Application, Infrastructure, Presentation layers)
-- **Dependency Injection:** InversifyJS
-- **Database:** MongoDB (via Mongoose)
-- **Caching & Pub/Sub:** Redis
-- **Real-Time Engine:** Socket.io
-- **AI & LLM Integration:** Google Generative AI + LangChain + Qdrant (RAG architecture)
-- **File Uploads & Storage:** AWS S3 (via Multer)
-- **Payment Processing:** Stripe API
-- **Background Jobs:** Node-Cron (for session state management and reminders)
-- **Authentication:** JWT, Google OAuth, bcryptjs
+### 🩺 Therapist Console
+- **Clinical Dashboard:** Access to patient progression data, AI-generated level insights, and journal entries prior to appointments, enabling highly informed clinical sessions.
+- **Real-Time Schedule Syncing:** Granular control over availability windows and automated session state management (Scheduled → Active → Completed).
+- **Integrated Financials:** A dedicated provider wallet to monitor gross earnings, granular session revenue, and automated bank payouts.
+- **Secure Asynchronous Chat:** Socket.io-powered real-time messaging for continuous patient support and accountability.
+
+### 🛡️ Administrative Command Center
+- **Verification & Moderation Engine:** Centralized oversight for validating therapist credentials (KYC/KYB) and handling platform dispute tickets.
+- **Financial Telemetry:** Paginated, data-rich tables tracking platform-wide transactions, provider commissions, and revenue analytics.
+- **User Management Pipeline:** Granular RBAC (Role-Based Access Control) to suspend, verify, or escalate user and therapist accounts.
 
 ---
 
-## 🏗️ Clean Architecture Implementation
+## 🏗️ Architecture & Engineering Standards
 
-reNove’s backend is strictly decoupled to ensure maintainability and testability:
-1. **Domain Layer:** Contains core business entities (e.g., `User`, `Booking`, `Therapist`) and abstract repository interfaces. Zero external dependencies.
-2. **Application Layer:** Houses the Use Cases (business logic) combining entities and repositories.
-3. **Infrastructure Layer:** Implements database connections (Mongoose schemas, Redis), external API services (Stripe, AWS, AI), and the Dependency Injection container setup.
-4. **Presentation Layer:** Express Controllers handling HTTP requests, mapping DTOs, and managing API responses.
+reNove is engineered for scalability, maintainability, and strict separation of concerns, heavily prioritizing developer experience and system robustability.
 
-The frontend is similarly structured by **Features** (`src/features/...`), grouping components, hooks, and pages by their domain (e.g., `auth`, `booking`, `level`), promoting maximum reusability and isolated testing.
+### Backend Systems (Node.js / Express / MongoDB)
+- **Strict Clean Architecture:** The codebase is rigorously divided into Domain, Application, Infrastructure, and Presentation layers, ensuring zero coupling between core business logic and external frameworks.
+- **Dependency Injection:** Utilizes **InversifyJS** to manage service instantiation, drastically increasing modularity and unit-testability.
+- **Event-Driven Real-Time Engine:** **Socket.io** coupled with **Redis Pub/Sub** powers instant notifications, chat, and availability state changes across distributed clients.
+- **Scheduled Workers:** **Node-Cron** manages automated session status updates and transactional email reminders without blocking the main thread.
+
+### Frontend Systems (React 19 / Vite)
+- **Feature-Sliced Design:** The repository is structured by domain boundaries (`src/features/...`), grouping related components, hooks, and localized state together.
+- **Optimized State & Caching:** Heavy lifting is managed by **Zustand** for global client state and abstracted custom hooks for asynchronous server interactions.
+- **Fluid UI/UX:** Built with **Tailwind CSS** and **Framer Motion**, delivering a highly polished, responsive, and micro-animated experience that feels native.
+- **Type Safety:** 100% TypeScript coverage with **Zod** schema validation enforcing strict runtime data contracts between the client and server.
 
 ---
 
-## 🚀 Getting Started (Local Development)
+## 🚦 Local Development
 
 ### Prerequisites
-- Node.js (v18 or higher)
-- MongoDB Server (Local or Atlas)
-- Redis Server
-- Qdrant Vector Database (Docker/Cloud)
-- External API Keys: Stripe, AWS S3, Google Generative AI (Gemini), Google OAuth
+- Node.js (v18+)
+- MongoDB (Local/Atlas) & Redis
+- Qdrant Vector Database
+- API Keys: Stripe, AWS S3, Google Gemini, Google OAuth
 
-### 1. Clone the Repository
-```bash
-git clone <repository-url>
-cd Renove
-```
+### Installation
 
-*(Note: The project is split into two separate repositories: `renove-backend` and `renove-frontend`)*
+1. **Clone the Repositories** (Backend & Frontend are maintained independently):
+   ```bash
+   git clone <backend-repo-url> renove-backend
+   git clone <frontend-repo-url> renove-frontend
+   ```
 
-### 2. Setup the Backend
-```bash
-cd backend
-npm install
-cp .env.example .env
-# Populate .env with MongoDB URI, Redis URL, JWT Secrets, AWS Keys, Stripe Keys, Gemini API Key, etc.
-npm run dev
-```
-The backend server will start at `http://localhost:5000` (or as defined in your `.env`).
+2. **Initialize Backend** (`localhost:5000`):
+   ```bash
+   cd renove-backend
+   npm install
+   cp .env.example .env # Configure environment variables
+   npm run dev
+   ```
 
-### 3. Setup the Frontend
-```bash
-cd frontend
-npm install
-cp .env.example .env
-# Populate .env with VITE_API_URL, VITE_SOCKET_URL, VITE_GOOGLE_CLIENT_ID, etc.
-npm run dev
-```
-The frontend application will run on `http://localhost:5173`.
-
----
-
-## 🛡️ Security & Best Practices
-- **Role-Based Access Control (RBAC):** Distinct protected routes and JWT scopes for Users, Therapists, and Admins.
-- **Data Sanitization:** Strict request validation using Zod on the frontend and custom validation middlewares on the backend.
-- **Secure Payments:** No sensitive card data touches the server; all transactions are vaulted through Stripe Elements.
-- **Automated Code Formatting:** Enforced standard JS/TS linting and commitlint for conventional commits.
+3. **Initialize Frontend** (`localhost:5173`):
+   ```bash
+   cd renove-frontend
+   npm install
+   cp .env.example .env # Configure environment variables
+   npm run dev
+   ```
 
 ---
 
 <div align="center">
-  <i>Built to support, empower, and heal. Welcome to reNove.</i>
+  <i>Engineering modern solutions for human recovery.</i>
 </div>
