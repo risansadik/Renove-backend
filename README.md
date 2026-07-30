@@ -7,6 +7,9 @@
   [![Node.js](https://img.shields.io/badge/Node.js-Express-green.svg)](https://nodejs.org/)
   [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
   [![Clean Architecture](https://img.shields.io/badge/Architecture-Clean-orange.svg)]()
+  
+  <br />
+  <img src="./assets/dashboard.png" alt="reNove Dashboard - AI Path to Freedom" width="800" style="border-radius: 12px; margin-top: 20px;" />
 </div>
 
 <hr />
