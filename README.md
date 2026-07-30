@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>🧠 reNove</h1>
+  <h1>Renove</h1>
   <p><em>An AI-Native, Personalized Addiction Recovery Platform</em></p>
   
   [![React](https://img.shields.io/badge/React-19-blue.svg)](https://reactjs.org/)
@@ -8,22 +8,22 @@
   [![Clean Architecture](https://img.shields.io/badge/Architecture-Clean-orange.svg)]()
   
   <br />
-  <img src="./assets/dashboard.png" alt="reNove Dashboard - AI Path to Freedom" width="800" style="border-radius: 12px; margin-top: 20px;" />
+  <img src="./assets/dashboard.png" alt="Renove Dashboard - AI Path to Freedom" width="800" style="border-radius: 12px; margin-top: 20px; border: 1px solid #333;" />
 </div>
 
 <hr />
 
-## 🚀 Overview
+## Overview
 
-**reNove** is a full-stack, enterprise-grade healthcare platform designed to modernize the addiction recovery journey. By intersecting advanced Artificial Intelligence with certified human therapy, reNove solves a critical flaw in traditional recovery programs: the "one-size-fits-all" approach. 
+**Renove** is a full-stack, enterprise-grade healthcare platform designed to modernize the addiction recovery journey. By intersecting advanced Artificial Intelligence with certified human therapy, Renove solves a critical flaw in traditional recovery programs: the "one-size-fits-all" approach. 
 
 Built with **TypeScript, React 19, and Node.js** utilizing strict **Clean Architecture**, this platform features real-time WebRTC telehealth, sophisticated generative AI prompt engineering via LangChain, and seamless financial operations through Stripe.
 
 ---
 
-## 🧠 Core Innovation: AI-Driven Journey Generation
+## Core Innovation: AI-Driven Journey Generation
 
-Unlike conventional platforms that provide static, linear curricula for all patients, reNove leverages generative AI to construct dynamic, highly personalized recovery pipelines. 
+Unlike conventional platforms that provide static, linear curricula for all patients, Renove leverages generative AI to construct dynamic, highly personalized recovery pipelines. 
 
 Upon onboarding, a proprietary algorithm ingests the user's specific addiction profile, clinical severity metrics, and personal hobbies. This data is fed into a **Retrieval-Augmented Generation (RAG)** system powered by **Google Generative AI**, **LangChain**, and **Qdrant (Vector DB)** to instantaneously architect a tailored sequence of "Recovery Levels." 
 
@@ -34,31 +34,31 @@ Every generated level encompasses:
 
 ---
 
-## ✨ Platform Features by Role
+## Platform Features by Role
 
-### 👤 Patient Portal
+### Patient Portal
 - **Algorithmic Therapist Matching:** Browse a curated directory of verified practitioners with intelligent slot-locking logic to prevent double-booking.
 - **WebRTC Telehealth:** Native, secure, low-latency 1-on-1 video consultations integrated directly into the browser.
 - **24/7 AI Companion:** A conversational agent utilizing context-aware vector search to provide immediate, tailored coping strategies during moments of distress.
 - **Comprehensive Progression Dashboard:** Beautiful, interactive metrics (via Chart.js) visualizing journal consistency, goal attainment, and leveling progress.
 - **Frictionless Payments:** Integrated Stripe vaulting for automated wallet top-ups and immediate session reservations.
 
-### 🩺 Therapist Console
+### Therapist Console
 - **Clinical Dashboard:** Access to patient progression data, AI-generated level insights, and journal entries prior to appointments, enabling highly informed clinical sessions.
 - **Real-Time Schedule Syncing:** Granular control over availability windows and automated session state management (Scheduled → Active → Completed).
 - **Integrated Financials:** A dedicated provider wallet to monitor gross earnings, granular session revenue, and automated bank payouts.
 - **Secure Asynchronous Chat:** Socket.io-powered real-time messaging for continuous patient support and accountability.
 
-### 🛡️ Administrative Command Center
+### Administrative Command Center
 - **Verification & Moderation Engine:** Centralized oversight for validating therapist credentials (KYC/KYB) and handling platform dispute tickets.
 - **Financial Telemetry:** Paginated, data-rich tables tracking platform-wide transactions, provider commissions, and revenue analytics.
 - **User Management Pipeline:** Granular RBAC (Role-Based Access Control) to suspend, verify, or escalate user and therapist accounts.
 
 ---
 
-## 🏗️ Architecture & Engineering Standards
+## Architecture & Engineering Standards
 
-reNove is engineered for scalability, maintainability, and strict separation of concerns, heavily prioritizing developer experience and system robustability.
+Renove is engineered for scalability, maintainability, and strict separation of concerns, heavily prioritizing developer experience and system robustness.
 
 ### Backend Systems (Node.js / Express / MongoDB)
 - **Strict Clean Architecture:** The codebase is rigorously divided into Domain, Application, Infrastructure, and Presentation layers, ensuring zero coupling between core business logic and external frameworks.
@@ -74,7 +74,7 @@ reNove is engineered for scalability, maintainability, and strict separation of 
 
 ---
 
-## 🚦 Local Development
+## Local Development
 
 ### Prerequisites
 - Node.js (v18+)
