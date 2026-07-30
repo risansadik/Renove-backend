@@ -1,6 +1,5 @@
 <div align="center">
-  <img src="https://via.placeholder.com/150x150.png?text=reNove+Logo" alt="reNove Logo" width="150" />
-  <h1>reNove</h1>
+  <h1>🧠 reNove</h1>
   <p><em>An AI-Native, Personalized Addiction Recovery Platform</em></p>
   
   [![React](https://img.shields.io/badge/React-19-blue.svg)](https://reactjs.org/)
