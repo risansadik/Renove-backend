@@ -4,7 +4,7 @@ const stripeSecretKey = process.env.STRIPE_SECRET_KEY || "sk_test_placeholder";
 const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET || "";
 
 export const stripe = new Stripe(stripeSecretKey, {
-  apiVersion: "2026-05-27.dahlia", 
+  apiVersion: "2026-04-22.dahlia", 
 });
 
 export class StripeHelper {

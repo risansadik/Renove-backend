@@ -36,7 +36,10 @@ export class AvailabilityRepository implements IAvailabilityRepository {
 export class SlotRepository implements ISlotRepository {
   async createMany(slots: TherapistSlotEntity[]): Promise<void> {
     await SlotModel.insertMany(slots, { ordered: false }).catch(err => {
-      if (err.code !== 11000) throw err;
+      if (err.code === 11000 || err.name === "MongoBulkWriteError" || err.writeErrors?.some((e: { code: number }) => e.code === 11000)) {
+        return;
+      }
+      throw err;
     });
   }
 

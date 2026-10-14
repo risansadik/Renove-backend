@@ -18,7 +18,7 @@ export class CreateAvailabilityUseCase implements ICreateAvailabilityUseCase {
 
   async execute(data: CreateAvailabilityDTO) {
     const genStartDate = startOfDay(new Date());
-    const genEndDate = addDays(genStartDate, 30);
+    const genEndDate = data.endDate ? new Date(data.endDate) : addDays(genStartDate, 60);
 
     // 1. Generate proposed slots
     const slotsToCreate = SlotGenerator.generateSlots(

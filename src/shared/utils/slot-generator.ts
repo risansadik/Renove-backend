@@ -1,6 +1,8 @@
-import pkg, { RRule } from "rrule";
-// Use unknown to bypass ESM interop issues safely without using 'any'
-const rrulestr = (pkg as unknown as { rrulestr: (s: string) => RRule }).rrulestr;
+import * as rruleModule from "rrule";
+import type { RRule } from "rrule";
+
+const rrulePkg = (rruleModule as unknown as { default?: { default?: { rrulestr: (s: string) => RRule }; rrulestr?: (s: string) => RRule }; rrulestr?: (s: string) => RRule });
+const rrulestr = (rrulePkg.default?.default?.rrulestr || rrulePkg.default?.rrulestr || rrulePkg.rrulestr)!;
 
 import { startOfDay, isAfter, format } from "date-fns";
 
